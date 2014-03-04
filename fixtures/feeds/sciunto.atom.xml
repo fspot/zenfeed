@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+<title>sciunto</title>
+<link href="http://blog.sciunto.org//"/>
+<link href="http://blog.sciunto.org//index.atom" rel="self" type="application/atom+xml"/>
+<author>
+
+<name>sciunto</name>
+
+</author>
+
+
+
+
+<id>http://blog.sciunto.org//</id>
+
+<subtitle type="html">sciunto</subtitle>
+<generator uri="http://ikiwiki.info/">ikiwiki</generator>
+<updated>2014-02-08T15:52:56Z</updated>
+<entry>
+	<title>Pourquoi je soutiens l&#x27;April</title>
+
+	<id>http://blog.sciunto.org//posts/april/</id>
+
+	<link href="http://blog.sciunto.org//posts/april/"/>
+
+
+
+
+
+
+	<category term="planet-april" />
+
+	<category term="planet-autohebergement" />
+
+	<category term="planet-libre" />
+
+	<category term="planet-python" />
+
+
+	<updated>2014-02-07T23:00:00Z</updated>
+	<published>2014-02-07T23:00:00Z</published>
+
+	<content type="html" xml:lang="en">
+	&lt;p&gt;L&#39;April est une association pionnière en matière de Logiciel Libre. Créée en 1996, elle était une association d&#39;informaticiens souhaitant promouvoir le Logiciel Libre, inspirée par l&#39;éthique du discours de Richard Stallman.&lt;/p&gt;
+&lt;p&gt;Un peu comme pour des codes sources, certains sont oubliés, d&#39;autres au contraire savent évoluer et s&#39;ouvrir au monde. Ce dernier est à mon sens le cas de l&#39;April. Un premier tournant fût la loi &lt;a href=&quot;https://fr.wikipedia.org/wiki/Dadvsi&quot;&gt;DADVSI&lt;/a&gt; qui souleva des réactions face aux atteintes qui pouvaient être portées aux Logiciels Libres (&lt;a href=&quot;https://fr.wikipedia.org/wiki/Histoire_de_la_loi_DADVSI#Les_points_d.27opposition&quot;&gt;Ref&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;La prise de conscience qu&#39;il ne suffisait pas de promouvoir le Logiciel Libre mais aussi veiller à sa défense, a entraîné une croissance significative du nombre d&#39;adhérents pour dépasser les 5000 en 2009. Outre les personnes physiques qui se sentent concernées, ce sont aussi des personnes morales : entreprises, associations ou des communes comme Toulouse qui rejoignent l&#39;April.&lt;/p&gt;
+&lt;p&gt;Grâce à ses membres et aux permanents, les actions menées par l&#39;April se sont succédées et multipliées depuis. DADVSI n&#39;étant que le premier du nom, l&#39;April a poursuivi ses actions sur les brevets logiciels, l&#39;hadopi, la lopsi, l&#39;acta... mais l&#39;April sait aussi planter des graines. Elle est l&#39;initiatrice et la coordinatrice de &lt;a href=&quot;http://www.libre-en-fete.net/&quot;&gt;Libre en fête&lt;/a&gt;, elle se tourne vers les autres &lt;a href=&quot;http://www.april.org/publication-du-guide-libre-association&quot;&gt;associations&lt;/a&gt; et vers la &lt;a href=&quot;http://www.april.org/groupes/diversite&quot;&gt;diversité&lt;/a&gt;, informe le citoyen sur la position des &lt;a href=&quot;http://candidats.fr/&quot;&gt;candidats&lt;/a&gt; aux élections ou oeuvre pour une &lt;a href=&quot;http://www.april.org/groupes/educ/&quot;&gt;education à l&#39;informatique&lt;/a&gt; plus saine. L&#39;April sait rassembler au-delà des frontières de l&#39;informatique et c&#39;est ce qui en fait une grande association.&lt;/p&gt;
+&lt;p&gt;J&#39;ai eu la chance de côtoyer (la distance ne me le permettant plus) physiquement un certain nombre de bénévoles ainsi que l&#39;équipe de permanents et je peux témoigner de la qualité de l&#39;esprit et du savoir de ces personnes. Le travail abattu est immense tant les projets sont nombreux.&lt;/p&gt;
+&lt;p&gt;J&#39;oublie bien sûr des facettes de l&#39;April, je ne cite que celles qui me marquent le plus. Néanmoins, ce sont les raisons pour lesquelles je soutiens l&#39;April.&lt;/p&gt;
+&lt;p&gt;Aujourd&#39;hui, le Logiciel Libre doit réfléchir à de nouvelles problématiques : protection des données personnelles, informatique en nuage avec la variété de concept que cela contient, matériel libre et fablab, etc. Je suis certain que l&#39;April saura trouver un chemin dans ces questions.&lt;/p&gt;
+&lt;p&gt;L&#39;April a aussi besoin de votre soutien. Un membre de plus, c&#39;est une voix de plus lors d&#39;une prise de parole. C&#39;est aussi permettre un travail continu de veille et d&#39;expertise grâce aux salariés.&lt;/p&gt;
+&lt;p&gt;Pour ceux qui veulent donner de leur temps (à toutes les échelles), l&#39;April est prête à recevoir. D&#39;expérience, l&#39;association étant assez imposante, il faut savoir prendre son temps pour prendre ses marques, il y a de la place pour tou(te)s et c&#39;est véritablement enrichissant !&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.april.org/campagne/&quot;&gt;Page de la campagne d&#39;adhésion&lt;/a&gt;&lt;/p&gt;
+&lt;a class=&quot;FlattrButton&quot; href=&quot;http://blog.sciunto.org/&quot; rev=&quot;flattr;button:compact;&quot;&gt;&lt;/a&gt;
+
+	</content>
+
+
+	<link rel="comments" href="/posts/april/#comments" type="text/html" />
+
+
+	<link rel="comments" href="/posts/april/comments.atom" type="application/atom+xml" />
+
+</entry>
+<entry>
+	<title>Ce que python m&#x27;a enseign&#xE9;</title>
+
+	<id>http://blog.sciunto.org//posts/ce_que_python_ma_appris/</id>
+
+	<link href="http://blog.sciunto.org//posts/ce_que_python_ma_appris/"/>
+
+
+
+
+
+
+	<category term="planet-april" />
+
+	<category term="planet-libre" />
+
+	<category term="planet-python" />
+
+
+	<updated>2014-02-03T23:00:00Z</updated>
+	<published>2014-02-03T23:00:00Z</published>
+
+	<content type="html" xml:lang="en">
+	&lt;p&gt;Il y a près de deux ou trois ans, je suis passé à Python. A l&#39;époque, je cherchais un langage permettant de scripter des tâches courantes (adminsys, utilitaires...). De Bash, je suis passé à perl qui m&#39;a beaucoup séduit par l&#39;expression du code et ses regexp. Il possède aussi beaucoup de bibliothèques (cf &lt;a href=&quot;http://cpan.org&quot;&gt;cpan&lt;/a&gt;), ce qui le rend intéressant.&lt;/p&gt;
+&lt;p&gt;Néanmoins, perl ne rime pas vraiment avec science, en tout cas dans mon domaine (il semble que perl ait une bonne communauté chez les bioinformaticiens). Matlab fait largement référence, mais puisque ce n&#39;est pas éthiquement acceptable, je me suis tourné vers python qui se défend &lt;a href=&quot;http://metarabbit.wordpress.com/2013/10/18/why-python-is-better-than-matlab-for-scientific-software/&quot;&gt;très bien&lt;/a&gt;. Il se trouve aussi que Python, contrairement à matlab, est un vrai langage de programmation, utilisé par des développeurs pour faire des outils bureau et web. C&#39;est, selon moi, une (et non pas la) raison pour laquelle ce langage devrait être privilégié par rapport à matlab dans l&#39;enseignement car il s&#39;adresse potentiellement à une plus grande diversité de tâches, donc un plus large public.&lt;/p&gt;
+&lt;p&gt;Mais ce n&#39;est pas ce que je veux traiter dans cet article, je veux plutôt parler de ce que Python m&#39;a apporté et que je n&#39;ai pas découvert au cours de mes études où j&#39;ai appris C et C++.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Faire des tests unitaires. Je me limite encore aux situations simples, mais j&#39;apprécie grandement cet investissement car sur le logn terme, retoucher un code ne donne plus la grosse sueur froide de tout casser. Pour une raison que j&#39;ignore, je n&#39;ai pas découvert ces tests avec perl.&lt;/li&gt;
+&lt;li&gt;Intégration continue. Contribuant à des projets sur github, j&#39;ai découvert Travis-CI. Ce n&#39;est pas libre, mais néanmoins plutôt pratique. Comme pour github, si ce service fermait, je pourrai le remplacer à terme par un service auto-hébergé et ce n&#39;est pas critique pour moi. Cette découverte m&#39;a poussé à faire de l&#39;intégration continue pour latex.&lt;/li&gt;
+&lt;li&gt;Faire une documentation systématique. Découvert avec doxygen en C++, j&#39;ai commencé à documenter mes fonctions quasi-systématiquement avec python et j&#39;ai l&#39;occasion d&#39;apprendre à faire une doc correcte grâce aux contributions que je peux faire dans des libs scientifiques.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Ces éléments, je les ai appris ou perfectionné avec python. Je ne dis pas que je ne l&#39;aurais pas appris autrement, mais le fait est que c&#39;est grâce à Python !&lt;/p&gt;
+&lt;a class=&quot;FlattrButton&quot; href=&quot;http://blog.sciunto.org/&quot; rev=&quot;flattr;button:compact;&quot;&gt;&lt;/a&gt;
+
+	</content>
+
+
+	<link rel="comments" href="/posts/ce_que_python_ma_appris/#comments" type="text/html" />
+
+
+	<link rel="comments" href="/posts/ce_que_python_ma_appris/comments.atom" type="application/atom+xml" />
+
+</entry>
+<entry>
+	<title>Supprimer la premi&#xE8;re page d&#x27;un pdf avec pyPDF2</title>
+
+	<id>http://blog.sciunto.org//posts/supprimer_page_pdf/</id>
+
+	<link href="http://blog.sciunto.org//posts/supprimer_page_pdf/"/>
+
+
+
+
+
+
+	<category term="planet-april" />
+
+	<category term="planet-libre" />
+
+	<category term="planet-python" />
+
+	<category term="science" />
+
+
+	<updated>2014-02-01T23:00:00Z</updated>
+	<published>2014-02-01T23:00:00Z</published>
+
+	<content type="html" xml:lang="en">
+	&lt;p&gt;Dans mon travail de recherche, je manipule beaucoup de PDF dont ceux provenant des sites des journaux scientiques. Le problème est qu&#39;un certain nombre de ces journaux mettent une page &amp;quot;de couverture&amp;quot; au PDF à partir de métadonnées et cette page m&#39;ennuie à plusieurs égards :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;je dois descendre d&#39;une page pour commencer ma lecture&lt;/li&gt;
+&lt;li&gt;je dois imprimmer une page supplémentaire et une fois sur deux utiliser une feuille supplémentaire&lt;/li&gt;
+&lt;li&gt;la pge étant la même pour tous les articles du journal, je ne repère pas au premier coup d&#39;oeil de quel article il s&#39;agit dans ma pile.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Pour toutes ces raisons, à chaque fois que j&#39;ai un tel PDF entre les mains, je &lt;em&gt;déchire&lt;/em&gt; la première page. Il y a sans doute des commandes ghostscripts magiques pour ça. Ici, je propose d&#39;écrire un petit script python dont voici les &lt;a href=&quot;https://github.com/sciunto/tear-pages&quot;&gt;sources&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;C&#39;est terriblement simple :&lt;/p&gt;
+&lt;pre class=&quot;sourceCode python&quot;&gt;&lt;code class=&quot;sourceCode python&quot;&gt;&lt;span class=&quot;co&quot;&gt;# Creation d&amp;#39;un fichier temporaire&lt;/span&gt;
+tmp = tempfile.NamedTemporaryFile()
+shutil.copy(filename, tmp.name)
+
+&lt;span class=&quot;co&quot;&gt;# On ouvre le pdf et on compte les pages&lt;/span&gt;
+output_file = PdfFileWriter()
+input_file = PdfFileReader(&lt;span class=&quot;dt&quot;&gt;open&lt;/span&gt;(tmp.name, &lt;span class=&quot;st&quot;&gt;&amp;#39;rb&amp;#39;&lt;/span&gt;))
+num_pages = input_file.getNumPages()
+
+&lt;span class=&quot;co&quot;&gt;# On esquive la page 0, le reste, on copie&lt;/span&gt;
+&lt;span class=&quot;kw&quot;&gt;for&lt;/span&gt; i in &lt;span class=&quot;dt&quot;&gt;range&lt;/span&gt;(&lt;span class=&quot;dv&quot;&gt;1&lt;/span&gt;, num_pages):
+    output_file.addPage(input_file.getPage(i))
+
+&lt;span class=&quot;co&quot;&gt;# On ferme, on enregistre&lt;/span&gt;
+tmp.close()
+outputStream = &lt;span class=&quot;dt&quot;&gt;open&lt;/span&gt;(filename, &lt;span class=&quot;st&quot;&gt;&amp;quot;wb&amp;quot;&lt;/span&gt;)
+output_file.write(outputStream)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Voilà, le travail est fait &lt;img src=&quot;http://blog.sciunto.org//./smileys/smile.png&quot; alt=&quot;:)&quot; /&gt;&lt;/p&gt;
+&lt;a class=&quot;FlattrButton&quot; href=&quot;http://blog.sciunto.org/&quot; rev=&quot;flattr;button:compact;&quot;&gt;&lt;/a&gt;
+
+	</content>
+
+
+	<link rel="comments" href="/posts/supprimer_page_pdf/#comments" type="text/html" />
+
+
+	<link rel="comments" href="/posts/supprimer_page_pdf/comments.atom" type="application/atom+xml" />
+
+</entry>
+<entry>
+	<title>Assembler des images avec PIL ou Pillow</title>
+
+	<id>http://blog.sciunto.org//posts/assembler_images_pillow/</id>
+
+	<link href="http://blog.sciunto.org//posts/assembler_images_pillow/"/>
+
+
+
+
+
+
+	<category term="planet-april" />
+
+	<category term="planet-libre" />
+
+	<category term="planet-python" />
+
+	<category term="science" />
+
+
+	<updated>2014-01-07T23:00:00Z</updated>
+	<published>2014-01-07T23:00:00Z</published>
+
+	<content type="html" xml:lang="en">
+	&lt;p&gt;J&#39;ai présenté il y a quelques mois l&#39;utilisation de PIL ou &lt;a href=&quot;https://github.com/python-imaging/Pillow&quot;&gt;Pillow&lt;/a&gt; pour retailler ou &lt;a href=&quot;http://blog.sciunto.org//./posts/script_python_pour_retailler_des_images_et_plus_si_affinite/&quot;&gt;&amp;quot;croper&amp;quot; des images&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Pour rappel, Pillow est un fork &lt;em&gt;amical&lt;/em&gt; de PIL, dans le but de dynamiser son développement. Aujourd&#39;hui les distributions GNU/Linux majeures sont passées à Pillow. La &lt;a href=&quot;http://pillow.readthedocs.org/en/latest/&quot;&gt;documentation de Pillow&lt;/a&gt; était d&#39;ailleurs encore assez horrible il y a quelques mois et je viens de découvrir que ça s&#39;est grandement amélioré :)&lt;/p&gt;
+&lt;p&gt;Ici, je vais vous présenter une autre fonction intéressante qui me permet de réaliser des séquences d&#39;images pour retranscrire par exemple une dynamique dans une image.&lt;/p&gt;
+&lt;pre class=&quot;sourceCode python&quot;&gt;&lt;code class=&quot;sourceCode python&quot;&gt;&lt;span class=&quot;ch&quot;&gt;from&lt;/span&gt; PIL &lt;span class=&quot;ch&quot;&gt;import&lt;/span&gt; Image
+
+&lt;span class=&quot;kw&quot;&gt;def&lt;/span&gt; make_sequence(filenames, output):
+    &lt;span class=&quot;co&quot;&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;co&quot;&gt;    Make a sequence of N pictures&lt;/span&gt;
+
+&lt;span class=&quot;co&quot;&gt;    :params filenames: tuple of filenames&lt;/span&gt;
+&lt;span class=&quot;co&quot;&gt;    :params output: output filename&lt;/span&gt;
+&lt;span class=&quot;co&quot;&gt;    &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class=&quot;co&quot;&gt;# Open the picture and get its size&lt;/span&gt;
+    im1 = Image.&lt;span class=&quot;dt&quot;&gt;open&lt;/span&gt;(filenames[&lt;span class=&quot;dv&quot;&gt;0&lt;/span&gt;])
+    x1, y1 = im1.size
+
+    &lt;span class=&quot;co&quot;&gt;# Prepare the new picture&lt;/span&gt;
+    new = Image.new(&lt;span class=&quot;st&quot;&gt;&amp;quot;RGB&amp;quot;&lt;/span&gt;, (&lt;span class=&quot;dt&quot;&gt;len&lt;/span&gt;(filenames)*x1,y1), &lt;span class=&quot;st&quot;&gt;&amp;quot;Black&amp;quot;&lt;/span&gt;)
+    &lt;span class=&quot;co&quot;&gt;# Paste each picture of the tuple on the new picture&lt;/span&gt;
+    &lt;span class=&quot;kw&quot;&gt;for&lt;/span&gt; i, im in &lt;span class=&quot;dt&quot;&gt;enumerate&lt;/span&gt;(filenames):
+        image = Image.&lt;span class=&quot;dt&quot;&gt;open&lt;/span&gt;(im)
+        new.paste(image, (i*x1, &lt;span class=&quot;dv&quot;&gt;0&lt;/span&gt;))
+
+    &lt;span class=&quot;co&quot;&gt;# Save the picture&lt;/span&gt;
+    new.save(output)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;On peut aussi avoir besoin de mettre un étalon. Pour celà, on applique un carré blanc (le fond étant noir dans mon cas). On utilise là aussi la fonction paste.&lt;/p&gt;
+&lt;pre class=&quot;sourceCode python&quot;&gt;&lt;code class=&quot;sourceCode python&quot;&gt;sc1 = Image.new(&lt;span class=&quot;st&quot;&gt;&amp;quot;RGB&amp;quot;&lt;/span&gt;, (scale1, &lt;span class=&quot;dv&quot;&gt;10&lt;/span&gt;), &lt;span class=&quot;st&quot;&gt;&amp;quot;White&amp;quot;&lt;/span&gt;)
+new.paste(sc1, (&lt;span class=&quot;dv&quot;&gt;0+50&lt;/span&gt;, y1&lt;span class=&quot;dv&quot;&gt;-50&lt;/span&gt;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Une autre fonction pouvant être utile dans ce genre de scripts est la rotation des images :&lt;/p&gt;
+&lt;pre class=&quot;sourceCode python&quot;&gt;&lt;code class=&quot;sourceCode python&quot;&gt;im.rotate(-&lt;span class=&quot;fl&quot;&gt;1.4&lt;/span&gt;, Image.BICUBIC)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Une valeur négative signifie une rotation horraire. Trois méthodes sont possibles : NEAREST, BILINEAR et BICUBIC&lt;/p&gt;
+&lt;p&gt;J&#39;ai remarqué être confronté souvent à ce même genre de petites tâches, parfois sur des masses de données importantes (comme quelques Go de photos), parfois pour des choses où je veux garder une tracabilité de ce que j&#39;ai fait de manière à pouvoir modifier et rejouer le processus rapidement. Il doit y avoir des logiciels graphiques très performants, mais ces codes sont très flexibles et avec le temps, la banque de &lt;em&gt;snippets&lt;/em&gt; permet de couvrir rapidement les besoins.&lt;/p&gt;
+&lt;a class=&quot;FlattrButton&quot; href=&quot;http://blog.sciunto.org/&quot; rev=&quot;flattr;button:compact;&quot;&gt;&lt;/a&gt;
+
+	</content>
+
+
+	<link rel="comments" href="/posts/assembler_images_pillow/#comments" type="text/html" />
+
+
+	<link rel="comments" href="/posts/assembler_images_pillow/comments.atom" type="application/atom+xml" />
+
+</entry>
+<entry>
+	<title>Le r&#xE9;el de la r&#xE9;alit&#xE9; augment&#xE9;e</title>
+
+	<id>http://blog.sciunto.org//posts/realite_augmentee/</id>
+
+	<link href="http://blog.sciunto.org//posts/realite_augmentee/"/>
+
+
+
+
+
+
+	<category term="philosophie" />
+
+	<category term="planet-april" />
+
+
+	<updated>2013-12-28T23:00:00Z</updated>
+	<published>2013-12-28T23:00:00Z</published>
+
+	<content type="html" xml:lang="en">
+	&lt;p&gt;Depuis la communication de Google sur ses lunettes dites google glasses, on entend parler de réalité augmentée. Certains y voient un aubaine, un moyen nouveau d&#39;améliorer leur quotidien en ayant à disposition des informations sur leur environnement. D&#39;autres pointent aussi un certain nombre de problèmes de sécurité &lt;a href=&quot;http://www.comptoirsecu.fr/2013/09/episode-4-a-cloud-computing-et-google-glass/&quot;&gt;(Cf ce podcast du comptoir sécu)&lt;/a&gt;, de vie privée &lt;a href=&quot;http://sametmax.com/non-aux-google-glasses/&quot;&gt;(Cf ce post de Sam &amp;amp; Max)&lt;/a&gt; etc. Ces critiques sont principalement basées sur le fait qu&#39;on ait de la géolocalisation, de l&#39;audio et de la video embarquée. En réalité, cette critique n&#39;est pas nouvelle (mais ça n&#39;enlève rien) car c&#39;est la critique++ qu&#39;on aurait des ordiphones et des téléphones portables.&lt;/p&gt;
+&lt;p&gt;Par contre, je n&#39;ai pas encore vraiment lu de critique sur la modification de la perception visuelle qui généralement fait plutôt partie de la part élogieuse de l&#39;objet. J&#39;ai pu entendre l&#39;argument -- et je vais me baser sur celui-ci dans la suite de ma réflexion -- que ces lunettes permettraient par exemple de supprimer les publicités qu&#39;on peut voir dans certains endroits, à la manière d&#39;un adblock pour navigateur. Outre le fait que ce n&#39;est encore une fois qu&#39;une mesure de défence plutôt qu&#39;une solution, la méthode d&#39;action est selon moi dérangeante.&lt;/p&gt;
+&lt;p&gt;Pour expliquer cela, je vais m&#39;appuyer sur l&#39;un des livres de &lt;a href=&quot;http://www.clementrosset.com/Site_officiel_de_Clement_Rosset/Site_officiel_de_Clement_Rosset/Site_officiel_de_Clement_Rosset.html&quot;&gt;Clément Rosset&lt;/a&gt;, le réel et son double, dont la lecture est accessible. Clément Rosset est un philosophe qui a largement étudié le réel. Il analyse comment nous nous détournons du réel. La manière la plus courante est de percevoir le réel, mais de s&#39;illusionner. Par exemple, dans la situation où une personne est amoureuse d&#39;une autre, elle perçoit parfaitement et distinctement les défauts de l&#39;autre, mais, elle s&#39;illusionne en ne gardant que la part intéressante : &amp;quot;Je sais qu&#39;il/elle a tel défaut, mais ça ne m&#39;importe pas.&amp;quot; ; comme si on n&#39;avait rien vu ! Ce moyen d&#39;échapper au réel perçu se fait, pour Clément Rosset, par un double du réel.&lt;/p&gt;
+&lt;p&gt;Or, dupliquer le réel n&#39;est pas possible. On ne peut pas obtenir un double comme copie identique, sans que ce ne soit l&#39;être lui-même. Il s&#39;en suit que le double est une forme dévalorisée, dégradée du réel. Un succédané. Rosset reprend Parménide : &amp;quot;ce qui existe existe et ce qui n&#39;existe pas, n&#39;existe pas&amp;quot;. Il est futile de fuir la réalité, de s&#39;illusioner, de tenter de voir ses désirs dans le réel. Il faut plutôt désirer la réalité présente. Clément Rosset enseigne aussi comment de cette réalité tragique, on peut se faire porter par la joie, mais ça, c&#39;est l&#39;affaire d&#39;un autre livre : la force majeure.&lt;/p&gt;
+&lt;p&gt;Ainsi, cette paire de lunettes dite à réalité augmentée n&#39;est au fond qu&#39;un voile destiné à cacher le monde tel qu&#39;il est et à s&#39;illusioner. Il faudrait donc plutôt parler de &lt;em&gt;réalité diminuée&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;En résumé, l&#39;enseignement de Clément Rosset est : Regardez et acceptez le monde tel qu&#39;il est plutôt qu&#39;une réalité diminuée.&lt;/p&gt;
+&lt;a class=&quot;FlattrButton&quot; href=&quot;http://blog.sciunto.org/&quot; rev=&quot;flattr;button:compact;&quot;&gt;&lt;/a&gt;
+
+	</content>
+
+
+	<link rel="comments" href="/posts/realite_augmentee/#comments" type="text/html" />
+
+
+	<link rel="comments" href="/posts/realite_augmentee/comments.atom" type="application/atom+xml" />
+
+</entry>
+<entry>
+	<title>Le choix, un frein &#xE0; l&#x27;adoption du Logiciel Libre</title>
+
+	<id>http://blog.sciunto.org//posts/choisir-LL/</id>
+
+	<link href="http://blog.sciunto.org//posts/choisir-LL/"/>
+
+
+
+
+
+
+	<category term="philosophie" />
+
+	<category term="planet-april" />
+
+
+	<updated>2013-12-25T23:00:00Z</updated>
+	<published>2013-12-25T23:00:00Z</published>
+
+	<content type="html" xml:lang="en">
+	&lt;p&gt;On peut se demander pourquoi le Logiciel Libre n&#39;est pas adopté par une plus large majorité d&#39;utilisateurs par rapport à ce qui est observé aujourd&#39;hui. Le fait qu&#39;encore un grand nombre de personnes n&#39;ait pas reçu l&#39;éducation suffisante pour saisir les enjeux économiques, sociaux, politiques, technologiques ou encore éthiques n&#39;explique pas, en soi, pourquoi l&#39;usage de logiciels libres n&#39;est pas naturel. En effet, puisque nous connaissons les avantages du Libre sur le privateur, on peut se saisir du questionnement suivant : pourquoi le logiciel libre ne ferait pas l&#39;objet, par sélection naturelle, de la convergence des solutions retenues ?&lt;/p&gt;
+&lt;p&gt;L&#39;analyse que je souhaite porter à cette question est centrée sur la question du choix. Choisir est une question difficile, bien plus qu&#39;il n&#39;y parait. Il peut être d&#39;ordre pulsionel, c&#39;est-à-dire se faire sous le couvert de l&#39;émotion : tel tube de dentifrice est plus beau que les autres. Ce choix est généralement très rapide mais il a ce désavantage d&#39;entrainer une déconvenance fort probable une fois qu&#39;on utilisera le produit. D&#39;un autre côté, on trouve le choix rationnel. Celui-ci mobilise notre jugement, d&#39;où un certain aspect méthodique : ai-je envie de bonnes gencives, de dents blanches, de l&#39;absence de carries ou de l&#39;absence de tartre ? Vaste question. Ensuite viendra la marque, la taille du tube, le rapport qualité/prix, etc. Une étude sociologique dont je n&#39;ai plus la référence avait montré que dans un magasin vendant des pots de confitures, les ventes étaient meilleures si le nombre de choix possibles était restraint. Devant trop de choix, ou l&#39;embbaras du choix disons-nous, on se retrouve dans une situation embbarassante qu&#39;on souhaite au plus vite écourter. Au milieu du choix rationnel, on se retrouve parfois à l&#39;interompre pour ne pas choisir ou pour choisir par pulsion en se disant qu&#39;après tout, ça n&#39;a que si peu d&#39;importance.&lt;/p&gt;
+&lt;p&gt;Dans le Logiciel Libre, une conséquence des libertés sur lesquelles il est fondé, est le choix. Pour remplir une tâche, il n&#39;y a rarement qu&#39;un seul logiciel, car il n&#39;y a pas qu&#39;une seule manière de traiter cette tâche. (Je ne vais pas m&#39;étendre ici sur les raisons entraînant une telle diversité dans le logiciel libre.) Là, aucun moyen d&#39;y couper, il faut y passer du temps pour lire la documentation, comprendre quels sont les usages permis, les limites du logiciel, etc ; car si j&#39;écourte par un choix pulsionnel, j&#39;ai toutes les chances d&#39;être en inadéquation entre besoins et possibilités, et donc, de penser faussement que ce logiciel est mauvais, alors que c&#39;était le choix. Choisir est donc coûteux, la liberté est coûteuse et donc finalement, ce logiciel d&#39;une marque que je connais ou vendu sur une plateforme qui m&#39;est familière, semble être un bon compromis ; je donne ma confiance et abandonne mon choix, et donc ma liberté.&lt;/p&gt;
+&lt;p&gt;Mais ce ne sera probablement pas satisfaisant me direz-vous ? Probablement pas, mais à force, je ne verrai plus l&#39;étendue des possibles, mon esprit sera devenu etriqué au point de penser que c&#39;est la seule possibilité. &amp;quot;Elle n&#39;est pas parfaite, mais que voulez-vous ?&amp;quot; C&#39;est la résignation qui l&#39;emporte.&lt;/p&gt;
+&lt;a class=&quot;FlattrButton&quot; href=&quot;http://blog.sciunto.org/&quot; rev=&quot;flattr;button:compact;&quot;&gt;&lt;/a&gt;
+
+	</content>
+
+
+	<link rel="comments" href="/posts/choisir-LL/#comments" type="text/html" />
+
+
+	<link rel="comments" href="/posts/choisir-LL/comments.atom" type="application/atom+xml" />
+
+</entry>
+<entry>
+	<title>bibtexparser en python</title>
+
+	<id>http://blog.sciunto.org//posts/bibtexparser_en_python/</id>
+
+	<link href="http://blog.sciunto.org//posts/bibtexparser_en_python/"/>
+
+
+
+
+
+
+	<category term="planet-april" />
+
+	<category term="planet-libre" />
+
+	<category term="planet-python" />
+
+
+	<updated>2013-11-02T23:00:00Z</updated>
+	<published>2013-11-02T23:00:00Z</published>
+
+	<content type="html" xml:lang="en">
+	&lt;p&gt;Utilisant bibtex comme base de données bibliographiques, j&#39;ai cherché une bibliothèque python permettant de traiter de tels fichiers. Je pensais que je trouverais facilement mon bonheur car python regorge de bibliothèques. Erreur... je n&#39;ai rien trouvé de fonctionnel et documenté.&lt;/p&gt;
+&lt;p&gt;Pour ceux qui ne savent pas, bibtex est un format pour stocker des infos bibliographiques et ça ressemble à ça.&lt;/p&gt;
+&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt; @book{Ben62,
+    title = &lt;span class=&quot;st&quot;&gt;&amp;quot;L&amp;#39;Oxydation des m\&amp;#39;etaux&amp;quot;&lt;/span&gt;,
+    author = &lt;span class=&quot;st&quot;&gt;&amp;quot;J. B{\&amp;#39;e}nard and J. Bardolle and F. Bouillon and M. Cagnet%&lt;/span&gt;
+&lt;span class=&quot;st&quot;&gt;       and J. Moreau and G. Valensi&amp;quot;&lt;/span&gt;,
+    publisher = &lt;span class=&quot;st&quot;&gt;&amp;quot;Gauthier-Villars&amp;quot;&lt;/span&gt;,
+    year = &lt;span class=&quot;st&quot;&gt;&amp;quot;1962&amp;quot;&lt;/span&gt;
+ }&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;En fuinant dans des codes sources de logiciels, j&#39;ai fini par trouver un projet de l&#39;&lt;a href=&quot;http://okfn.org/&quot;&gt;OKFN&lt;/a&gt; qui se nomme &lt;a href=&quot;https://github.com/okfn/bibserver&quot;&gt;bibserver&lt;/a&gt;. Vu le nom, je devais bien trouver un bout de code qui s&#39;arrange avec ces fichiers.&lt;/p&gt;
+&lt;p&gt;C&#39;était effectivement le cas, et le parser était vraiment satisfaisant sur mes fichiers. J&#39;ai alors décidé d&#39;en faire un projet à part entière de manière à ce que tout le monde puisse avoir un parser en python pour ses besoins. La license de bibserver est la AGPLv3. Ce qui fait sens pour ce type de project. Le problème est que cela peut être un peu trop restrictif pour certains usages et un utilisateur m&#39;a d&#39;ailleurs demandé si je pouvais passer à une license de type LGPL.&lt;/p&gt;
+&lt;p&gt;Il s&#39;en est suivi une pêche à l&#39;autorisation. J&#39;ai commencé l&#39;été dernier par l&#39;auteur principal de bibserver, mais je n&#39;ai pas eu de réponse. Puis, je suis passé au second contributeur qui n&#39;y voyait pas de problème, a mis le premier auteur en copie de son message. Le premier auteur m&#39;a répondu dans la foulée pour me dire OK, mais les droits sont reversés à l&#39;OKFN, il faut donc leur demander l&#39;autorisation. Je suis passé par leur courriel de contact, deux fois, mais je n&#39;ai pas eu de réponse. Ma dernière chance était la liste de discussion et tada ! j&#39;ai eu la permission.&lt;/p&gt;
+&lt;p&gt;Le code est donc passé en LGPLv3. Ce fût une longue bataille, qui montre aussi l&#39;importance de bien choisir la licence de départ. En effet, si l&#39;AGPL est tout à fait approprié à bibserver, cette sous-partie peut très bien faire l&#39;objet d&#39;une bibliothèque à part entière et c&#39;est dommage de ne pas étendre les possibilités de cette sous-partie. J&#39;ai coutume de dire que l&#39;on ne passe jamais à tous les usages possibles, ce qui est l&#39;essence du &lt;em&gt;hacking&lt;/em&gt; et qu&#39;il faut essayer, autant que faire ce peu, d&#39;ouvrir au maximum la réutilisation de ce que l&#39;on écrit.&lt;/p&gt;
+&lt;p&gt;Un grand merci aux personnes de l&#39;OKFN pour cette permission.&lt;/p&gt;
+&lt;a class=&quot;FlattrButton&quot; href=&quot;http://blog.sciunto.org/&quot; rev=&quot;flattr;button:compact;&quot;&gt;&lt;/a&gt;
+
+	</content>
+
+
+	<link rel="comments" href="/posts/bibtexparser_en_python/#comments" type="text/html" />
+
+
+	<link rel="comments" href="/posts/bibtexparser_en_python/comments.atom" type="application/atom+xml" />
+
+</entry>
+<entry>
+	<title>Sortie de Scikit-image 0.9.0</title>
+
+	<id>http://blog.sciunto.org//posts/sortie_scikit-image_0.9.0/</id>
+
+	<link href="http://blog.sciunto.org//posts/sortie_scikit-image_0.9.0/"/>
+
+
+
+
+
+
+	<category term="planet-april" />
+
+	<category term="planet-libre" />
+
+	<category term="planet-python" />
+
+	<category term="science" />
+
+
+	<updated>2013-10-20T22:00:00Z</updated>
+	<published>2013-10-20T22:00:00Z</published>
+
+	<content type="html" xml:lang="en">
+	&lt;h2 id=&quot;pr&amp;eacute;sentation&quot;&gt;Présentation&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;http://scikit-image.org/&quot;&gt;Scikit-image&lt;/a&gt; est une bibliothèque python de traitement d&#39;images. Elle sort aujourd&#39;hui sa version 0.9.0.&lt;/p&gt;
+&lt;p&gt;Cette bibliothèque s&#39;appuie sur numpy et scipy, les briques scientifiques en python. Ceci la distingue d&#39;&lt;a href=&quot;http://opencv.org/&quot;&gt;Opencv&lt;/a&gt; et de &lt;a href=&quot;https://github.com/python-imaging/Pillow&quot;&gt;Pillow&lt;/a&gt; qui elle est principalement destinée à un traitement simple des images (rotation, rognage...). En terme de performances, scikit-image utilise cython, un générateur C pour marier un code facile à lire et une rapidité excellente.&lt;/p&gt;
+&lt;p&gt;La &lt;a href=&quot;http://scikit-image.org/docs/dev/auto_examples/&quot;&gt;gallerie&lt;/a&gt; présente un bon nombre des fonctionnalités présentes (filtrage, segmentation, débruitage, détection de forme...).&lt;/p&gt;
+&lt;p&gt;N&#39;hésitez pas à proposer les implémentations de vos algos favoris !&lt;/p&gt;
+&lt;h2 id=&quot;nouvelles-fonctionnalit&amp;eacute;s-dans-0.9.0&quot;&gt;Nouvelles fonctionnalités dans 0.9.0&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://groups.google.com/forum/#!topic/scikit-image/jEqKlmKNnow&quot;&gt;Annonce officielle&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Segmentation:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;3D support in SLIC segmentation (#546)&lt;/li&gt;
+&lt;li&gt;SLIC voxel spacing (#719)&lt;/li&gt;
+&lt;li&gt;Generalized anisotropic spacing support for random_walker (#775)&lt;/li&gt;
+&lt;li&gt;Yen threshold method (#686)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Transforms and filters:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SART algorithm for tomography reconstruction (#584)&lt;/li&gt;
+&lt;li&gt;Gabor filters (#371)&lt;/li&gt;
+&lt;li&gt;Hough transform for ellipses (#597)&lt;/li&gt;
+&lt;li&gt;Fast resampling of nD arrays (#511)&lt;/li&gt;
+&lt;li&gt;Rotation axis center for Radon transforms with inverses. (#654)&lt;/li&gt;
+&lt;li&gt;Reconstruction circle in inverse Radon transform (#567)&lt;/li&gt;
+&lt;li&gt;Pixelwise image adjustment curves and methods (#505)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Feature detection:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;[experimental API] BRIEF feature descriptor (#591)&lt;/li&gt;
+&lt;li&gt;[experimental API] Censure (STAR) Feature Detector (#668)&lt;/li&gt;
+&lt;li&gt;Octagon structural element (#669)&lt;/li&gt;
+&lt;li&gt;Add non rotation invariant uniform LBPs (#704)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Color and noise:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Add deltaE color comparison and lab2lch conversion (#665)&lt;/li&gt;
+&lt;li&gt;Isotropic denoising (#653)&lt;/li&gt;
+&lt;li&gt;Generator to add various types of random noise to images (#625)&lt;/li&gt;
+&lt;li&gt;Color deconvolution for immunohistochemical images (#441)&lt;/li&gt;
+&lt;li&gt;Color label visualization (#485)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Drawing and visualization:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Wu&#39;s anti-aliased circle, line, bezier curve (#709)&lt;/li&gt;
+&lt;li&gt;Linked image viewers and docked plugins (#575)&lt;/li&gt;
+&lt;li&gt;Rotated ellipse + bezier curve drawing (#510)&lt;/li&gt;
+&lt;li&gt;PySide &amp;amp; PyQt4 compatibility in skimage-viewer (#551)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Other:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Python 3 support without 2to3. (#620)&lt;/li&gt;
+&lt;li&gt;3D Marching Cubes (#469)&lt;/li&gt;
+&lt;li&gt;Line, Circle, Ellipse total least squares fitting and RANSAC algorithm (#440)&lt;/li&gt;
+&lt;li&gt;N-dimensional array padding (#577)&lt;/li&gt;
+&lt;li&gt;Add a wrapper around scipy.ndimage.gaussian_filter with useful default behaviors. (#712)&lt;/li&gt;
+&lt;li&gt;Predefined structuring elements for 3D morphology (#484)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;a class=&quot;FlattrButton&quot; href=&quot;http://blog.sciunto.org/&quot; rev=&quot;flattr;button:compact;&quot;&gt;&lt;/a&gt;
+
+	</content>
+
+
+	<link rel="comments" href="/posts/sortie_scikit-image_0.9.0/#comments" type="text/html" />
+
+
+	<link rel="comments" href="/posts/sortie_scikit-image_0.9.0/comments.atom" type="application/atom+xml" />
+
+</entry>
+<entry>
+	<title>rediger en latex xelatex luatex</title>
+
+	<id>http://blog.sciunto.org//posts/rediger_en_latex_xelatex_luatex/</id>
+
+	<link href="http://blog.sciunto.org//posts/rediger_en_latex_xelatex_luatex/"/>
+
+
+
+
+
+
+	<category term="latex" />
+
+	<category term="planet-april" />
+
+	<category term="planet-libre" />
+
+	<category term="science" />
+
+
+	<updated>2013-10-19T22:00:00Z</updated>
+	<published>2013-10-19T22:00:00Z</published>
+
+	<content type="html" xml:lang="en">
+	&lt;p&gt;Etant confronté à la rédaction d&#39;un long manuscrit (supérieur à 100 pages) et côtoyant aussi des personnes ayant à faire le même travail, je vais livrer ici quelques conseils. Je passe bien sûr sur les avantages de tex : qualité, découplage contenu/apparence, source au format texte (ce qui attire son lot d&#39;avantages), portabilité, pérennité. Bref.&lt;/p&gt;
+&lt;p&gt;Je remarque que la plupart des personnes souhaitant rédiger un tel document cherche d&#39;abord à récupérer un template d&#39;une autre personne ayant rédigé un document similaire. Je pense que c&#39;est un grosse erreur : Latex et encore plus durement, tex, sont des langages puissants mais très complexes. Le schéma est généralement le suivant. La personne commence à utiliser le template récupéré, puis, à partir du moment où le document commence à se remplir, elle se rend compte que tel ou tel spécificité ne convient pas ou alors qu&#39;elle aimerait tel paquet en plus. Là, on arrive souvent à une incompatibilité ou une mauvaise utilisation car le personne ne sait pas ce qu&#39;il y a dans l&#39;en tête ou dans la classe magique. Je suis donc de l&#39;avis d&#39;éviter d&#39;utiliser de telles classes ou templates tout fait, surtout lorsqu&#39;on ne connait pas suffisamment tex (et je m&#39;inclue dedans bien que j&#39;arrive à comprendre grossièrement le sens).&lt;/p&gt;
+&lt;p&gt;A la place, le conseil que je donne est de partir d&#39;un fichier vierge et de le remplir au fur et à mesure des besoins. Ainsi, ça permet de comprendre ce que l&#39;on mets, ce à quoi ça sert et quels sont les options. Ca prend du temps, mais sans doute pas plus que de débugguer de l&#39;inconnu et du pas toujours propre. La meilleure situation consiste à avoir déjà une petite expérience avec le langage car cela permet d&#39;avoir une certaine anticipation. Sinon, cet article devrait donner quelques pistes.&lt;/p&gt;
+&lt;h2 id=&quot;choix-du-compilateur&quot;&gt;Choix du compilateur&lt;/h2&gt;
+&lt;p&gt;Le choix du compilateur n&#39;est pas anodin du tout. Le changer en cours de route peut être périlleux. On a : latex, pdflatex, xelatex, luatex. Par exemple, latex demande des figures au format eps alors que les autres utilisent pdf, png ou jpg mais ne permettent pas l&#39;usage de pstricks. Xelatex permet par exemple l&#39;utilisation de la font linux libertine. Il y a donc un choix technologique à faire.&lt;/p&gt;
+&lt;h2 id=&quot;choix-des-paquets&quot;&gt;Choix des paquets&lt;/h2&gt;
+&lt;p&gt;Les paquets permettent d&#39;avoir un certains nombre de fonctionnalités. Ils sont tous documentés dans leurs usages, cf ctan. Il faut faire attention là aussi, car il y a parfois des incompatibilités. Dans mon cas, j&#39;ai été confronté à une incompatibilité entre minitoc et la classe memoir, mais ça se contourne toujours (ici, je suis passé à titletoc). Voici quelques paquets que je pense être utile :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;todonotes : permet de mettre des todo (boites) dans le document. Contraitement aux commentaires, ils apparaissent dans le document final, ce qui est pratique pour la relecture. C&#39;est plus visible que des XXXX ou des !!!! :)&lt;/li&gt;
+&lt;li&gt;natbib : le paquet défini un certain nombre de commandes supplémentaires pour la biblio comme citeauthor, citeyear. Je préfère ça à avoir à l&#39;écrire à la main au risque de faire des fautes de typo difficilement détectables. Il permet aussi de gérer finement le format (nom, numéro...)&lt;/li&gt;
+&lt;li&gt;siunitx : permet de gérer les unités. Ca permet d&#39;avoir un micron droit et non italique. Les unités ne doivent pas être en italique... Siunitx s&#39;adapte aussi à l&#39;environnement aussi comme les captions qui peuvent être en italique, alors l&#39;unité est basculé en italique. Enfin, cela évite les erreurs d&#39;espace entre le chiffre et l&#39;unité.&lt;/li&gt;
+&lt;li&gt;hyperref : liens cliquables, métadonnées&lt;/li&gt;
+&lt;li&gt;cleveref : pour faire des plus malines (mot précédent la ref, ref multiples...)&lt;/li&gt;
+&lt;li&gt;geometry : pour changer les marges.&lt;/li&gt;
+&lt;li&gt;amsmath, amssymb, amsfonts : pour les maths.&lt;/li&gt;
+&lt;li&gt;subfigure : pour faire des sous-figures (a), (b)... et en faire une référence. Surtout ne pas mettre les lettres en dur dans la figure. Sacrilège !&lt;/li&gt;
+&lt;li&gt;includeonly : pour ne compiler qu&#39;un morceau du document (et donc de gagner du temps).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;commandes-personnalis&amp;eacute;es&quot;&gt; Commandes personnalisées&lt;/h2&gt;
+&lt;p&gt;Dans un long document, il y a forcément des choses redondantes. Un de mes exemples concerne les références vers des figures, j&#39;utilise&lt;/p&gt;
+&lt;pre class=&quot;sourceCode latex&quot;&gt;&lt;code class=&quot;sourceCode latex&quot;&gt;\newcommand{\fig}[1]{(\textsc{Fig.}~\ref{#1})}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;dans le cas où je ne prends pas cleveref. Ou encore pour le latin :&lt;/p&gt;
+&lt;pre class=&quot;sourceCode latex&quot;&gt;&lt;code class=&quot;sourceCode latex&quot;&gt;\newcommand{\ie}{\textit{i.e.}~}&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;int&amp;eacute;gration-continue&quot;&gt;Intégration continue&lt;/h2&gt;
+&lt;p&gt;Latex est un langage complexe, faire une erreur de syntaxe est facile. C&#39;est un inconvénient de ce langage et le compilateur n&#39;est pas toujours précis/explicite dans ses messages. Détecter une erreur tôt, c&#39;est se donner la chance de pouvoir la retrouver rapidement. &lt;a href=&quot;http://blog.sciunto.org//./posts/test-continu-de-la-compilation-d-un-document--tex-avec-python/&quot;&gt;Voir cet article&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;aide&quot;&gt;Aide&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://tex.stackexchange.com/&quot;&gt;Stack Exchange&lt;/a&gt; : vous vous posez une question, la réponse est là.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.atramenta.net/books/latex-sciences-humaines/79&quot;&gt;LaTeX appliqué aux sciences humaines&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.grappa.univ-lille3.fr/FAQ-LaTeX/&quot;&gt;FAQ Latex&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;a class=&quot;FlattrButton&quot; href=&quot;http://blog.sciunto.org/&quot; rev=&quot;flattr;button:compact;&quot;&gt;&lt;/a&gt;
+
+	</content>
+
+
+	<link rel="comments" href="/posts/rediger_en_latex_xelatex_luatex/#comments" type="text/html" />
+
+
+	<link rel="comments" href="/posts/rediger_en_latex_xelatex_luatex/comments.atom" type="application/atom+xml" />
+
+</entry>
+<entry>
+	<title>Remplacement d&#x27;un disque dur sur un serveur</title>
+
+	<id>http://blog.sciunto.org//posts/remplacement_dique_dur/</id>
+
+	<link href="http://blog.sciunto.org//posts/remplacement_dique_dur/"/>
+
+
+
+
+
+
+	<category term="adminsys" />
+
+	<category term="planet-april" />
+
+	<category term="planet-autohebergement" />
+
+	<category term="planet-libre" />
+
+
+	<updated>2013-10-03T22:00:00Z</updated>
+	<published>2013-10-03T22:00:00Z</published>
+
+	<content type="html" xml:lang="en">
+	&lt;p&gt;J&#39;ai remplacé hier le disque dur qui était présent sur mon serveur auto-hébergé. C&#39;était un disque Hitatchi de 1To qui, dès sa mise en place, avait la facheuse tendence à &amp;quot;gratter&amp;quot;. Il y a plusieurs mois, j&#39;ai dû faire face à une alerte de SMART indiquant des secteurs défectueux et munin avait tendance à râler aussi. En effet, j&#39;avais des secteurs défectueux et j&#39;ai suivis cette &lt;a href=&quot;http://smartmontools.sourceforge.net/badblockhowto.html&quot;&gt;procédure&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Puisque je voulais être tranquille et que j&#39;avais une confiance moyenne dans ce disque, j&#39;ai décidé d&#39;investir dans un western digital red de 1To. Puisqu&#39;il n&#39;y avait aucune raison de réinstaller le ssytème, j&#39;ao copier l&#39;ancien disque sur le nouveau, tous les deux connectés en sata.&lt;/p&gt;
+&lt;p&gt;J&#39;ai commencé par prendre une vieille machine sur laquelle debian était installé avec apache pour y déplacer mes pages publiques, afin d&#39;éviter une coupure (je ne savais pas combien de temps la tout allait me prendre). Ensuite, j&#39;ai lancé une sauvegarde manuelle du serveur, identique aux sauvegardes habituelles, mais juste plus fraîche et ceci tout en surveillant mes logs. Je vérifie une fois par mois (et les alertes que je pourrais avoir par monitoring) mais avant une opération critique, je vérifie toujours deux fois. ;)&lt;/p&gt;
+&lt;p&gt;Extinction du serveur et mise en place du western digital.&lt;/p&gt;
+&lt;p&gt;Pour l&#39;environnement de travail, j&#39;ai utilisé une clé usb bootable avec une iso systemrescuecd. D&#39;autres isos, comme celle d&#39;arch auraient fait aussi l&#39;affaire, ce sont des outils standards.&lt;/p&gt;
+&lt;p&gt;Coté logiciel, j&#39;ai préféré utiliser ddrescue à dd, car il vérifie ce qui se passe et permet éventuellement de récupérer ce qui peut l&#39;être. Cette commande m&#39;a suffit :&lt;/p&gt;
+&lt;pre class=&quot;sourceCode bash&quot;&gt;&lt;code class=&quot;sourceCode bash&quot;&gt;ddrescue -B -v -n /dev/sdb /dev/sda copie.log&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;La procédure m&#39;a pris 3h, aucune erreur. A la fin, je n&#39;ai eu plus qu&#39;à enlever le vieux disque et refermer la tour.&lt;/p&gt;
+&lt;a class=&quot;FlattrButton&quot; href=&quot;http://blog.sciunto.org/&quot; rev=&quot;flattr;button:compact;&quot;&gt;&lt;/a&gt;
+
+	</content>
+
+
+	<link rel="comments" href="/posts/remplacement_dique_dur/#comments" type="text/html" />
+
+
+	<link rel="comments" href="/posts/remplacement_dique_dur/comments.atom" type="application/atom+xml" />
+
+</entry>
+
+</feed>

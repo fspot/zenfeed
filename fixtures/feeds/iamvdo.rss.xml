@@ -1,0 +1,1165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">
+
+  <channel>
+    <title>Vincent De Oliveira - CSS &#38; UI</title>
+    <link>http://iamvdo.me/</link>
+    <lastBuildDate>Tue, 04 Mar 2014 14:52:22 +0100</lastBuildDate>
+    <atom:link href="http://iamvdo.me/rss" rel="self" type="application/rss+xml" />
+
+      
+        <item>
+      <title>N'oubliez pas la propri&#233;t&#233; CSS quotes</title>  
+      <link>http://iamvdo.me/blog/n-oubliez-pas-la-propriete-css-quotes</link>
+      <guid>http://iamvdo.me/blog/n-oubliez-pas-la-propriete-css-quotes</guid>
+      <pubDate>Mon, 03 Mar 2014 17:00:00 +0100</pubDate>
+        
+                  <description><![CDATA[<p>En CSS, la propriété <code>quotes</code> permet de définir le rendu pour les guillemets. Pour cela, une ou plusieurs paires de guillemets doivent être précisées, comme ceci:</p>
+
+<pre><code>blockquote {
+    /* une paire de guillemets */
+    quotes: "«" "»";
+}
+</code></pre>
+
+<p>Ici, les guillemets typographiques français sont définis pour les éléments <code>&lt;blockquote&gt;</code>. Ils pourraient l'être de manière plus globale, sur <code>&lt;body&gt;</code> ou sur <code>&lt;article&gt;</code> par exemple.</p>
+
+<p>Ensuite, il est possible d'utiliser ces guillemets grâce à la propriété <code>content</code> et aux mots-clés <code>open-quote</code> et <code>close-quote</code>, comme ceci:</p>
+
+<pre><code>blockquote::before {
+    content: open-quote;
+}
+blockquote::after {
+    content: close-quote;
+}
+</code></pre>
+
+<p>Pour respecter les règles typographiques françaises, il serait préférable d'ajouter <a href="http://fr.wikipedia.org/wiki/Espace_fine_insécable">une espace fine insécable</a> après le guillemet ouvrant et une avant le guillemet fermant, ce qui nous donnerait:</p>
+
+<pre><code>blockquote {
+    /* une paire de guillemets */
+    quotes: "«\00A0" "\00A0»";
+}
+</code></pre>
+
+<p>Et voilà le résultat d'une citation:</p>
+
+<blockquote>
+  <p>Une belle citation utilisant <code>quotes</code> et <code>content: open-quote</code>. Le support est plus que bon et inclus depuis IE8.</p>
+</blockquote>
+
+<p><strong>Edit:</strong> Le <a href="http://tinytypo.tetue.net/">micro-framework typographique TinyTypo</a> de <a href="http://twitter.com/tetue">@tetue</a> utilise ce principe pour afficher les guillemets en fonction de la langue de la page. Je vous laisse <a href="https://github.com/tetue/tinytypo/blob/master/css/typo.css#L384">découvrir le code</a>. Merci à <a href="http://twitter.com/7studio">@7studio</a> pour le rappel. </p>
+
+<p>D'autres exemples d'utilisation en commentaires!</p>
+]]></description>      
+            
+    </item>
+        <item>
+      <title>Ce que vous avez toujours voulu savoir sur CSS</title>  
+      <link>http://iamvdo.me/blog/ce-que-vous-avez-toujours-voulu-savoir-sur-css</link>
+      <guid>http://iamvdo.me/blog/ce-que-vous-avez-toujours-voulu-savoir-sur-css</guid>
+      <pubDate>Thu, 13 Feb 2014 09:05:00 +0100</pubDate>
+        
+                  <description><![CDATA[<p>Aujourd’hui, c’est un fait: tout le monde connaît et utilise CSS. Et c’est tant mieux! Cependant, bien que le langage en lui-même soit plutôt simple, certains aspects peuvent sembler encore obscurs.</p>
+
+<p>Cet article fait suite à une présentation que j'ai donnée <a href="http://slides.iamvdo.me/kiwiparty13">lors de la Kiwi Party 2013</a>, puis <a href="http://slides.iamvdo.me/techdays14">lors des MSTechDays 2014</a>.</p>
+
+<h2>CSS, c’est simple</h2>
+
+<p>«Le langage CSS, c’est très simple». On a tous entendu ça un jour. Et c’est vrai qu’écrire <code>color: red</code> pour changer la couleur d’un élément, c’est très facile. Mais dès lors que l’on rentre dans les profondeurs du langage, les choses se compliquent. Ce serait mentir de dire que personne n’est un jour passé par là:</p>
+
+<pre><code>.element {
+    padding: 15px;
+    width: 98.32%; /* pas compris, mais ça déborde à 98.33% */
+    position: relative; /* faut pas enlever */
+    overflow: hidden; /* ça non plus, tout foire sinon */
+    z-index: 9875687; /* p***, ça veut pas passer au-dessus! */
+}
+</code></pre>
+
+<p>Ne vous cachez pas, je vous vois… On s'est tous déjà dit: <code>&lt;td&gt;CSS Sucks&lt;/td&gt;</code>! C’est parti pour un retour sur certaines notions importantes de CSS.</p>
+
+<h2>La cascade CSS</h2>
+
+<p>Le C de CSS signifie Cascading (cascade en français), ça tout le monde le sait. Mais c’est quoi au fait la cascade? <strong>C’est tout simplement le fait que les feuilles de styles proviennent de plusieurs origines</strong>, à savoir:</p>
+
+<ul>
+<li>les feuilles <strong>Author</strong>: les devs web</li>
+<li>les feuilles <strong>User</strong>: les utilisateurs</li>
+<li>les feuilles <strong>UA</strong>: les styles navigateurs (modifiés éventuellement par les réglages des utilisateurs)</li>
+</ul>
+
+<p>La cascade CSS applique alors un poids à chaque déclaration en suivant cet ordre:</p>
+
+<ul>
+<li>récupération de toutes les déclarations CSS pour le média cible</li>
+<li>tri des déclarations suivant cet ordre
+
+<ol>
+<li>UA</li>
+<li>User</li>
+<li>Author</li>
+<li>Author <code>!important</code></li>
+<li>User <code>!important</code></li>
+</ol></li>
+<li>tri par spécificité des sélecteurs CSS (voir plus bas)</li>
+<li>enfin, tri par position dans le CSS</li>
+</ul>
+
+<p>On remarque que les styles utilisateurs <code>!important</code> surclassent toujours les styles écrits par le développeur web, même les styles <code>!important</code>. C’est toujours bon de l’avoir en tête, notamment lorsque l’on parle de pixel perfect.</p>
+
+<p>Pour en savoir plus, je vous conseille <a href="http://www.kloh.ch/le-pouvoir-des-feuilles-de-style-utilisateur-143">un article intéressant sur la création de feuilles de styles Utilisateurs (Author)</a></p>
+
+<h2>Spécificité des sélecteurs</h2>
+
+<p>C’est la troisième étape lors du classement des déclarations CSS. C’est surement la plus importante, car elle peut être délicate à gérer.
+<strong>La spécificité des sélecteurs est la concaténation de 3 nombres</strong> (A, B, C) et se calcule de cette manière (en CSS3):</p>
+
+<ul>
+<li>A: Nombre d’<code>id</code> dans le sélecteur</li>
+<li>B: Nombre de classes, de pseudo-classes et d’attributs dans le sélecteur</li>
+<li>C: Nombre d’éléments dans le sélecteur</li>
+</ul>
+
+<p>Par exemple, prenons cette hiérarchie <code>.inner &gt; ul &gt; li &gt; a#toto</code> et ciblons le lien:</p>
+
+<ul>
+<li><code>#toto</code> a une spécificité de <code>1,0,0</code></li>
+<li><code>.inner ul li a</code> a une spécificité de <code>0,1,3</code></li>
+<li><code>a:hover</code> a une spécificité de <code>0,1,1</code></li>
+</ul>
+
+<p>On remarque donc que <code>#toto</code> prend le dessus sur les autres sélecteurs et que <code>a:hover</code> ne surclasse pas <code>.inner ul li a</code>, le lien ne sera donc jamais ciblé lors du survol.</p>
+
+<blockquote>
+  <p><strong>Astuce:</strong> pour cibler un identifiant sans donner plus de spécificité, le sélecteur d'attribut peut être utilisé. Ainsi, <code>[id=toto]</code> est identique à <code>#toto</code>, mais a la même spécificité qu'une <code>class</code>.</p>
+</blockquote>
+
+<p>En matière de spécificité, il existe également les styles <em>inline</em> (dans la balise HTML via l’attribut <code>style</code>) qui surclassent tous les autres sélecteurs, et la directive <code>!important</code> qui surclasse les styles <em>inline</em>.</p>
+
+<p>Il existe 2 cas particuliers:</p>
+
+<ul>
+<li>La pseudo-classe <code>:not()</code> n’entre pas dans le calcul de spécificité, mais son contenu oui. Ex: <code>ul li:not(.class)</code> a une spécificité de <code>0,1,2</code> et non pas <code>0,2,2</code></li>
+<li>Les styles appliqués aux pseudo-éléments ne peuvent pas êtres surclassés en modifiant les styles de l’élément lui-même. Les styles d'un pseudo-élément ont donc la priorité absolue.</li>
+</ul>
+
+<blockquote>
+  <p><strong>Note:</strong> Attention, la concaténation des 3 nombres ne se fait pas en base 10. Ainsi, 10 classes n’ont pas une spécificité égale à un <code>id</code>. Pour l’anecdote, encore récemment certains navigateurs utilisaient une base 256 pour le calcul de la spécificité. Cela permettait donc de surclasser un <code>id</code> avec 256 classes! La spécification CSS n’est pas précise là dessus, elle dit uniquement d’utiliser «une large base».</p>
+</blockquote>
+
+<p>Pour plus de détails, je vous recommande <a href="http://marcarea.com/tuto/css-comprendre-la-cascade/">cette adaptation française parlant de la cascade CSS et de la spécificité des sélecteurs</a> ou <a href="http://specificity.keegan.st/">cet outil de calcul de spécificité</a>.</p>
+
+<h2>Les valeurs CSS</h2>
+
+<p>Parlons un peu des valeurs CSS, car <strong>oui, il peut y avoir des différences entre la valeur spécifiée dans le fichier CSS et celle qui sera réellement utilisée par le navigateur</strong>. Une valeur CSS passe en réalité par 4 étapes:</p>
+
+<h3>Specified value</h3>
+
+<p>C’est la valeur spécifiée en CSS, ou c’est la valeur héritée de son parent, ou tout simplement la valeur initiale de la propriété.</p>
+
+<h3>Computed value</h3>
+
+<p>C’est la valeur calculée de la propriété, au maximum avant le rendu de la page. Par exemple, les URLs relatives sont calculées absolues, les couleurs nommées sont converties (<code>red</code> devient <code>rgb(255,0,0)</code>), etc. Certains navigateurs réalisent quelques approximations dès ce stade. <strong>Il est également possible que certaines valeurs soient calculées en fonction d’autres propriétés</strong> (voir interaction entre <code>float</code>, <code>display</code> et <code>position</code> plus bas).</p>
+
+<blockquote>
+  <p><strong>Astuce:</strong> la valeur calculée du mot-clé <code>transparent</code> est <code>rgba(0,0,0,0)</code>, soit du noir transparent. Attention par exemple lors de la création d’un dégradé CSS de blanc vers transparent, car du gris peut apparaître.</p>
+</blockquote>
+
+<h3>Used value</h3>
+
+<p>C’est la valeur calculée «réelle». Tout ce qui doit être calculé pendant le rendu de la page est fait à ce moment. Par exemple, une taille en pourcentage dépend de son conteneur (<code>width: 50%</code> est convertie en <code>px</code>), les polices relatives également, etc. C’est cette valeur qui est récupérée en JS avec <code>window.getComputedStyle(element)</code>.</p>
+
+<h3>Actual value</h3>
+
+<p>C’est la valeur réellement utilisée pour le rendu, avec les différentes approximations ou en fonction du support. Par exemple, une valeur calculée de 1.4px pour une bordure sera affichée à 1px, une couleur calculée à <code>rgb(255,0,0)</code> sera affichée en niveau de gris sur un écran monochrome, etc.</p>
+
+<blockquote>
+  <p><strong>Astuce:</strong> vous retrouvez les valeurs CSS calculées grâce aux outils de développements des différents navigateurs. Un onglet avec ces valeurs est généralement présent.</p>
+</blockquote>
+
+<p>Pour aller plus loin dans la gestion de la cascade CSS (et donc dans la gestion des valeurs calculées), je vous recommande ces 2 articles que j'ai écrit sur <a href="la-cascade-css-inherit-et-initial">inherit</a>, <a href="la-cascade-css-avancee-all-initial-et-unset">initial et unset</a>.</p>
+
+<h2>Le box model CSS</h2>
+
+<p>De prime abord, la gestion du modèle de boite est assez délicate car la première erreur très fréquente en CSS, c’est de penser que les propriétés <code>width</code> et <code>height</code> définissent la taille totale d’un élément. C’est normal de penser cela, mais en fait, elles définissent la taille du contenu de l’élément. <strong>La taille totale est alors égale à la taille du contenu (<code>width</code>, <code>height</code>) + les marges internes (<code>padding</code>) + les bordures (<code>border</code>)</strong>, comme le montre ce schéma:</p>
+
+<figure><img src="/content/01-blog/21-ce-que-vous-avez-toujours-voulu-savoir-sur-css/modeleBoite.jpg" title="modeleBoite" alt="Mod&egrave;le de boite block en CSS2.1" /><figcaption class="caption">Modèle de boite block en CSS2.1</figcaption></figure>
+
+<p>Pour obtenir un calcul différent du modèle de boite (et ainsi <code>width</code> et <code>height</code> deviennent la taille totale), il est possible d’utiliser la déclaration <code>box-sizing: border-box</code>. Les marges internes et les bordures seront donc <a href="https://developer.mozilla.org/fr/docs/Web/CSS/box-sizing">inclues dans le calcul de la taille de la boite</a>. Cette propriété permet tellement de se simplifier la vie qu'<a href="http://www.paulirish.com/2012/box-sizing-border-box-ftw/">une bonne pratique est née</a>, celle d'appliquer ce mode à tous les éléments d'une page:</p>
+
+<pre><code>*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+</code></pre>
+
+<h3>Calcul de la largeur d’un élément</h3>
+
+<p>Une autre confusion est de penser que la largeur par défaut d’un élément block est égale à 100% de celle de son conteneur. <strong>La spécification définit que la largeur par défaut est <code>auto</code>, pas <code>100%</code></strong>. Cette légère nuance prend tout son sens en fonction du mode de positionnement utilisé:</p>
+
+<ul>
+<li>si un élément est flottant ou en <code>display: inline-block</code>: sa largeur calculée est alors <em>shrink-to-fit</em> (au mieux par rapport au contenu)</li>
+<li>si un élément est en <code>position: absolute</code> ou <code>fixed</code>: sa largeur calculée dépend alors de ses propriétés <code>left</code> et <code>right</code>
+
+<ul>
+<li>si <code>left</code> et <code>right</code> sont <code>auto</code> (valeur par défaut), la largeur calculée est <em>shrink-to-fit</em></li>
+<li>sinon, la largeur est calculée entre <code>left</code> et <code>right</code></li>
+</ul></li>
+</ul>
+
+<blockquote>
+  <p><strong>Astuce:</strong> un élément en <code>position: absolute</code>, avec <code>left: 0</code> et <code>right: 0</code> mesure donc 100% de la taille de son conteneur, et ce, sans préciser <code>width: 100%</code>. De plus, les marges internes et les bordures seront rendues à l’intérieur de l’élément.</p>
+</blockquote>
+
+<p>Il existe d’ailleurs <a href="http://blog.goetter.fr/post/13556565063/width-100-tu-es-le-mal">d’autres raisons pour ne pas utiliser width: 100%</a> sur un élement.</p>
+
+<h3>Le <em>containing block</em></h3>
+
+<p>C’est l’une des notions les moins connues de CSS. En effet, le <em>containing block</em>, que l’on peut traduire par le «conteneur», est l’élément de référence qui définit la position et la taille de ses descendants. Mais attention, <strong>le <em>containing block</em> n’est pas toujours le parent d’un élément</strong>. Mais alors, c’est quoi?</p>
+
+<ul>
+<li>si un élément est en <code>position: static</code> (par défaut) ou <code>position: relative</code>: son <em>containing block</em> est son parent.</li>
+<li>si un élément est en <code>position: fixed</code>: son <em>containing block</em> est le <em>viewport</em> (la zone visible de l’écran) ou la page (media <code>print</code> par exemple)</li>
+<li>si un élément est en <code>position: absolute</code>: son <em>containing block</em> est son premier ancêtre en <code>absolute</code>, <code>relative</code> ou <code>fixed</code> (par contre si aucun de ces ancêtres n’est positionné, c’est le <em>viewport</em>)</li>
+</ul>
+
+<p>En CSS3, un <em>containing block</em> est également créé dans ces cas là:</p>
+
+<ul>
+<li>l’élément qui a une valeur de <code>transform</code> différente de <code>none</code></li>
+<li>l’élément qui défini la perspective d’une vue 3D (ex: <code>perspective: 500px</code>)</li>
+<li>chaque colonne au sein du modèle Multicolumn Layout est un <em>containing block</em>, mais seulement pour ses enfants non positionnés.</li>
+</ul>
+
+<p>Un élément avec <code>width: 50%</code> ne mesure donc pas toujours 50% de la taille de son parent. Par contre, il mesurera toujours 50% de la taille de son <em>containing block</em>. De la même façon, un élément flottant au sein du modèle Multicolumn Layout sera positionné par rapport à la colonne dans laquelle il se trouve (son <em>containing block</em>).</p>
+
+<p>Lire <a href="http://www.w3.org/TR/CSS2/visudet.html#containing-block-details">la spécificiation CSS officielle</a> pour en savoir plus.</p>
+
+<h2>Positionnement</h2>
+
+<p>La gestion du positionnement est l’une des choses les moins évidentes en CSS, et c’est généralement là que la majorité des problèmes se posent. Je ne vais pas faire un cours sur le positionnement CSS ici, mais je vais revenir sur certaines croyances du langage, dont la première est que <code>vertical-align: middle</code> ne permet pas de centrer verticalement du contenu.</p>
+
+<h3>Les valeurs de display</h3>
+
+<p>La propriété <code>display</code> modifie la façon dont les éléments sont générés dans la page. Il existe les valeurs «simples» comme <code>block</code>, <code>inline</code>, <code>inline-block</code> ou <code>list-item</code>, mais <strong>cette propriété permet également de simuler une structure en tableau</strong>, à l’aide des valeurs <code>table</code> (le tableau), <code>table-row</code> (une ligne de tableau) ou <code>table-cell</code> (une cellule de tableau). Elle peut s’avérer très pratique, notamment car:</p>
+
+<ul>
+<li>les cellules d'une même ligne sont affichées côte à côte, et sont de mêmes hauteurs</li>
+<li>elles s’adaptent en largeur également (si <code>table-layout: fixed</code> est utilisé)</li>
+<li>il n’y a pas de sortie du flux (comme c’est le cas avec <code>float</code>)</li>
+<li>les marges internes et les bordures sont inclues dans la taille des cellules (comme le fait <code>box-sizing</code>)</li>
+<li>il est possible d’aligner verticalement le contenu d’une cellule avec <code>vertical-align: top</code>, <code>middle</code> ou <code>bottom</code></li>
+</ul>
+
+<p>Un autre avantage de cette structure, c’est la possibilité de réordonner les éléments de manière différente du code source (bien qu’il doit être utilisé avec précaution, notamment pour des problèmes d’accessibilité que cela peut poser). Cela se fait avec les valeurs avancées de <code>display</code>:</p>
+
+<ul>
+<li><code>table-row-group</code> définit un groupe de lignes de tableau</li>
+<li><code>table-header-group</code> définit un groupe de lignes d’entête</li>
+<li><code>table-footer-group</code> définit un groupe de lignes de pied de page</li>
+</ul>
+
+<figure><img src="/content/01-blog/21-ce-que-vous-avez-toujours-voulu-savoir-sur-css/tableFooterGroup.jpg" title="tableFooterGroup" alt="Rendu visuel de l&rsquo;utilisation de display: table-footer-group" /><figcaption class="caption">Rendu visuel de l’utilisation de display: table-footer-group</figcaption></figure>
+
+<p>Un élément affiché comme un «groupe de lignes de pied de page» sera donc toujours affiché en bas de toutes les autres lignes du tableau. Seule limitation, un seul élément peut être affiché de cette manière. Il convient donc de «ruser» en ajoutant des éléments dans le DOM dans certains cas.</p>
+
+<p>Malheureusement, le principal inconvénient de ce modèle tabulaire est l’impossibilité d’utiliser les marges internes sur les lignes du tableau, ni les marges externes sur les lignes et les cellules. De plus, un bug sous Firefox empêche le positionnement d’élément absolu au sein d’une cellule de tableau en relatif. Je vous invite à lire <a href="http://www.alsacreations.com/tuto/lire/1522-le-modele-tabulaire-en-css.html">cet article complet traitant le modèle tabulaire</a> sur Alsacréations.</p>
+
+<p>Enfin, <a href="imbrication-de-boites-avec-display-table">l'imbrication d'élément utilisant ce mode devient plus complexe</a>.</p>
+
+<h3>Interactions entre <code>display</code>, <code>float</code>, <code>position</code></h3>
+
+<p>Nous venons de voir différentes valeurs de <code>display</code>, mais qu’en est-il de l’interaction avec les autres modèles de positionnement. Par exemple, un élément flottant peut-il devenir une cellule de tableau? Et bien non. Tout simplement parce que ces règles CSS s’appliquent dans cet ordre:</p>
+
+<ol>
+<li>si un élément est en <code>display: none</code>, alors les propriétés <code>position</code> et <code>float</code> sont sans effets.</li>
+<li>si un élément est en <code>position: absolute</code> ou <code>fixed</code>, alors <code>float</code> est automatiquement calculé à <code>none</code> et la valeur calculée de <code>display</code> suit le tableau suivant.</li>
+<li>si un élément est en <code>float: left</code> ou <code>right</code>, alors la valeur calculée de <code>display</code> suit le tableau</li>
+<li>si l’élément est <code>&lt;html&gt;</code>, alors la valeur calculée de <code>display</code> suit le tableau</li>
+<li>sinon, la valeur de <code>display</code> est appliquée</li>
+</ol>
+
+<table class="table--2-1">
+    <tr>
+        <th>Valeur spécifiée</th>
+        <th>Valeur calculée</th>
+    </tr>
+    <tr>
+        <td><code>inline-table</code></td>
+        <td><code>table</code></td>
+    </tr>
+    <tr>
+        <td><code>inline</code>, <code>inline-block</code>, <code>table-row-group</code>, <code>table-column</code>, <code>table-column-group</code>, <code>table-header-group</code>, <code>table-footer-group</code>, <code>table-row</code>, <code>table-cell</code>, <code>table-caption</code></td>
+        <td><code>block</code></td>
+    </tr>
+    <tr>
+        <td><code>block</code>, <code>list-item</code>, <code>table</code></td>
+        <td>valeur spécifiée</td>
+    </tr>
+    <caption class="caption">Valeurs de display quand float et position sont utilisés conjointement</caption>
+</table>
+
+<p>On remarque donc qu’un élément en <code>position: absolute</code>, <code>fixed</code>, ou flottant (à gauche ou à droite) aura la valeur de <code>display</code> automatiquement calculée à <code>block</code> ou <code>table</code>. Il est donc impossible de forcer l’affichage d’un élément utilisant ces modes de positionnement, et même il est totalement inutile de le préciser en CSS (puisque la valeur initiale de <code>display</code> est <code>inline</code>, elle sera calculée à <code>block</code>). Cet exemple vous montre ce cas:</p>
+
+<pre><code>.element {
+    position: absolute;
+    display: block; /* inutile */
+    display: table-cell; /* sans effet */
+}
+</code></pre>
+
+<h2>Block Formatting Context</h2>
+
+<p>Un <em>block formatting context</em> est un contexte de formatage block, c’est à dire un élément où les enfants sont affichés les uns en dessous des autres et où chaque enfant est visuellement séparé des autres par ses marges externes. C’est ce qui se passe par défaut dans une page web, car l’élément racine <code>&lt;html&gt;</code> crée tout simplement un contexte de formatage block. Mais d’autres règles créent implicitement des <em>block formatting context</em> ou BFC:</p>
+
+<ul>
+<li>un élément flottant (à gauche ou à droite)</li>
+<li>un élément en <code>position: absolute</code> ou <code>fixed</code></li>
+<li>un élément en <code>display: inline-block</code> ou <code>table-cell</code> ou <code>table-caption</code></li>
+<li>un élément avec une valeur pour <code>overflow</code> différente de <code>visible</code></li>
+</ul>
+
+<p>Parmi les caractéristiques d’un BFC, on note:</p>
+
+<ul>
+<li>ses enfants s’affichent les uns en dessous des autres</li>
+<li>l’élément ne s’écoule pas autour des flottants externes</li>
+<li>l’élément contient ses enfants flottants (la hauteur est calculée pour englober la marge basse des flottants)</li>
+<li>la fusion des marges avec ses enfants n’a plus lieu</li>
+</ul>
+
+<p>Prenons donc cette hiérarchie HTML <code>.parent &gt; p img</code> et ce CSS associé <code>img { float: left }</code>. L'image étant flottante, la hauteur de <code>.parent</code> s'adapte pour ne contenir que l'élément <code>&lt;p&gt;</code>, et donc l'image déborde.</p>
+
+<figure><img src="/content/01-blog/21-ce-que-vous-avez-toujours-voulu-savoir-sur-css/bfc-et-float1.jpg" title="bfc-et-float1" alt="Un &eacute;l&eacute;ment flottant d&eacute;borde de son parent" /><figcaption class="caption">Un élément flottant déborde de son parent</figcaption></figure>
+
+<p>En suivant ce même principe, un parent qui ne contient que des éléments flottants à d'ailleurs une hauteur calculée à 0px!</p>
+
+<p>Pour contourner ce problème, il suffit de convertir le <code>.parent</code> en <em>block formatting context</em>. Pour cela, modifions le CSS comme ceci <code>.parent { overflow: hidden }</code></p>
+
+<figure><img src="/content/01-blog/21-ce-que-vous-avez-toujours-voulu-savoir-sur-css/bfc-et-float2.jpg" title="bfc-et-float2" alt="L&rsquo;&eacute;l&eacute;ment flottant ne d&eacute;borde plus de son parent, qui est un BFC" /><figcaption class="caption">L’élément flottant ne déborde plus de son parent, qui est un BFC</figcaption></figure>
+
+<p>Je vous renvoi encore une fois vers <a href="http://www.alsacreations.com/astuce/lire/1543-le-contexte-de-formatage-block-en-css.html">un article d’Alsacréations agrémenté d’images qui explique le principe d’un BFC</a>.</p>
+
+<h3>La propriété clear</h3>
+
+<p>Cette propriété CSS s’utilise conjointement à <code>float</code>. En effet, son rôle est d’empêcher que les bords d’un élément soit adjacents à un élément flottant, soit à gauche, soit à droite, soit les deux. Par contre, cela ne fonctionne uniquement si les éléments (flottants et <code>clear</code>) se trouvent dans le même <em>block formatting context</em>. Prenons un exemple qui sera plus parlant, une «architecture» classique (du siècle dernier) avec un menu flottant à gauche et le contenu à droite:</p>
+
+<pre class="language-markup"><code>&lt;div class="menu">MENU&lt;/div>
+&lt;div class="contenu">
+    &lt;img src="" alt="">
+    &lt;p>...&lt;/p>
+    &lt;h2>Les Kiwis? Partis!&lt;/h2>
+    &lt;p>...&lt;/p>
+&lt;/div></code></pre>
+
+<p>Et le CSS:</p>
+
+<pre><code>.menu {
+    float: left;
+    width: 150px;
+}
+.contenu {
+    margin-left: 150px;
+}
+.contenu img {
+    float: left;
+}
+</code></pre>
+
+<figure><img src="/content/01-blog/21-ce-que-vous-avez-toujours-voulu-savoir-sur-css/bfc1.jpg" title="bfc1" alt="Rendu du HTML et du CSS" /><figcaption class="caption">Rendu du HTML et du CSS</figcaption></figure>
+
+<p>L’image au sein du contenu est également flottante et l’on remarque que le titre <code>&lt;h2&gt;</code> «subit» l’effet du <code>float</code>: il se trouve donc à coté. Pour contrer cela, utilisons la propriété <code>clear</code> pour empêcher que le bord gauche du titre ne soit adjacent au <code>float</code>:</p>
+
+<pre><code>.contenu h2 {
+    clear: left;
+}
+</code></pre>
+
+<figure><img src="/content/01-blog/21-ce-que-vous-avez-toujours-voulu-savoir-sur-css/bfc2.jpg" title="bfc2" alt="Ajout de la propri&eacute;t&eacute; clear sur le titre" /><figcaption class="caption">Ajout de la propriété clear sur le titre</figcaption></figure>
+
+<p>Le titre est bien déplacé vers le bas, mais très bas. Et oui, le menu étant également flottant, le <code>clear</code> empêche au titre d’être à coté du menu. Pour contourner ce problème, il nous faut alors créer un <em>block formatting context</em> sur le contenu, afin que la propriété <code>clear</code> n’agisse qu’au sein de ce BFC, comme ceci:</p>
+
+<pre><code>.contenu {
+    /* Création d’un BFC */
+    overflow: hidden;
+}
+</code></pre>
+
+<figure><img src="/content/01-blog/21-ce-que-vous-avez-toujours-voulu-savoir-sur-css/bfc3.jpg" title="bfc3" alt="Rendu final apr&egrave;s cr&eacute;ation d'un block formatting context" /><figcaption class="caption">Rendu final après création d'un block formatting context</figcaption></figure>
+
+<p>Jouez avec <a href="http://codepen.io/iamvdo/pen/vzpoa">cette démo sur CodePen</a></p>
+
+<h3>Effets collatéraux</h3>
+
+<p>Nous venons de voir que plusieurs modes de positionnement créent implicitement des BFC. Dans certains cas (comme pour éviter le dépassement des flottants ou la gestion de la propriété <code>clear</code>), nous devons forcer la création d’un contexte de formatage block. Mais <strong>certaines des «méthodes» ont d’autres effets que celui souhaité:</strong></p>
+
+<ul>
+<li>méthode <code>float</code> ou <code>position: absolute</code>, <code>fixed</code> : ces deux propriétés modifient également le flux de la page ainsi que la méthode de calcul de la largeur de l’élément.</li>
+<li>méthode <code>display: inline-block</code> : ne crée pas de boite de niveau block. La méthode de calcul de la largeur de l’élément est donc différente.</li>
+<li>méthode <code>display: table-cell</code> : ne crée pas non plus de boite de niveau block. De plus, la boite participe à un contexte de parent anonyme (<code>table-row</code>, puis <code>table</code>) sans pour autant y avoir accès. La méthode de calcul de la largeur de l’élément est donc différente et les marges externes n’existent pas.</li>
+<li>méthode <code>overflow: hidden</code> : c’est la méthode la plus utilisée car elle ne modifie pas le mode de positionnement de l’élément. Par contre, elle empêche le débordement du contenu de l’élément (ce qui est d’ailleurs son premier rôle)</li>
+</ul>
+
+<h3>BFC: two more things</h3>
+
+<p>Il existe deux autres façons de créer un contexte de formatage block.</p>
+
+<p>La première, c’est d’utiliser <code>display: table</code>. En effet, en suivant le principe des parents anonymes pour un élément <code>table-cell</code>, un élément <code>table</code> crée des enfants anonymes: d’abord un <code>table-row</code>, puis un <code>table-cell</code>, et donc un contexte de formatage block. L’intérêt ici, c’est que l’élément reste une boite de niveau block (en <code>display: table</code>), avec notamment la possibilité de gérer ses marges externes. Attention toutefois au calcul de la largeur de l’élément. C’est à vous de choisir la façon dont la taille du tableau est calculée:</p>
+
+<ul>
+<li><code>table-layout: auto</code> (par défaut) : la taille du tableau s’adapte aux cellules (contenu)</li>
+<li><code>table-layout: fixed</code> : la taille des cellules s’adaptent à la taille du tableau (une largeur doit être définie)</li>
+</ul>
+
+<p>La seconde méthode, c’est de recourir au mode de positionnement MultiColumn Layout. Il suffit pour cela de définir la propriété <code>column-count</code> (même à 1) ou <code>column-width</code>. Attention toutefois, mes tests de création de BFC avec cette méthode ne se sont pas tous avérés concluants. Il est certainement bon d’attendre que des modes de positionnement comme Flexbox se démocratise (et c’est pour dans très peu de temps) plutôt que d’utiliser cette méthode.</p>
+
+<blockquote>
+  <p><strong>Note:</strong> Aussi étrange que cela puisse paraître, <a href="http://dev.w3.org/html5/spec-LC/rendering.html#the-fieldset-element-0">l’élément HTML <code>&lt;fieldset&gt;</code> crée un contexte de formatage block</a>. Cela explique certains bugs particuliers liés à cette balise.</p>
+</blockquote>
+
+<h2>La fusion des marges</h2>
+
+<p>La fusion des marges, comme son nom l’indique, est <strong>un mécanisme qui fusionne automatiquement certaines marges entre-elles</strong>. Cela peut paraître étrange, voire gênant, mais au final cette fusion favorise le développement CSS. Tout d’abord, cette fusion ne se produit que de manière verticale et ne s’applique qu’au marges externes. Voici les 4 règles où une fusion a lieu:</p>
+
+<ul>
+<li>la marge haute d’un bloc et la marge haute de son premier enfant (de manière récursive)</li>
+<li>la marge basse d’un bloc et la marge basse de son dernier enfant, si la hauteur est <code>auto</code> (de manière récursive)</li>
+<li>la marge basse d’un bloc et la marge haute de son suivant (qui n’est pas forcément un élément frère)</li>
+<li>la marge haute et basse d’un bloc sans contenu</li>
+</ul>
+
+<blockquote>
+  <p><strong>Note:</strong> lorsque j’ajoute «de manière récursive», c’est pour signifier que la fusion peut avoir lieu entre plusieurs éléments à la fois. Si vous prenez la hiérarchie suivante: <code>section &gt; div &gt; h1</code>, la marge haute de l’élément <code>&lt;h1&gt;</code> fusionne avec son parent (<code>&lt;div&gt;</code>), qui à son tour fusionne avec son parent (<code>&lt;section&gt;</code>). Cela fonctionne seulement si les éléments sont les premiers enfants de leur parent. Dans ce cas, la fusion a lieu sur plusieurs éléments à la fois.</p>
+</blockquote>
+
+<p>Néanmoins, <strong>pour que les fusions décrites aient lieu, certaines contraintes s’appliquent:</strong></p>
+
+<ul>
+<li>contraintes entre parents et enfants:
+
+<ul>
+<li>il n’y a pas de fusion si le parent est un BFC (contexte de formatage block). Je vous renvoi un peu plus tôt dans l’article.</li>
+<li>il n’y a pas de fusion si le parent a des marges internes hautes ou basses (<code>padding</code>) ou des bordures hautes ou basses. Les marges internes et les bordures à gauche et à droite n’empêche pas la fusion.</li>
+</ul></li>
+<li>contraintes entre les éléments suivants:
+
+<ul>
+<li>les éléments doivent appartenir au même BFC. Pour rappel, la fusion se produit entre deux éléments suivants qui ne sont pas forcément frères.</li>
+</ul></li>
+<li>les marges d'un élément flottant, en <code>position: absolute</code> ou en <code>display: inline-block</code> ne fusionnent pas avec les autres éléments</li>
+</ul>
+
+<p>Enfin, lorsque la fusion se produit, c’est la marge maximum entre les deux éléments qui est utilisée. Ainsi un élément ayant une marge basse de 20px et un élément ayant une marge haute de 10px seront séparés de 20px. Si l’un des éléments a une marge négative, celle-ci est déduite de la marge positive pour le calcul.</p>
+
+<p>Prenons la hiérarchie suivante <code>.container &gt; .parent &gt; .enfant + .enfant + .enfant</code> et le CSS <code>.enfant { margin: 50px }</code>, on se rend bien compte qu'entre chaque enfant la marge n'est que de 50px: la fusion a bien lieu.</p>
+
+<figure><img src="/content/01-blog/21-ce-que-vous-avez-toujours-voulu-savoir-sur-css/fusion-des-marges1.jpg" title="fusion-des-marges1" alt="La fusion des marges se produit entre &eacute;l&eacute;ments fr&egrave;res" /><figcaption class="caption">La fusion des marges se produit entre éléments frères</figcaption></figure>
+
+<p>Si l'on affiche de manière plus marquée le parent avec <code>.parent { background: darkblue }</code>, on se rend compte qu'une fusion à également lieu en haut avec le premier enfant, et en bas avec le dernier enfant.</p>
+
+<figure><img src="/content/01-blog/21-ce-que-vous-avez-toujours-voulu-savoir-sur-css/fusion-des-marges2.jpg" title="fusion-des-marges2" alt="La fusion des marges se produit &eacute;galement avec le parent" /><figcaption class="caption">La fusion des marges se produit également avec le parent</figcaption></figure>
+
+<p>Pour empêcher cette fusion, il suffit de convertir le parent en BFC avec <code>.parent { overflow: hidden }</code> ou encore de lui appliquer un <code>padding</code> ou une bordure même transparente. Par exemple, <code>.parent { border: 1px solid transparent }</code></p>
+
+<figure><img src="/content/01-blog/21-ce-que-vous-avez-toujours-voulu-savoir-sur-css/fusion-des-marges3.jpg" title="fusion-des-marges3" alt="La fusion des marges ne se produit plus avec le parent si celui-ci est un BFC" /><figcaption class="caption">La fusion des marges ne se produit plus avec le parent si celui-ci est un BFC</figcaption></figure>
+
+<p>Jouez avec <a href="http://codepen.io/iamvdo/pen/Fsqya">cette démo sur CodePen</a></p>
+
+<h2>Empilement CSS</h2>
+
+<p>Dès que l’on parle empilement en CSS, la propriété qui nous vient à l’esprit est <code>z-index</code>. En effet, cette propriété permet de gérer le «niveau» d’affichage d’un élément: un <code>z-index</code> plus élévé affiche un élément devant les éléments avec un <code>z-index</code> plus faible, ou sans <code>z-index</code>. Et bien en fait, non. C’est légèrement plus compliqué que cela.</p>
+
+<p>Tout d’abord, la propriété <code>z-index</code> ne fonctionne que sur des éléments positionnés (<code>relatif</code>, <code>absolute</code> ou <code>fixed</code>), mais surtout <strong>la propriété <code>z-index</code> est relative à son contexte d’empilement</strong>. Mais c’est quoi un contexte d’empilement?</p>
+
+<h3>Contexte d’empilement</h3>
+
+<p>Un contexte d’empilement est un élément HTML dans lequel les éléments enfants sont dessinés en respectant un ordre d’affichage précis. <strong>Un élément au sein d’un contexte d’empilement affiché plus bas ne peut pas superposer un élément au sein d’un contexte d’empilement affiché plus haut</strong>. Chaque contexte est alors «hermétique» aux autres contextes.</p>
+
+<p>L’élément <code>&lt;html&gt;</code> créé le premier contexte d’empilement de la page. Ensuite, <strong>un nouveau contexte d’empilement est créé dès qu’un élément est positionné</strong> (<code>position: relative</code>, <code>absolute</code> ou <code>fixed</code>) <strong>et que son <code>z-index</code> est différent de <code>auto</code></strong>.</p>
+
+<p>C’est donc au sein de chaque contexte d’empilement que la propriété <code>z-index</code> fonctionne comme on pourrait le penser à la première lecture des spécifications.</p>
+
+<p>Prenons cet exemple suivant, 3 parents qui contiennent chacun un enfant:</p>
+
+<pre class="language-markup"><code>&lt;div class="parent parent--red">
+    &lt;div class="enfant enfant--red">R&lt;/div>
+&lt;/div>
+&lt;div class="parent parent--green">
+    &lt;div class="enfant enfant--green">V&lt;/div>
+&lt;/div>
+&lt;div class="parent parent--blue">
+    &lt;div class="enfant enfant--blue">B&lt;/div>
+&lt;/div></code></pre>
+
+<p>Et le CSS associé:</p>
+
+<pre><code>.enfant {
+    position: absolute;
+}
+.enfant--red {
+    z-index: 1;
+}
+</code></pre>
+
+<p>Chaque enfant est donc affiché de manière absolue, et le premier enfant (carré rouge, R) a un <code>z-index</code> de 1. Il superpose alors les autres carrés. Si nous ajoutons un <code>z-index</code> de 2 sur le second enfant (carré vert, V), il superpose à son tour les 2 autres carrés. Tout cela est normal puisqu’un seul contexte d’empilement est actuellement présent: l’élément <code>&lt;html&gt;</code>. Créons alors un nouveau contexte d’empilement, sur le parent englobant le carré vert, tout en conservant le <code>z-index</code> à 2 sur l’enfant Vert.</p>
+
+<pre><code>.parent--green {
+    /* Nouveau contexte d'empilement de niveau 0 */
+    position: relative;
+    z-index: 0;
+}
+</code></pre>
+
+<p>L’effet produit est que le carré vert (V) ne superpose plus les autres carrés bien que son <code>z-index</code> soit encore de 2. Il est tout simplement limité à son contexte d’empilement, qui lui est affiché en <code>z-index: 0</code>!</p>
+
+<p><p data-height="420" data-theme-id="0" data-slug-hash="amuGx" data-user="iamvdo" data-default-tab="result" class="codepen">See the Pen <a href="http://codepen.io/iamvdo/pen/amuGx">amuGx</a> by iamvdo (<a href="http://codepen.io/iamvdo">@iamvdo</a>) on <a href="http://codepen.io">CodePen</a></p><script async src="//codepen.io/assets/embed/ei.js"></script></p>
+
+<p>Mais la propriété <code>z-index</code> n’est pas la seule à influencer l’ordre des éléments. Revenons sur la façon dont les éléments sont dessinés dans une page.</p>
+
+<h3>Ordre d’affichage</h3>
+
+<p>Au sein de chaque contexte d’empilement, <strong>les règles qui définissent l’ordre d’affichage des éléments sont les suivantes:</strong></p>
+
+<ol>
+<li>les bordures et <code>background</code> de l’élément racine du contexte d’empilement</li>
+<li>les éléments positionnés avec un <code>z-index</code> négatif</li>
+<li>les éléments <code>block</code> non-positionnés</li>
+<li>les flottants</li>
+<li>les éléments <code>inline</code> non-positionnés</li>
+<li>les éléments positionnés avec un <code>z-index: auto</code></li>
+<li>les éléments positionnés avec un <code>z-index</code> positif</li>
+</ol>
+
+<p>Nous remarquons donc qu’un élément flottant est toujours affiché au dessus d’un élément block, et qu’un élément <em>inline</em> est toujours affiché au dessus des flottants. Nous remarquons également qu’un élément positionné dont le <code>z-index</code> est négatif est rendu derrière les éléments non-positionnés, et donc potentiellement derrière son parent. Par contre, <strong>un élément ne peut jamais être affiché derrière l’élément qui crée le contexte d’empilement auquel il appartient</strong>.</p>
+
+<p>Voici un exemple un peu farfelu d’empilement sans <code>z-index</code>:</p>
+
+<p data-height="250" data-theme-id="0" data-slug-hash="pDABx" data-user="iamvdo" data-default-tab="result" class="codepen">See the Pen <a href="http://codepen.io/iamvdo/pen/pDABx">pDABx</a> by iamvdo (<a href="http://codepen.io/iamvdo">@iamvdo</a>) on <a href="http://codepen.io">CodePen</a></p>
+
+<h3>Contexte d’empilement en CSS3</h3>
+
+<p>En CSS3, de nouvelles propriétés créent des contextes d’empilement:</p>
+
+<ul>
+<li>un élément dont l’opacité est inférieure à 1</li>
+<li>un élément dont la propriété <code>transform</code> est différente de <code>none</code> (ce qui crée également un <em>containing block</em>, rappelez-vous)</li>
+<li>un élément dont la propriété <code>transform-style</code> vaut <code>preserve-3d</code></li>
+<li>un élément dont la propriété <code>filter</code> est différente de <code>none</code></li>
+<li>un élément utilisant les propriétés <code>clip-path</code> ou <code>mask</code> (et déclinaisons)</li>
+</ul>
+
+<p>Reprenons l’exemple d’empilement précédent. Un nouveau contexte d’empilement peut également être créé de cette façon:</p>
+
+<pre><code>.parent--green {
+    /* Nouveau contexte d'empilement */
+    opacity: .99;
+}
+</code></pre>
+
+<p>Dans ce cas, la valeur d’opacité définie et calculée à 0.99 créé un contexte d’empilement (car inférieure à 1), bien que la valeur réellement utilisée pour le rendu sera 1. Il est également possible d’utiliser les transformations, même une rotation nulle (car différent de <code>none</code>):</p>
+
+<pre><code>.parent--green{
+    /* Nouveau contexte d'empilement */
+    transform: rotate(0);
+}
+</code></pre>
+
+<p>Voir le CodePen ci-dessus pour tester.</p>
+
+<h2>Conclusion</h2>
+
+<p>Voilà, j’espère vous avoir donné quelques clés pour mieux comprendre les petites subtilités de CSS et que vous passerez moins de temps à comprendre les différents comportements du langage.</p>
+
+<p>Par contre, désolé, vous venez de perdre le coté «magique» de certaines fonctionnalités de CSS. :P</p>
+
+<p>N'hésitez pas à poser des questions si telle ou telle chose ne vous paraît pas assez claire, je vous répondrais et mettrais l'article à jour en conséquence si besoin.</p>
+
+<p>:)</p>
+]]></description>      
+            
+    </item>
+        <item>
+      <title>Microsoft TechDays 2014</title>  
+      <link>http://iamvdo.me/conf/microsoft-techdays-2014</link>
+      <guid>http://iamvdo.me/conf/microsoft-techdays-2014</guid>
+      <pubDate>Tue, 11 Feb 2014 11:00:00 +0100</pubDate>
+        
+                  <description><![CDATA[<p>Le 11 février 2014 se tenait les <a href="http://www.microsoft.com/france/mstechdays/">Microsoft Tech Days</a> au Palais des Congrès de Paris. C'était l'occasion pour moi de présenter à nouveau une présentation que j'ai initialement donnée lors de la <a href="http://2013.kiwiparty.fr">KiwiParty 2013</a>, à savoir <a href="/blog/ce-que-vous-avez-toujours-voulu-savoir-sur-css"><strong>un retour aux bases avancées de CSS!</strong></a></p>
+
+<p>Pour découvrir cette présentation, plusieurs options:</p>
+
+<ul>
+<li>les slides en HTML: <a href="http://slides.iamvdo.me/techdays14">«CSS, c'est pas si facile»</a></li>
+<li><a href="/blog/ce-que-vous-avez-toujours-voulu-savoir-sur-css">l'article détaillé</a> que j'ai écrit suite à cela</li>
+<li>la vidéo (slides + audio)</li>
+</ul>
+
+<iframe width="560" height="315" src="//www.youtube.com/embed/N84oE-wR4KQ" frameborder="0" allowfullscreen></iframe>
+]]></description>      
+            
+    </item>
+        <item>
+      <title>La cascade CSS avanc&#233;e: all, initial et unset</title>  
+      <link>http://iamvdo.me/blog/la-cascade-css-avancee-all-initial-et-unset</link>
+      <guid>http://iamvdo.me/blog/la-cascade-css-avancee-all-initial-et-unset</guid>
+      <pubDate>Thu, 06 Feb 2014 09:00:00 +0100</pubDate>
+        
+                  <description><![CDATA[<p>Firefox 27 est le premier navigateur a implémenter la gestion de la cascade avancée, à savoir la propriété <code>all</code>, et les mots-clés associés <code>inherit</code>, <code>initial</code> et surtout <code>unset</code>.</p>
+
+<p>J'ai déjà parlé des <a href="la-cascade-css-inherit-et-initial">deux premiers <code>inherit</code> et <code>initial</code></a> dans un autre billet, je vais donc évoquer ici le troisième <code>unset</code>.</p>
+
+<h2>Différences entre initial et unset</h2>
+
+<p>Le mot-clé <code>unset</code> est identique à <code>initial</code>, sauf pour les propriétés héritées. En effet:</p>
+
+<ul>
+<li><code>initial</code> rétablit la valeur par défaut de la propriété telle que définie dans la spec</li>
+<li><code>unset</code> rétablit la valeur héritée de la propriété, ou à défaut, la valeur initiale</li>
+</ul>
+
+<p>Voici un exemple de code plus parlant, 3 items dans un block:</p>
+
+<pre class="language-markup"><code>&lt;div class="block">
+    &lt;p class="item">I'm a text&lt;/p>
+    &lt;p class="item initial">I'm a text (initial)&lt;/p>
+    &lt;p class="item unset">I'm a text (unset)&lt;/p>
+&lt;/div></code></pre>
+
+<p>Et le CSS associé:</p>
+
+<pre><code>.block {
+    color: orangered;
+    margin-left: 50px;
+    background: lightgray;
+}
+.item {
+    color: deepskyblue;
+    margin-left: 50px;
+}
+.initial {
+    color: initial;
+    margin-left: initial;
+}
+.unset {
+    color: unset;
+    margin-left: unset;
+}
+</code></pre>
+
+<p><p data-height="350" data-theme-id="0" data-slug-hash="zGEqL" data-user="iamvdo" data-default-tab="result" class="codepen">See the Pen <a href="http://codepen.io/iamvdo/pen/zGEqL">zGEqL</a> by iamvdo (<a href="http://codepen.io/iamvdo">@iamvdo</a>) on <a href="http://codepen.io">CodePen</a></p><script async src="//codepen.io/assets/embed/ei.js"></script></p>
+
+<p>On remarque donc que:</p>
+
+<ul>
+<li>Les <code>p</code> sont affichés de couleur <code>deepskyblue</code> avec une marge gauche de 50px.</li>
+<li>L'utilisation d'<code>.initial</code> réinitialise la couleur de l'élément à celle de l'UA (puisque la propriété <code>color</code> n'a pas de valeur initiale en CSS) et sa marge gauche à 0 (valeurs par défaut pour ces propriétés)</li>
+<li>L'utilisation d'<code>.unset</code> réinitialise la couleur de l'élément à <code>orangered</code> (couleur héritée de son parent <code>.block</code>) mais la marge gauche à 0 (puisque les marges ne s'héritent pas)</li>
+</ul>
+
+<h2>La propriété all</h2>
+
+<p>Cette propriété permet, comme son nom l'indique, de <strong>contrôler la cascade sur l'ensemble des propriétés CSS d'un élément</strong>. Dans notre exemple précédent, on aurait pu écrire:</p>
+
+<pre><code>.initial {
+    all: initial;
+}
+.unset {
+    all: unset;
+}
+</code></pre>
+
+<p>Mais dans ce cas là, toutes les propriétés (et même celles définies par le navigateur) auraient été redéfinies. <strong>Attention donc, c'est brut de décoffrage!</strong></p>
+
+<p>Pour info, la valeur par défaut de <code>display</code> est <code>inline</code> et non <code>block</code>, la valeur de <code>font-family</code> est <code>sans-serif</code>, et ainsi de suite... </p>
+
+<p>L'utilisation qui en sera faite sera donc très réduite.</p>
+]]></description>      
+            
+    </item>
+        <item>
+      <title>Myth, un post-processeur CSS</title>  
+      <link>http://iamvdo.me/blog/myth-un-post-processeur-css</link>
+      <guid>http://iamvdo.me/blog/myth-un-post-processeur-css</guid>
+      <pubDate>Wed, 18 Dec 2013 11:30:00 +0100</pubDate>
+        
+                  <description><![CDATA[<p>Il y a moins d'un mois, j'écrivais un article sur les <a href="les-postprocesseurs-css">post-processeurs CSS</a> et je m'interrogeais, publiquement, sur l'intérêt de tels outils, comparés aux pré-processeurs. Je trouve l'idée très prometteuse. Le concept de conserver son CSS «propre», «future-proof» pour pouvoir y appliquer toutes sortes de traitements automatiques offrant un support maximal m'enchante.</p>
+
+<p>Sauf que, <strong>tout n'est pas réalisable</strong>. Je suis allé un peu trop loin dans mon cheminement, et j'ai franchi la limite à ne jamais dépasser: la cascade CSS et le DOM.</p>
+
+<p>Alors oui, cela dépend des actions effectuées, le fameux «ça dépend». Par exemple, l'utilisation d'<a href="https://github.com/ai/autoprefixer">Autoprefixer</a> pour l'ajout des préfixes CSS en post-traitement est à préconiser sur l'utilisation des pré-processeurs (attention, je ne parle pas d'outil comme prefixmycss qui ajoute les préfixes au sein du navigateur). L'utilisation d'un polyfill pour les filtres pourrait l'être également.</p>
+
+<p>Par contre, lorsque je parle de polyfill pour les variables CSS ou <code>calc()</code>, il faut faire attention.</p>
+
+<h2>Myth.io</h2>
+
+<p>Hier soir a été annoncé <a href="http://myth.io">Myth</a>. C'est une sorte de super-polyfill-post-processeur pour votre CSS, exactement ce dont je parlais. Et avec, les limites apparaissent. Reprenons les différents exemples de code proposés sur le site.</p>
+
+<h3>Les variables</h3>
+
+<pre><code>/* CSS en entrée */
+:root {
+    var-purple: #847AD1;
+}
+a {
+    color: var(purple);
+}
+
+/* CSS en sortie */
+:root {
+    var-purple: #847AD1;
+}
+a {
+    color: #847AD1;
+}
+</code></pre>
+
+<p>Les variables CSS sont dans l'actualité cette semaine, depuis <a href="http://mcc.id.au/blog/2013/12/variables">l'annonce de la prise en charge par Firefox dans la version 29</a>. Mais, il faut faire attention, car les «variables CSS» n'en sont pas réellement. <strong>Ce sont en fait des <a href="http://dev.w3.org/csswg/css-variables">propriétés personnalisées</a></strong>. Et ces propriétés fonctionnent en suivant le principe même de CSS, la cascade! Les propriétés personnalisées sont uniquement connues dans le scope où elles sont définies, ce qui n'est pas le cas avec cet outil.</p>
+
+<p>Les variables, telles que présentées par Myth ne sont en fait «que» de simples variables, et non réellement des propriétés personnalisées, comme le prévoit CSS. Il y a donc tromperie sur la marchandise.</p>
+
+<p>Certes, cela peut s'avérer utile si le développeur reste rigoureux (ou <a href="https://github.com/segmentio/myth/issues/10">si le plugin l'est pour vous</a> ) et ne crée que des variables globales, <strong>mais le détournement d'une syntaxe normalisée pour en faire autre chose peut s’avérer dangereux</strong>. De plus, le code n'est plus «future-proof», comme espéré au départ.</p>
+
+<h3>Mathématiques et couleurs</h3>
+
+<p>Là encore, les exemples présentés sont trompeurs. Regardez mieux:</p>
+
+<pre><code>/* CSS en entrée */
+pre {
+    margin: calc(var(large) * 2);
+}
+
+/* CSS en sortie */
+pre {
+    margin: 20px;
+}
+</code></pre>
+
+<p>Cet exemple fonctionne ici avec l'utilisation d'une variable, mais qu'en est-il pour une autre utilisation de <code>calc()</code>, plus classique? Par exemple combinant unités relatives et absolues comme <code>calc( 50% - 25px )</code> (ce qui équivaut à 50% de la largeur de son <em>containing block</em> moins 25px)  <strong>Bien entendu, ni un pré-processeur, ni un post-processeur ne pourront résoudre ces problèmes contextuels inhérents au document</strong> sans en connaitre sa structure.</p>
+
+<p>Dans ce cas, votre CSS est bien préparé pour l'avenir, mais aucun outil ne pourra vous venir en aide pour offrir un meilleur support navigateur.</p>
+
+<p>Il en est de même pour l'exemple des fonctions de couleurs. Dans ce cas, c'est même encore plus problématique puisque la spécification n'en est qu'à ses balbutiements, et donc non stable. Il serait dangereux d'utiliser du code non normalisé, ou non en passe de l'être. De plus, la logique précédente s'applique, il n'est pas possible de profiter de la cascade CSS.</p>
+
+<pre><code>/* CSS en entrée */ 
+a {
+    color: color(var(purple) tint(20%));
+}
+
+/* CSS en sortie */
+a {
+    color: rgb(157, 149, 218);
+}
+</code></pre>
+
+<h2>Conclusion</h2>
+
+<p>Même si le principe est intéressant sur la forme, <strong>l'objectif principal ne peut (et ne pourra) jamais être atteint</strong>. Après l'annonce d'hier, j'ai immédiatement <a href="https://twitter.com/iamvdo/status/413039379733827584">montré ma satisfaction</a>, mais sans vraiment prendre la mesure de ce que Myth nous propose. En réalité, et après étude, il s'avère que <strong>ce post-processeur propose moins de choses que ce qu'a tenté récemment Nicolas Gallagher avec <a href="https://github.com/suitcss/rework-suit">rework-suit</a></strong>, son post-processeur (ou pré-processeur transparent). Rework-suit propose le support des variables (identiques à Myth, puisque basé sur le même plugin), les préfixes automatiques avec Autoprefixer, ainsi que le support de l'opacité pour IE8.</p>
+]]></description>      
+            
+    </item>
+        <item>
+      <title>Les postprocesseurs CSS</title>  
+      <link>http://iamvdo.me/blog/les-postprocesseurs-css</link>
+      <guid>http://iamvdo.me/blog/les-postprocesseurs-css</guid>
+      <pubDate>Fri, 22 Nov 2013 11:30:00 +0100</pubDate>
+        
+                  <description><![CDATA[<p>C’est la tendance qui se dégage depuis quelques mois. Notamment depuis la démocratisation des <a href="http://gruntjs.com">outils d’automatisation du workflow front-end, comme Grunt</a>.</p>
+
+<p>Les postprocesseurs CSS, dont le nom évoque directement les préprocesseurs, sont en fait toutes les étapes qui devraient être effectuées en post-traitement, sans que le dev ne se soucis de cela. L’intérêt étant d’écrire du <strong>code CSS propre, sans préfixes, maintenable, voire à la pointe</strong>, afin d’obtenir en retour un <strong>code compilé pour un maximum de compatibilité</strong>.</p>
+
+<p>Actuellement, on peut évoquer <a href="https://github.com/visionmedia/rework">Rework</a> et <a href="https://github.com/ai/postcss">PostCSS</a> qui vont plus ou moins dans cette direction.</p>
+
+<h2>Automatiser les préfixes</h2>
+
+<p>La première tâche à postprocesser, c’est <strong>l’automatisation des préfixes CSS</strong>. En effet, avant l’arrivée des préprocesseurs, et avant que les navigateurs ne soient aussi à jour, il fallait répéter les préfixes, souvent plusieurs fois. Par exemple, il y a quelques années, une transition CSS s’écrivait plus ou moins de cette façon, et c’était pénible:</p>
+
+<pre><code>.element {
+    -webkit-transition: background 1s ease;
+       -moz-transition: background 1s ease;
+        -ms-transition: background 1s ease;
+         -o-transition: background 1s ease;
+            transition: background 1s ease;
+}
+</code></pre>
+
+<p>Du coup, les préprocesseurs &amp; Co. (comme <a href="http://sass-lang.com/">Sass</a> et <a href="http://compass-style.org/">Compass</a>) ont permis de s’affranchir de cela en écrivant quelque chose du style:</p>
+
+<pre><code>@import "compass/css3";
+
+.element {
+    @single-transition(background, 1s, ease)
+}
+</code></pre>
+
+<p>qui génère le CSS adéquat. Mais, même si l’on pourrait penser que c’est mieux, ça ne l’est pas (en tout cas pour les préfixes). Certes l’outil travaille pour nous, mais le code manipulé s’éloigne du CSS, et certaines fois énormément. Mais surtout, <strong>le CSS est dépendant du préprocesseur choisi et difficilement évolutif</strong>. </p>
+
+<p>Ce qui est mieux, c’est justement ce que nous offrent les outils de post-traitement. <strong>Aujourd’hui, on écrit du «plain CSS» et c’est tout:</strong></p>
+
+<pre><code>.element {
+    transition: background 1s ease;
+}
+</code></pre>
+
+<p>Notre CSS sera alors généré de la «bonne» manière qu’il soit, en fonction de plusieurs critères définis en amont. <strong>L’outil qui fait actuellement cela très bien s’appelle <a href="https://github.com/ai/autoprefixer">AutoPrefixer</a></strong>, et si vous n’en avez jamais entendu parler, courez vite sur <a href="https://github.com/ai/autoprefixer">leur GitHub</a> et prenez-le en main. Il est basé sur Rework mais devrait bientôt se baser sur PostCSS. Le code généré se base sur différents paramètres:</p>
+
+<ul>
+<li>sur le pourcentage d’utilisateurs par navigateur basé sur les données <a href="http://caniuse.com">caniuse.com</a></li>
+<li>sur le nombre de versions supportées d’un navigateur par rapport à la version actuelle</li>
+<li>sur un navigateur particulier
+etc.</li>
+</ul>
+
+<p>Il permet également de nettoyer le CSS en enlevant les préfixes antidatés. Autoprefixer est disponible sous un nombre incroyable de forme, que ce soit comme plugin à votre éditeur de texte (type <a href="http://www.sublimetext.com/">Sublime Text</a>), comme option d’outils d’aide à la gestion des assets comme <a href="http://alphapixels.com/prepros/">Prepros</a> ou <a href="http://mixture.io/">Mixture</a>, ou tout simplement comme plugin à Grunt. Personnellement, j’utilise <a href="http://brunch.io">Brunch</a> que je trouve plus simple que Grunt, et <a href="https://github.com/lydell/autoprefixer-brunch">autoprefixer-brunch</a> avec support des source maps.</p>
+
+<h2>Incorporer les polyfills</h2>
+
+<p>La deuxième fonctionnalité envisagée, c’est <strong>l’automatisation de Polyfill</strong>. Prenons l’exemple des <a href="https://developer.mozilla.org/fr/docs/CSS/filter">filtres CSS</a>. La spécification définit le filtre flou de cette manière:</p>
+
+<pre><code>.element {
+    filter: blur(10px);
+}
+</code></pre>
+
+<p>Sauf qu’actuellement seuls Chrome et Safari supportent cette fonctionnalité, et de manière préfixée. Pourtant Firefox permet également d’appliquer un flou sur un élément, mais en référençant un filtre SVG, de cette manière:</p>
+
+<pre><code>.element {
+    filter: url(‘#filtre’);
+}
+</code></pre>
+
+<p>Et IE 6-9 également, via les vieux filtres DirectX:</p>
+
+<pre><code>.element {
+    filter: progid:DXImageTransform.Microsoft.Blur(pixelradius=10);
+}
+</code></pre>
+
+<p>Pour générer les filtres CSS de chaque navigateur, un <a href="https://github.com/Schepp/CSS-Filters-Polyfill">polyfill</a> existe. L’énorme avantage d’un postprocesseur serait ici d’automatiser cette tâche afin de ne conserver dans le CSS de travail que le code sans préfixes, et toujours future-proof.</p>
+
+<p>Une autre idée pourrait être d’utiliser <a href="https://github.com/visionmedia/rework-vars">rework-vars</a>, qui <strong>ajoute le support des variables CSS telles que définies dans la <a href="http://dev.w3.org/csswg/css-variables/">spécification officielle</a></strong>. Ainsi, notre CSS pourrait ressembler à cela:</p>
+
+<pre><code>:root {
+    var-color: #069;
+}
+
+.element {
+    color: var(color);
+}
+</code></pre>
+
+<p>Pour être compilé de cette façon (en fonction des options choisies):</p>
+
+<pre><code>:root {
+    var-color: #069;
+}
+
+.element {
+    color: #069;
+    color: var(color);
+}
+</code></pre>
+
+<p>Idem pour <code>calc()</code>, nous n'aurions plus besoin de préprocesseurs pour çà.</p>
+
+<h2>Quels autres traitements?</h2>
+
+<p>Bien entendu, autre la minification, concaténation de fichiers, linters, tests, il existe d’autres petites actions que l’on pourrait effectuer en post-traitement. 
+Par exemple, le <a href="https://github.com/ai/postcss">postprocesseur PostCSS</a> propose de vérifier que la propriété <code>content</code> est bien présente dès que le sélecteur contient <code>::after</code> ou <code>::before</code>. Au cas où il serait manquant, de le rajouter. On pourrait aussi envisager une tâche qui vérifie que le sélecteur <code>:focus</code> est systématiquement présent lorsque que <code>:hover</code> est utilisé, ou de le rajouter également, etc.</p>
+
+<h2>Mouais, pas sur...</h2>
+
+<p>Certes, tout cela est encore très récent et le partage des tâches entre préprocesseurs et postprocesseurs peu sembler obscur. Voici une image qui tente de répartir les différentes actions:</p>
+
+<figure><img src="/content/01-blog/18-les-postprocesseurs-css/postprocessor.jpg" title="postprocessor" alt="Nouveau worflow de d&eacute;veloppement CSS?" /><figcaption class="caption">Nouveau worflow de développement CSS?</figcaption></figure>
+
+<p>Pour moi, c’est vraiment la transparence des actions effectuées en post-traitement qui est importante, pour conserver son code le plus propre possible. J’espère avoir réussi à vous exposer mon point de vue mais je suis curieux de connaitre vos avis à ce sujet. Alors, vous en pensez quoi?</p>
+
+<p>:)</p>
+]]></description>      
+            
+    </item>
+        <item>
+      <title>Blend Conf&#233;rence 2013</title>  
+      <link>http://iamvdo.me/conf/blend-conference-2013</link>
+      <guid>http://iamvdo.me/conf/blend-conference-2013</guid>
+      <pubDate>Tue, 29 Oct 2013 14:00:00 +0100</pubDate>
+        
+                  <description><![CDATA[<p>Le 29 octobre, j'ai animé <strong>«Le futur des effets graphiques en CSS»</strong> lors de la 1ère édition de <a href="http://blendconference.com">Blend Conférence</a> à Lyon.</p>
+
+<p>Dans cette présentation d'une vingtaine de minutes, j'ai évoqué des fonctionnalités de CSS très, voire trop, avancées. Tous les aspects de cette conférence sont donc à prendre à titre d'expérimentations. J'ai pu y parler de choses diverses:</p>
+
+<ul>
+<li>la fonction d'image <code>element()</code></li>
+<li>les masques CSS, SVG et les méthodes de rognage</li>
+<li>les exclusions et les formes CSS</li>
+<li>les filtres CSS avancés, avec notamment une démo d'utilisation des shaders</li>
+<li>la fonction <code>filter()</code></li>
+</ul>
+
+<p>Ma présentation est disponible en ligne, directement dans votre navigateur.</p>
+
+<ul>
+<li><a href="http://iamvdo.me/conf/2013/blend">Version HTML de «Le futur des effets graphiques en CSS»</a></li>
+</ul>
+
+<p>Attention, prévoyez différents navigateurs et basculez de l'un à l'autre pour bénéficier de chaque effet:</p>
+
+<ul>
+<li>Google Chrome Canary (avec flags actifs: «Fonctionnalités expérimentales WebKit», «Shaders» et éventuellement «WebGL»</li>
+<li>Firefox Nightly (23)</li>
+<li>IE10</li>
+<li>WebKit nightly pour <code>filter()</code></li>
+</ul>
+
+<p><strong>Edit 27/02/2014:</strong> La vidéo de la présentation est en ligne:</p>
+
+<iframe width="560" height="315" src="//www.youtube.com/embed/B_IQz-YdxxA?rel=0" frameborder="0" allowfullscreen></iframe>
+]]></description>      
+            
+    </item>
+        <item>
+      <title>Kiwi Party 2013</title>  
+      <link>http://iamvdo.me/conf/kiwi-party-2013</link>
+      <guid>http://iamvdo.me/conf/kiwi-party-2013</guid>
+      <pubDate>Sat, 29 Jun 2013 11:00:00 +0200</pubDate>
+        
+                  <description><![CDATA[<p>Le 29 juin dernier s'est déroulé la <a href="http://www.kiwiparty.fr">Kiwi Party</a>: un évènement web entièrement gratuit, organisé par <a href="http://www.alsacreations.com">Alsacréations</a>. Les conférences ont été variées et toutes plus intéressantes les unes que les autres. De mon coté, j'ai pu y présenter <strong>«Ce que vous avez toujours voulu savoir sur CSS»</strong>, une sorte de retour aux bases au langage CSS.</p>
+
+<p>Dans cette présentation, j'ai notamment évoqué:</p>
+
+<ul>
+<li>La cascade CSS</li>
+<li>La spécificité des sélecteurs</li>
+<li>Le box model CSS2.1 et CSS3</li>
+<li>Les valeurs de <code>display</code> (modèle tabulaire)</li>
+<li>Les interactions entre <code>display</code>, <code>float</code> et <code>position</code></li>
+<li>Le block formatting context</li>
+<li>La fusion des marges</li>
+<li>Les contextes d'empilement et <code>z-index</code></li>
+</ul>
+
+<p>Les slides utilisées pour la conf sont en ligne:</p>
+
+<ul>
+<li><a href="http://iamvdo.me/conf/2013/kiwiparty">[Slides] Ce que vous avez toujours voulu savoir sur CSS</a></li>
+</ul>
+
+<p>Je tenais à féliciter et à remercier encore une fois Alsacréations pour l'organisation de cet événement. Vous êtes au top.</p>
+
+<p>Merci aussi pour tous les retours positifs que j'ai pu avoir sur ma présentation et tous ceux avec qui j'ai échangé, discuté et avec qui j'ai pu me désaltéré pendant l'::after! :)</p>
+
+<p>Voici deux compte-rendus, en attendant l'officiel:</p>
+
+<ul>
+<li><a href="http://www.weblife.fr/evenements/kiwi-party-2013">Kiwi Party sur Weblife</a>&nbsp;</li>
+<li><a href="http://www.tleonetti.com/kiwiparty-2013-un-evenement-fruite/">Kiwi Party 2013, un événement fruité</a></li>
+</ul>
+
+<p>À l'année prochaine?</p>
+]]></description>      
+            
+    </item>
+        <item>
+      <title>Meetup HTML5, CSS3 &#38; Pizzas 2013</title>  
+      <link>http://iamvdo.me/conf/9eme-meetup-html5-css3-pizzas</link>
+      <guid>http://iamvdo.me/conf/9eme-meetup-html5-css3-pizzas</guid>
+      <pubDate>Tue, 23 Apr 2013 19:00:00 +0200</pubDate>
+        
+                  <description><![CDATA[<p>Le 23 avril dernier, j'ai eu l'occasion d'animer une présentation pompeusement nommée: <strong>«Le futur des effets graphiques sur le web»</strong>lors du <a href="http://www.meetup.com/France-HTML5-User-Group/events/112441502/">9ème Meetup HTML5</a>.</p>
+
+<p>Dans cette mini-présentation, j'ai évoqué des fonctionnalités de CSS très, voire trop, avancées. Tous les aspects de cette conférence sont donc à prendre à titre d'expérimentations. J'ai pu y parler de choses diverses:</p>
+
+<ul>
+<li>les fonctions d'images: <code>cross-fade()</code>, <code>element()</code></li>
+<li>les masques CSS, SVG et les méthodes de rognage</li>
+<li>les exclusions et les formes CSS</li>
+<li>les filtres CSS avancés, avec notamment une démo d'utilisation des shaders</li>
+</ul>
+
+<p>Ma présentation est disponible en ligne, directement dans votre navigateur.</p>
+
+<ul>
+<li><a href="http://iamvdo.me/conf/2013/meetupHTML5">Version HTML de «Le futur des effets graphiques sur le web»</a></li>
+</ul>
+
+<p>Attention, prévoyez différents navigateurs et basculez de l'un à l'autre pour bénéficier de chaque effet:</p>
+
+<ul>
+<li>Google Chrome Canary (28) (avec flags actifs: «Fonctionnalités expérimentales WebKit», «Shaders» et éventuellement «WebGL»</li>
+<li>Firefox Nightly (23)</li>
+<li>IE10</li>
+</ul>
+
+<p>Lors de ce même Meetup, deux autres présentations ont eu lieu:</p>
+
+<ul>
+<li>Démonstration <a href="http://sylvainw.github.io/HTML5-Future/avril2013.html">d'un jeu basé sur la Gamepad API avec une manette Guitar Hero</a>.</li>
+<li><a href="http://mfglabs.github.io/mfglabs-iconset/Keynote-font-icon.pdf">L'ère des icon-fonts</a>: création d'une <a href="http://mfglabs.github.io/mfglabs-iconset/">police d'icônes libre de droit</a> et utilisation via CSS3.</li>
+</ul>
+
+<p>Un grand merci aux organisateurs pour ce chouette évènement, ainsi qu'à tout ceux avec qui j'ai pu discuter lors de cette soirée.</p>
+
+<p>Et surtout, expérimentez!</p>
+
+<p><strong>Edit</strong>: La vidéo est en ligne!</p>
+
+<iframe frameborder="0" height="315" src="http://www.youtube.com/embed/FOc0LqviDng" width="560"></iframe>
+
+<p><strong>Edit 2</strong>: Quelques tweets pour vous donner envie de regarder la vidéo:
+<blockquote class="twitter-tweet" lang="fr"><p>La pres de <a href="https://twitter.com/iamvdo">@iamvdo</a> sur <a href="https://twitter.com/search?q=%23CSS3&amp;src=hash">#CSS3</a> est un concentré de fonctionnalités aussi géniales les une que les autres <a href="https://twitter.com/search?q=%23FranceHTML5&amp;src=hash">#FranceHTML5</a></p>&mdash; J.M. Cléry (@_jmpp) <a href="https://twitter.com/_jmpp/statuses/326766591687663616">23 Avril 2013</a></blockquote>
+<blockquote class="twitter-tweet" lang="fr"><p>Bravo à <a href="https://twitter.com/iamvdo">@iamvdo</a> pour sa présentation au meetup <a href="https://twitter.com/search?q=%23FRANCEHTML5&amp;src=hash">#FRANCEHTML5</a> avec une mention spéciale pour l’effet de brillance <a href="http://t.co/2u6yWa8hfH">http://t.co/2u6yWa8hfH</a></p>&mdash; Philippe Nenert (@papilip) <a href="https://twitter.com/papilip/statuses/326767744584409089">23 Avril 2013</a></blockquote>
+<blockquote class="twitter-tweet" lang="fr"><p>Drapeau HTML5 en pur CSS ! Bravo <a href="https://twitter.com/iamvdo">@iamvdo</a> <a href="https://twitter.com/search?q=%23FranceHTML5&amp;src=hash">#FranceHTML5</a></p>&mdash; Mathieu Santostefano (@welcoMattic) <a href="https://twitter.com/welcoMattic/statuses/326767917859491840">23 Avril 2013</a></blockquote>
+<blockquote class="twitter-tweet" lang="fr"><p>Démo filtres avancés au meetup <a href="https://twitter.com/search?q=%23francehtml5&amp;src=hash">#francehtml5</a> tout siimplement bluff ant. Bravo <a href="https://twitter.com/iamvdo">@iamvdo</a> !</p>&mdash; Raphaël Aparicio (@raphapari) <a href="https://twitter.com/raphapari/statuses/326768370156437504">23 Avril 2013</a></blockquote></p>
+]]></description>      
+            
+    </item>
+        <item>
+      <title>Les transformations 3D CSS avec IE10</title>  
+      <link>http://iamvdo.me/blog/les-transformations-3d-css-avec-ie10</link>
+      <guid>http://iamvdo.me/blog/les-transformations-3d-css-avec-ie10</guid>
+      <pubDate>Wed, 17 Apr 2013 11:00:00 +0200</pubDate>
+        
+                  <description><![CDATA[<p>Avez-vous déjà utilisé les transformations 3D avec CSS? Oui? Bon point. Si ce n'est pas le cas, je vous conseille <a href="http://www.html5-css3.fr/css3/transformations-3d-css3">un article complet que j'avais écrit à ce sujet</a>.</p>
+
+<p>Le problème des transformations CSS 3D, ce n'est pas le support dans les navigateurs, qui est aujourd'hui plutôt bon: Chrome 12+, Safari 4+, Firefox 10+, IE10, iOS, Android 3+ (les navigateurs Opera n'ont actuellement pas de support mais cela devrait changer avec <a href="http://www.brucelawson.co.uk/2013/hello-blink/">le passage à Blink</a>). De plus, il est assez facile de prévoir des solutions de repli pour les navigateurs trop anciens.</p>
+
+<p>Le problème, c'est bien son support dans IE10, et notamment la propriété <code>transform-style: preserve-3d</code>. Cette propriété, qui <strong>permet de forcer les éléments imbriqués à subir les transformations 3D lorsque le parent est transformé</strong>, n'est tout simplement pas reconnue dans ce navigateur.</p>
+
+<p>Cette propriété peut être facultative dans le cas de transformations simples (un seul élément), mais devient nécessaire dès lors que l'on souhaite appliquer une transformation commune à un ensemble d'éléments, comme lors de la création du fameux effet Flip-Card (pourtant simple).</p>
+
+<p>Sur le site de Microsoft, il est expliqué clairement:</p>
+
+<blockquote>
+  <p>Pour le moment, Internet Explorer ne supporte pas le mot-clé <code>preserve-3d</code> sur la propriété <code>transform-style</code>. Vous pouvez contourner ce comportement en additionnant manuellement les transformations du parent à chaque élément à transformer.</p>
+</blockquote>
+
+<p>OK. Alors allons-y...</p>
+
+<h2>L'effet Flip-Card</h2>
+
+<p>Voici un effet flip-card «classique»:</p>
+
+<p><p data-height="350" data-theme-id="0" data-slug-hash="Jexso" data-user="iamvdo" data-default-tab="result" class="codepen">See the Pen <a href="http://codepen.io/iamvdo/pen/Jexso">Jexso</a> by iamvdo (<a href="http://codepen.io/iamvdo">@iamvdo</a>) on <a href="http://codepen.io">CodePen</a></p><script async src="//codepen.io/assets/embed/ei.js"></script></p>
+
+<p>Notre démo est donc ici composée:</p>
+
+<ul>
+<li>d'un élement <code>.scene</code> qui contient un élément <code>.flip</code></li>
+<li>l'élément .flip contient les 2 éléments <code>.avant</code> et <code>.arriere</code></li>
+<li>ces 2 éléments sont placés l'un sur l'autre et <code>.arriere</code> est transformé de 180deg sur l'axe X pour l'afficher à l'envers. Les faces arrières sont masquées.</li>
+</ul>
+
+<p>Lors du survol de <code>.scene</code>, l'élément <code>.flip</code> est transformé de 180deg sur l'axe X également pour créer le retournement. <strong>Sans oublier de préciser <code>transform-style: preserve-3d</code> sur <code>.flip</code> pour que l'élément imbriqué <code>.arriere</code> subisse la transformation du parent.</strong>
+</span></p>
+
+<pre><code>.scene{
+    perspective: 600px;
+}
+.flip{
+    transform-style: preserve-3d;
+}
+.avant,
+.arriere{
+    position: absolute;
+    backface-visibility: hidden;
+}
+.avant{
+    background: tomato;
+}
+.arriere{
+    background: deepskyblue;
+    transform: rotateX(180deg);
+}
+.scene:hover .flip{
+    transform: rotateX(180deg);
+}
+</code></pre>
+
+<p>Ce code fonctionne dans tous les navigateurs supportant les transformations 3D. Pour IE10, il faut se passer de <code>transform-style</code> et répercuter la transformation du parent sur les enfants. Il nous faut donc:</p>
+
+<ul>
+<li>lors du survol de <code>.scene</code>, transformer de 180deg sur l'axe X l'élément <code>.avant</code> (0 +180)</li>
+<li>lors du survol de <code>.scene</code>, transformer de 360deg sur l'axe Y l'élément <code>.arriere</code> (180 + 180)</li>
+<li>ôter (ou mettre en commentaire) <code>transform-style: preserve-3d;</code></li>
+</ul>
+
+<p>Le code CSS final devient donc:</p>
+
+<pre><code>.scene{
+    perspective: 600px;
+}
+.flip{
+    /* transform-style: preserve-3d; */
+}
+.avant,
+.arriere{
+    position: absolute;
+    backface-visibility: hidden;
+}
+.avant{
+    background: tomato;
+}
+.arriere{
+    background: deepskyblue;
+    transform: rotateX(180deg);
+}
+.scene:hover .avant{
+    transform: rotateX(180deg);
+}
+.scene:hover .arriere{
+    transform: rotateX(360deg);
+}
+</code></pre>
+
+<p><strong>Edit 04/06/2013</strong>: En tout cas, c'est ce que l'on pourrait croire! (Merci à Johan dans les commentaires pour avoir remonté un bug)</p>
+
+<p>En fait, c'est plus compliqué que cela. IE10 a un comportement étrange lors de l'utilisation de <code>backface-visibility</code> et de <code>perspective</code>. Lors de l'animation, les faces arrières ne sont tout simplement pas masquées. Pour contrer ce problème, il nous faut alors définir les perspectives sur chaques éléments transformés, en utilisant la fonction <code>perspective()</code> prévue pour cela.</p>
+
+<p>De plus, il est préférable de définir les transformations initiales, même lorsque qu'il n'y a pas de rotation à effectuer. Le code final, compatible IE10 devient donc:</p>
+
+<pre><code>.scene{
+    /* perspective: 600px; devient inutile */
+}
+.flip{
+    /* transform-style: preserve-3d; */
+}
+.avant,
+.arriere{
+    position: absolute;
+    backface-visibility: hidden;
+}
+.avant{
+    background: tomato;
+    transform: perspective(600px) rotateX(0);
+}
+.arriere{
+    background: deepskyblue;
+    transform: perspective(600px) rotateX(180deg);
+}
+.scene:hover .avant{
+    transform: perspective(600px) rotateX(180deg);
+}
+.scene:hover .arriere{
+    transform: perspective(600px) rotateX(360deg);
+}
+</code></pre>
+
+<p>Et voici le rendu final (identique à l'effet précédent mais compatible IE10!):</p>
+
+<p data-height="350" data-theme-id="0" data-slug-hash="ynqIp" data-user="iamvdo" data-default-tab="result" class="codepen">See the Pen <a href="http://codepen.io/iamvdo/pen/ynqIp">ynqIp</a> by iamvdo (<a href="http://codepen.io/iamvdo">@iamvdo</a>) on <a href="http://codepen.io">CodePen</a></p>
+
+<h2>Conclusion</h2>
+
+<p>Ce petit manque d'IE10 peut s'avérer vite pénible, notamment dans le cas d'imbrications complexes où chaque transformation doit alors se répercuter sur chaque enfant. Et le fait de devoir définir plusieurs fois la perspective rend la maintenance vraiment difficile.</p>
+
+<p>Je ne sais pas personnellement pourquoi IE10 n'implémente pas cette valeur pourtant si pratique (performance? politique?). Et vous, connaissez-vous la raison?</p>
+
+<p><strong>Edit 02/07/2013</strong>: IE11 n'ajoute toujours pas le support de <code>transform-style: preserve-3d</code>.</p>
+]]></description>      
+            
+    </item>
+            
+  </channel>
+</rss>

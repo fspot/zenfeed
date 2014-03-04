@@ -1,0 +1,2354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title>hveem.no</title>
+  <link href="http://hveem.no/"/>
+  <updated>2014-02-17T19:36:45Z</updated>
+  <author>
+    <name>Tor Hveem</name>
+  </author>
+  <link rel="self" href="http://hveem.no/feed/" />
+  <id>http://hveem.no/</id>
+  <entry>
+    <title>a modern IRC experience</title>
+    <id>http://hveem.no/a-modern-IRC-experience</id>
+    <content type="html">
+&lt;h2&gt;A modern IRC experience&lt;/h2&gt;
+
+&lt;p&gt;IRC is still the king for group chat in online communities, but it has a few problems when comparing to &quot;modern&quot; internet services. Historically, the most common solution to being connected and not miss messages is to have a CLI client (ircII, BitchXI, irssi, WeeChat) running on a computer always in a terminal multiplexer (screen, tmux) and then connect to that using SSH.&lt;/p&gt;
+
+&lt;p&gt;Today there exists multiple different ways to get a more modern experience. While web frontends for IRC are not a new thing, historically they were not able to provide a good experience. But in my opinion, web clients are now able to compete with CLI apps in ways of bringing a powerful and usable chat experience. &lt;/p&gt;
+
+
+&lt;p&gt;There are many products and services available bringing IRC experience to the web. I have put togheter a list of popular services (that I know of): &lt;a href=&quot;http://irccloud.com&quot;&gt;http://irccloud.com&lt;/a&gt;, &lt;a href=&quot;http://hipchat.com&quot;&gt;http://hipchat.com&lt;/a&gt;, &lt;a href=&quot;http://grove.io&quot;&gt;http://grove.io&lt;/a&gt;, &lt;a href=&quot;https://campfirenow.com/&quot;&gt;https://campfirenow.com/&lt;/a&gt;, &lt;a href=&quot;https://github.com/kandanapp/kandan&quot;&gt;https://github.com/kandanapp/kandan&lt;/a&gt;). While these services can be great for many users, the problems I have are that they are either non-free (as in freedom), too pricey or the wrong fit if you aren&apos;t an organization, and some provide IRC like functionality without being IRC, which means you are chatting in a silo, or have limited interopability / flexibility.  &lt;/p&gt;
+
+&lt;p&gt;The good things these services have going for them is things like ease of use, good cross platform support (Android, iOS, etc), good user interfaces, embedding content (images, videos), better visual experience, and more. So I have a quest to bring some of these features to IRC using free software.&lt;/p&gt;
+
+&lt;p&gt;Another common way of being connected to IRC all the time is to use a &lt;em&gt;bouncer&lt;/em&gt; (e.g. &lt;a href=&quot;http://wiki.znc.in/ZNC&quot;&gt;http://wiki.znc.in/ZNC&lt;/a&gt;) which also solves some of the same problems, but as bouncers commonly work using the IRC protocol itself, they struggle to achieve the same capabilities as WeeChat can provide using its own relay protocol. You can think of WeeChat + relay plugin as a super advanced and capable &lt;em&gt;bouncer&lt;/em&gt; in addition to being a full client.&lt;/p&gt;
+
+&lt;h2&gt;The software&lt;/h2&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;&lt;a href=&quot;http://weechat.org&quot;&gt;WeeChat&lt;/a&gt; is a fast, light and extensible CLI chat client. It runs on many platforms like Linux, Unix, BSD, GNU Hurd, Mac OS X and Windows. It can support multiple protocols, is modular, has support for plugin in many languages (C, Python, Perl, Ruby, Lua, Tcl and Scheme), free software (GPLv3), strong and active community.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The biggest reason why we use WeeChat as backend client for a HTML5 frontend is that its relay plugin allows us to directly connect from the browser using Websockets. This means that the client does not need a special &quot;backend service&quot;, as all that is provided by the IRC client itself.&lt;/p&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;&lt;a href=&quot;http://cormier.github.io/glowing-bear/&quot;&gt;Glowing bear&lt;/a&gt; is a HTML5 web frontend for WeeChat that strives to be a modern and slick interface on top of WeeChat. It relies on WeeChat to do all the heavy lifting (connection, servers, history, etc) and then provides a few features on top of that, like content embedding (images, video) and desktop notification. It has also rudimentary support for running as a Firefox app or Chrome app, which means that it is really cross platform. It should run just as great on Android, IOS as on a desktop computer.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+
+&lt;h2&gt;Screenshot&lt;/h2&gt;
+&lt;p&gt;Running as Chrome application in a separate window on Windows:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://hveem.no/ss/weechat-web-client720.png&quot; alt=&quot;Glowing bear screenshot&quot;/&gt;&lt;/p&gt;
+
+&lt;p&gt;Running as Firefox application on Android:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://hveem.no/ss/weechat-web-android720.png&quot; alt=&quot;Glowing bear android screenshot&quot;/&gt;&lt;/p&gt;
+
+&lt;h2&gt;How to get started with WeeChat and Glowing Bear&lt;/h2&gt;
+
+&lt;p&gt;This guide assumes you already have a server available where you can run WeeChat permanently.&lt;/p&gt;
+
+
+&lt;p&gt;&lt;strong&gt;How to get WeeChat connected to a server and be and ready for relay connection:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+    &lt;li&gt;Log in to your shell&lt;/li&gt;
+    &lt;li&gt;Make sure weechat is installed, and make sure the version is at least &lt;strong&gt;0.4.2&lt;/strong&gt; which is the lowest version supported by the web client. Check with command &lt;code&gt;weechat --version&lt;/code&gt; &lt;/li&gt;
+    &lt;li&gt;Start  WeeChat in a screen to leave i permanently running. &lt;code&gt;screen -S weechat weechat&lt;/code&gt;.  Older versions of WeeChat uses the executable &lt;code&gt;weechat-curses&lt;/code&gt; instead of &lt;code&gt;weechat&lt;/code&gt;.&lt;/li&gt;
+    &lt;li&gt;Add a server. I will use Freenode as an example: &lt;code&gt;/server add freenode chat.freenode.net/6667 -autoconnect&lt;/code&gt;&lt;/li&gt;
+    &lt;li&gt;Connect to IRC-server &lt;code&gt;/connect freenode&lt;/code&gt;&lt;/li&gt;
+    &lt;li&gt;Join a channel &lt;code&gt;/join #weechat&lt;/code&gt;&lt;/li&gt;
+    &lt;li&gt;Set up autojoin of channel &lt;code&gt;/set irc.server.freenode.autojoin #weechat&lt;/code&gt;&lt;/li&gt;
+    &lt;li&gt;Add a WeeChat relay that the web client will use  &lt;code&gt;/relay add weechat 40900&lt;/code&gt; You can choose any port you want instead of 40900.&lt;/li&gt;
+    &lt;li&gt;Set a password for relay clients  &lt;code&gt;/set relay.network.password YOURPASSWORD&lt;/code&gt;&lt;/li&gt;
+    &lt;li&gt;Save the settings you just entered &lt;code&gt;/save&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Configure WeeChat to be better&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+    &lt;li&gt;Enable many colors to use for nick coloring &lt;code&gt;/set weechat.color.chat_nick_colors &quot;22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201&quot;&lt;/code&gt;&lt;/li&gt;
+    &lt;li&gt;Use colors in nicklist: &lt;code&gt;/set irc.look.color_nicks_in_nicklist on&lt;/code&gt;&lt;/li&gt;
+    &lt;li&gt;Install script to get nick colors in chat lines too &lt;code&gt;/script install colorize_nicks.py&lt;/code&gt;&lt;/li&gt;
+    &lt;li&gt;Save the settings you just entered &lt;code&gt;/save&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Connect the web client&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+    &lt;li&gt;Navigate to the official hosted URL &lt;a href=&quot;http://cormier.github.io/glowing-bear/&quot;&gt;http://cormier.github.io/glowing-bear/&lt;/a&gt;. (You can also clone the GitHub repository &lt;a href=&quot;https://github.com/cormier/glowing-bear/&quot;&gt;https://github.com/cormier/glowing-bear/&lt;/a&gt; and host it yourself, it is only static files, no server setup required.)&lt;/li&gt;
+    &lt;li&gt;Enter the hostname of your server running WeeChat&lt;/li&gt;
+    &lt;li&gt;Enter the port you selected in the relay setup.&lt;/li&gt;
+    &lt;li&gt;Enter the password you chose in the relay setup.&lt;/li&gt;
+    &lt;li&gt;Click the usage instructions to get some information about key bindings.&lt;/li&gt;
+    &lt;li&gt;Connect!&lt;/li&gt;
+    &lt;li&gt;If you can&apos;t connect, check with command &lt;code&gt;/relay&lt;/code&gt; inside WeeChat to see incoming connection, if incoming connection is missing, check if firewalls are preventing access.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Further reading&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+    &lt;li&gt;WeeChat Quick Start : &lt;a href=&quot;http://weechat.org/files/doc/devel/weechat_quickstart.en.html&quot;&gt;http://weechat.org/files/doc/devel/weechat_quickstart.en.html&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;WeeChat FAQ : &lt;a href=&quot;http://weechat.org/files/doc/weechat_faq.en.html&quot;&gt;http://weechat.org/files/doc/weechat_faq.en.html&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;WeeChat Script list : &lt;a href=&quot;http://weechat.org/scripts/&quot;&gt;http://weechat.org/scripts/&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;WeeChat features with list of other front ends: &lt;a href=&quot;http://weechat.org/about/features/&quot;&gt;http://weechat.org/about/features/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Please join &lt;code&gt;#glowing-bear&lt;/code&gt; on Freenode if you want to chat with the developers of glowing bear.&lt;/p&gt;
+
+&lt;p&gt;Please join &lt;code&gt;#weechat&lt;/code&gt; on Freenode if you want to chat with the developers of WeeChat.&lt;/p&gt;
+
+
+
+
+</content>
+    <link rel="alternate" href="http://hveem.no/a-modern-IRC-experience" />
+    <updated>2014-02-17T19:36:45Z</updated>
+  </entry>
+  <entry>
+    <title>using docker as lua nginx appserver</title>
+    <id>http://hveem.no/using-docker-as-lua-nginx-appserver</id>
+    <content type="html">
+&lt;h2&gt;Getting started with Lua web development using docker as your Lua web application server&lt;/h2&gt;
+
+
+&lt;p&gt;In this blog post I will guide you through a path to getting you started with Lua web development by using the container technology software &lt;a href=&quot;http://docker.io/&quot; title=&quot;Docker&quot;&gt;Docker&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2&gt;Why &lt;a href=&quot;http://docker.io/&quot; title=&quot;Docker&quot;&gt;Docker&lt;/a&gt; ?&lt;/h2&gt;
+
+&lt;p&gt;From their web page:&lt;/p&gt;
+&lt;blockquote&gt;
+    &lt;p&gt;Docker is an open-source project to easily create lightweight, portable, self-sufficient containers from any application. The same container that a developer builds and tests on a laptop can run at scale, in production, on VMs, bare metal, OpenStack clusters, public clouds and more. &lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This means that we have an excellent way to reproduce and contain a development setup for the Lua project we will be creating that will not mess up your system the way most application package managers like npm, luarocks, virtualenv + easy_install/pip likes to do. Another major drawback with most application package managers are that they are not good at creating isolated enviroments, so you will have version conflicts or breakage if application1 wants a different version of a library than application2. Or like invirtualenv&apos;s case it will still be tied to the system in some ways.&lt;/p&gt;
+
+&lt;p&gt;The goal of this guide is to end up in this type of setup:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Internets =&amp;gt; nginx:80
+              |--&amp;gt; docker (app1):8080 
+              |       |--&amp;gt; nginx+lua: 8080
+              |--&amp;gt; docker (app2):8090
+              |       |--&amp;gt; nginx+lua: 8090
+              ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The point is that we use &lt;a href=&quot;http://docker.io/&quot; title=&quot;Docker&quot;&gt;Docker&lt;/a&gt; the way we normally would use an app server like uwsgi, gunicorn, nodejs, php5-fpm or similar.&lt;/p&gt;
+
+&lt;h2&gt;Why &lt;a href=&quot;http://openresty.org/&quot;&gt;Openresty&lt;/a&gt; ?&lt;/h2&gt;
+
+&lt;p&gt;A downside with running Lua(jit) inside your Nginx is that this is not enabled by default in most distributions of Nginx, and since Nginx does not (yet) support dynamic loading of modules which means a recompile of Nginx is needed to get support for running Lua. And while Nginx recompilation is really fast, and it while it supports hot code reload, it is still painful because of security and maintainability considerations.&lt;/p&gt;
+
+&lt;p&gt;To get Lua support in Nginx we will be using the Nginx-bundle called &lt;a href=&quot;http://openresty.org/&quot;&gt;Openresty&lt;/a&gt;. Openresty comes bundled with many Nginx and Lua modules useful for web development.&lt;/p&gt;
+
+&lt;h3&gt;Building our Dockerfile&lt;/h3&gt;
+
+
+&lt;p&gt;A Dockerfile is:&lt;/p&gt;
+&lt;blockquote&gt;
+    &lt;p&gt;Docker can act as a builder and read instructions from a text Dockerfile to automate the steps you would otherwise take manually to create an image. Executing docker build will run your steps and commit them along the way, giving you a final image&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;We will create a Dockerfile which sets up a Ubuntu with &lt;a href=&quot;http://openresty.org/&quot;&gt;Openresty&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Installation help for Ubuntu will be provided, if you use a different Linux distribution please find instructions here: &lt;a href=&quot;http://www.docker.io/gettingstarted/#h_installation&quot;&gt;http://www.docker.io/gettingstarted/#h_installation&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Installation of &lt;a href=&quot;http://docker.io/&quot; title=&quot;Docker&quot;&gt;Docker&lt;/a&gt; on Ubuntu with kernel 3.8 or newer:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo curl https://get.docker.io/gpg | sudo apt-key add -
+
+sudo sh -c &quot;echo deb http://get.docker.io/ubuntu docker main\
+echo deb &quot;echo deb http://get.docker.io/ubuntu docker main&quot; | sudo tee /etc/apt/sources.d/docker.list
+sudo apt-get update
+sudo apt-get install lxc-docker
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;Create a project directory, with logdir, nginx.conf and Dockerfile&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir helloproj
+mkdir helloproj/logs
+cd helloproj
+
+cat &amp;lt;&amp;lt;EOF &amp;gt; Dockerfile
+# Dockerfile for openresty
+# VERSION   0.0.1
+
+FROM ubuntu:12.04
+MAINTAINER Tor Hveem &amp;lt;tor@hveem.no&amp;gt;
+ENV REFRESHED_AT 2013-12-12
+
+RUN    echo &quot;deb-src http://archive.ubuntu.com/ubuntu precise main&quot; &amp;gt;&amp;gt; /etc/apt/sources.list
+RUN    sed -i /etc/apt/sources.list &apos;s/main$/main universe/&apos;
+RUN    apt-get update
+RUN    apt-get -y upgrade
+RUN    apt-get -y install wget vim git libpq-dev
+
+# Openresty (Nginx)
+RUN    apt-get -y build-dep nginx
+RUN    wget http://openresty.org/download/ngx_openresty-1.4.3.9.tar.gz
+RUN    tar xvfz ngx_openresty-1.4.3.9.tar.gz
+RUN    cd ngx_openresty-1.4.3.9 ; ./configure --with-luajit  --with-http_addition_module --with-http_dav_module --with-http_geoip_module --with-http_gzip_static_module --with-http_image_filter_module --with-http_realip_module --with-http_stub_status_module --with-http_ssl_module --with-http_sub_module --with-http_xslt_module --with-ipv6 --with-http_postgres_module --with-pcre-jit;  make ; make install
+
+EXPOSE 8080
+CMD /usr/local/openresty/nginx/sbin/nginx -p `pwd` -c nginx.conf
+
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;Build the image using our Dockerfile&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo docker build -t=&quot;torhve/openresty&quot; .
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This will create the contained environment which we then can re-use and launch for many projects later. The &lt;code&gt;-t&lt;/code&gt; flag is the name for the image, you can choose your own name here if you want, to help you refer to the image by name later. The name mostly matters if you want to share/submit your docker image to repositories, see: &lt;a href=&quot;http://docs.docker.io/en/latest/use/workingwithrepository/&quot;&gt;http://docs.docker.io/en/latest/use/workingwithrepository/&lt;/a&gt; for more information about that.&lt;/p&gt;
+
+
+&lt;h3&gt;Create a simple nginx.conf for the project&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;cat &amp;lt;&amp;lt;EOF &amp;gt; nginx.conf
+worker_processes 1;
+error_log stderr notice;
+daemon off;
+events {
+    worker_connections 1024;
+}
+
+http {
+    variables_hash_max_size 1024;
+    access_log off;
+    include /usr/local/openresty/nginx/conf/mime.types;
+    set_real_ip_from 127.0.0.1/8;
+    real_ip_header X-Real-IP;
+    charset utf-8;
+
+    server {
+        listen 8080;
+        lua_code_cache off;
+
+        location / {
+            default_type text/html;
+            content_by_lua_file &quot;app.lua&quot;;
+        }
+
+        location /static/ {
+            alias static/;
+        }
+    }
+}
+
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now we can start the docker image that we built. We will map the directory from the host to the container so you can continue to use your favorite editor and development environment from the host. Note that the nginx.conf and app lives outside the container, so you can re-use this container image for all of your lua projects.&lt;/p&gt;
+
+&lt;h3&gt;Run our newly created Docker image&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo docker run -t -i -p 8080:8080 -v=`pwd`:/helloproj -w=/helloproj torhve/openresty 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;-p&lt;/code&gt; expose the container port 8080 to the host port 8080.
+&lt;code&gt;-v&lt;/code&gt; is the shared directory.
+&lt;code&gt;-w&lt;/code&gt; is the working directoriy inside the container.
+&lt;code&gt;-t&lt;/code&gt; and &lt;code&gt;-i&lt;/code&gt; for interactive tty.
+&lt;code&gt;torhve/openresty&lt;/code&gt; is the name of the image. List images with &lt;code&gt;sudo docker images&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3&gt;Create the Hello World app.lua&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;cat &amp;lt;&amp;lt;EOF &amp;gt; app.lua
+ngx.say(&apos;Hello World!&apos;)
+ngx.exit(200)
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The nginx web server should now be serving content, lets confirm with &lt;code&gt;curl&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;curl http://127.0.0.1:8080/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Which should print:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Hello World!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Awesome!&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3&gt;Deploy&lt;/h3&gt;
+
+
+&lt;p&gt;To serve content to the internets let me show you to configure Nginx running on the host to get content from our helloproj Docker image. You could easily have two (or more!) running Docker process on different ports, one with &lt;code&gt;lua_code_cache on&lt;/code&gt; on one port for production, and one without it for development. Here is a simplistic nginx conf that will proxy the connections to the Docker image:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cat &amp;lt;&amp;lt;EOF &amp;gt; /etc/nginx/sites-enabled/helloproj.conf
+server {
+    listen 80;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080/;
+        proxy_set_header  X-Real-IP  $remote_addr;
+    }
+}
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Basically we just proxy every request to the container using the built in proxy feature of Nginx. We also use set the real IP header to the clients IP address so the contained Nginx process can see the client&apos;s IP address. &lt;/p&gt;
+
+&lt;p&gt;To extend/improve this setup you could set the root directory to be the same directory as the helloproj and then serve static content using the host nginx, and let the contained nginx only worry about dynamic content. It could also be extended to cache requests using one of the many Nginx caching techniques.&lt;/p&gt;
+
+&lt;p&gt;To start and keep your containers running you can use many different techniques, some viable solutions are systemd, supervisord, upstart, or just a good old initscript.&lt;/p&gt;
+
+&lt;h3&gt;Potential pitfalls&lt;/h3&gt;
+
+&lt;p&gt;Running two Nginxes will have an impact on performance compared to running a single app on a single front facing Nginx, because every request will be proxied. This is similar to what many app servers will also have to do in some ways, but usually one of the advantages of Lua (and php!) is that you can run your application directly inside the webserver without any proxying. So for instance if you have an application that handles large uploads you need to think about how you want to handle that. &lt;/p&gt;
+
+
+&lt;p&gt;The source for this guide is available in a &lt;a href=&quot;https://github.com/torhve/openresty-docker&quot;&gt;GitHub repository&lt;/a&gt;. Please fork and send changes if you have suggestions or improvements.&lt;/p&gt;
+
+
+
+</content>
+    <link rel="alternate" href="http://hveem.no/using-docker-as-lua-nginx-appserver" />
+    <updated>2013-12-19T17:03:57Z</updated>
+  </entry>
+  <entry>
+    <title>salt cli visualization using runner and outputter</title>
+    <id>http://hveem.no/salt-cli-visualization-using-runner-and-outputter</id>
+    <content type="html">
+&lt;h1&gt;Visualizations in CLI using a custom salt outputter&lt;/h1&gt;
+
+&lt;p&gt;As every sysadmin knows, shit happens. And when it does, you better identify the problem fast. And then you want to monitor the situation until it is resolved. The most common way is perhaps to just gather a ton of metrics, and graph it, and then find the relevant graphs. But sometimes you don&apos;t have the right metrics gathered, or you don&apos;t have time to find them all, but what you &lt;em&gt;do&lt;/em&gt; have is Salt Minion running on all your machines, and it can gather just the data you want, be it numbers of pending mails in mailqueue or number of MySQL connections, etc.&lt;/p&gt;
+
+&lt;p&gt;One problem with numbers is that they can be hard to read in a hurried situation, so I figured I&apos;d make a little tool to make CLI graphs out of number gathered using Salt remote execution to gather insights from numbers &lt;em&gt;quickly&lt;/em&gt;. A couple of hours of clackity clackity clack later, the block outputter was born!&lt;/p&gt;
+
+&lt;h2&gt;Screenshots&lt;/h2&gt;
+
+&lt;p&gt;Lets check how many CPUs these minions have:
+&lt;img src=&quot;http://hveem.no/ss/salt-blocks-run-1.png&quot; alt=&quot;Blocks&quot;/&gt;&lt;/p&gt;
+
+&lt;p&gt;Lets check the uptime:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://hveem.no/ss/salt-blocks-run-3.png&quot; alt=&quot;Blocks&quot;/&gt;&lt;/p&gt;
+
+&lt;p&gt;How many connections are opened:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://hveem.no/ss/salt-blocks-run-4.png&quot; alt=&quot;Blocks&quot;/&gt;&lt;/p&gt;
+
+&lt;p&gt;What is the Load ? 
+&lt;em&gt;Oops&lt;/em&gt;, looks like we have discovered a problem!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://hveem.no/ss/salt-blocks-run-2.png&quot; alt=&quot;Blocks&quot;/&gt;&lt;/p&gt;
+
+&lt;p&gt;Now that we have discovered the problem, monitor the load until problem is resolved by using the &lt;em&gt;watch&lt;/em&gt; command.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://hveem.no/ss/salt-blocks-run-5.png&quot; alt=&quot;Blocks&quot;/&gt;&lt;/p&gt;
+
+&lt;h2&gt;Further work&lt;/h2&gt;
+
+&lt;p&gt;Many metrics are always increasing, not just a current number. Examples of this would be network traffic, nginx requests, CPU usage. The blocks runner could use a --interval parameter and then use the &lt;em&gt;derivative&lt;/em&gt; value instead of the absolute to make a very simple network traffic monitor for example.&lt;/p&gt;
+
+&lt;p&gt;Right now salt runners does not have a nice way to use the targetting functions from salt regular, so I have not reimplemented anything but the standard globbing. I think salt runners itself should have that capability upstream, so runner writers does not have to reinvent their own targetting.&lt;/p&gt;
+
+&lt;p&gt;When the runner can be used in the interval style, it would be easy to instead of blocks use CLI sparklines instead and get a horizontal view. An example would be pinging hosts with network issues and getting sparklines with colors when they time out, etc.&lt;/p&gt;
+
+&lt;p&gt;The block outputter right now is fairly dumb. It should have the capability to parse any datastructure, right now it only supports 1 number per host, or a dict like the one that munin.run returns.&lt;/p&gt;
+
+&lt;h2&gt;Source&lt;/h2&gt;
+&lt;blockquote&gt;
+    &lt;p&gt;salt/runners/blocks.py&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code&gt;&apos;&apos;&apos;
+Simple runner that gathers data for the block outputter
+&apos;&apos;&apos;
+
+import distutils.version
+
+# Import salt libs
+import salt.client
+import salt.output
+
+def run(fun, arg=(), tgt=&apos;*&apos;):
+    client = salt.client.LocalClient(__opts__[&apos;conf_file&apos;])
+    if arg:
+        output = client.cmd(tgt, fun, expr_form=&apos;glob&apos;, arg=(arg,), timeout=__opts__[&apos;timeout&apos;])
+    else:
+        output = client.cmd(tgt, fun, expr_form=&apos;glob&apos;, timeout=__opts__[&apos;timeout&apos;])
+
+    salt.output.display_output(output, &apos;block&apos;, __opts__)
+    return output
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;salt/outputters/block.py&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code&gt;# -*-: coding: UTF-8 -*-
+&apos;&apos;&apos;
+Outputter that displays blocks for numbers, must be ran via runner to get proper extents
+&apos;&apos;&apos;
+# Import python libs
+from numbers import Number
+import curses
+import logging
+
+log = logging.getLogger(__name__)
+
+# Import salt libs
+import salt.utils
+
+def __virtual__():
+    return &apos;block&apos;
+
+class BlockDisplay(object):
+    &apos;&apos;&apos;
+    &apos;&apos;&apos;
+
+    def __init__(self, cols=80, block=&apos;█&apos;):
+        self.colors = salt.utils.get_colors(__opts__.get(&apos;color&apos;))
+        self.cols = cols
+        self.block = block
+        self.data = {}
+        self.minv = 9999999 
+        self.maxv = -1
+
+    def display(self, ret):
+        &apos;&apos;&apos;
+        Interate data, gather extent, push blocks
+        &apos;&apos;&apos;
+
+        def nval(val):
+            return float(val)
+
+        def colorize(s, color):
+            return &apos;{0}{1}{2}&apos;.format(self.colors[color], s, self.colors[&apos;ENDC&apos;])
+
+        def blocklen(val):
+            blocks = int((val/self.maxv * self.cols)+0.5)
+            return blocks
+
+        def procval(key, val):
+            try:
+                mval = nval(val)
+                self.minv = min(mval, self.minv)
+                self.maxv = max(mval, self.maxv)
+                self.data[key] = mval
+            except Exception, e:
+                log.debug(&apos;Cast error: {0}&apos;.format(e))
+                return
+
+        for host in sorted(ret):
+            hret = ret[host]
+            # only use first part of host, to not use as long line
+            host = host.split(&apos;.&apos;)[0]
+            if isinstance(hret, dict): 
+                for key in sorted(hret):
+                    if not key: continue
+                    val = hret[key]
+                    for metric in sorted(val):
+                        procval(host+&apos;:&apos;+metric, val[metric])
+            else:
+                # Will it float?
+                procval(host, hret)
+
+        if self.data:
+            out = str(self.minv) + &apos; &apos;*(self.cols-len(str(self.minv))-len(str(self.maxv))) + str(self.maxv) + &apos;\n&apos;
+            for key in sorted(self.data):
+                val = self.data[key]
+                # : used as a separator for multiple values for same host
+                if &apos;:&apos; in key:
+                    host, metric = key.split(&apos;:&apos;)
+                    host = colorize(host, &apos;GREEN&apos;)
+                    metric = colorize(metric, &apos;CYAN&apos;)
+                    tout = host + &apos;:&apos; + metric + &apos; &apos;
+                else:
+                    host = colorize(key, &apos;GREEN&apos;)
+                    tout = host + &apos; &apos;
+                blocknr = blocklen(val)-len(key)-len(str(val))-3
+                if blocknr &amp;lt; 1:
+                    blocknr = 1
+                blocks = self.block*blocknr
+                blockper = float(blocklen(val)) / self.cols * 100
+                if blockper &amp;lt; 50:
+                    blocks = colorize(blocks, &apos;LIGHT_GREEN&apos;)
+                elif blockper &amp;gt; 75:
+                    blocks = colorize(blocks, &apos;RED&apos;)
+                elif blockper &amp;gt;= 50:
+                    blocks = colorize(blocks, &apos;YELLOW&apos;)
+
+                out += tout + blocks + &apos; &apos; + str(val) + &apos;\n&apos;
+            return out
+
+def output(ret):
+    curses.setupterm()
+    cols = curses.tigetnum(&apos;cols&apos;)
+    block = BlockDisplay(cols)
+    return block.display(ret)
+&lt;/code&gt;&lt;/pre&gt;
+
+
+</content>
+    <link rel="alternate" href="http://hveem.no/salt-cli-visualization-using-runner-and-outputter" />
+    <updated>2013-04-13T17:56:59Z</updated>
+  </entry>
+  <entry>
+    <title>salt munin carbon graphite</title>
+    <id>http://hveem.no/salt-munin-carbon-graphite</id>
+    <content type="html">
+&lt;h1&gt;Reusing munin plugins to get metrics into graphite&lt;/h1&gt;
+
+&lt;p&gt;This is sort of part #3 of my previous blog articles &lt;a href=&quot;/vm-monitoring-using-salt-and-cubism&quot;&gt;vm monitoring using salt and cubism&lt;/a&gt; and &lt;a href=&quot;/salt-returner-for-carbon&quot;&gt;salt-returner-for-carbon&lt;/a&gt;.
+The new cog in the machine is getting metrics from &lt;a href=&quot;http://munin-monitoring.org/http://munin-monitoring.org/&quot;&gt;Munin&lt;/a&gt; since I already use Munin alot in my systems.&lt;/p&gt;
+
+&lt;h2&gt;Munin strengths and weaknesses&lt;/h2&gt;
+
+&lt;p&gt;Munin is pretty awesome, and has a ton of plugins for getting metrics from different stuff (for example checkout their contrib tree: &lt;a href=&quot;https://github.com/munin-monitoring/contrib/tree/master/plugins&quot;&gt;https://github.com/munin-monitoring/contrib/tree/master/plugins&lt;/a&gt;. It is also very easy to write new munin plugins.
+The usual way to run munin is to have a daemon on every node, and then the master will then poke each minion every fifth minute to refresh data and put it into its RRD-files.&lt;/p&gt;
+
+&lt;p&gt;By using the combination of &lt;a href=&quot;http://saltstack.org/&quot;&gt;Salt&lt;/a&gt; and &lt;a href=&quot;http://graphite.wikidot.com/&quot;&gt;Graphite&lt;/a&gt; we do not have to use the munin node daemon, and instead let salt push metrics to Graphite much more often. There&apos;s tons of other projects that also interfaces nicely with graphite, and there is also other projects that helps with integrating munin with graphite, but since I already have salt-minion and munin on all my nodes, why not reuse existing component.&lt;/p&gt;
+
+&lt;h2&gt;Salt Munin module&lt;/h2&gt;
+
+&lt;p&gt;I wrote a simple module for salt that uses the munin component &lt;em&gt;munin-run&lt;/em&gt; to execute a plugin and parse the output into data that salt understands. The module has been accepted into Salt upstream. The critical function looks like this:&lt;/p&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;salt/modules/munin.py&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;    muninout =  __salt__[&apos;cmd.run&apos;](&apos;munin-run &apos; + plugin)
+    data = {
+        plugin: {}
+    }
+    for line in muninout.split(&apos;\n&apos;):
+        if &apos;value&apos; in line: # This skips multigraph lines, etc
+            key, val = line.split(&apos; &apos;)
+            key = key.split(&apos;.&apos;)[0]
+            try:
+                # We only want numbers
+                val = float(val)
+                data[plugin][key] = val
+            except ValueError:
+                pass
+    return data
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can easily run this on the CLI if you want to get metrics.
+For example if you want to get the CPU stats from the CPU plugin:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;-&amp;gt; # salt salt\* munin.run cpu
+salt.demo.no:
+    ----------
+    cpu:
+        ----------
+        idle:
+            559160602.0
+        iowait:
+            1104395.0
+        irq:
+            73.0
+        nice:
+            140745.0
+        softirq:
+            491340.0
+        steal:
+            801498.0
+        system:
+            39399629.0
+        user:
+            27544876.0
+&lt;/code&gt;&lt;/pre&gt;
+
+
+&lt;h3&gt;Scheduling the munin to carbon pushing&lt;/h3&gt;
+
+&lt;p&gt;I am reusing the carbon returner as described in the previous blog article in the series, and using the salt minion scheudler to run and push the data. The following salt config will run the munin module every tenth second to push data to carbon/graphite.&lt;/p&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;/etc/salt/minion&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;schedule:
+  munin:
+    function: munin.run
+    args:
+      - cpu
+    seconds: 10
+    returner: carbon.returner
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As graphite users knows, there&apos;s many ways to display data, but this is an example of the result from the previous configuration using the default graphite browser.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://hveem.no/ss/salt-munin-graphite.png&quot; alt=&quot;Muningraphite&quot;/&gt;&lt;/p&gt;
+
+&lt;p&gt;The next logical step is combining this with Salt UI to dynamically define metrics you want to monitor into a dash board, so that you can easily define a screen that shows just the metric you want for solving a problem, or resolving a crisis etc. But that will be a blog article for another day.&lt;/p&gt;
+
+</content>
+    <link rel="alternate" href="http://hveem.no/salt-munin-carbon-graphite" />
+    <updated>2013-03-23T18:34:56Z</updated>
+  </entry>
+  <entry>
+    <title>salt xmpp gateway</title>
+    <id>http://hveem.no/salt-xmpp-gateway</id>
+    <content type="html">
+&lt;h1&gt;Salt Stack XMPP Gateway&lt;/h1&gt;
+
+&lt;p&gt;Salt is very &lt;em&gt;open ended&lt;/em&gt;. That is one attribute I love in the software I am using. One dictionary defines open ended like this:&lt;/p&gt;
+
+&lt;ol&gt;
+    &lt;li&gt;Not restrained by definite limits, restrictions, or structure.&lt;/li&gt;
+    &lt;li&gt;Allowing for or adaptable to change.&lt;/li&gt;
+    &lt;li&gt;Inconclusive or indefinite&lt;/li&gt;
+    &lt;li&gt;Allowing for a spontaneous, unstructured response: an open-ended question.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Except for that third point, that is pretty much the Salt Stack definition right there. Sorry for sounding like a salesman, but after using under 2 hours to build a simple XMPP gateway to control possibly thousands of minions, allow me to feel a little giddy.&lt;/p&gt;
+
+&lt;p&gt;Let me demonstrate, here we go!&lt;/p&gt;
+
+
+&lt;h2&gt;Prosody, a lightweight XMPP-server in Lua&lt;/h2&gt;
+
+&lt;p&gt;I have used Prosody in a couple of projects earlier, it&apos;s very light weight and easy to work with, it will serve perfectly for this proof of concept.&lt;/p&gt;
+
+&lt;p&gt;Install prosody&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; apt-get install prosody
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Configure prosody&lt;/p&gt;
+&lt;blockquote&gt;
+    &lt;p&gt;/etc/prosody/prosody.cfg.lua                        &lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;     admins = { &apos;admin@salt.demo.no&apos; }
+    &quot;watchregistrations&quot;; -- Alert admins of registrations
+allow_registration = true;
+VirtualHost &quot;salt.demo.no&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Restart prosody&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;service prosody restart
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This demo uses two XMPP-users, one admin-account that will control the other account, used by the gateway.&lt;/p&gt;
+
+&lt;p&gt;Add admin account, set a password&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;prosodyctl adduser admin@salt.demo.no
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Add salt account, set a passord&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;prosodyctl adduser salt@salt.demo.no
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;At this point you can log in with your XMPP client to admin@salt.demo.no to see if XMPP server is working.&lt;/p&gt;
+
+&lt;h2&gt;Salt API&lt;/h2&gt;
+
+&lt;p&gt;Salt API is a REST API for Salt, allowing you to interface with Salt over HTTP. For this demo I could have used python local-client directly. But using Salt API allows for separation of XMPP and salt, say if you want to build agents for thousands for minions, or just have nice separation.&lt;/p&gt;
+
+&lt;p&gt;Configure salt api (check Salt API docs for details)&lt;/p&gt;
+&lt;blockquote&gt;
+    &lt;p&gt;/etc/salt/master&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;rest_cherrypy:
+  port: 8000
+  ssl_crt: /etc/pki/tls/certs/localhost.crt
+  ssl_key: /etc/pki/tls/certs/localhost.key
+  debug: True 
+
+external_auth:
+   pam:
+     xmppuser:
+       - test.*
+       - status.*
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Start salt-api&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;salt-api
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We allow the XMPP-gateway user to use two salt modules: test and status (e.g. test.version, status.uptime)&lt;/p&gt;
+
+&lt;p&gt;Add the user xmppuser:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;adduser xmppuser
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Install XMPP library for python&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;apt-get install python-xmpp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;The Salt XMPP gateway script&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;Note&lt;/em&gt;: This is just a demo, and not meant for production usage. 
+The gateway script fires up a master bot and 1 minion bot for every minion. It will start off by trying to register a new account in-band for every minion and then send a message to the specified admin reporting in that it&apos;s ready for duty.
+The gateway has one command &lt;em&gt;minions&lt;/em&gt; to list all the minions. All other text is treated as a function, e.g. &lt;em&gt;test.version&lt;/em&gt;
+If you talk to a minion, it will run the command for that minion, if you talk to the master, it will run command on all minions.
+I have no idea on how this scales, as python will start a thread for each minion, eventually this will all break. My tests are for a small set of minions. &lt;/p&gt;
+
+&lt;p&gt;Screenshots below!&lt;/p&gt;
+
+&lt;h3&gt;Installation&lt;/h3&gt;
+
+&lt;p&gt;First adapt my configuration into your needs and save it to the file config.yaml:&lt;/p&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;config.yaml&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code&gt;saltapiurl: &apos;http://localhost:8000/&apos;  
+saltuser: &apos;xmppuser&apos;                  
+saltpass: &apos;73Hengebruer&apos;         
+xmppadminuser: &apos;admin@salt.demo.no&apos; 
+stripdomain: &apos;.demo.no&apos;             
+username: &apos;salt@salt.demo.no&apos;       
+password: &apos;66Kjensleuttrykket&apos;      
+&lt;/code&gt;&lt;/pre&gt;
+
+
+&lt;p&gt;Then I wrote a simple Salt REST API python client. It&apos;s inspired by the pepper utility that will eventually do that, but it&apos;s not finished yet.&lt;/p&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;saltrest.py&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;import urllib
+import urllib2
+from cookielib import CookieJar
+import json
+
+HEADERS = {
+    &apos;Accept&apos;: &apos;application/json&apos;,
+    &apos;Content-Type&apos;: &apos;application/json&apos;,
+    &apos;X-Requested-With&apos;: &apos;XMLHttpRequest&apos;,
+}
+cj = CookieJar()
+class MyHTTPRedirectHandler(urllib2.HTTPRedirectHandler):
+    def http_error_302(self, req, fp, code, msg, headers):
+        # patch headers to include salt token
+        token = headers[&apos;X-Auth-Token&apos;]
+        HEADERS[&apos;X-Auth-Token&apos;] = token
+        return urllib2.HTTPRedirectHandler.http_error_302(self, req, fp, code, msg, headers)
+
+    http_error_301 = http_error_303 = http_error_307 = http_error_302
+cookieprocessor = urllib2.HTTPCookieProcessor(cj)
+
+opener = urllib2.build_opener(MyHTTPRedirectHandler, cookieprocessor)
+urllib2.install_opener(opener)
+
+class SaltREST(object):
+
+    def __init__(self, config):
+        self.config = config
+        self.login()
+
+    def login(self):
+        lowstate_login =[{
+            &apos;eauth&apos;: &apos;pam&apos;,
+            &apos;username&apos;: self.config[&apos;saltuser&apos;],
+            &apos;password&apos;: self.config[&apos;saltpass&apos;],
+        }]
+        postdata = json.dumps(lowstate_login).encode()
+
+        req = urllib2.Request(self.config[&apos;saltapiurl&apos;]+&apos;login&apos;, postdata, HEADERS)
+        f = urllib2.urlopen(req)
+        return f.read()
+
+    def get_minions(self):
+
+        lowstate = [{
+            &apos;client&apos;: &apos;local&apos;,
+            &apos;tgt&apos;: &apos;*&apos;,
+            &apos;fun&apos;: &apos;test.version&apos;,
+        }]
+
+        postdata = json.dumps(lowstate).encode()
+        req = urllib2.Request(self.config[&apos;saltapiurl&apos;]+&apos;&apos;, postdata, HEADERS)
+        f = urllib2.urlopen(req)
+        ret = json.loads(f.read())
+        # Format minions as a list with minion FQDNs
+        ret = [x.replace(self.config[&apos;stripdomain&apos;], &apos;&apos;) for x in ret[&apos;return&apos;][0].keys()]
+        return ret
+
+    def call(self, lowstate):
+        postdata = json.dumps(lowstate).encode()
+        req = urllib2.Request(self.config[&apos;saltapiurl&apos;], postdata, HEADERS)
+        f = urllib2.urlopen(req)
+        ret = json.loads(f.read())
+        return ret
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is the botherder script:&lt;/p&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;salt-xmpp.py&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;import sys
+import os
+import xmpp
+from threading import Thread, Event
+import yaml
+
+# Our Salt REST API
+import saltrest
+
+# flag to tell all threads to stop
+_stop = Event()
+
+
+def single_node_xmpp_outputter(ret):
+    ret = ret[&apos;return&apos;][0]
+    fret = &apos;&apos;
+    for host, val in ret.items():
+        fret += &apos;%s\n&apos; %val
+    return fret
+
+def xmpp_outputter(ret):
+    ret = ret[&apos;return&apos;][0]
+    fret = &apos;&apos;
+    for host, val in ret.items():
+        fret += &apos;%s: %s\n&apos; %(host.replace(CONFIG[&apos;stripdomain&apos;], &apos;&apos;), val)
+    return fret
+
+
+def masterMessageCB(conn, mess):
+    text=mess.getBody()
+    user=mess.getFrom()
+    jid = xmpp.protocol.JID(user).getStripped()
+    print &apos;Got command:&apos;, text
+    if jid == CONFIG[&apos;xmppadminuser&apos;]:
+        if text == &apos;minions&apos;:
+            # make a nice list
+            conn.send(xmpp.Message(mess.getFrom(), &apos;, &apos;.join(MINIONS)))
+        else:
+            lowstate = [{
+                &apos;client&apos;: &apos;local&apos;,
+                &apos;tgt&apos;: &apos;*&apos;,
+                &apos;fun&apos;: text,
+            }]
+            ret = xmpp_outputter(salt.call(lowstate))
+            conn.send(xmpp.Message(mess.getFrom(), ret) )
+
+
+def make_msg_handler(tgt):
+    def minionCB(dispatcher, mess):
+        print &apos;[%s] %s&apos; % (dispatcher._owner.Resource, mess)
+        text=mess.getBody()
+        user=mess.getFrom()
+        jid = xmpp.protocol.JID(user).getStripped()
+        if jid == CONFIG[&apos;xmppadminuser&apos;]:
+            lowstate = [{
+                &apos;client&apos;: &apos;local&apos;,
+                &apos;tgt&apos;: tgt + CONFIG[&apos;stripdomain&apos;],
+                &apos;fun&apos;: text,
+            }]
+            ret = single_node_xmpp_outputter(salt.call(lowstate))
+            dispatcher.send(xmpp.Message(mess.getFrom(), ret) )
+    return minionCB
+
+
+def startminion(username, password):
+    jid=xmpp.protocol.JID(username)
+    cli=xmpp.Client(jid.getDomain(), debug=False)
+    cli.connect()
+
+
+    should_register = True
+    if should_register:
+        # getRegInfo has a bug that puts the username as a direct child of the
+        # IQ, instead of inside the query element.  The below will work, but
+        # won&apos;t return an error when the user is known, however the register
+        # call will return the error.
+        xmpp.features.getRegInfo(cli,
+                                 jid.getDomain(),
+                                 #{&apos;username&apos;:jid.getNode()},
+                                 sync=True)
+
+        if xmpp.features.register(cli,
+                                  jid.getDomain(),
+                                  {&apos;username&apos;:jid.getNode(),
+                                   &apos;password&apos;:password}):
+            sys.stderr.write(&quot;Successfully register: %s!\n&quot; %jid.getNode())
+        else:
+            sys.stderr.write(&quot;Error while registering: %s\n&quot; %jid.getNode())
+
+    authres=cli.auth(jid.getNode(),password)
+    if not authres:
+        print &quot;Unable to authorize %s - check login/password.&quot; %jid.getNode()
+        return None
+        #sys.exit(1)
+    if authres&amp;lt;&amp;gt;&apos;sasl&apos;:
+        print &quot;Warning: unable to perform SASL auth.  Old authentication method used!&quot;
+    cli.RegisterHandler(&apos;message&apos;, make_msg_handler(jid.getNode()))
+    cli.sendInitPresence()
+    cli.send(xmpp.protocol.Message(CONFIG[&apos;xmppadminuser&apos;],&apos;Hello, Salt minion %s reporting for duty.&apos; %jid.getNode()))
+
+    return cli
+
+def startmaster(username, password):
+
+    jid=xmpp.protocol.JID(username)
+    cli=xmpp.Client(jid.getDomain(), debug=False)
+    cli.connect()
+
+    authres=cli.auth(jid.getNode(),password)
+    if not authres:
+        print &quot;Unable to authorize - check login/password.&quot;
+        sys.exit(1)
+    if authres&amp;lt;&amp;gt;&apos;sasl&apos;:
+        print &quot;Warning: unable to perform SASL auth.  Old authentication method used!&quot;
+    cli.RegisterHandler(&apos;message&apos;, masterMessageCB)
+    cli.sendInitPresence()
+    cli.send(xmpp.protocol.Message(CONFIG[&apos;xmppadminuser&apos;],&apos;Salt gateway ready for action.&apos;))
+    return cli
+
+def process_until_disconnect(bot):
+    ret = -1
+    while ret != 0 and not _stop.is_set():
+        ret = bot.Process(1)
+
+
+root = os.path.dirname(os.path.abspath(__file__))
+CONFIG = yaml.safe_load(file(root+&apos;/config.yaml&apos;).read())
+salt = saltrest.SaltREST(CONFIG)
+# Get minions so we can create bots, uses test.ping to get minion list
+MINIONS = salt.get_minions()
+username = CONFIG[&apos;username&apos;]
+password = CONFIG[&apos;password&apos;]
+_stop.clear()
+
+# Start master
+masterbot = startmaster(username, password)
+try:
+    Thread(target=process_until_disconnect, args=(masterbot,)).start()
+    for minion in MINIONS:
+        minionbot = startminion(minion+&apos;@salt.idrift.no&apos;, &apos;sharedbotpwfordemo&apos;)
+        if minionbot:
+            Thread(target=process_until_disconnect, args=(minionbot,)).start()
+    # Block main thread waiting for KeyboardInterrupt
+    #while True:
+    #    pass
+except KeyboardInterrupt:
+    _stop.set()
+    print &quot;Bye!&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+
+
+
+&lt;h5&gt;Jitsi client showing the chat session with the Salt XMPP gateway&lt;/h5&gt;
+&lt;p&gt;&lt;img src=&quot;http://hveem.no/ss/salt-xmpp.png&quot; alt=&quot;Master chat&quot;/&gt;&lt;/p&gt;
+&lt;h5&gt;Jitsi client showing the chat session with a salt minion&lt;/h5&gt;
+&lt;p&gt;&lt;img src=&quot;http://hveem.no/ss/salt-xmpp-minion.png&quot; alt=&quot;Minion chat&quot;/&gt;&lt;/p&gt;
+
+&lt;p&gt;Source: &lt;a href=&quot;https://github.com/torhve/salt-xmpp&quot;&gt;https://github.com/torhve/salt-xmpp&lt;/a&gt;&lt;/p&gt;
+
+</content>
+    <link rel="alternate" href="http://hveem.no/salt-xmpp-gateway" />
+    <updated>2013-03-20T19:47:44Z</updated>
+  </entry>
+  <entry>
+    <title>raspberry pi davis vue weather station with custom frontend</title>
+    <id>http://hveem.no/raspberry-pi-davis-vue-weather-station-with-custom-frontend</id>
+    <content type="html">
+&lt;h1&gt;My weather station project&lt;/h1&gt;
+
+&lt;p&gt;This page is the documentation for how I set up my weather station with my home made front end for modern HTML5 visualizations.
+The reason for building my own frontend is simply that I find all the free software for weather displays very lacking in presentation and features. I built my own frontend with goals of being responsive, so both small (mobile) and huge screens would get pretty graphs. All the layout is thus responsive design, with SVG vectorized graphics for the visualizations. There&apos;s also some JavaScript to detect screen size and make some adjumestments to the page to get it all to work smoothly on all screen sizes. The frontend is still very much a work in progress, but supports the most critical features of displaying live current weather and different graphs of historic data, with records.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Note:&lt;/em&gt; This document is a work in progress and will have a few weak parts until I have worked out a few kinks, etc.&lt;/p&gt;
+
+&lt;h2&gt;Prequisites&lt;/h2&gt;
+
+&lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Raspbery PI&lt;/strong&gt; for fetching data from weather station, grabbing pictures from web camera and pushing to the web.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;A weaher station&lt;/strong&gt; (This guide is using Davis Vantage Vue)&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;A web and database server host&lt;/strong&gt; (With a public reacable address, running Ubuntu/Nginx/OpenResty/Postgresql)&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;A web camera&lt;/strong&gt;, for still images and timelapse (I bought a Microsoft LifeCam Studio HD)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Components&lt;/h2&gt;
+
+&lt;ul&gt;
+    &lt;li&gt;Raspbian&lt;/li&gt;
+    &lt;li&gt;Openvpn for secure transfer to web/database server&lt;/li&gt;
+    &lt;li&gt;Weewx&lt;/li&gt;
+    &lt;li&gt;some python glue&lt;/li&gt;
+    &lt;li&gt;my weather frontend in lua+postgresl &lt;a href=&quot;http://github.com/torhve/amatyr&quot;&gt;AmatYr&lt;/a&gt; running on a web server&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Installation&lt;/h2&gt;
+
+&lt;p&gt;The guide is a bit terse and written in a style that expects familiarity with linux, and will only list the specifics.&lt;/p&gt;
+
+&lt;h4&gt;Log in to raspberry PI&lt;/h4&gt;
+&lt;p&gt;Install all the dependencies. Some of these are only extra deps required of weewx if you intend to use its own weather page generation. I believe you can skip cheetah, imaging and pyephem.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install python-configobj 
+sudo apt-get install python-serial
+sudo apt-get install python-cheetah 
+sudo apt-get install python-imaging 
+sudo apt-get install python-psycopg2
+
+sudo apt-get install python-dev
+sudo apt-get install python-pip
+sudo pip install pyephem
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;Install weewx&lt;/h4&gt;
+
+&lt;p&gt;Find the latest wersion from weewx download page.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;wget -O weewx.tar.gz http://sourceforge.net/projects/weewx/files/weewx-2.1.1.tar.gz/download
+tar xvfz weewx.tar.gz
+cd weewx*
+sudo ./setup.py install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then download my postgresql patch and apply it.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;wget http://hveem.no/weewx-2.1.1.postgresql.patch ; patch -p1 &amp;lt; weewx-2.1.1.postgresql.patch
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;Configure weewx&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /home/weewx
+sudo chown -R pi /home/weewx 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Configure weewx to match your needs and wants. I use metric system, and disable every weewx&apos;s own generation tools.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;vim weewx.conf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We also need our specific database setup for amatyr frontend. Note that my patch for weewx for postgresql is at this point incomplate and only supports the archive database. I am in the process of figuring out the statsdb and getting it to work with postgresql.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[StdArchive]
+archive_database = archive_psql
+stats_database = stats_psql
+
+[[archive_psql]]
+    host = 10.9.36.1
+    user = wwex
+    password = wwexwwex
+    database = weewx
+    driver = weedb.postgresql
+
+[[stats_psql]]
+    host = 10.9.36.1
+    user = weewx
+    password = wwexwwex
+    database = stats
+    driver = weedb.postgresql
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can do additonal davis specific settings with the next command, like setting altimeter, correct date/time, etc.
+The important part for me is to set the archive interval to 60 seconds to log to database every 60 seconds.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;./bin/config_vp.py weewx.conf --help
+./bin/config_vp.py weewx.conf --set-interval 60
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Configure weewx to start on boot&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo cp /home/weewx/start_scripts/Debian/weewx /etc/init.d 
+sudo chmod +x /etc/init.d/weewx 
+sudo update-rc.d weewx defaults 98 
+sudo /etc/init.d/weewx start
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;Install and configure openvpn server on the web server&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;apt-get install openvpn
+mkdir /etc/openvpn/keys
+openvpn --genkey --secret /etc/openvpn/keys/raspberry.key
+
+cat &amp;lt;&amp;lt;EOF &amp;gt;&amp;gt; /etc/openvpn/raspberry.conf
+dev tun
+ifconfig 10.9.36.1 10.9.36.2
+secret keys/raspberry.key
+keepalive 1 60
+ping-timer-rem
+persist-tun
+persist-key
+comp-lzo
+fast-io
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;Install and configure openvpn client on the raspberry&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install openvpn
+sudo mkdir /etc/openvpn/keys
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Transfer the static key from the web server&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo scp -p web-server-ip:/etc/openvpn/keys/raspberry.key /etc/openvpn/keys/raspberry.key
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Set client conf&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cat &amp;lt;&amp;lt;EOF &amp;gt;&amp;gt; /etc/openvpn/raspberry.conf
+remote web-server-ip
+dev tun
+ifconfig 10.9.36.2 10.9.36.1
+secret keys/raspberry.key
+keepalive 1 60
+ping-timer-rem
+persist-tun
+persist-key
+comp-lzo
+nobind
+float
+fast-io
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;Install postgresql database on the webserver&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install postgresql-server
+sudo -u postgresql psql postgres
+create user wwex with password &apos;wwexwwex&apos;;
+alter role wwex createdb;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Alter posgresql.conf to listen to IP&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;listen_addresses = &apos;17.0.0.1,10.9.36.1&apos;        # what IP address(es) to listen on;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Alter pga_hba.conf to allow connection for IP&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;host all   all 10.9.36.2 md5
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;Start weewx and check that it&apos;s logging OK&lt;/h4&gt;
+
+&lt;p&gt;You should see successful pushes to database in the logfile after you run these commands:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;service weewx start
+tail -f /var/log/messages
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4&gt;Install &lt;a href=&quot;http://github.com/torhve/amatyr&quot;&gt;AmatYr&lt;/a&gt; on the web server&lt;/h4&gt;
+
+&lt;p&gt;Read its own &lt;a href=&quot;https://github.com/torhve/Amatyr/blob/master/README.md&quot;&gt;Readme&lt;/a&gt; over at github. Fair warning, project is still in a bit of flux so expect some errors in the doc.&lt;/p&gt;
+
+&lt;h2&gt;A few pictures of the setup&lt;/h2&gt;
+
+&lt;h6&gt;My dad installing the weather sensore suite&lt;/h6&gt;
+&lt;p&gt;&lt;img src=&quot;http://hveem.no/davis.jpg&quot; alt=&quot;The weather station sensor&quot;/&gt;&lt;/p&gt;
+&lt;h6&gt;The wireless antenna for sending the signal to the internets&lt;/h6&gt;
+&lt;p&gt;&lt;img src=&quot;http://hveem.no/antenne.jpg&quot; alt=&quot;The wireless antenna to send the signal back home&quot;/&gt;&lt;/p&gt;
+&lt;h6&gt;The Raspberry PI connected to a wireless repeater, a web camera and the weather station console&lt;/h6&gt;
+&lt;p&gt;&lt;img src=&quot;http://hveem.no/weatherconsole.jpg&quot; alt=&quot;The weather station console and raspberry pi&quot;/&gt;&lt;/p&gt;
+
+&lt;p&gt;You can visit my own weather site at &lt;a href=&quot;http://yr.hveem.no/&quot;&gt;yr.hveem.no&lt;/a&gt;&lt;/p&gt;
+
+
+
+</content>
+    <link rel="alternate" href="http://hveem.no/raspberry-pi-davis-vue-weather-station-with-custom-frontend" />
+    <updated>2013-02-08T16:29:11Z</updated>
+  </entry>
+  <entry>
+    <title>salt icinga nrpe replacement</title>
+    <id>http://hveem.no/salt-icinga-nrpe-replacement</id>
+    <content type="html">
+&lt;h1&gt;How I taught Icinga how to use Salt Stack for asynchrynous distributed passive checks&lt;/h1&gt;
+&lt;p&gt; &lt;strong&gt;a NRPE replacement&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2&gt;Overview&lt;/h2&gt;
+
+&lt;p&gt;The usual way for Icinga/Nagios to run checks that run on the target OS it&apos;s checking is to use the NRPE agent daemon installed on the target OS, and then icinga forks all day long to run check_nrpe and communicating directly with the remote agent. This works, but I never liked it. It&apos;s inefficient/slow and doesn&apos;t scale very well.
+Thus, my plan is to utilize &lt;a href=&quot;http://saltstack.org&quot;&gt;the Salt Stack&lt;/a&gt; for asynchronous distributed icinga checks.
+Salt uses the &lt;a href=&quot;http://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern&quot;&gt;PUB/SUB pattern&lt;/a&gt; and its usual mode of operation is run commands on the master and have minions return their answers. It has a couple of other modes too, and I will be using the &lt;a href=&quot;http://docs.saltstack.org/en/latest/ref/peer.html&quot;&gt;Peer Runner&lt;/a&gt;. The Peer Communication capability of Salt lets you publish a command from one peer to be executed on other peers.&lt;/p&gt;
+
+&lt;h2&gt;The NRPE Salt Module&lt;/h2&gt;
+&lt;p&gt;A salt module is defined in the &lt;a href=&quot;&amp;quot;http://docs.saltstack.org/en/latest/index.html#remote-execution&quot;&gt;salt documentation&lt;/a&gt; as:&lt;/p&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;Salt modules are the core of remote execution. They provide functionality such as installing a package, restarting a service, running a remote command, transferring a file — and the list goes on.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The first component I needed for this setup is a NRPE module to run existing NRPE checks defined in the NRPE configuration file.&lt;/p&gt;
+
+&lt;h2&gt;/srv/salt/base/_modules/nrpe.py&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/usr/bin/env python
+&apos;&apos;&apos;
+Support for running nrpe over salt instead of nrpe daemon
+&apos;&apos;&apos;
+
+# Import python libs
+import os
+import argparse
+import re
+
+# Import salt libs
+import salt.utils
+from salt.exceptions import SaltException
+
+def __virtual__():
+    &apos;&apos;&apos;
+    Only load the module if nrpe is installed
+    &apos;&apos;&apos;
+    if os.path.exists(&apos;/etc/nagios/nrpe.cfg&apos;):
+        return &apos;nrpe&apos;
+    return False
+
+def run(name):
+    &apos;&apos;&apos;
+    Look in /etc/nagios/nrpe.cfg for name and run the command configured. Return the retcode and output   &apos;&apos;&apos;
+
+    fp = salt.utils.fopen(&apos;/etc/nagios/nrpe.cfg&apos;, &apos;r&apos;)
+    cmd = re.search(r&apos;command\[%s]=(?P&amp;lt;command&amp;gt;.*)&apos; %name, fp.read())
+    if cmd:
+        command = cmd.groupdict()[&apos;command&apos;]
+        return __salt__[&apos;cmd.run_all&apos;](command)
+    else:
+        return &apos;Command with name &quot;%s&quot; not found&apos; %name
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;The NRPE Salt Runner&lt;/h2&gt;
+
+&lt;p&gt;A salt runner is defined by the &lt;a href=&quot;https://salt.readthedocs.org/en/latest/ref/runners/index.html?highlight=runner&quot;&gt;the salt documentation site&lt;/a&gt; as:&lt;/p&gt;
+&lt;blockquote&gt;
+    &lt;p&gt;Salt runners are convenience applications executed with the salt-run command.
+    The use for a Salt runner is to build a frontend hook for running sets of commands via Salt or creating special formatted output.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I wrote a simple runner that takes the check to be ran as argument. This can later be extended to run on certain hostgroups, or run named checks with argument or do more/better formatting and security checks.&lt;/p&gt;
+
+&lt;h2&gt;runners/nrpe.py&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;&apos;&apos;&apos;
+Run a icinga/nagios NRPE check using the nrpe module and return the proper exit code and output
+&apos;&apos;&apos;
+
+# Import salt libs
+import salt.client
+import sys
+
+
+def check(name):
+    &apos;&apos;&apos;
+    Run a named check
+    &apos;&apos;&apos;
+    client = salt.client.LocalClient(__opts__[&apos;conf_file&apos;])
+    ret = client.cmd(&apos;*&apos;, &apos;nrpe.run&apos;, arg=(name,), timeout=__opts__[&apos;timeout&apos;])
+    salt.output.display_output(ret, &apos;yaml&apos;, __opts__)
+    return ret
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;Salt peer configuration&lt;/h2&gt;
+&lt;p&gt;We have to tell salt master that our icinga server can publish (run) the NRPE runner:&lt;/p&gt;
+&lt;h2&gt;/etc/salt/master&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;peer_run:
+icinga:
+- nrpe.* 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Alright! Let&apos;s see if the runner is working by doing a run of the check_load NRPE check:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root@icinga # salt-call --out=json publish.runner nrpe.check check_load
+&quot;local&quot;: {
+    &quot;icinga&quot;: {
+        &quot;pid&quot;: 7035,
+        &quot;retcode&quot;: 0,
+        &quot;stderr&quot;: &quot;&quot;,
+        &quot;stdout&quot;: &quot;OK - load average: 2.40, 1.41, 0.89|load1=2.400;20.000;30.000;0; load5=1.410;15.000;25.000;0; load15=0.890;10.000;20.000;0;&quot;
+    &quot;salt&quot;: {
+        &quot;pid&quot;: 23298,
+        &quot;retcode&quot;: 0,
+        &quot;stderr&quot;: &quot;&quot;,
+            &quot;stdout&quot;: &quot;OK - load average: 0.01, 0.04, 0.05|load1=0.010;15.000;30.000;0; load5=0.040;10.000;25.000;0; load15=0.050;5.000;20.000;0;&quot;
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Looks like the load is bearable on the icinga and salt servers.&lt;/p&gt;
+
+&lt;h2&gt;The Icinga feeder&lt;/h2&gt;
+
+&lt;p&gt;The last piece of the puzzle is a program that will read the output from the runner and convert this into icinga external process check format like specified in the &lt;a href=&quot;http://docs.icinga.org/latest/en/passivechecks.html&quot;&gt;icinga passive checks&lt;/a&gt; interface. 
+It should be run at specified intervals, publish the runner with the named check, parse the result using one of the salt output formats and finally write the results into the external command file.
+If one configures the freshness settings correctly, what happens if there&apos;s problem with salt checks, then icinga will fall back to running active checks using the NRPE daemon again like before.&lt;/p&gt;
+
+&lt;h2&gt;salt2icinga.py&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/usr/bin/env python
+&apos;&apos;&apos;
+Simple script to parse output from salt-call runnner and feed into icinga
+(C) 2013 Tor Hveem &amp;lt;tor@hveem.no&amp;gt;
+&apos;&apos;&apos;
+import yaml
+import sys
+import optparse
+import tempfile
+from time import time
+
+def write_external_cmd(cmd_file, status_file):
+  &apos;&apos;&apos; Submits the status lines in the status_file to Nagios&apos; external cmd file.
+  &apos;&apos;&apos;
+  try:
+    with open(cmd_file, &apos;a&apos;) as cmd_file:
+      cmd_file.write(status_file.read())
+  except IOError:
+    exit(&quot;Fatal error: Unable to write to Icinga external command file &apos;%s&apos;.\n&quot;
+         &quot;Make sure that the file exists and is writable.&quot; % (cmd_file,))
+
+
+if __name__ == &apos;__main__&apos;:
+    # optionparser for command file
+    parser = optparse.OptionParser()
+    parser.add_option(&quot;-c&quot;, &quot;--cmd-file&quot;, metavar=&quot;FILE&quot;,
+                         help=&quot;Path to the file that Nagios checks for &quot;
+                           &quot;external command requests.&quot;)
+    parser.add_option(&quot;-n&quot;, &quot;--name&quot;, metavar=&quot;NAME&quot;,
+                         help=&quot;Named check to run&quot;)
+
+    (options, args) = parser.parse_args()
+
+    data = yaml.load(sys.stdin.read())
+    if not data:
+        print &quot;No data from stdin to read&quot;
+        sys.exit(1)
+
+    tmp_status_file = tempfile.TemporaryFile()
+    CMD_STATUS_FORMAT = &quot;[{0}] PROCESS_SERVICE_CHECK_RESULT;{1};{2};{3};{4}\n&quot;
+    timestamp = long(time()) # approximate time the services were queried
+    for host, ret in data[&apos;local&apos;].items(): # local since we are using salt-call
+        if type(ret) != type({}): # Hosts without check defined will return string result
+            continue
+        # [&amp;lt;timestamp&amp;gt;] PROCESS_SERVICE_CHECK_RESULT;&amp;lt;host&amp;gt;;&amp;lt;service&amp;gt;;&amp;lt;return_code&amp;gt;;&amp;lt;message&amp;gt;\n
+        status_line = CMD_STATUS_FORMAT.format(
+            timestamp, host, options.name, ret[&apos;retcode&apos;], ret[&apos;stdout&apos;])
+        tmp_status_file.write(status_line)
+    tmp_status_file.flush()
+    tmp_status_file.seek(0)
+    write_external_cmd(options.cmd_file, tmp_status_file)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Lets see if it works:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;root@icinga # salt-call -l quiet --out=yaml publish.runner nrpe.check check_users | python salt2icinga.py -n check_load -c /dev/stdout
+
+[1357425575] PROCESS_SERVICE_CHECK_RESULT;icinga;check_load;0;OK - load average: 2.24, 1.92, 1.38|load1=2.240;20.000;30.000;0; load5=1.920;15.000;25.000;0; load15=1.380;10.000;20.000;0;
+[1357425575] PROCESS_SERVICE_CHECK_RESULT;salt;check_load;0;OK - load average: 0.00, 0.01, 0.05|load1=0.000;15.000;30.000;0; load5=0.010;10.000;25.000;0; load15=0.050;5.000;20.000;0;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Huzzah!&lt;/strong&gt; Mission accomplished.&lt;/p&gt;
+
+&lt;p&gt;All that&apos;s needed now is a salt state file to write all the cronjobs to schedule the checks and write them to the icinga external cmd file&lt;/p&gt;
+
+&lt;p&gt;Check out &lt;a href=&quot;/icinga-configuration-generation-using-salt&quot;&gt;Part #2&lt;/a&gt; about configuration generation.&lt;/p&gt;
+
+&lt;p&gt;Thanks for reading. Contact me if you have any suggestions for improvements, etc.&lt;/p&gt;
+
+
+</content>
+    <link rel="alternate" href="http://hveem.no/salt-icinga-nrpe-replacement" />
+    <updated>2013-01-25T15:40:55Z</updated>
+  </entry>
+  <entry>
+    <title>saltvirt</title>
+    <id>http://hveem.no/saltvirt</id>
+    <content type="html">
+&lt;h1&gt;How I made a HTML5 virtualization UI on top of Salt Stack&lt;/h1&gt;
+&lt;p&gt;&lt;em&gt;AKA my libvirt cluster webgui proof of concept&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Virtualization! Sorry, I meant &lt;strong&gt;Cloud&lt;/strong&gt;! is probably the right word to use in these times, and every sysadmin, sorry, I mean DEVOPS-guy needs to write their own cloud solution, right? This page will explain how I built my small virtulization cluster using different free software tools. There exists a bunch of different free software solutions in this space already, &lt;a href=&quot;http://openstack.org&quot;&gt;OpenStack&lt;/a&gt;, &lt;a href=&quot;http://ovirt.org&quot;&gt;oVirt&lt;/a&gt;, &lt;a href=&quot;http://archipelproject.org/&quot;&gt;Archipel&lt;/a&gt;, &lt;a href=&quot;http://proxmox.com/&quot;&gt;Proxmox&lt;/a&gt; &lt;a href=&quot;https://code.google.com/p/ganeti/&quot;&gt;Ganeti&lt;/a&gt;. Some of these are based on libvirt, some are not. Some have invented their own communcation bus/agents. Most of them assume full control over your stack. They have varying requirements of your storage solution. Varying degree of requirements of the management server.
+My motivation was something more loosely coupled, easy to install (relatively), extremely flexible, and few assumptions about your setup. This entire solution can be ran on a single host, or some parts of the solution on VMs inside a single host. Or split over several physical machines. The poing being, it has very few required parts and is flexible.
+It&apos;s also meant to showcase the power of Salt combined with Salt API for builing neat interfaces on top of complex infrastructure
+The current featurelist is pretty short, it&apos;s basically just overview over hosts and VMs, simple VM control (console, start, stop). The most advanced feature is probably the drag &amp;amp; drop of a VM onto a host to do live migration of a VM
+The status of this is a the Proof of Concept stage, it&apos;s by no means any feature complete or mature contender to other solutions listed above. But I wanted to show that by relatively little effort one can build powerful solutions based on all the existing free software in this area by using Salt as the glue.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;PS! There are screenshots at the bottom!&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2&gt;Components&lt;/h2&gt;
+
+&lt;ul&gt;
+    &lt;li&gt;Physical host(s) running Ubuntu&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;http://saltstack.org&quot;&gt;Salt Stack&lt;/a&gt; with &lt;a href=&quot;https://github.com/saltstack/salt-api&quot;&gt;Salt API&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;My proof of concept single page web GUI&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I write Ubuntu as a component since the states I use are using ubuntu-packagenames and ubuntu-servicenames and other assumptions made in the state-files. They can certainly be improved to support other targets
+&lt;a href=&quot;http://saltstack.org&quot;&gt;Salt Stack&lt;/a&gt; is the piece of software that runs the show in this little setup. Salt is a configuration management and remote execution system. Salt API is a relatively recent addition to the Salt family that enables you to interface to the salt states/modules/commands using a REST API. The result is a very convenient way to write simple web applications to provide information and manage your underlying technology
+The PoC webGUI is a simple bootstrap-based page with a lot of &quot;manual&quot; jquery going on to interface with Salt API. I had to include &lt;a href=&quot;http://handlebarjs.com/&quot;&gt;Handlebar JS&lt;/a&gt; to atleast get some simple templating capabilities&lt;/p&gt;
+
+&lt;h2&gt;Installation&lt;/h2&gt;
+&lt;p&gt;First, I skip ahead to after you have installed Ubuntu successfully. The next step is to install salt. I am not going to reiterate the instructions found at &lt;a href=&quot;https://github.com/plasticboy/vim-markdown/archive/master.tar.gz&quot;&gt;the salt documentation site&lt;/a&gt; The rest of this page assumes you already have a working master with the hosts as minions.
+Then comes the state files for making the host a virt-host, and next the state file for cluster functionality. Clustering is required for using clvm which is a clusterd version of LVM. The CLVM is used to store the virtual machines on shared storage using Logical Volums as raw block devices, each guest gets one or more LV. If you don&apos;t have shared block storage, and for example use NFS or other storage instead, you can probably skip the cluster part. It can also be used a base for other cluster services as HA/GFS2/OCFS2/failover/etc. 
+Here follows a listing of the state file for KVM functionality. It requires that you generate a ssh key that you put in the kvm state folder to be used for inter-host communication. If you are unfamiliar with salt states, these two states are &lt;a href=&quot;http://www.yaml.org/&quot;&gt;Yaml&lt;/a&gt; files, with a little jinja templating logic. Salt reads these files and &quot;pushes&quot; the hosts into the desired state.&lt;/p&gt;
+&lt;blockquote&gt;
+    &lt;p&gt;/srv/salt/base/kvm/init.sls&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;kvm-packages:
+  pkg.installed:
+    - pkgs:
+      - bridge-utils
+      - libvirt-bin
+      - virt-goodies
+      - virt-manager
+      - virt-top
+      - virtinst
+      - virt-viewer
+      - vlan
+      - guestfish
+      - guestfsd
+      - guestmount
+      - lvm2
+      - nfs-common
+      - qemu-kvm
+      - python-libvirt
+      - munin-libvirt-plugins
+      - munin-node
+      - multipath-tools
+
+/etc/libvirt/qemu.conf:
+  file.managed:
+    - user: root
+    - group: root
+    - mode: 444
+    - source: salt://kvm/qemu.conf
+    - require:
+      - pkg: kvm-packages
+
+kvmhostkey:
+  ssh_auth.present:
+    - user: root
+    - source: salt://kvm/id_rsa.pub
+
+/root/.ssh/id_rsa:
+  file.managed:
+    - user: root
+    - group: root
+    - mode: 600
+    - user: root
+    - source: salt://kvm/id_rsa
+
+libvirt-bin:
+  service.running:
+    - require:
+      - pkg: kvm-packages
+      - file: /etc/libvirt/qemu.conf
+      - ssh_auth: kvmhostkey
+    - watch: 
+      - file: /etc/libvirt/qemu.conf
+
+vm.swappiness:
+  sysctl.present:
+    - value: 0
+
+vm.zone_reclaim_mode:
+  sysctl.present:
+    - value: 0
+
+net.bridge.bridge-nf-call-arptables:
+  sysctl.present:
+    - value: 0
+/hugepages:
+  mount.mounted:
+    - device: hugetlbfs
+    - fstype: hugetlbfs
+    - mkmnt: True
+
+{% set nfsmounts = {
+{{ 
+  &apos;/mnt/iso&apos;:    &apos;10.2.10.10:/mnt/iso&apos;, 
+  &apos;/vm&apos;     :    &apos;10.2.10.50:/vm&apos;
+}
+%}
+{% for mountpoint, target in nfsmounts.iteritems() %}
+{{mountpoint}}:
+  mount.mounted:
+    - device: {{target}}
+    - fstype: nfs
+    - mkmnt: True
+    - opts:
+      - vers=3
+      - async
+      - tcp
+      - hard
+      - intr
+      - rsize=32768
+      - wsize=32768
+      - auto
+      - noatime
+{% endfor %}
+
+grub-settings:
+  file.append:
+    - name: /etc/default/grub
+    - text: &apos;GRUB_CMDLINE_LINUX_DEFAULT=&quot;console=ttyS0,9600n8 console=tty0 text nosplash nomodeset nohz=off transparent_hugepage=always&quot;&apos;
+  file.append:
+    - name: /etc/default/grub
+    - text: &apos;GRUB_CMDLINE_LINUX=&quot;console=ttyS0,9600n8 console=tty0 text nosplash nomodeset nohz=off transparent_hugepage=always&quot;&apos;
+
+update-grub:
+  cmd.run:
+    - name: update-grub
+    - require:
+      - file.append: grub-settings
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here follows a listing of the cluster state file.&lt;/p&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;/srv/salt/base/cluster/init.sls&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;cluster-packages:
+  pkg.installed:
+    - pkgs:
+      - corosync
+      - clvm
+      - pacemaker
+      - cman
+      - fence-agents
+
+/etc/cluster/cluster.conf:
+  file.managed:
+    - source: salt://cluster/cluster.conf.jinja
+    - template: jinja
+    - mode: 444
+    - require:
+      - pkg: cman
+
+/etc/corosync/corosync.conf:
+  file.managed:
+    - source: salt://cluster/corosync.conf.jinja
+    - template: jinja
+    - mode: 444
+    - require:
+      - pkg: corosync
+
+/etc/init.d/clvm:
+  file.managed:
+    - user: root
+    - group: root
+    - mode: 555
+    - source: salt://cluster/clvm
+    - require:
+      - pkg: clvm
+
+
+cman:
+  service.running:
+    - enable: True
+    - watch: 
+      - file: /etc/corosync/corosync.conf
+      - file: /etc/cluster/cluster.conf
+      - file: /etc/init.d/clvm
+    - require:
+      - pkg: cman
+
+clvm:
+  service.running:
+    - enable: True
+    - require:
+      - service: cman
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The SLS-files references a few configuration files, these can be found at my &lt;a href=&quot;https://github.com/torhve/states&quot;&gt;state github repository&lt;/a&gt;, along with the &lt;a href=&quot;https://github.com/torhve/saltvirtweb&quot;&gt;code for the webpage&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Webserver, salt API and web page&lt;/h3&gt;
+&lt;p&gt;For purpose of simplicity, the webpage and salt api lives on the master.
+Install nginx using states or otherwise. The nginx conf I use inside the web site is&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;server_name salt;
+allow 10.10.10.0/24;
+deny all;
+index index.html;
+root /srv/www;
+location /api {
+    rewrite ^/api/(.*) /$1 break;
+    proxy_pass http://localhost:8000;
+    proxy_read_timeout 120s;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This proxies commands to the api using prefix /api to the salt api running on the salt master.
+The salt API uses external authentication (PAM) to allow certain users to run a specified list of commands. My /etc/salt/master has these lines for that:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;external_auth:
+pam:
+saltwebuser:
+- test.*
+- virt.*
+- wsproxy.*
+- grains.*
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As you can tell, this requires the saltwebuser to exist to PAM. For example, create a local user called saltwebuser with a password. The web page will then use this username and password for its communcation with Salt. This could certainly be extended to user separate users for all the admin staff, or decouple the web login from the salt login, letting nginx handle the logon to the web page.
+The wsproxy is a websockify python program that comes as a part of the  &lt;a href=&quot;http://kanaka.github.com/noVNC&quot;&gt;NoVNC&lt;/a&gt; HTML5 VNC client. I provide a simple salt module to start the websockify application on the host to proxy the VNC port to a websocket port
+The wsproxy.py module should be installed into your salt file root:&lt;/p&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;/srv/salt/base/_modules/wsproxy.py&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/usr/bin/env python
+&apos;&apos;&apos;
+Support for websockify
+&apos;&apos;&apos;
+
+# Import python libs
+import os
+import argparse
+import glob
+
+# Import salt libs
+import salt.utils
+from salt.exceptions import SaltException
+
+
+def __virtual__():
+    &apos;&apos;&apos;
+    Only load the module if websockify is installed
+    &apos;&apos;&apos;
+    if salt.utils.which(&apos;websockify&apos;):
+        return &apos;wsproxy&apos;
+    return False
+
+
+def start(ws_port, target):
+    &apos;&apos;&apos;
+    Start a websocket proxy for a given port to a given target port
+
+    CLI Example::
+
+        salt &apos;*&apos; wsproxy.start 6080 localhost:5900
+    &apos;&apos;&apos;
+    cmd = &apos;websockify --run-once -D --timeout 30 --idle-timeout 30 %d %s&apos; %(ws_port, target)
+    out = __salt__[&apos;cmd.run&apos;](cmd)
+    return &apos;Started websockify daemon&apos;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;Screenshots, them shiny baubles&lt;/h2&gt;
+
+&lt;h5&gt;Overview for hosts and virtual machines&lt;/h5&gt;
+&lt;p&gt;&lt;img src=&quot;http://hveem.no/ss/salt-virt-overview.png&quot; alt=&quot;Overview&quot;/&gt;&lt;/p&gt;
+&lt;h5&gt;A single VM with a few controls and VNC javascript console for pluginless easy console access &lt;/h5&gt;&lt;/h5&gt;
+&lt;p&gt;&lt;img src=&quot;http://hveem.no/ss/salt-virt-vnc.png&quot; alt=&quot;VNC&quot;/&gt;&lt;/p&gt;
+&lt;h5&gt;The new VM creation form with a couple of hard coded storage types and networks&lt;/h5&gt;&lt;/h5&gt;
+&lt;p&gt;&lt;img src=&quot;http://hveem.no/ss/salt-virt-create.png&quot; alt=&quot;Create&quot;/&gt;&lt;/p&gt;
+
+&lt;p&gt;That&apos;s all. Please contact if you have any comments, etc.&lt;/p&gt;
+
+</content>
+    <link rel="alternate" href="http://hveem.no/saltvirt" />
+    <updated>2013-01-25T15:20:55Z</updated>
+  </entry>
+  <entry>
+    <title>building a dashboard with salt ui</title>
+    <id>http://hveem.no/building-a-dashboard-with-salt-ui</id>
+    <content type="html">
+&lt;h1&gt;How to build a simple dashboard with Salt UI&lt;/h1&gt;
+
+&lt;p&gt;This week the guys at &lt;a href=&quot;http://saltstack.org&quot;&gt;SaltStack&lt;/a&gt; cut the first developer release of &lt;a href=&quot;https://salt-ui.readthedocs.org/en/latest/topics/releases/0.5.0.html&quot;&gt;Salt UI&lt;/a&gt;. Salt UI is a framework for building web applications that interfaces with Salt using Salt API. That might sound boring, but it is &lt;strong&gt;incredibly powerful&lt;/strong&gt;, it will let you build advanced web apps to perform any sort of management, orchestration, monitoring and so forth using all the modules and functions in Salt. Salt UI is not yet a mature project yet but I wanted to see how I could build a simple self service dashboard for our company&apos;s web team.&lt;/p&gt;
+
+&lt;p&gt;Impatient readers will want to check out the screenshots at the bottom first.&lt;/p&gt;
+
+&lt;h2&gt;Goals&lt;/h2&gt;
+
+&lt;p&gt;The goal is to build a simple dashboard with 4 functions.&lt;/p&gt;
+
+&lt;ul&gt;
+    &lt;li&gt;Refresh salt pillars&lt;/li&gt;
+    &lt;li&gt;Create git repositories&lt;/li&gt;
+    &lt;li&gt;Create/update databases with users and permissions&lt;/li&gt;
+    &lt;li&gt;Create/update virtual hosts on our webservers&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Prerequisites&lt;/h2&gt;
+
+&lt;p&gt;This howto assumes you have a working salt ecosystem, including latest git versions of salt API and salt UI.
+For a quick rundown over the salt UI architecture and concepts, check out &lt;a href=&quot;https://salt-ui.readthedocs.org/en/latest/topics/releases/0.5.0.html&quot;&gt;this page&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2&gt;Salt UI changes&lt;/h2&gt;
+
+&lt;p&gt;Hop into the git clone of Salt UI and start making changes.&lt;/p&gt;
+
+&lt;p&gt;First we need a new route to add the dashboard view. 
+Open up the routes file, and add the new route called dash, which points to tmpl/dash.html&lt;/p&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;js/conf/routes.js&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;route_map.add(&apos;dash&apos;, {
+    url: &apos;#/dash&apos;,
+    tmpl: require(&apos;text!tmpl/dash.html&apos;),
+    type: &apos;full&apos;,
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then add the dasboard HTML template. The structure is using the Bootstrap for layout. The thing to note in this html is the tag &lt;strong&gt;&amp;lt;x-dashexec&amp;gt;&lt;/strong&gt;. This is a &quot;magic&quot; tag that we will use later on.&lt;/p&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;tmpl/dash.html&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;div id=&quot;wrap&quot;&amp;gt;
+    &amp;lt;div class=&quot;container-fluid&quot;&amp;gt;
+        &amp;lt;div class=&quot;row-fluid&quot;&amp;gt;
+            &amp;lt;div class=&quot;span12 page-header&quot;&amp;gt;
+                &amp;lt;img src=&quot;/img/logo.png&quot;&amp;gt;
+                &amp;lt;h1&amp;gt;Salt UI Dashboard&amp;lt;/h1&amp;gt;
+            &amp;lt;/div&amp;gt;
+        &amp;lt;/div&amp;gt;
+    &amp;lt;/div&amp;gt;
+    &amp;lt;div class=&quot;container-fluid dash-container&quot;&amp;gt;
+
+        &amp;lt;div class=&quot;row-fluid&quot;&amp;gt;
+            &amp;lt;div class=&quot;span2 sidebar dash-sidebar&quot;&amp;gt;
+                &amp;lt;div class=&quot;sidebar-nav&quot;&amp;gt;
+                    &amp;lt;h5&amp;gt;&amp;lt;i class=&quot;icon-cogs&quot;&amp;gt;&amp;lt;/i&amp;gt; Operations&amp;lt;/h5&amp;gt;
+                    &amp;lt;x-dashexec&amp;gt;&amp;lt;/x-dashexec&amp;gt;
+                &amp;lt;/div&amp;gt;
+            &amp;lt;/div&amp;gt;
+
+            &amp;lt;div class=&quot;span10 main&quot;&amp;gt;
+                &amp;lt;div class=&quot;hero-unit&quot;&amp;gt;
+                    &amp;lt;h1&amp;gt;Dashboard Proof of Concept!&amp;lt;/h1&amp;gt;
+                    &amp;lt;p&amp;gt;
+                    This simple dashboard has the following features
+
+                    &amp;lt;/p&amp;gt;
+                    &amp;lt;h4&amp;gt;Features&amp;lt;/h4&amp;gt;
+                    &amp;lt;ul class=&quot;unstyled&quot;&amp;gt;
+                        &amp;lt;li&amp;gt;&amp;lt;i class=&quot;icon-ok&quot;&amp;gt;&amp;lt;/i&amp;gt;
+                           Refresh salt pillars
+                        &amp;lt;/li&amp;gt;
+                        &amp;lt;li&amp;gt;&amp;lt;i class=&quot;icon-ok&quot;&amp;gt;&amp;lt;/i&amp;gt;
+                          Create git repositories
+                        &amp;lt;/li&amp;gt;
+                        &amp;lt;li&amp;gt;&amp;lt;i class=&quot;icon-ok&quot;&amp;gt;&amp;lt;/i&amp;gt;
+                         Create/update databases with users and permissions
+                        &amp;lt;/li&amp;gt;
+                        &amp;lt;li&amp;gt;&amp;lt;i class=&quot;icon-ok&quot;&amp;gt;&amp;lt;/i&amp;gt;
+                        Create/update virtual hosts on our webservers
+                        &amp;lt;/li&amp;gt;
+                    &amp;lt;/ul&amp;gt;
+                &amp;lt;/div&amp;gt;
+            &amp;lt;/div&amp;gt;
+        &amp;lt;/div&amp;gt;
+    &amp;lt;/div&amp;gt;
+    &amp;lt;div id=&quot;push&quot;&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;
+
+&amp;lt;footer id=&quot;footer&quot;&amp;gt;
+    &amp;lt;div class=&quot;container-fluid&quot;&amp;gt;
+        &amp;lt;img class=&quot;pull-left&quot; width=&quot;400&quot; src=&quot;/img/saltstack.png&quot;&amp;gt;
+        &amp;lt;p class=&quot;pull-right muted credit&quot;&amp;gt;  Proof of concept by Tor Hveem &amp;lt;/p&amp;gt;
+    &amp;lt;/div&amp;gt;
+&amp;lt;/footer&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;Style&lt;/h3&gt;
+
+&lt;p&gt;What good is markup without styles. We add our styles to the project in a new less file. Salt UI is using less which is a language that compiles into CSS.&lt;/p&gt;
+
+&lt;p&gt;Modify less/saltui.less to include dash.less:&lt;/p&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;less/saltui.less&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;@import &quot;dash.less&quot;; // Custom rules for the dashboard
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And then add the styles for the dasboard:&lt;/p&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;less/dash.less&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;html,
+body {
+    height: 100%;
+    /* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    /* Negative indent footer by its height */
+    margin: 0 auto -60px;
+
+    .page-header {
+        h1 {
+            /* Salt color */
+            color: rgb(3, 169, 219);
+            font-size: 56px;
+            line-height: 36px;
+        }
+        img {
+            width: 80px;
+            float: left;
+        }
+    }
+}
+
+/* Set the fixed height of the footer here */
+push,
+footer {
+    height: 60px;
+}
+footer {
+    background-color: #f5f5f5;
+    padding-left: 18px;
+    padding-top: 5px;
+    padding-right: 5px;
+    p {
+        line-height: 80px;
+    }
+    border-top: 1px-solid #e5e5e5;
+}
+.dash-container {
+    .sidebar-nav {
+        button {
+            width: 100%;
+        }
+        margin-right: 15px;
+
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The magic tag we added in the template needs to be inited. Salt UI keeps all its tags in js/elements/init.js.
+Lets add our new tag for dashboard. Find the elem_map variable and add the new element like this:&lt;/p&gt;
+
+
+&lt;blockquote&gt;
+    &lt;p&gt;js/elements/init.js&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;var elem_map = {
+    exec:           require(&apos;elements/exec/exec&apos;),
+    dashexec:       require(&apos;elements/dashexec/dashexec&apos;),
+    exec_docs:      require(&apos;elements/exec-docs/exec-docs&apos;),
+    exec_results:   require(&apos;elements/exec-results/exec-results&apos;),
+    login:          require(&apos;elements/login/login&apos;),
+    minion_detail:  require(&apos;elements/minion-detail/minion-detail&apos;),
+    minion_list:    require(&apos;elements/minion-list/minion-list&apos;),
+    modal:          require(&apos;elements/modal/modal&apos;),
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now it is time to write javascript and template for our new custom element dashexec. I made 4 buttons, 1 for each of the wanted opertations. The trained eye will quickly see that the buttons specify which targets, module functions and with what args the salt commands should be ran.&lt;/p&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;js/elements/dashexec/template.html&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;form&amp;gt;
+    &amp;lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;
+        data-class-disabled=&quot;vm.inprogress&quot;
+        data-target=&quot;salt.demo.no&quot;
+        data-fun=&quot;state.sls&quot;
+        data-arg=&quot;salt-git-pillars&quot;
+        data-disabled=&quot;vm.inprogress&quot;&amp;gt;
+        &amp;lt;i class=&quot;icon-magic&quot; data-class-icon-spin=&quot;vm.inprogress&quot;&amp;gt;&amp;lt;/i&amp;gt;
+        Refresh pillar
+    &amp;lt;/button&amp;gt;
+&amp;lt;/form&amp;gt;
+&amp;lt;form&amp;gt;
+    &amp;lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;
+        data-class-disabled=&quot;vm.inprogress&quot;
+        data-target=&quot;git.demo.no&quot;
+        data-fun=&quot;state.sls&quot;
+        data-arg=&quot;git-repos&quot;
+        data-disabled=&quot;vm.inprogress&quot;&amp;gt;
+        &amp;lt;i class=&quot;icon-magic&quot; data-class-icon-spin=&quot;vm.inprogress&quot;&amp;gt;&amp;lt;/i&amp;gt;
+        Update Git repos
+    &amp;lt;/button&amp;gt;
+&amp;lt;/form&amp;gt;
+&amp;lt;form&amp;gt;
+    &amp;lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;
+        data-class-disabled=&quot;vm.inprogress&quot;
+        data-target=&quot;db*.demo.no&quot;
+        data-fun=&quot;state.sls&quot;
+        data-arg=&quot;mysql&quot;
+        data-disabled=&quot;vm.inprogress&quot;&amp;gt;
+        &amp;lt;i class=&quot;icon-magic&quot; data-class-icon-spin=&quot;vm.inprogress&quot;&amp;gt;&amp;lt;/i&amp;gt;
+        Update database
+    &amp;lt;/button&amp;gt;
+&amp;lt;/form&amp;gt;
+&amp;lt;form&amp;gt;
+    &amp;lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;
+        data-class-disabled=&quot;vm.inprogress&quot;
+        data-target=&quot;web*.demo.no&quot;
+        data-fun=&quot;state.sls&quot;
+        data-arg=&quot;nginx&quot;
+        data-disabled=&quot;vm.inprogress&quot;&amp;gt;
+        &amp;lt;i class=&quot;icon-magic&quot; data-class-icon-spin=&quot;vm.inprogress&quot;&amp;gt;&amp;lt;/i&amp;gt;
+        Update webservers
+    &amp;lt;/button&amp;gt;
+&amp;lt;/form&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The template goes along with this javascript to let the magic happen&lt;/p&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;js/elements/dashexec/dashexec.js&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;/**
+A custom element that turns carefully crafted form buttons into salt commands and renders result into a x-tree tag
+
+@module saltui.elements
+@submmodule dashexec
+
+@event SaltExecution
+**/
+define(function(require) {
+    &apos;use strict&apos;;
+
+    var template = require(&apos;text!./template.html&apos;),
+        rivets = require(&apos;rivets&apos;),
+        xhr = require(&apos;utils/xhr&apos;),
+        drawtree = require(&apos;./tree&apos;),
+        xtag = require(&apos;x-tag&apos;);
+
+    var exec = {
+        content: template,
+
+        onCreate: function() {
+            this.xtag.inprogress = false;
+
+            rivets.bind(this, {vm: this.xtag});
+        },
+
+        events: {
+            /**
+            Submit the execution form via Ajax and draw the result using d3 drawtree
+            **/
+            submit: function(e) {
+                e.preventDefault();
+
+                var that = this;
+
+                this.xtag.inprogress = true;
+
+                /* Use the event to find the correct button */
+                var button = e.target.querySelector(&apos;button&apos;);
+                var lowstate = {
+                    client: &apos;local&apos;,
+                    tgt: button.getAttribute(&apos;data-target&apos;),
+                    fun: button.getAttribute(&apos;data-fun&apos;),
+                    arg: [button.getAttribute(&apos;data-arg&apos;)]
+                };
+
+
+                /* Clear content */
+                document.querySelector(&apos;.main&apos;).innerHTML=&apos;&amp;lt;div class=&quot;results&quot;&amp;gt;&amp;lt;h4&amp;gt;Results&amp;lt;/h4&amp;gt;&amp;lt;x-tree&amp;gt;&amp;lt;i class=&quot;icon-spin icon-sp
+inner&quot;&amp;gt;&amp;lt;/i&amp;gt; Running ...&amp;lt;/x-tree&amp;gt;&amp;lt;/div&amp;gt;&apos;;
+
+                xhr(&apos;POST&apos;, &apos;/&apos;, [lowstate])
+                .get(&apos;return&apos;).get(&apos;0&apos;).then(function(result) {
+                    that.xtag.inprogress = false;
+                    var tgt = document.querySelector(&apos;x-tree&apos;);
+
+                    /* Clear target */
+                    while (tgt.firstChild) {
+                        tgt.removeChild(tgt.firstChild);
+                    }
+                    drawtree(result, tgt);
+
+                });
+
+            },
+        },
+    };
+
+    return exec;
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Drawtree is the function that turns the output from salt into a graphical tree. Think of it as a salt outputter for web. I modified the default tree a tiny bit to put some colors on result and changes, so the people pushing the buttons easily can see if every change went OK and what was changed. Much can be done with this outputter to render beautiful visualization on the changes.
+Change the tree.js color-function to look like this:&lt;/p&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;tree.js&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;function color(d) {
+    if (d.name == &apos;result&apos;) {
+        if (d.val == false) {
+            return &apos;#9d261d&apos;;
+        }
+    }
+    if (d.name == &apos;changes&apos;) {
+        if (d.children.length &amp;gt; 0) {
+            return &apos;#46a546&apos;;
+        }
+    }
+    return d._children ? &quot;#3182bd&quot; : d.children ? &quot;#c6dbef&quot; : &quot;#fd8d3c&quot;;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;Screenshots&lt;/h2&gt;
+
+&lt;h4&gt;The dashboard welcome screen&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://hveem.no/ss/salt-ui-dash.png&quot; alt=&quot;Dashboard welcome screen&quot;/&gt;&lt;/p&gt;
+&lt;h4&gt;The dashboard tree displaying the state output&lt;/h4&gt;
+&lt;p&gt;&lt;img src=&quot;http://hveem.no/ss/salt-ui-dash-tree.png&quot; alt=&quot;Dashboard change tree&quot;/&gt;&lt;/p&gt;
+
+&lt;p&gt;Thank you for reading, feel free to email/twitter comments and/or suggestions !&lt;/p&gt;
+
+</content>
+    <link rel="alternate" href="http://hveem.no/building-a-dashboard-with-salt-ui" />
+    <updated>2013-01-23T20:42:20Z</updated>
+  </entry>
+  <entry>
+    <title>redis lua backed git blogging</title>
+    <id>http://hveem.no/redis-lua-backed-git-blogging</id>
+    <content type="html">
+&lt;h1&gt;Simple blog platform backed by lua, redis, nginx and git&lt;/h1&gt;
+
+&lt;p&gt;Previously I wrote about &lt;a href=&quot;/simple-blogging-with-lua-and-git&quot;&gt;my simple blog software that used git as database&lt;/a&gt;. But after a while I found myself wanting not to ruin LuaJIT&apos;s fantastic speed by spawning git commands for every visitor. And since I was using &lt;a href=&quot;http://redis.io/&quot;&gt;Redis&lt;/a&gt; for a silly visitor counter already it seemed like a waste not to leverage it in some way. &lt;a href=&quot;http://twitter.com/graaten&quot;&gt;@Graaten&lt;/a&gt; had this brilliant idea to have a git hook that generates the data needed by the blog upon commit. &lt;/p&gt;
+
+&lt;p&gt;So I set out to write a simple bash &lt;a href=&quot;http://git-scm.com/&quot;&gt;Git&lt;/a&gt; post hook that turns the list of &lt;a href=&quot;http://en.wikipedia.org/wiki/Markdown&quot;&gt;Markdown&lt;/a&gt;-files into a JSON list of commit logs and then feed that into Redis with the redis-cli command.&lt;/p&gt;
+
+&lt;h2&gt;The Git Hook&lt;/h2&gt;
+
+&lt;p&gt;The shell script is fairly well commented so it should be self explanatory :)&lt;/p&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;md/.git/hooks/post-commit&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+# Author: Tor Hveem
+
+# Loop through each markdown file
+for FILE in $(ls *md) ; do
+    # strip file extension
+    TITLE=&quot;${FILE%%.*}&quot;
+    REDIS_KEY=&quot;post:$TITLE:log&quot; 
+    # get json log output with unix timestamp date
+    OUTPUT=$(exec git log --pretty=format:&quot;&apos;%h&apos;: {&apos;commit&apos;: &apos;%H&apos;,&apos;author&apos;: &apos;%an &amp;lt;%ae&amp;gt;&apos;,  &apos;timestamp&apos;: %ct,  &apos;message&apos;: &apos;%s&apos;}&quot; -- $FILE)
+    # Switch linesbreaks to , with goal to eventually make a list
+    OUTPUT=$(echo $OUTPUT | tr &quot;\n&quot; &quot;,&quot;)
+    # Strip last ,
+    OUTPUT=&quot;${OUTPUT%%,}&quot;
+    # Json list
+    OUTPUT=&quot;[$OUTPUT]&quot;
+    # Feed the output into redis
+    echo &quot;SET $REDIS_KEY \&quot;$OUTPUT\&quot;&quot; | redis-cli &amp;gt; /dev/null
+    # Find first timestamp of post
+    TIMESTAMP=$(exec git log --pretty=format:&quot;%ct&quot; --reverse -- $FILE | head -1)
+    # Add the post to the sorted set of posts
+    echo &quot;ZADD posts $TIMESTAMP $TITLE&quot; | redis-cli &amp;gt; /dev/null
+done
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;The Lua blog code&lt;/h2&gt;
+
+&lt;p&gt;I&apos;m using the Redis datatype of Sorted Set for the post list. With the title as the member variable and the date as the score it&apos;s very easy to poke the Redis db for a list of posts sorted by date.&lt;/p&gt;
+
+&lt;p&gt;The function to get list of blog posts with date is as simple as this:&lt;/p&gt;
+&lt;blockquote&gt;
+    &lt;p&gt;index.lua&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;--[[ 
+Return a table with post date as key and title as val
+]]
+local function posts_with_dates(limit)
+    local posts, err = red:zrevrange(&apos;posts&apos;, 0, limit, &apos;withscores&apos;)
+    if err then return {} end
+    posts = red:array_to_hash(posts)
+    return swap(posts)
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The single post view is also much more simple and faster now. I run the redis zscore function to get the date of the title sent in using query path. If the redis command fails I simply return 404.
+Or if it gets a date back, it opens the file and compiles the markdown.&lt;/p&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;index.lua&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;local page = match[1] 
+local date, err = red:zscore(&apos;posts&apos;, page)
+-- No match, return 404
+if err or date == ngx.null then
+    return ngx.HTTP_NOT_FOUND
+end
+local mdfile =  BLAGDIR .. page .. &apos;.md&apos;
+local mdfilefp = assert(io.open(mdfile, &apos;r&apos;))
+local mdcontent = mdfilefp:read(&apos;*a&apos;)
+local mdhtml = markdown(mdcontent) 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The next steps for increasing performance now will be to either have markdown generated on git commit too, or have it generated on first visit and then saved to redis for all the next visit. That method would need check in the commit log json data for any updates and thus needing regeneration.&lt;/p&gt;
+
+&lt;h2&gt;Source&lt;/h2&gt;
+&lt;p&gt;You can find the source at &lt;a href=&quot;https://github.com/torhve/LuaWeb&quot;&gt;my github repository for this project&lt;/a&gt;.&lt;/p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+</content>
+    <link rel="alternate" href="http://hveem.no/redis-lua-backed-git-blogging" />
+    <updated>2013-01-17T16:19:58Z</updated>
+  </entry>
+  <entry>
+    <title>salt returner for carbon</title>
+    <id>http://hveem.no/salt-returner-for-carbon</id>
+    <content type="html">
+&lt;h1&gt;Using salt to feed the graphite carbon daemon&lt;/h1&gt;
+
+&lt;p&gt;&lt;em&gt;Part #2 in the VM visualisations series using salt. Read &lt;a href=&quot;/vm-monitoring-using-salt-and-cubism&quot;&gt;Part #1&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;I deemed my experiment in Part #1 a success, but it had a huge drawback in not keeping any state, it was only refreshing fresh data all the time. It also would not scale for multi user, because the fetching would be too heavy for many users to be monitoring simultaneously. Thus I had a new goal, separate the metric retrieving from the metric displaying. The plan is to collect metrics using &lt;a href=&quot;http://saltstack.org&quot;&gt;Salt&lt;/a&gt; and its &lt;a href=&quot;http://docs.saltstack.org/en/latest/ref/returners/index.html&quot;&gt;Returner&lt;/a&gt; component. Returners makes the salt published commands return data using a different route than back to the publisher (master). But first I had to choose a backend.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://square.github.com/cubism/&quot;&gt;Cubism&lt;/a&gt; the web frontend I am using comes with support for two metric storing backends:&lt;/p&gt;
+
+&lt;ul&gt;
+    &lt;li&gt;&lt;a href=&quot;http://graphite.wikidot.com/&quot;&gt;graphite&lt;/a&gt; &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;https://github.com/square/cube/wiki&quot;&gt;Cube&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Cube has a mongodb + node stack. Graphite is built using python components whisper, carbon, and graphite-web. &lt;a href=&quot;http://graphite.wikidot.com/whisper&quot;&gt;Whisper&lt;/a&gt; is a RRD-alike format, &lt;a href=&quot;http://graphite.wikidot.com/carbon&quot;&gt;Carbon&lt;/a&gt; is a network daemon and collector backend for whisper, and graphite-web is written in django. Since I&apos;m a fan of both python and django I decided to go with the graphite stack.&lt;/p&gt;
+
+&lt;p&gt;A simple diagram of the flow of this setup:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt; The salt server                 targetted minions                The graphite sever
++----------------+             +------------------+      salt    +------------------+
+|                |             |                  |    returner  |                  |
+|  salt master   +---zeromq----&amp;gt;   salt minion    +-   TCP:2033 -&amp;gt;   carbon daemon  |
+|                |             |                  |              |                  |
++----------------+             +------------------+              +------------------+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;Graphite server&lt;/h2&gt;
+
+&lt;p&gt;I wrote a simple graphite state to install the graphite server. Two parts is not covered in the state, the configuration files and service starting. I used all defaults everywhere.&lt;/p&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;/srv/salt/base/graphite/init.sls&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;graphite:
+  pkg.installed:
+    - pkgs:
+      - python-django
+      - python-pip
+      - python-django-tagging
+      - python-dev
+      - python-twisted
+      - python-memcache
+      - memcached
+      - python-cairo
+
+graphite-web:
+  pip.installed:
+      - require:
+        - pkg: graphite
+
+whisper:
+  pip.installed:
+      - require:
+        - pkg: graphite
+
+carbon:
+  pip.installed:
+      - require:
+        - pkg: graphite
+&lt;/code&gt;&lt;/pre&gt;
+
+
+&lt;h2&gt;The carbon returner&lt;/h2&gt;
+
+&lt;p&gt;Carbon supports two protocols and pickle, I struggled abit with getting pickle to work, so for testing I am using the text line protocol. That also enabled me to debug easier. I&apos;m also happy to say that my carbon returner got merged into saltstack upstream, so it can be used and improved by everyone that&apos;s interested.&lt;/p&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;salt/returners/carbon_returner.py&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;&apos;&apos;&apos;
+Take data from salt and &quot;return&quot; it into a carbon receiver
+
+Add the following configuration to your minion configuration files::
+
+    carbon.host: &amp;lt;server ip address&amp;gt;
+    carbon.port: 2003
+
+&apos;&apos;&apos;
+
+import syslog
+import pickle
+import socket
+import logging
+import time
+import struct
+
+log = logging.getLogger(__name__)
+
+def __virtual__():
+    return &apos;carbon&apos;
+
+def _formatHostname(hostname, separator=&apos;_&apos;):
+    &apos;&apos;&apos; carbon uses . as separator, so replace this in the hostname &apos;&apos;&apos;
+    return hostname.replace(&apos;.&apos;, separator)
+
+def returner(ret):
+    &apos;&apos;&apos;
+    Return data to a remote carbon server using the pickle format
+    &apos;&apos;&apos;
+    host = __salt__[&apos;config.option&apos;](&apos;carbon.host&apos;)
+    port = __salt__[&apos;config.option&apos;](&apos;carbon.port&apos;)
+    log.debug(&apos;Carbon minion configured with host: {0}:{1}&apos;.format(host, port))
+    if not host or not port:
+        log.error(&apos;Host or port not defined&apos;)
+        return
+
+    try:
+        carbon_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
+        carbon_sock.connect((host, port))
+    except socket.error as e:
+        log.error(&apos;Error connecting to {0}:{1}, {2}&apos;.format(host, port, e))
+        return
+
+    timestamp = int(time.time())
+
+    saltdata = ret[&apos;return&apos;]
+    metric_base = ret[&apos;fun&apos;]
+    metrics = []
+    for name, vals in saltdata.items():
+        for key, val in vals.items():
+            # XXX: force datatype, needs typechecks, etc
+            val = int(val)
+            metrics.append((metric_base + &apos;.&apos; + _formatHostname(name) + &apos;.&apos; + key, val, timestamp))
+
+    def send_textmetrics(metrics):
+        &apos;&apos;&apos; Use text protorocol to send metric over socket &apos;&apos;&apos;
+        data = []
+        for metric in metrics:
+            metric = &apos;{0} {1} {2}&apos;.format(metric[0], metric[1], metric[2])
+            data.append(metric)
+        data = &apos;\n&apos;.join(data)
+        total_sent_bytes = 0
+        while total_sent_bytes &amp;lt; len(data):
+            sent_bytes = carbon_sock.send(data[total_sent_bytes:])
+            if sent_bytes == 0: 
+                log.error(&apos;Bytes sent 0, Connection reset?&apos;)
+                return
+            logging.debug(&quot;Sent %d bytes to carbon&quot; % sent_bytes)
+            total_sent_bytes += sent_bytes
+
+    # Send metrics
+    send_textmetrics(metrics)
+
+    # Shut down and close socket
+    carbon_sock.shutdown(socket.SHUT_RDWR)
+    carbon_sock.close()
+&lt;/code&gt;&lt;/pre&gt;
+
+
+&lt;h1&gt;Metric pushing&lt;/h1&gt;
+
+&lt;p&gt;The carbon returner has a weak point in its design, it only supports one type of data, dicts within dicts, since that was all I had to support to get my virt module metrics into carbon. One thing it could be easily extended to do is parse output from all the existing munin plugins, or collected plugins. But lets not get ahead of ourselves, lets see if the runner works.&lt;/p&gt;
+
+&lt;p&gt;I decided on a simple 10 second timer for pushing data, that seemed granular enough for my purposes. Turns out salt got support for running scheduled command this weekend, and it will be featured in the upcoming 0.12-release. Eager to get my data scheduled I fetched latest git and wrote a quick runner to be scheduled on the master:&lt;/p&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;/etc/salt/master&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;schedule:
+  vmmon:
+     function: carbonmon.pollpush
+     seconds: 10
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;The runner&lt;/h3&gt;
+
+&lt;p&gt;This runner just publishes the commands to be run in an async fashion. No data is returned to the master. I use a simple list to specify my virt hosts.&lt;/p&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;salt/runners/carbonmon.py&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;import salt.client
+import sys
+
+def pollpush():
+    &apos;&apos;&apos;
+    Run the monitoring command and return to carbon
+    &apos;&apos;&apos;
+    client = salt.client.LocalClient(__opts__[&apos;conf_file&apos;])
+    cmds = (&apos;virt.vm_diskstats&apos;, &apos;virt.vm_netstats&apos;, &apos;virt.vm_cputime&apos;)
+    nodes = &apos;chani,harkonnen,fremen&apos;
+    for cmd in cmds:
+        jid = client.cmd_async(nodes, cmd, expr_form=&apos;list&apos;, ret=&apos;carbon&apos;, timeout=__opts__[&apos;timeout&apos;])
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;et voilà!&lt;/strong&gt; metrics are now persisted by the graphite stack. And I can now return to my client and rewrite cubism client to use graphite backend.&lt;/p&gt;
+
+&lt;h1&gt;The JavaScript&lt;/h1&gt;
+
+&lt;p&gt;The graphite queries include wildcard support, so I could easily get graphs for rx&lt;em&gt;bytes, tx&lt;/em&gt;bytes, disk_counters and cputime using one simple function. If I want multicolored graphs per host I would have to make some changes.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var graphite_cubism = function(metric_name, metric_vals) {
+    var seconds = 10;
+
+    // Create cubism context
+    context = cubism.context()
+        .serverDelay(seconds * 1000) // allow 10 seconds of collection lag
+        .step(seconds * 1000)         // 10 seconds per value
+        .size(700);          // fetch 1080 values (pixels)
+    graphite = context.graphite(&apos;/graphite/&apos;);
+    // Search graphite for CPU metrics
+    graphite.find(&apos;virt.&apos;+metric_name+&apos;.*.&apos;+metric_vals, function(error, results) {
+
+        var metrics = []; // list of metrics
+
+        $.each(results, function(idx, metric) {
+            var alias = metric.split(&apos;.&apos;)[2] + &apos; &apos; + metric.split(&apos;.&apos;).slice(-1);
+            metrics.push(graphite.metric(&quot;sumSeries(nonNegativeDerivative(&quot;+metric+&quot;))&quot;).
+        });
+
+        // Create the graphs and add to #graphs container
+        d3.select(&quot;#graphs&quot;).call( function(div) {
+
+          // An axis at the top
+          div.append(&quot;div&quot;)
+              .attr(&quot;class&quot;, &quot;axis&quot;)
+              .call(context.axis().orient(&quot;top&quot;));
+
+          // All the horizon graphs
+          div.selectAll(&quot;.horizon&quot;)
+              .data(metrics)
+              .enter().append(&quot;div&quot;)
+              .attr(&quot;class&quot;, &quot;horizon&quot;)
+              .call(context.horizon());
+
+          div.append(&quot;div&quot;)
+              .attr(&quot;class&quot;, &quot;rule&quot;)
+              .call(context.rule());
+
+        });
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And now I have persistent metrics with a very simple way to visualize them in my VM monitor web front end. &lt;/p&gt;
+
+&lt;h6&gt;Screenshot of the CPU usage monitor&lt;/h6&gt;
+&lt;p&gt;&lt;img src=&quot;http://hveem.no/ss/salt-virt-cpu-monitor-carbon.png&quot; alt=&quot;CPU Usage Screenshot&quot;/&gt;&lt;/p&gt;
+
+</content>
+    <link rel="alternate" href="http://hveem.no/salt-returner-for-carbon" />
+    <updated>2013-01-13T22:34:20Z</updated>
+  </entry>
+</feed>

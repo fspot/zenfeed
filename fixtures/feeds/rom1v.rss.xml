@@ -1,0 +1,1478 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>®om&#039;s blog</title>
+	<atom:link href="http://blog.rom1v.com/feed/" rel="self" type="application/rss+xml" />
+	<link>http://blog.rom1v.com</link>
+	<description>Un blog libre</description>
+	<lastBuildDate>Thu, 27 Feb 2014 07:39:25 +0000</lastBuildDate>
+	<language>fr-FR</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.1</generator>
+	<item>
+		<title>Des slides Beamer en Markdown</title>
+		<link>http://blog.rom1v.com/2014/02/des-slides-beamer-en-markdown/</link>
+		<comments>http://blog.rom1v.com/2014/02/des-slides-beamer-en-markdown/#comments</comments>
+		<pubDate>Sat, 15 Feb 2014 18:29:14 +0000</pubDate>
+		<dc:creator><![CDATA[®om]]></dc:creator>
+				<category><![CDATA[Outils]]></category>
+		<category><![CDATA[planet-libre]]></category>
+		<category><![CDATA[debian]]></category>
+		<category><![CDATA[gnu/linux]]></category>
+		<category><![CDATA[latex]]></category>
+		<category><![CDATA[markdown]]></category>
+
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4711</guid>
+		<description><![CDATA[Pour produire des slides propres pour une présentation, j&#8217;aime beaucoup Beamer (basé sur LaTeX). Mais la syntaxe est un peu lourde et la configuration est parfois inutilement compliquée (fonts, encodage, compilation multipasse…). Est-il possible d&#8217;avoir les avantages de Beamer sans ses inconvénients&#160;? La réponse est oui, grâce à pandoc et son Markdown étendu. Beamer Voici [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Pour produire des slides propres pour une présentation, j&rsquo;aime beaucoup <a href="https://fr.wikipedia.org/wiki/Beamer">Beamer</a> (basé sur <a href="https://fr.wikipedia.org/wiki/LaTeX">LaTeX</a>). Mais la syntaxe est un peu lourde et la configuration est parfois inutilement compliquée (fonts, encodage, compilation multipasse…).</p>
+<p>Est-il possible d&rsquo;avoir les avantages de <em>Beamer</em> sans ses inconvénients&nbsp;? La réponse est <em>oui</em>, grâce à <a href="http://johnmacfarlane.net/pandoc/">pandoc</a> et son <a href="http://johnmacfarlane.net/pandoc/demo/example9/pandocs-markdown.html">Markdown étendu</a>.</p>
+<h3 id="beamer">Beamer</h3>
+<p>Voici le code d&rsquo;un exemple très simple de présentation <em>Beamer</em>&nbsp;:</p>
+<pre class="sourceCode latex"><code class="sourceCode latex">\documentclass[hyperref={pdfpagelabels=false}]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+
+\title{Exemple}
+\author{Romain Vimont}
+\date{15 février 2014}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\section{Ma section}
+
+\begin{frame}{Ma première frame}
+\begin{itemize}
+ \item c&#39;est bien
+ \item mais c&#39;est verbeux
+\end{itemize}
+\end{frame}
+
+\end{document}</code></pre>
+<p>Le code source est, il faut bien l&rsquo;avouer, assez rebutant, et le rapport signal/bruit assez faible.</p>
+<p>Une fois les paquets <code>pdflatex</code>, <code>textlive-latex-base</code> et <code>latex-beamer</code> installés (sous <em>Debian</em>), vous pouvez le compiler avec&nbsp;:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">pdflatex</span> fichier.tex</code></pre>
+<h3 id="markdown">Markdown</h3>
+<p>Voici maintenant l&rsquo;équivalent en <em>Pandoc-Markdown</em>&nbsp;:</p>
+<pre class="sourceCode markdown"><code class="sourceCode markdown">% Exemple
+% Romain Vimont
+% 15 février 2014
+
+<span class="fu"># Ma section</span>
+
+<span class="fu">## Ma première frame</span>
+
+ - c&#39;est bien
+ - et en plus ce n&#39;est pas verbeux</code></pre>
+<p>Indiscutablement, c&rsquo;est beaucoup plus lisible !</p>
+<p>Avec le paquet <code>pandoc</code> (en plus des paquets latex déjà installés), vous pouvez le compiler avec&nbsp;:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">pandoc</span> -st beamer fichier.md -o fichier.pdf</code></pre>
+<p><em>Notez que le résultat n&rsquo;est pas strictement identique, la version compilée avec <code>pandoc</code> ajoute une frame de section, mais il ne s&rsquo;agit que d&rsquo;une différence de template par défaut.</em></p>
+<h3 id="démo">Démo</h3>
+<p>J&rsquo;ai créé une présentation d&rsquo;exemple avec un thème personnalisé.</p>
+<p>Le résultat est disponible <a href="http://dl.rom1v.com/mdbeamer/slides.pdf">ici</a>, mais c&rsquo;est surtout la <a href="http://dl.rom1v.com/mdbeamer/slides.md.html">source</a> (<a href="http://dl.rom1v.com/mdbeamer/slides.md">raw</a>) qui est intéressante. Pour récupérer le projet et générer le pdf&nbsp;:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">git</span> clone http://git.rom1v.com/mdbeamer.git
+<span class="kw">cd</span> mdbeamer
+<span class="kw">make</span></code></pre>
+<p>Il est également disponible sur <a href="https://github.com/rom1v/mdbeamer">github</a>.</p>
+<p>Ce projet a vocation à être utilisé comme base pour mes futures présentations (et les vôtres si vous le désirez). Chacune d&rsquo;entre elles sera sur une <a href="http://gitref.org/branching/">branche</a> <em>git</em> et sur un <a href="http://gitref.org/remotes/">remote</a> différents.</p>
+<h3 id="injection-de-version">Injection de version</h3>
+<p>Pour pouvoir distinguer rapidement différentes versions d&rsquo;une même présentation, j&rsquo;ai également ajouté au <em>Makefile</em> une commande pour injecter un identifiant de version à côté de la date (donc à la fin de la 3e ligne du code source). Il s&rsquo;agit du résultat de <code>git describe</code> (contenant le nom du dernier <a href="http://git-scm.com/book/ch2-6.html#Annotated-Tags">tag annoté</a>) ou à défaut simplement le numéro de commit actuel.</p>
+<p>Pour l&rsquo;utiliser&nbsp;:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">make</span> withversion</code></pre>
+<h3 id="un-format-pivot">Un format pivot</h3>
+<p>J&rsquo;utilise ici le <em>Pandoc-Markdown</em> pour écrire du <em>Beamer</em> plus simplement.</p>
+<p>Mais son intérêt est beaucoup plus général&nbsp;: il s&rsquo;agit d&rsquo;un véritable <strong>format pivot</strong>, compilable vers de nombreux formats.</p>
+<p>Pour de la documentation par exemple, il suffit de l&rsquo;écrire en <em>Pandoc-Markdown</em> et de la compiler, grâce à <code>pandoc</code>, en&nbsp;:</p>
+<ul>
+<li><a href="https://fr.wikipedia.org/wiki/HTML5">html</a></li>
+<li><a href="https://fr.wikipedia.org/wiki/LaTeX">tex</a></li>
+<li><a href="https://fr.wikipedia.org/wiki/Portable_Document_Format">pdf</a></li>
+<li><a href="https://fr.wikipedia.org/wiki/MediaWiki">mediawiki</a></li>
+<li><a href="https://fr.wikipedia.org/wiki/DocBook">docbook</a></li>
+<li><a href="https://fr.wikipedia.org/wiki/EPUB_%28format%29">epub</a></li>
+<li><a href="https://fr.wikipedia.org/wiki/OpenDocument">odt</a></li>
+<li><a href="https://fr.wikipedia.org/wiki/Docx">docx</a></li>
+<li>…</li>
+</ul>
+<p>C&rsquo;est d&rsquo;ailleurs très pratique quand quelqu&rsquo;un vous demande une documentation dans un format totalement inadapté (type <code>docx</code>), à rédiger de manière collaborative&nbsp;: il suffit alors d&rsquo;utiliser <em>Pandoc-Markdown</em>, <em>git</em> et un <em>Makefile</em>.</p>
+<p>Pour les slides, <em>pandoc</em> supporte, en plus de <em>Beamer</em>, la compilation vers des slides HTML&nbsp;:</p>
+<ul>
+<li><a href="http://www.w3.org/Talks/Tools/">slidy</a></li>
+<li><a href="http://goessner.net/articles/slideous/">slideous</a></li>
+<li><a href="http://paulrouget.com/dzslides/">dzslides</a></li>
+<li><a href="http://lab.hakim.se/reveal-js/#/">revealjs</a></li>
+<li><a href="http://meyerweb.com/eric/tools/s5/">s5</a></li>
+</ul>
+<p>Cette généricité a bien sûr des limites&nbsp;: l&rsquo;utilisation de code spécifique à un format particulier (tel que j&rsquo;en utilise dans mon exemple) empêche de le compiler correctement vers d&rsquo;autres formats.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>Le language <em>Markdown</em> (étendu par <em>pandoc</em>) permet de combiner la généricité, la simplicité et la <em>git</em>abilité pour écrire des documents ou des slides, ce qui en fait un outil absolument indispensable.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://blog.rom1v.com/2014/02/des-slides-beamer-en-markdown/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+		</item>
+		<item>
+		<title>Lecture différée de la webcam d&#8217;un Rasberry Pi</title>
+		<link>http://blog.rom1v.com/2014/01/lecture-differee-de-la-webcam-dun-rasberry-pi/</link>
+		<comments>http://blog.rom1v.com/2014/01/lecture-differee-de-la-webcam-dun-rasberry-pi/#comments</comments>
+		<pubDate>Mon, 20 Jan 2014 10:20:40 +0000</pubDate>
+		<dc:creator><![CDATA[®om]]></dc:creator>
+				<category><![CDATA[Astuces]]></category>
+		<category><![CDATA[Outils]]></category>
+		<category><![CDATA[planet-libre]]></category>
+		<category><![CDATA[c]]></category>
+		<category><![CDATA[raspberrypi]]></category>
+		<category><![CDATA[scripts]]></category>
+		<category><![CDATA[video]]></category>
+
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4693</guid>
+		<description><![CDATA[L&#8217;objectif de ce billet est de parvenir à lire le flux provenant de la caméra d&#8217;un Raspberry Pi avec un décalage de quelques secondes (plutôt qu&#8217;en direct), avec les outils dédiés que sont raspivid et omxplayer. Contexte Là où je travaille, il y a un babyfoot. Nous avons récemment décidé de l&#8217;informatiser un peu pour [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p><img src="http://blog.rom1v.com/wp-content/uploads/2014/01/raspi-150x150.png" alt="raspi" width="150" height="150" class="alignright size-thumbnail wp-image-4703" /></p>
+<p>L&rsquo;objectif de ce billet est de parvenir à lire le flux provenant de la <a href="http://www.raspberrypi.org/camera">caméra</a> d&rsquo;un <a href="https://fr.wikipedia.org/wiki/Raspberry_Pi">Raspberry Pi</a> avec un décalage de quelques secondes (plutôt qu&rsquo;en direct), avec les outils dédiés que sont <code>raspivid</code> et <code>omxplayer</code>.</p>
+<h3 id="contexte">Contexte</h3>
+<p>Là où je travaille, il y a un babyfoot. Nous avons récemment décidé de l&rsquo;informatiser un peu pour avoir la détection et le ralenti des buts. Entre autres, un <em>Raspberry Pi</em> a été installé avec sa caméra au-dessus du terrain de manière à fournir une vue aérienne.</p>
+<p><code>raspivid</code> permet d&rsquo;afficher en direct ce que la caméra filme. Mais l&rsquo;intérêt est faible dans notre cas&nbsp;: le direct, nous l&rsquo;avons déjà sous les yeux.</p>
+<p>Il est bien plus utile d&rsquo;avoir un &quot;direct&quot; différé de quelques secondes&nbsp;: lors d&rsquo;un but ou d&rsquo;une action litigieuse, il suffit de tourner la tête pour revoir ce qu&rsquo;il vient de se passer (à vitesse réelle).</p>
+<p>Je me suis intéressé à faire fonctionner ce cas d&rsquo;usage, dans le cadre de notre projet collectif <a href="https://github.com/bonrry/babyfoot">babyfoot</a>. Je vais détailler ici les principes et les problèmes rencontrés.</p>
+<h3 id="un-simple-tube">Un simple <em>tube</em></h3>
+<p>La première idée fut de brancher le flux <a href="https://fr.wikipedia.org/wiki/H.264">H.264</a> que produit <code>raspivid</code> sur l&rsquo;entrée de <code>omxplayer</code>, qui serait démarré quelques secondes plus tard.</p>
+<p>Premier problème, <code>omxplayer</code> ne semblait pas savoir lire sur son entrée standard. Ce n&rsquo;est pas très gênant, il suffit d&rsquo;utiliser un <em>tube nommé</em> grâce à <code>mkfifo</code>. En effet&nbsp;:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">printf</span> <span class="st">&#39;a\nb\nc\n&#39;</span> <span class="kw">|</span> <span class="kw">grep</span> b</code></pre>
+<p>peut être remplacé par&nbsp;:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># terminal 1</span>
+<span class="kw">mkfifo</span> /tmp/fifo
+<span class="kw">printf</span> <span class="st">&#39;a\nb\nc\n&#39;</span> <span class="kw">&gt;</span> /tmp/fifo</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># terminal 2</span>
+<span class="kw">&lt;</span> /tmp/fifo <span class="kw">grep</span> b</code></pre>
+<p>Mais en fait, il y a plus direct&nbsp;: <code>omxplayer</code> n&rsquo;est qu&rsquo;un script <em>wrapper</em> pour le vrai <code>omxplayer.bin</code>, c&rsquo;est lui qui empêchait la lecture sur l&rsquo;entrée standard. Il suffit juste d&rsquo;exporter la variable qui-va-bien et d&rsquo;appeler <code>omxplayer.bin</code> directement&nbsp;:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">export</span> <span class="ot">LD_LIBRARY_PATH=</span><span class="st">&quot;/opt/vc/lib:/usr/lib/omxplayer&quot;</span>
+omxplayer.bin <span class="kw">…</span></code></pre>
+<p>Cependant, contrairement à ce que proposent beaucoup de commandes shell, <code>omxplayer.bin</code> ne prévoit pas explicitement de lire sur son entrée standard, il attend obligatoirement un fichier en paramètre. Donnons-lui donc comme fichier <code>/dev/stdin</code> !</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">raspivid -t 0 -w 1280 -h 720 -fps 25 -n -o - <span class="kw">|</span> omxplayer.bin /dev/stdin</code></pre>
+<p>Vu la durée de démarrage d&rsquo;<code>omxplayer.bin</code>, pas besoin de retarder son lancement, la vidéo sera bien décalée de quelques secondes.</p>
+<p>Le problème, c&rsquo;est que le buffer lié au <em>tube</em> est très limité (<code>man 7 pipe</code>)&nbsp;: il sera très vite plein, bloquant totalement l&rsquo;enregistrement et la lecture de la vidéo.</p>
+<h3 id="avec-un-buffer">Avec un buffer</h3>
+<p>Nous avons besoin d&rsquo;un buffer plus important. Pour cela, nous pouvons utiliser <code>mbuffer</code>, ici avec une taille de 10Mo&nbsp;:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">raspivid <span class="kw">…</span> <span class="kw">|</span> mbuffer -m 10m <span class="kw">|</span> omxplayer.bin /dev/stdin</code></pre>
+<p>Et là, cela semble fonctionner.</p>
+<p>Pour décaler un peu plus la lecture par <code>omxplayer.bin</code>, il est possible d&rsquo;utiliser les <em>commandes groupées</em> (<code>man bash</code>) pour ajouter un appel à <code>sleep</code> avant le démarrage&nbsp;:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">raspivid <span class="kw">…</span> <span class="kw">|</span> mbuffer -m 10m <span class="kw">|</span> <span class="kw">{</span> <span class="kw">sleep</span> 3; omxplayer.bin /dev/stdin; <span class="kw">}</span></code></pre>
+<p><code>raspivid</code> est censé enregistrer à 25 fps (<code>-fps 25</code>) et <code>omxplayer</code> nous indique dans la console qu&rsquo;il lit à 25 fps.</p>
+<p>Cependant, en réalité, le décalage n&rsquo;est pas constant&nbsp;: il augmente petit à petit au fil des minutes, et le buffer se remplit légèrement plus vite qu&rsquo;il ne se vide. La lecture consomme moins d&rsquo;images que n&rsquo;en produit l&rsquo;enregistrement, comme si le débit d&rsquo;images de l&rsquo;enregistrement était supérieur à celui de lecture.</p>
+<p>Il y a donc un manque d&rsquo;<em>exactitude</em> (à ne pas confondre avec un manque de <em><a href="http://www.dspguide.com/ch2/7.htm">précision</a></em>) dans le nombre d&rsquo;images enregistrées et/ou lues par seconde.</p>
+<p>Si nous tentons d&rsquo;enregistrer à un débit légèrement inférieur (24 fps), c&rsquo;est le contraire&nbsp;: le retard est rattrapé progressivement jusqu&rsquo;à fournir une lecture en direct.</p>
+<p>Comme le débit d&rsquo;images est la seule information temporelle disponible et qu&rsquo;elle est inexacte, il semble impossible de contrecarrer cette variation de délai.</p>
+<h3 id="information-temporelle">Information temporelle</h3>
+<p>Mais en réalité, ce n&rsquo;est pas la seule information temporelle dont nous disposons&nbsp;: nous savons que le flux est <strong>en direct</strong>.</p>
+<p>Comment exploiter cette information ? Pour le comprendre, il suffit d&rsquo;enregistrer à un débit d&rsquo;images très faible (<code>-fps 5</code>) et de le lire toujours à 25 fps.</p>
+<p>Si la lecture provient d&rsquo;un fichier, alors la vidéo passe en accéléré. Par contre, si la lecture sort de la webcam en direct, alors la vidéo passe à vitesse normale mais à 5 fps&nbsp;: le lecteur a beau vouloir lire 25 images par seconde, s&rsquo;il n&rsquo;en reçoit que 5 chaque seconde, il n&rsquo;a pas d&rsquo;autre choix que de lire à 5 fps.</p>
+<p>Ainsi, sans même connaître sa valeur réelle exacte, nous parvenons à obtenir le même débit d&rsquo;images à l&rsquo;enregistrement qu&rsquo;à la lecture.</p>
+<p>Mais comme nous l&rsquo;avons vu, avec un débit d&rsquo;images d&rsquo;enregistrement inférieur, le délai introduit se réduira inexorablement (le retard sera rattrapé). Ce que nous voulons éviter&nbsp;: nous voulons un délai <strong>constant</strong>.</p>
+<h3 id="delay">Delay</h3>
+<p>Nous avons cependant avancé, car maintenant, si nous disposions d&rsquo;une commande qui retarde ce qui sort de <code>raspivid</code> pour le donner à <code>omxplayer</code> <em>x</em> secondes plus tard, et que nous enregistrons à un débit d&rsquo;images légèrement inférieur à celui de la lecture, alors <code>omxplayer</code> rattrapera le retard pour parvenir au direct… décalé de <em>x</em> secondes. Exactement ce que nous voulons&nbsp;!</p>
+<p>J&rsquo;ai donc demandé sur <a href="http://stackoverflow.com/questions/20979694/is-there-a-shell-command-to-delay-a-buffer">stackoverflow</a> si une telle commande existait, ce qui ne semblait pas être le cas.</p>
+<p>Je l&rsquo;ai donc implémentée (sous licence <a href="https://fr.wikipedia.org/wiki/Licence_publique_g%C3%A9n%C3%A9rale_GNU">GPLv3</a>)&nbsp;:</p>
+<pre><code>git clone http://git.rom1v.com/delay.git
+cd delay
+make &amp;&amp; sudo make install</code></pre>
+<p>(ou sur <a href="https://github.com/rom1v/delay">github</a>)</p>
+<p>Elle permet de décaler tout ce qui arrive sur <code>stdin</code> d&rsquo;un délai constant pour le sortir sur <code>stdout</code>&nbsp;:</p>
+<pre><code>delay [-b &lt;dtbufsize&gt;] &lt;delay&gt;</code></pre>
+<p>Elle est donc très générique, et n&rsquo;a aucun lien avec le fait que le flux soit une vidéo.</p>
+<p>Elle fonctionne aussi très bien pour différer la lecture de la webcam dans VLC sur un pc classique&nbsp;:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">ffmpeg -an -s 320x240 -f video4linux2 -i /dev/video0 -f mpeg2video -b 1M - <span class="kw">|</span>
+  delay 2s <span class="kw">|</span> vlc -</code></pre>
+<p>Nous pourrions penser qu&rsquo;il suffit de faire la même chose avec <code>raspivid</code> et <code>omxplayer</code>, avec un débit d&rsquo;images légèrement inférieur pour l&rsquo;enregistrement (24 fps)&nbsp;:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">raspivid -t 0 -w 1280 -h 720 -fps 24 -n -o - <span class="kw">|</span>
+  delay -b10m 4s <span class="kw">|</span>
+  omxplayer.bin /dev/stdin</code></pre>
+<p>Malheureusement, avec <code>omxplayer</code>, ce n&rsquo;est pas si simple.</p>
+<h3 id="initialisation-immédiate">Initialisation immédiate</h3>
+<p>En effet, l&rsquo;initialisation d&rsquo;<code>omxplayer</code> pour une lecture vidéo est très longue (plusieurs secondes), et surtout, elle ne débute que lorsque une partie suffisamment importante de la vidéo à lire est reçue (les headers ne suffisent pas). Décaler la vidéo de <em>x</em> secondes décale également l&rsquo;initialisation de <em>x</em> secondes, ajoutant d&rsquo;autant plus de décalage.</p>
+<p>Certes, le retard supplémentaire sera rattrapé progressivement, mais cela prendra du temps (environ 1 image chaque seconde, soit 1 seconde toutes les 25 secondes). Pour obtenir le délai désiré dès le départ, ce problème doit être évité.</p>
+<p>Une solution de contournement consiste à passer les premiers (méga-)octets sortis de <code>raspivid</code> directement à <code>omxplayer.bin</code>, et de ne différer que le reste avec <code>delay</code>. De cette manière, les premières images seront lues immédiatement, permettant au lecteur de s&rsquo;initialiser, alors que la suite sera différée.</p>
+<p>Grâce aux <em>commandes groupées</em> de <em>bash</em> (encore elles), c&rsquo;est très simple&nbsp;:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">raspivid -t 0 -w 1280 -h 720 -fps 24 -n -o - <span class="kw">|</span>
+  <span class="kw">{</span> <span class="kw">head</span> -c10M; delay -b10m 4s; <span class="kw">}</span> <span class="kw">|</span>
+  omxplayer.bin /dev/stdin</code></pre>
+<p>La commande <code>head</code> va passer immédiatement les 10 premiers méga-octets à <code>omxplayer.bin</code>, puis la commande <code>delay</code> prendra le relai. Ainsi, l&rsquo;initialisation aura déjà eu lieu quand les premiers octets sortiront de <code>delay</code>.</p>
+<p>À part les premières secondes un peu chaotiques, le flux vidéo sera alors bien diffusé en différé avec un délai constant (testé sur 24 heures).</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>Nous avons donc bricolé une solution qui permet un replay différé en continu sur un <em>Raspberry Pi</em><a href="http://blog.rom1v.com/wp-content/uploads/2014/01/raspi.png"></a>.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://blog.rom1v.com/2014/01/lecture-differee-de-la-webcam-dun-rasberry-pi/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>Duplicity : des backups incrémentaux chiffrés</title>
+		<link>http://blog.rom1v.com/2013/08/duplicity-des-backups-incrementaux-chiffres/</link>
+		<comments>http://blog.rom1v.com/2013/08/duplicity-des-backups-incrementaux-chiffres/#comments</comments>
+		<pubDate>Wed, 14 Aug 2013 14:59:42 +0000</pubDate>
+		<dc:creator><![CDATA[®om]]></dc:creator>
+				<category><![CDATA[Outils]]></category>
+		<category><![CDATA[planet-libre]]></category>
+		<category><![CDATA[puf]]></category>
+		<category><![CDATA[auto-hébergement]]></category>
+		<category><![CDATA[backup]]></category>
+		<category><![CDATA[chiffrement]]></category>
+		<category><![CDATA[gnu/linux]]></category>
+		<category><![CDATA[scripts]]></category>
+		<category><![CDATA[ssh]]></category>
+
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4623</guid>
+		<description><![CDATA[Quiconque s&#8217;auto-héberge doit maintenir un système de sauvegarde de son serveur, permettant de tout remettre en place dans le cas d&#8217;un crash de disque dur, d&#8217;un piratage ou d&#8217;un cambriolage. Objectifs Il est nécessaire de sauvegarder à la fois des fichiers (les mails, les services hébergés, les fichiers de config…) et le contenu de bases [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p><a href="http://blog.rom1v.com/wp-content/uploads/2013/08/backup.png"><img src="http://blog.rom1v.com/wp-content/uploads/2013/08/backup.png" alt="backup" width="90" height="90" class="alignright size-full wp-image-4627" /></a></p>
+<p>Quiconque s&rsquo;<a href="http://www.auto-hebergement.fr/">auto-héberge</a> doit maintenir un système de sauvegarde de son serveur, permettant de tout remettre en place dans le cas d&rsquo;un crash de disque dur, d&rsquo;un piratage ou d&rsquo;un cambriolage.</p>
+<h3 id="objectifs">Objectifs</h3>
+<p>Il est nécessaire de sauvegarder à la fois des <strong>fichiers</strong> (les mails, les services hébergés, les fichiers de config…) et le contenu de <strong>bases de données</strong> (associées aux services hébergés).</p>
+<p>Le système de sauvegarde doit <strong>conserver les archives</strong> durant un certain temps (par exemple 2 mois). En effet, un piratage ou une erreur de manipulation peuvent n&rsquo;être détectés que quelques jours plus tard&nbsp;: il est important de pouvoir restaurer un état antérieur.</p>
+<p>La sauvegarde doit être <strong>régulière</strong> (par exemple quotidienne).</p>
+<p>Seule une infime partie des données étant modifiées d&rsquo;un jour à l&rsquo;autre, la sauvegarde a tout intérêt à être <strong><a href="http://fr.wikipedia.org/wiki/Sauvegarde_%28informatique%29#Sauvegarde_incr.C3.A9mentielle_ou_incr.C3.A9mentale">incrémentale</a></strong>.</p>
+<p>Pour résister aux cambriolages, une sauvegarde doit être réalisée sur (au moins) une machine distante. Il est donc préférable que ces données soient <strong><a href="http://fr.wikipedia.org/wiki/Chiffrement">chiffrées</a></strong>.</p>
+<h3 id="duplicity">Duplicity</h3>
+<p>Vous l&rsquo;aurez compris, <em><a href="http://duplicity.nongnu.org/">duplicity</a></em> répond à tous ces besoins.</p>
+<p>Je ne vais pas expliquer tout ce qu&rsquo;il sait faire, mais plutôt comment je l&rsquo;utilise et pourquoi.</p>
+<h3 id="mes-choix-dutilisation">Mes choix d&rsquo;utilisation</h3>
+<h4 id="sauvegarde-locale">Sauvegarde locale</h4>
+<p>Personnellement, je n&rsquo;effectue qu&rsquo;une sauvegarde <strong>locale</strong> dans une tâche <em><a href="http://fr.wikipedia.org/wiki/Cron">cron</a></em>, c&rsquo;est-à-dire que les fichiers de backups sont stockés sur le serveur lui-même.</p>
+<p>En effet, une sauvegarde automatique vers un serveur distant, par <em>SSH</em> par exemple, nécessiterait une clé privée en clair sur le serveur. Cette configuration ne résisterait pas à certains piratages&nbsp;: une intrusion sur le serveur donnerait également accès aux sauvegardes, permettant à un pirate d&rsquo;effacer à la fois les données et les backups.</p>
+<p>C&rsquo;est donc une autre machine, à l&rsquo;initiative de la connexion, qui rapatrie les backups. Évidemment, elle ne doit pas synchroniser localement les backups supprimés du serveur (elle serait vulnérable à la suppression des backups par un pirate), mais doit plutôt supprimer les anciennes sauvegardes de sa propre initiative.</p>
+<h4 id="chiffrement">Chiffrement</h4>
+<p><em>Duplicity</em> utilise <a href="https://fr.wikipedia.org/wiki/GNU_Privacy_Guard">GPG</a> pour le chiffrement, permettant&nbsp;:</p>
+<ul>
+<li>soit un <a href="http://fr.wikipedia.org/wiki/Cryptographie_asym%C3%A9trique">chiffrement asymétrique</a> (une paire de clés publique/privée, la clé privée pouvant elle-même être chiffrée par une <a href="http://fr.wikipedia.org/wiki/Phrase_secr%C3%A8te">passphrase</a>)&nbsp;:</li>
+<li>soit un <a href="http://fr.wikipedia.org/wiki/Cryptographie_sym%C3%A9trique">chiffrement symétrique</a> (une simple passphrase).</li>
+</ul>
+<p>Le premier choix nécessite à la fois quelque chose que <strong>je possède</strong> (la clé, de forte entropie) et quelque chose que <strong>je connais</strong> (la passphrase, de plus faible <a href="http://en.wikipedia.org/wiki/Password_strength#Entropy_as_a_measure_of_password_strength">entropie</a>). Le second ne nécessite que la passphrase à retenir.</p>
+<p>L&rsquo;utilisation d&rsquo;une clé privée autorise donc une meilleure sécurité, notamment si vous souhaitez envoyer vos backups sur un <a href="http://fr.wikipedia.org/wiki/PRISM_%28programme_de_surveillance%29">serveur américain</a>.</p>
+<p>Néanmoins, les backups sont surtout utiles lors de la perte de données, notamment dans le cas d&rsquo;un cambriolage, où la clé GPG a potentiellement également disparu. Et les sauvegardes distantes ne seront d&rsquo;aucune utilité sans la clé…<br />
+Il peut donc être moins risqué d&rsquo;opter, comme je l&rsquo;ai fait, pour une simple passphrase.</p>
+<p>À vous de placer le curseur entre la protection de vos données et le risque de ne plus pouvoir les récupérer.</p>
+<h3 id="installation">Installation</h3>
+<p>Sur une <em>Debian</em>&nbsp;:</p>
+<pre><code>sudo apt-get install duplicity</code></pre>
+<h3 id="fonctionnement">Fonctionnement</h3>
+<p><em>Duplicity</em> effectue des sauvegardes <strong>complètes</strong> et <strong>incrémentales</strong>. Les sauvegardes incrémentales nécessitent toutes les sauvegardes depuis la dernière complète pour être restaurées.<br />
+Personnellement, j&rsquo;effectue une sauvegarde complète tous les mois, et une incrémentale tous les jours.</p>
+<p>Pour choisir le mode&nbsp;:</p>
+<ul>
+<li><code>duplicity full …</code> force une sauvegarde <strong>complète</strong>&nbsp;;</li>
+<li><code>duplicity incr …</code> force une sauvegarde <strong>incrémentale</strong> (échoue si aucune <strong>complète</strong> n&rsquo;est trouvée)&nbsp;;</li>
+<li><code>duplicity …</code> effectue une sauvegarde <strong>incrémentale</strong> si possible, <strong>complète</strong> sinon.</li>
+</ul>
+<p>Exemple (à exécuter en <code>root</code> pour avoir accès à tous les fichiers)&nbsp;:</p>
+<pre><code>duplicity / file:///var/backups/duplicity/ --include-globbing-filelist filelist.txt --exclude &#39;**&#39;</code></pre>
+<p><em>Duplicity</em> va sauvegarder à partir de la racine (&quot;<code>/</code>&quot;) tous les fichiers selon les règles d&rsquo;inclusion et d&rsquo;exclusion définies dans <code>filelist.txt</code>. Ce fichier contient simplement la liste des fichiers et répertoires à sauvegarder, ainsi que ceux à exclure. Par exemple&nbsp;:</p>
+<pre><code>/usr/local/bin/
+/home/rom/Maildir/
+/home/rom/.procmailrc
+- /var/www/blog/wp-content/cache/
+/var/www/blog/</code></pre>
+<p><em>Attention&nbsp;:</em> les fichiers et répertoires à exclure doivent apparaître <strong>avant</strong> l&rsquo;inclusion d&rsquo;un répertoire parent. En effet, <em>duplicity</em> s&rsquo;arrête à la première règle qui <em>matche</em> un chemin donné pour déterminer s&rsquo;il doit l&rsquo;inclure ou l&rsquo;exclure.</p>
+<p>Pour <strong>restaurer</strong>&nbsp;:</p>
+<pre><code>duplicity restore file:///var/backups/duplicity/ /any/directory/</code></pre>
+<p><em>(utiliser l&rsquo;option <code>-t</code> pour restaurer à une date particulière)</em></p>
+<p>Pour <strong>supprimer</strong> les anciennes sauvegardes (ici de plus de 2 mois)&nbsp;:</p>
+<pre><code>duplicity remove-older-than 2M file:///var/backups/duplicity/ --force</code></pre>
+<h3 id="bases-de-données">Bases de données</h3>
+<p>Tout comme pour les fichiers, il est préférable de sauvegarder incrémentalement les bases de données (seule une toute petite partie des données change d&rsquo;un jour à l&rsquo;autre).</p>
+<p>Une première solution serait d&rsquo;utiliser la <a href="http://stackoverflow.com/questions/4411057/how-to-do-a-incremental-backup-in-mysql">fonctionnalité-qui-va-bien</a> de votre <a href="http://fr.wikipedia.org/wiki/Syst%C3%A8me_de_gestion_de_base_de_donn%C3%A9es">SGBD</a>.</p>
+<p>Mais si le contenu de vos bases de données ne dépasse pas quelques <em>Go</em> (ce qui est très probable pour de l&rsquo;auto-hébergement), <em>duplicity</em> permet de faire beaucoup plus simple.</p>
+<p>Il suffit en effet de générer un <em>dump</em> complet des bases de données vers des fichiers <code>.sql</code> et d&rsquo;inclure leur chemin dans la liste des fichiers à sauvegarder. Et là, c&rsquo;est magique, <em>duplicity</em> va ne sauvegarder que les parties de ces (gros) fichiers qui ont changées, grâce à <a href="http://fr.wikipedia.org/wiki/Rsync">rsync</a> et à son <a href="http://en.wikipedia.org/wiki/Rsync#Algorithm">algorithme</a> qui utilise des <a href="http://en.wikipedia.org/wiki/Rolling_hash">rolling checksums</a>.</p>
+<p>Bien sûr, il ne faut pas compresser ces fichiers avant de les donner à manger à <em>duplicity</em> (sinon l&rsquo;intégralité du fichier risque de changer)&nbsp;; c&rsquo;est lui qui va s&rsquo;en charger. De même, il vaut mieux éviter d&rsquo;inclure dans les fichies <em>SQL</em> des informations liées au <em>dump</em>, comme sa date de génération.</p>
+<p>Pour exporter une base de données <em>MySQL</em> par exemple&nbsp;:</p>
+<pre><code>mysql -uroot -ppassword --skip-comments -ql my_database &gt; my_database.sql</code></pre>
+<h3 id="script">Script</h3>
+<p>Il reste donc à écrire un script qui exporte les bases de données et qui appelle <code>duplicity</code> avec la liste de ce qu&rsquo;il y a à sauvegarder.</p>
+<p>Voici un prototype, à sauvegarder dans <code>/usr/local/bin/backup</code>&nbsp;:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">#!/bin/bash</span>
+<span class="ot">BACKUP_HOME=</span>/var/backups
+<span class="ot">TMP_DBDIR=</span><span class="st">&quot;</span><span class="ot">$BACKUP_HOME</span><span class="st">/dbdump&quot;</span>
+<span class="ot">BACKUP_DIR=</span><span class="st">&quot;</span><span class="ot">$BACKUP_HOME</span><span class="st">/duplicity&quot;</span>
+<span class="ot">MYSQLPW=</span>mon_password_mysql
+<span class="ot">PASSPHRASE=</span>ma_passphrase_de_chiffrement_des_backups
+<span class="ot">DATABASES=</span><span class="st">&#39;blog autre_base&#39;</span>
+<span class="ot">FILELIST=</span><span class="st">&quot;/usr/local/bin/</span>
+<span class="st">/home/rom/Maildir/</span>
+<span class="st">/home/rom/.procmailrc</span>
+<span class="st">- /var/www/blog/wp-content/cache/</span>
+<span class="st">/var/www/blog/</span>
+<span class="ot">$TMP_DBDIR</span><span class="st">/&quot;</span>
+
+<span class="co"># databases</span>
+<span class="kw">mkdir</span> -p <span class="st">&quot;</span><span class="ot">$TMP_DBDIR</span><span class="st">&quot;</span>
+<span class="kw">for</span> dbname <span class="kw">in</span> <span class="ot">$DATABASES</span>
+<span class="kw">do</span>
+  <span class="kw">printf</span> <span class="st">&quot;## Dump database </span><span class="ot">$dbname</span><span class="st">...\n&quot;</span>
+  mysqldump -uroot -p<span class="st">&quot;</span><span class="ot">$MYSQLPW</span><span class="st">&quot;</span> --skip-comments -ql <span class="st">&quot;</span><span class="ot">$dbname</span><span class="st">&quot;</span> <span class="kw">\</span>
+    <span class="kw">&gt;</span> <span class="st">&quot;</span><span class="ot">$TMP_DBDIR</span><span class="st">/</span><span class="ot">$dbname</span><span class="st">.sql&quot;</span>
+<span class="kw">done</span>
+
+<span class="co"># duplicity</span>
+<span class="kw">printf</span> <span class="st">&#39;## Backup using duplicity...\n&#39;</span>
+<span class="kw">unset</span> <span class="ot">mode</span>
+<span class="kw">[</span> <span class="st">&quot;</span><span class="ot">$1</span><span class="st">&quot;</span> <span class="ot">=</span> full<span class="kw"> ]</span> <span class="kw">&amp;&amp;</span> <span class="ot">mode=</span>full <span class="kw">&amp;&amp;</span> <span class="kw">printf</span> <span class="st">&#39;(force full backup)\n&#39;</span>
+<span class="kw">mkdir</span> -p <span class="st">&quot;</span><span class="ot">$BACKUP_DIR</span><span class="st">&quot;</span>
+<span class="kw">export</span> <span class="ot">PASSPHRASE</span>
+duplicity <span class="ot">$mode</span> / file://<span class="st">&quot;</span><span class="ot">$BACKUP_DIR</span><span class="st">&quot;</span>/ <span class="kw">\</span>
+  --include-globbing-filelist <span class="kw">&lt;(echo</span> <span class="st">&quot;</span><span class="ot">$FILELIST</span><span class="st">&quot;</span><span class="kw">)</span> --exclude <span class="st">&#39;**&#39;</span>
+
+<span class="kw">printf</span> <span class="st">&#39;## Delete old backups\n&#39;</span>
+duplicity remove-older-than 2M file://<span class="st">&quot;</span><span class="ot">$BACKUP_DIR</span><span class="st">&quot;</span>/ --force
+
+<span class="co"># backups are encrypted, we can make them accessible</span>
+<span class="kw">chmod</span> +r <span class="st">&quot;</span><span class="ot">$BACKUP_DIR</span><span class="st">&quot;</span>/*.gpg
+
+<span class="co"># remove temp files</span>
+<span class="kw">rm</span> <span class="st">&quot;</span><span class="ot">$TMP_DBDIR</span><span class="st">&quot;</span>/*.sql</code></pre>
+<p>Une fois configuré, ne pas oublier de tester&nbsp;: exécuter le script et restaurer les données dans un répertoire de test, puis vérifier que tout est OK. Cette vérification doit être effectuée de temps en temps&nbsp;: il serait dommage de s&rsquo;apercevoir, lorsqu&rsquo;on en a besoin, que les backups sont inutilisables ou qu&rsquo;un répertoire important a été oublié.</p>
+<h3 id="cron">Cron</h3>
+<p>Pour démarrer automatiquement une sauvegarde <strong>complète</strong> le premier jour du mois et une <strong>incrémentale</strong> tous les autres jours, <em>cron</em> est notre ami&nbsp;:</p>
+<pre><code>sudo crontab -e</code></pre>
+<p>Ajouter les lignes&nbsp;:</p>
+<pre><code>0 1 1    * * /usr/local/bin/backup full
+0 1 2-31 * * /usr/local/bin/backup</code></pre>
+<p>La première colonne correspond aux minutes, la deuxième aux heures&nbsp;: le script sera donc exécuté à 1h du matin. La 3e correspond au numéro du jour dans le mois. Les deux suivantes sont le numéro du mois dans l&rsquo;année et le jour de la semaine.</p>
+<p>Il peut être préférable d&rsquo;exécuter le script en priorité basse&nbsp;:</p>
+<pre><code>0 1 1    * * nice -15 ionice -c2 /usr/local/bin/backup full
+0 1 2-31 * * nice -15 ionice -c2 /usr/local/bin/backup</code></pre>
+<h3 id="copies">Copies</h3>
+<p>Il ne reste plus qu&rsquo;à effectuer des copies des fichiers de backups ailleurs.</p>
+<p>À partir d&rsquo;une autre machine, le plus simple est d&rsquo;utiliser <code>rsync</code> (sans l&rsquo;option <code>--delete</code>&nbsp;!)&nbsp;:</p>
+<pre><code>rsync -rvP --stats -h server:/var/backups/duplicity/ /my/local/backup/</code></pre>
+<p>Pour supprimer les anciens backups sur cette machine, c&rsquo;est la même commande que sur le serveur&nbsp;:</p>
+<pre><code>duplicity remove-older-than 2M file:///my/local/backup/ --force</code></pre>
+<h3 id="conclusion">Conclusion</h3>
+<p>La génération de sauvegardes à la fois incrémentales et chiffrées, y compris pour les bases de données, font de <em>duplicity</em> <strong>une solution de backup idéale pour l&rsquo;auto-hébergement</strong>.</p>
+<p>Je l&rsquo;utilise depuis plusieurs mois, et j&rsquo;en suis très satisfait (même si je n&rsquo;ai pas encore eu besoin de restaurer les backups en situation réelle).</p>
+<p>À vos backups&nbsp;!</p>
+]]></content:encoded>
+			<wfw:commentRss>http://blog.rom1v.com/2013/08/duplicity-des-backups-incrementaux-chiffres/feed/</wfw:commentRss>
+		<slash:comments>16</slash:comments>
+		</item>
+		<item>
+		<title>Anti-AdBlock et Hadopi, même combat ?</title>
+		<link>http://blog.rom1v.com/2013/06/anti-adblock-et-hadopi-meme-combat/</link>
+		<comments>http://blog.rom1v.com/2013/06/anti-adblock-et-hadopi-meme-combat/#comments</comments>
+		<pubDate>Thu, 13 Jun 2013 15:47:38 +0000</pubDate>
+		<dc:creator><![CDATA[®om]]></dc:creator>
+				<category><![CDATA[planet-libre]]></category>
+		<category><![CDATA[Réflexions]]></category>
+		<category><![CDATA[adblock]]></category>
+		<category><![CDATA[dividende universel]]></category>
+		<category><![CDATA[hadopi]]></category>
+		<category><![CDATA[monnaie]]></category>
+		<category><![CDATA[politique]]></category>
+		<category><![CDATA[société]]></category>
+
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4534</guid>
+		<description><![CDATA[La presse s&#8217;inquiète de plus en plus de l&#8217;impact des bloqueurs de publicités sur leurs sources de revenus et condamne, plus ou moins ouvertement, leur utilisation par les internautes. Le débat se polarise alors entre&#160;: ceux qui considèrent qu&#8217;ils n&#8217;ont pas à se voir imposer des publicités, et qui donc les bloquent&#160;; ceux qui pensent [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p><a href="http://blog.rom1v.com/wp-content/uploads/2013/06/abp.png"><img src="http://blog.rom1v.com/wp-content/uploads/2013/06/abp.png" alt="abp" width="128" height="128" class="alignright size-full wp-image-4555" /></a></p>
+<p>La presse <a href="http://www.pcinpact.com/news/78873-adblock-utilisation-plus-en-plus-massive-qui-fait-reagir.htm">s&rsquo;inquiète</a> de plus en plus de l&rsquo;impact des <a href="http://adblockplus.org/fr/firefox">bloqueurs de publicités</a> sur leurs sources de revenus et <a href="http://www.pcinpact.com/news/79695-adblock-plus-presse-allemande-senerve-mais-a-t-elle-raison.htm">condamne</a>, plus ou moins ouvertement, leur utilisation par les internautes.</p>
+<p>Le débat se polarise alors entre&nbsp;:</p>
+<ul>
+<li>ceux qui considèrent qu&rsquo;ils n&rsquo;ont pas à se voir imposer des publicités, et qui donc les bloquent&nbsp;;</li>
+<li>ceux qui pensent que les internautes ne devraient pas bloquer les publicités car elles financent les sites où elles sont affichées, en particulier ceux de journalistes.</li>
+</ul>
+<p>La seconde catégorie avance un argument simple et de bon sens&nbsp;: le contenu produit nécessite du travail, et leurs auteurs ont évidemment besoin de se loger, de se nourrir, et bien d&rsquo;autres choses encore… Ce qui implique, dans notre société, d&rsquo;avoir de l&rsquo;argent. Ce que rapporte un peu la publicité.</p>
+<p>Les autres sont des pirates sans conscience désirant tout gratuitement, à qui il faut expliquer qu&rsquo;une attitude responsable consiste à ne pas bloquer les publicités. À moins que…</p>
+<h3 id="hadopi">Hadopi</h3>
+<p>Des auteurs qui proposent du &laquo;&nbsp;contenu&nbsp;&raquo; difficilement vendable à un public qui y accède sans le payer, ça ne vous rappelle rien&nbsp;?</p>
+<p>L&rsquo;un des fondements de l&rsquo;idéologie répressive d&rsquo;Hadopi est qu&rsquo;il faut éduquer et contraindre les utilisateurs, sans quoi les &laquo;&nbsp;créateurs&nbsp;&raquo; ne pourront plus &laquo;&nbsp;vivre de leur travail&nbsp;&raquo;, et donc ne pourront plus &laquo;&nbsp;créer&nbsp;&raquo;.</p>
+<p>Faut-il établir un <a href="http://www.laquadrature.net/fr/qui-a-gagne-la-bataille-hadopi">cadre psychologique</a> incitant à accepter l&rsquo;intrusion de publicités afin que les journalistes puissent &laquo;&nbsp;gagner leur vie&nbsp;&raquo;&nbsp;?</p>
+<p>De la même manière qu&rsquo;il faut dépasser l&rsquo;opposition entre le <a href="http://paigrain.debatpublic.net/?p=7343">partage de la culture</a> et son financement par la <a href="http://blog.rom1v.com/2010/08/piratage-ou-usage-commun/">vente de copies</a>, je pense qu&rsquo;il faut dépasser celle entre la <a href="http://www.lemonde.fr/idees/article/2012/06/26/la-publicite-peut-avoir-des-effets-nocifs-sur-la-societe_1724489_3232.html">liberté de (non) réception</a> (appliquée au web) et le financement par la publicité.</p>
+<p>Les discussions portant sur la négociation d&rsquo;un compromis entre les deux positions, comme l&rsquo;acceptation de publicités moins intrusives, paraissent vaines.</p>
+<h3 id="valeur-et-financement">Valeur et financement</h3>
+<p>Ne pas pouvoir vendre un contenu ne signifie pas qu&rsquo;il n&rsquo;a pas de valeur&nbsp;: un article rendu accessible à tous n&rsquo;a pas moins de valeur que le même article restreint par un <a href="http://www.arretsurimages.net/contenu.php?id=5629">accès payant</a>.</p>
+<p>Par contre, y ajouter de la publicité diminue la valeur que leur attribuent les lecteurs, mais aussi les auteurs eux-mêmes&nbsp;: tous préféreraient ne pas la subir. La publicité agit donc comme un parasite.</p>
+<p>Et pour les journalistes, ce parasite engendre une <a href="http://www.lemonde.fr/economie/article/2012/09/13/lourdes-pertes-publicitaires-pour-liberation-apres-sa-une-sur-bernard-arnault_1759485_3234.html">dépendance</a> <a href="http://television.telerama.fr/television/menaces-via-les-budgets-pub-de-france-2-coca-n-est-pas-le-seul-faire-pression,92938.php">financière</a> pouvant influencer le fond du discours. D&rsquo;une manière générale, les sources de financement ont souvent tendance à réduire l&rsquo;indépendance, pierre angulaire du journalisme.</p>
+<p>C&rsquo;est la raison pour laquelle certains essaient de ne dépendre que de leurs lecteurs. Mais, pour la plupart d&rsquo;entre eux (<a href="http://reflets.info/de-lindependance-des-medias-et-du-pognon/">pas tous</a>), cela signifie limiter le contenu aux seuls abonnés. En effet, si tout est déjà accessible, pourquoi payer&nbsp;?</p>
+<p>Cependant, en pratique, seuls quelques gros sites peuvent se permettre cette restriction (les internautes ne vont pas s&rsquo;abonner aux milliers de sites qu&rsquo;ils visitent). Et au fond, est-ce bien le web que nous voulons, cloisonné par des barrières à péages&nbsp;?</p>
+<p>Du côté des lecteurs, la publicité ralentit la navigation, impose une pollution visuelle et collecte certaines données personnelles&nbsp;; pas étonnant qu&rsquo;ils cherchent à s&rsquo;en prémunir !</p>
+<h3 id="monnaie-revenu-et-travail">Monnaie, revenu et travail</h3>
+<p>Dans le monde de la rareté, l&rsquo;échange monétaire provient de la rencontre de l&rsquo;offre et de la demande. Dans le monde de l&rsquo;immatériel, l&rsquo;offre et la demande se rencontrent déjà parfaitement sans monnaie, qui ne joue alors plus le rôle de facilitateur d&rsquo;échange, mais au contraire d&rsquo;obstacle&nbsp;: il est nécessaire de restreindre ou dégrader le résultat du travail pour pouvoir &laquo;&nbsp;gagner sa vie&nbsp;&raquo;.</p>
+<p>Le métier de certains journalistes, dont personne ne conteste l&rsquo;utilité, est menacé, car nous avons intégré le fait que le revenu devait provenir exclusivement du travail. Mais si ce travail ne génère pas d&rsquo;argent, doit-il disparaître&nbsp;?</p>
+<p>La publicité est omniprésente car il faut absolument gagner de l&rsquo;argent autrement, l&rsquo;information en elle-même n&rsquo;en rapportant pas. Pourtant, les internautes vont bien sur les sites de presse pour l&rsquo;information, pas pour la publicité&nbsp;!</p>
+<h3 id="revenu-de-base">Revenu de base</h3>
+<p>Et si une partie du revenu était <strong>indépendante du travail</strong>&nbsp;? Dissocier <a href="http://blog.rom1v.com/2011/02/dividende-universel-un-enjeu-majeur-de-societe/">le revenu et l&rsquo;emploi</a> n&rsquo;améliorerait-il pas la situation, pour tout le monde et en particulier pour les journalistes&nbsp;?</p>
+<p><strong>Le <a href="http://reportoutloud.org/fr/le-revenu-de-base-utopie-dhier-revolution-daujourdhui-realite-de-demain/">revenu de base</a> augmente la possibilité d&rsquo;activités non rentables</strong>, sans ajouter de dépendances (car inconditionnel).</p>
+<p>La rentabilité ayant tendance à entraver et dénaturer le journalisme, ne devrions-nous envisager sérieusement cette proposition dans les débats sur le financement de la presse, et plus généralement sur les productions potentiellement non-marchandes&nbsp;?</p>
+<p>Le revenu de base n&rsquo;interdirait bien sûr pas les autres sources de financement&nbsp;: il s&rsquo;y ajouterait. Simplement, il augmenterait la capacité à refuser des financements contraignants, tels que ceux provenant de la publicité…</p>
+]]></content:encoded>
+			<wfw:commentRss>http://blog.rom1v.com/2013/06/anti-adblock-et-hadopi-meme-combat/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+		</item>
+		<item>
+		<title>GIT : squasher des merges</title>
+		<link>http://blog.rom1v.com/2013/05/git-squasher-des-merges/</link>
+		<comments>http://blog.rom1v.com/2013/05/git-squasher-des-merges/#comments</comments>
+		<pubDate>Thu, 30 May 2013 15:40:50 +0000</pubDate>
+		<dc:creator><![CDATA[®om]]></dc:creator>
+				<category><![CDATA[Astuces]]></category>
+		<category><![CDATA[Outils]]></category>
+		<category><![CDATA[planet-libre]]></category>
+		<category><![CDATA[puf]]></category>
+		<category><![CDATA[développement]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[gnu/linux]]></category>
+
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4507</guid>
+		<description><![CDATA[Supposons que je souhaite ajouter une fonctionnalité à un projet sur GIT. Je prends la version actuelle de la branche master (A), puis ajoute sur ma branche topic les commits X et Y. X---Y topic / --A master Je propose la fonctionnalité upstream (par un git request-pull ou une pull request), qui met un peu [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p><a href="http://blog.rom1v.com/wp-content/uploads/2013/05/gitmerge.jpg"><img src="http://blog.rom1v.com/wp-content/uploads/2013/05/gitmerge-300x199.jpg" alt="gitmerge" width="300" height="199" class="alignright size-medium wp-image-4516" /></a></p>
+<p>Supposons que je souhaite ajouter une fonctionnalité à un projet sur <a href="http://fr.wikipedia.org/wiki/Git">GIT</a>.</p>
+<p>Je prends la version actuelle de la branche <code>master</code> (<code>A</code>), puis ajoute sur ma branche <code>topic</code> les commits <code>X</code> et <code>Y</code>.</p>
+<pre><code>    X---Y  topic
+   /
+--A  master</code></pre>
+<p>Je propose la fonctionnalité <em>upstream</em> (par un <code>git request-pull</code> ou une <a href="https://help.github.com/articles/using-pull-requests">pull request</a>), qui met un peu de temps à être revue.</p>
+<p>Pendant ce temps, la branche <code>master</code> a avancé, et malheureusement les modifications effectuées entrent en conflit avec mon travail sur <code>topic</code>.</p>
+<pre><code>    X---Y  topic
+   /
+--A---B---C  master</code></pre>
+<p>Une fois mon code revu et accepté, les mainteneurs vont alors me demander de résoudre les conflits avec la branche <code>master</code> avant de merger ma branche <code>topic</code>.</p>
+<p>Si j&rsquo;avais eu à prendre en compte les mises à jour de <code>master</code> <strong>avant</strong> d&rsquo;avoir rendu public mon <code>topic</code>, j&rsquo;aurais simplement <a href="http://git-scm.com/book/en/Git-Branching-Rebasing">rebasé</a> mon travail par-dessus <code>master</code>. Mais là, <a href="http://www.mail-archive.com/dri-devel@lists.sourceforge.net/msg39091.html">impossible</a>.</p>
+<p>Je dois donc merger. Très bien. Je merge et je résous les conflits.</p>
+<pre><code>    X---Y---M  topic
+   /       /
+--A---B---C  master</code></pre>
+<p>Mais, alors que je n&rsquo;ai pas encore rendu <code>M</code> public, je m&rsquo;aperçois qu&rsquo;il y a un nouveau commit <code>D</code> sur <code>master</code>, que je veux intégrer dans <code>topic</code>.</p>
+<pre><code>    X---Y---M  topic
+   /       /
+--A---B---C---D  master</code></pre>
+<p>La solution la plus évidente est de merger à nouveau.</p>
+<pre><code>    X---Y---M---N  topic
+   /       /   /
+--A---B---C---D  master</code></pre>
+<p>Mais je voudrais éviter un commit de merge inutile. Pour un seul, ce n&rsquo;est pas très gênant, mais si on maintient une branche suffisamment longtemps avant qu&rsquo;elle ne soit mergée, ces commits inutiles vont se multiplier.</p>
+<p>Une solution serait de revenir à <code>Y</code> et de le merger avec <code>D</code>&nbsp;:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">git checkout topic
+git reset --hard Y
+git merge master</code></pre>
+<pre><code>    X---Y---M&#39;  topic
+   /         \
+--A---B---C---D  master</code></pre>
+<p>Mais dans ce cas, pour créer <code>M'</code>, je vais devoir résoudre à nouveau les conflits que j&rsquo;avais déjà résolu en créant <code>M</code>.</p>
+<p>Comment éviter ce problème&nbsp;?</p>
+<h3 id="rerere">rerere</h3>
+<p>Une solution est d&rsquo;avoir activé <em>rerere</em> <strong>avant</strong> d&rsquo;avoir résolu les conflits de <code>M</code>&nbsp;:</p>
+<pre><code>git config rerere.enabled true</code></pre>
+<p>Ainsi, lorsque je tenterai de merger à nouveau <code>Y</code> et <code>D</code>, les conflits entre <code>Y</code> et <code>C</code> seront automatiquement résolus de la même manière que précédemment.</p>
+<p>Cependant, cette méthode a ses inconvénients.</p>
+<p>Tout d&rsquo;abord, il ne s&rsquo;agit que d&rsquo;un cache local de résolutions des conflits, stocké pendant une durée déterminée (par défaut à 60 jours pour les conflits résolus), ce qui est peu pratique si on clone son dépôt sur plusieurs machines (les conflits ne seront résolus automatiquement que sur certaines).</p>
+<p>Ensuite, elle est inutilisable lorsqu&rsquo;on souhaite <a href="http://git-scm.com/book/en/Git-Tools-Rewriting-History#Squashing-Commits">squasher</a> un merge conflictuel alors que <em>rerere</em> était désactivé lors de sa création.</p>
+<p>Enfin, cette fonctionnalité est encore récente, et la fonction <code>git rerere forget</code> (pour permettre de résoudre autrement des conflits déjà résolus), a la fâcheuse tendance à <a href="http://fr.wikipedia.org/wiki/Erreur_de_segmentation">segfaulter</a> (un <a href="http://permalink.gmane.org/gmane.comp.version-control.git/220059">patch</a> a été proposé).</p>
+<h3 id="rebranchement">Rebranchement</h3>
+<p>La solution que j&rsquo;utilise est donc la suivante.</p>
+<pre><code>    X---Y---M---N  topic
+   /       /   /
+--A---B---C---D  master</code></pre>
+<p>Une fois obtenus les deux merges <code>M</code> et <code>N</code>, le principe est de remplacer le parent de <code>N</code>, qui était <code>M</code>, par <code>Y</code>, sans rien changer d&rsquo;autre au contenu.</p>
+<pre><code>          -----
+         /     \
+    X---Y---M   N' topic
+   /       /   /
+--A---B---C---D  master</code></pre>
+<p>Ainsi, <code>M</code> devient inatteignable, et c&rsquo;est exactement le résultat souhaité&nbsp;:</p>
+<pre><code>    X---Y-------N&#39; topic
+   /           /
+--A---B---C---D  master</code></pre>
+<p>Pour faire cela, il faut déplacer le HEAD (pointant vers <code>topic</code>) sur <code>Y</code>, faire croire à GIT qu&rsquo;on est en phase de merge avec <code>D</code> en modifiant la référence <code>MERGE_HEAD</code>, puis commiter&nbsp;:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">git checkout N
+git reset --soft Y
+git update-ref MERGE_HEAD D
+git commit -eF <span class="kw">&lt;(</span>git log ..N ^D --pretty=<span class="st">&#39;# %H%n%s%n%n%b&#39;</span><span class="kw">)</span></code></pre>
+<p>Il n&rsquo;y a plus qu&rsquo;à éditer le message de commit de merge.</p>
+<p>La fin de la ligne du <code>git commit</code> permet de concaténer l&rsquo;historique des commits intermédiaires (a priori uniquement des <em>merges</em>) comme lors d&rsquo;un <em>squash</em> avec <code>git rebase</code> (pour pouvoir conserver les messages de merges intermédiaires, contenant nontamment les conflits).</p>
+<p>En utilisant les références plutôt que les numéros de commit, cela donne&nbsp;:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">git checkout feature
+git reset --soft HEAD~2
+git update-ref MERGE_HEAD master
+git commit -eF <span class="kw">&lt;(</span>git log ..HEAD@<span class="dt">{1}</span> ^master --pretty=<span class="st">&#39;# %H%n%s%n%n%b&#39;</span><span class="kw">)</span></code></pre>
+<p>Si vous avez plus simple, je suis preneur…</p>
+<p><em>Merci aux membres de <a href="http://stackoverflow.com/questions/1725708/git-rebase-interactive-squash-merge-commits-togethergi">stackoverflow</a>.</em></p>
+]]></content:encoded>
+			<wfw:commentRss>http://blog.rom1v.com/2013/05/git-squasher-des-merges/feed/</wfw:commentRss>
+		<slash:comments>10</slash:comments>
+		</item>
+		<item>
+		<title>Le mixage audio</title>
+		<link>http://blog.rom1v.com/2013/01/le-mixage-audio/</link>
+		<comments>http://blog.rom1v.com/2013/01/le-mixage-audio/#comments</comments>
+		<pubDate>Tue, 29 Jan 2013 14:15:45 +0000</pubDate>
+		<dc:creator><![CDATA[®om]]></dc:creator>
+				<category><![CDATA[Analyses]]></category>
+		<category><![CDATA[Outils]]></category>
+		<category><![CDATA[planet-libre]]></category>
+		<category><![CDATA[Réflexions]]></category>
+		<category><![CDATA[audio]]></category>
+		<category><![CDATA[c]]></category>
+		<category><![CDATA[mathématiques]]></category>
+		<category><![CDATA[scripts]]></category>
+
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4358</guid>
+		<description><![CDATA[Que se passe-t-il lorsque nous percevons le son provenant de plusieurs sources audio simultanément, par exemple lorsque plusieurs personnes parlent en même temps&#160;? Dans la réalité, ce que nous entendons est la somme de chacun des signaux. Mais si nous voulons mélanger plusieurs pistes audio numériques, nous rencontrons un problème&#160;: chaque échantillon d&#8217;un signal audio [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Que se passe-t-il lorsque nous percevons le son provenant de plusieurs sources audio simultanément, par exemple lorsque plusieurs personnes parlent en même temps&nbsp;?</p>
+<p>Dans la réalité, ce que nous entendons est la <strong>somme</strong> de chacun des signaux.</p>
+<p>Mais si nous voulons mélanger plusieurs pistes audio numériques, nous rencontrons un problème&nbsp;: chaque <a href="http://fr.wikipedia.org/wiki/%C3%89chantillonnage_%28signal%29">échantillon</a> d&rsquo;un signal audio est compris entre une valeur <em>min</em> et une valeur <em>max</em>, disons entre <code>-1</code> et <code>1</code>. Pour les <a href="http://fr.wikipedia.org/wiki/Mixage_audio">mixer</a>, nous ne pouvons donc pas sommer plusieurs signaux comme dans la réalité&nbsp;: le signal résultant doit aussi être compris entre <code>-1</code> et <code>1</code>. Comment faire alors&nbsp;?</p>
+<h3 id="en-théorie">En théorie</h3>
+<p><em>Les graphes présentés dans les sections suivantes ont été créés avec <a href="http://www.gnuplot.info/">gnuplot</a>, et les définitions de fonctions sont écrites dans la syntaxe correspondante. Les sources (<code>.gnu</code>) sont <a href="#sources">disponibles</a> pour chacun des graphes, vous permettant de les <a href="#gnuplot">manipuler</a> en 3D.</em></p>
+<h4 id="somme-tronquée">Somme tronquée</h4>
+<p>La première idée est de sommer les signaux en tronquant le résultat dans l&rsquo;intervalle <code>[-1; 1]</code>. Pour le mixage de <strong>deux</strong> sources audio <code>x</code> et <code>y</code>&nbsp;:</p>
+<pre><code>mix_sum(x, y) = min(1, max(-1, x + y))</code></pre>
+<p>Le résultat sera <em>parfait</em> lorsque <code>|x + y| &lt;= 1</code>. Par contre, dans le reste des cas, nous obtenons du <a href="http://fr.wikipedia.org/wiki/Clipping_%28audio%29">clipping</a>, désagréable à l&rsquo;oreille.</p>
+<p>Visualisons cette fonction&nbsp;:</p>
+<p><a href="http://blog.rom1v.com/wp-content/uploads/2013/01/mix_sum.png"><img src="http://blog.rom1v.com/wp-content/uploads/2013/01/mix_sum-300x225.png" alt="mix_sum" width="300" height="225" class="aligncenter size-medium wp-image-4359" /></a></p>
+<p>Les axes horizontaux correspondent à un échantillon de chacune des deux sources audio&nbsp;; l&rsquo;axe vertical représente la valeur résultant de la combinaison des deux en utilisant la <em>somme tronquée</em>.</p>
+<p>Le <em>clipping</em> correspond aux deux paliers horizontaux du haut et du bas.</p>
+<h4 id="moyenne">Moyenne</h4>
+<p>Pour éviter tout <em>clipping</em>, il suffirait de moyenner les deux sources audio&nbsp;:</p>
+<pre><code>mix_mean(x, y) = (x + y) / 2;</code></pre>
+<p><a href="http://blog.rom1v.com/wp-content/uploads/2013/01/mix_mean.png"><img src="http://blog.rom1v.com/wp-content/uploads/2013/01/mix_mean-300x225.png" alt="mix_mean" width="300" height="225" class="aligncenter size-medium wp-image-4364" /></a></p>
+<p>Effectivement, ça fonctionne bien. Mais ce n&rsquo;est pas forcément le meilleur choix.</p>
+<p>Le son résultant va toujours être plus faible que le plus fort des deux sources, et souvent de manière significative. En particulier, si nous mélangeons une source audio quelconque avec un silence, l&rsquo;amplitude va être divisée par deux.</p>
+<p>De plus, la définition va également être divisée par deux&nbsp;: si l&rsquo;amplitude est codée sur 8 bits, elle peut prendre 256 valeurs. En divisant les signaux par deux, chaque signal aura une définition de 7 bits (128 valeurs).</p>
+<p>Ces inconvénients s&rsquo;agravent lorsqu&rsquo;il y a plus de deux sources à mélanger.</p>
+<h4 id="ksomme">k&nbsp;×&nbsp;somme</h4>
+<p>Nous pouvons alors chercher un <strong>compromis</strong> entre conserver l&rsquo;amplitude et éviter le <em>clipping</em>. En fait, les fonctions de <em>somme tronquée</em> et de <em>moyenne</em> ne sont que deux cas particuliers de cette fonction&nbsp;:</p>
+<pre><code>mix_ksum(k, x, y) = min(1, max(-1, k * (x + y)))</code></pre>
+<p>En effet&nbsp;:</p>
+<pre><code>mix_sum(x, y) = mix_ksum(1, x, y)
+mix_mean(x, y) = mix_ksum(0.5, x, y)</code></pre>
+<p>Nous pouvons choisir n&rsquo;importe quel <code>k</code> entre 0.5 et 1&nbsp;: plus <code>k</code> est faible, moins le <em>clipping</em> sera probable&nbsp;; plus <code>k</code> est élevé, plus l&rsquo;amplitude sera conservée.</p>
+<p>Voici le graphe pour <code>k = 0.7</code>&nbsp;:</p>
+<p><a href="http://blog.rom1v.com/wp-content/uploads/2013/01/mix_ksum.png"><img src="http://blog.rom1v.com/wp-content/uploads/2013/01/mix_ksum-300x225.png" alt="mix_ksum" width="300" height="225" class="aligncenter size-medium wp-image-4363" /></a></p>
+<p>Cette méthode est très utile si nous connaissons <em>à l&rsquo;avance</em> les sources audio. Par exemple, pour mélanger deux fichiers son, nous pouvons effectuer une première passe pour analyser le max <code>m</code> de la somme des deux signaux, et choisir <code>k &lt; 1/m</code>&nbsp;: cela garantit qu&rsquo;il n&rsquo;y aura pas de <em>clipping</em>, et nous pouvons conserver l&rsquo;amplitude dans la mesure du possible, sans distorsion.</p>
+<p>Si ces sources audio nous parviennent en direct (<em>streaming</em>, conversation audio&#8230;), nous pouvons choisir un nombre arbitrairement (plus ou moins basé sur l&rsquo;expérience). Choisir <code>k &gt; 0.5</code> se justifie car si deux sources audio sont indépendantes, les ajouter ne provoque pas des pics deux fois plus importants (les pics d&rsquo;un signal vont souvent être compensés par les creux de l&rsquo;autre).</p>
+<h4 id="fonction-non-linéaire">Fonction non-linéaire</h4>
+<p>Mais nous pouvons trouver un meilleur compromis grâce à des fonctions <a href="http://fr.wikipedia.org/wiki/Non-lin%C3%A9arit%C3%A9">non-linéaires</a>.</p>
+<p>Dans la première partie de son billet <a href="http://www.vttoth.com/CMS/index.php/technical-notes/68">Mixing digital audio</a>, Viktor T. Toth présente une stratégie très intéressante. Il part du principe que le mixage de deux sources audio doit respecter les règles suivantes&nbsp;:</p>
+<ul>
+<li>si l&rsquo;une des sources est silencieuse, alors nous voulons entendre l&rsquo;autre inaltérée&nbsp;;</li>
+<li>si les signaux sont de même signe, l&rsquo;amplitude du résultat (en valeur absolue) doit être supérieure à celle des sources.</li>
+</ul>
+<p>Et si les signaux prennent valeur dans <code>[0, 1]</code>, la fonction suivante respecte ces contraintes&nbsp;:</p>
+<pre><code>vtt(x, y) = x + y - x * y</code></pre>
+<p><a href="http://blog.rom1v.com/wp-content/uploads/2013/01/vtt.png"><img src="http://blog.rom1v.com/wp-content/uploads/2013/01/vtt-300x225.png" alt="vtt" width="300" height="225" class="aligncenter size-medium wp-image-4367" /></a></p>
+<p>Cependant, en réalité, les signaux prennent valeur dans <code>[-1, 1]</code>, et cette fonction ne convient pas. L&rsquo;auteur s&rsquo;en est rendu compte, mais malheureusement la solution qu&rsquo;il propose n&rsquo;est pas appropriée (par exemple, le mixage ne se comporte pas symétriquement si nous inversons le signal).</p>
+<p>Nous pouvons extrapoler son idée originale pour la faire fonctionner sur <code>[-1, 1]</code>&nbsp;:</p>
+<pre><code>mix_vtt(x, y) = \
+    x &gt;= 0 &amp;&amp; y &gt;= 0 ? x + y - x * y \
+  : x &lt;= 0 &amp;&amp; y &lt;= 0 ? x + y + x * y \
+  : x + y</code></pre>
+<p>Le principe est d&rsquo;utiliser le symétrique de sa fonction pour la partie négative, et ajouter deux bouts de plans pour les raccords&nbsp;:</p>
+<p><a href="http://blog.rom1v.com/wp-content/uploads/2013/01/mix_vttx.png"><img src="http://blog.rom1v.com/wp-content/uploads/2013/01/mix_vttx-300x225.png" alt="mix_vttx" width="300" height="225" class="aligncenter size-medium wp-image-4366" /></a></p>
+<p>Mais quelque chose saute aux yeux&nbsp;: sa représentation n&rsquo;est pas <em>lisse</em> (la fonction n&rsquo;est pas <a href="http://fr.wikipedia.org/wiki/D%C3%A9rivation_it%C3%A9r%C3%A9e#Classe_Cn">continûment dérivable</a> (C<sup>1</sup>)). Cela signifie que les variations du résultat en fonction des variations des sources changent brutalement en certains endroits.</p>
+<p>Ce n&rsquo;est pas satisfaisant mathématiquement.</p>
+<h4 id="surface-lisse">Surface <em>lisse</em></h4>
+<p>Et en effet, en y réfléchissant, la fonction souffre de quelques défauts.</p>
+<p>Par exemple, si l&rsquo;une des deux sources audio est à <code>1</code>, alors si l&rsquo;autre est positive, elle n&rsquo;a aucun impact, si elle est négative, elle a un impact <a href="http://fr.wikipedia.org/wiki/Lin%C3%A9arit%C3%A9">linéaire</a> important. Ce n&rsquo;est rien d&rsquo;autre qu&rsquo;un <em>clipping</em> de l&rsquo;une des deux sources.</p>
+<p>Par ailleurs, dans la réalité, le mixage de deux signaux est simplement leur addition. Le résultat est donc <strong>invariant</strong> si nous ajoutons une constante à une source et la soustrayons à l&rsquo;autre&nbsp;:</p>
+<pre><code>mix(x, y) = mix(x + k, y - k) = x + y</code></pre>
+<p>Cette propriété me semble importante&nbsp;: peu importe que le son provienne d&rsquo;une source ou d&rsquo;une autre, cela n&rsquo;intervient pas dans le mixage.</p>
+<p>Or, dans la fonction précédente, ce n&rsquo;est pas le cas. Par exemple&nbsp;:</p>
+<pre><code>mix_vttx(0.5, 0.5) = 0.75
+min_vttx(0, 1) = 1</code></pre>
+<p>Afin de dépasser ce problème, posons cette propriété comme principe&nbsp;: puisque l&rsquo;identification de l&rsquo;apport individuel de chaque signal ne compte pas, considérons uniquement leur somme (ou leur moyenne). Ainsi, au lieu d&rsquo;une fonction à deux variables <code>x</code> et <code>y</code>, nous pouvons utiliser une fonction à une seule variable <code>z = (x + y) / 2</code> (la moyenne).</p>
+<p>Remarquons que nous pouvions déjà exprimer les <a href="http://fr.wikipedia.org/wiki/Application_lin%C3%A9aire">fonctions linéaires</a> vues précédemment en fonction d&rsquo;une seule variable. En effet, en posant <code>z = (x + y) / 2</code>, nous obtenons&nbsp;:</p>
+<pre><code>sum(z) = max(-1, min(1, 2 * z))
+mean(z) = z
+ksum(z) = max(-1, min(1, 2 * k * z))</code></pre>
+<p>Dans le fond, nous cherchons une fonction qui s&rsquo;approche de <code>sum</code> pour les amplitudes faibles (pour conserver l&rsquo;amplitude au mieux) et de <code>mean</code> pour les amplitudes élevées (pour éviter le <em>clipping</em>).</p>
+<p>Avec un peu d&rsquo;imagination, nous pouvons trouver une fonction qui convient parfaitement (pour 2 pistes audio)&nbsp;:</p>
+<pre><code>g(z) = z * (2 - abs(z))</code></pre>
+<p>Elle se généralise pour <em>n</em> pistes audio&nbsp;:</p>
+<pre><code>g(z) = sgn(z) * (1 - (1 - abs(z)) ** n)</code></pre>
+<p><em><code>abs(x)</code> désigne la valeur absolue de <code>x</code> (|x|), et <code>**</code> est la fonction <a href="http://fr.wikipedia.org/wiki/Puissance_d%27un_nombre">puissance</a> (<code>a ** n</code> signifie a<sup>n</sup>)</em></p>
+<p><a href="http://blog.rom1v.com/wp-content/uploads/2013/01/g.png"><img src="http://blog.rom1v.com/wp-content/uploads/2013/01/g-300x225.png" alt="g" width="300" height="225" class="aligncenter size-medium wp-image-4361" /></a></p>
+<p>Cette fonction a plein de propriétés intéressantes&nbsp;:</p>
+<dl>
+<dt>∀x, |<em>g</em>(x)| &lt;= 1</dt>
+<dd>dans le bon intervalle
+</dd>
+<dt><em>g</em>(-1) = -1, <em>g</em>(0) = 0 et <em>g</em>(1) = 1</dt>
+<dd>résultats cohérents
+</dd>
+<dt>∀x (|x| &lt; 1), <em>g&rsquo;</em>(x) &gt; 0</dt>
+<dd>pas de <em>clipping</em>
+</dd>
+<dt>∀x, |<em>g</em>(x)| ≤ |<em>sum</em>(x)|</dt>
+<dd>l&rsquo;amplitude ne dépasse jamais la somme de celle des sources
+</dd>
+<dt>∀x, |<em>g</em>(x)| ≥ |<em>mean</em>(x)|</dt>
+<dd>l&rsquo;amplitude est toujours supérieure à la moyenne des sources
+</dd>
+<dt>∀x, <em>g&rsquo;</em>(0) = <em>sum&rsquo;</em>(x) = n</dt>
+<dd><em>g</em> se comporte comme <em>sum</em> lorsque l&rsquo;amplitude est faible (elle <a href="http://fr.wikipedia.org/wiki/D%C3%A9riv%C3%A9e">varie</a> de la même manière)
+</dd>
+<dt>∀x≠0, x.<em>g&rsquo;</em><em>&lsquo;</em>(x) &lt; 0</dt>
+<dd>la croissance de <em>g</em> ralentit lorsque l&rsquo;amplitude augmente (en valeur absolue), donc les fortes amplitudes sont plus <em>compressées</em> que les faibles
+</dd>
+<dt>∀x, <em>g</em>(-x) = -<em>g</em>(x) (<a href="http://fr.wikipedia.org/wiki/Parit%C3%A9_d%27une_fonction">impaire</a>)</dt>
+<dd>comportement symétrique sur un signal inversé
+</dd>
+<dt><em>g</em>&nbsp;∈&nbsp;C<sup>1</sup> (<a href="http://fr.wikipedia.org/wiki/D%C3%A9rivation_it%C3%A9r%C3%A9e#Classe_Cn">continûment dérivable</a>)</dt>
+<dd>parfaitement lisse
+</dd>
+</dl>
+<p>Passons alors en 3 dimensions, et posons&nbsp;:</p>
+<pre><code>mix_f(x, y) = g((x + y) / 2)</code></pre>
+<p><a href="http://blog.rom1v.com/wp-content/uploads/2013/01/mix_f.png"><img src="http://blog.rom1v.com/wp-content/uploads/2013/01/mix_f-300x225.png" alt="mix_f" width="300" height="225" class="aligncenter size-medium wp-image-4368" /></a></p>
+<p>Nous nous apercevons que c&rsquo;est une version <em>lissée</em> de la fonction précédente&nbsp;:</p>
+<p><a href="http://blog.rom1v.com/wp-content/uploads/2013/01/mix_f_vttx.png"><img src="http://blog.rom1v.com/wp-content/uploads/2013/01/mix_f_vttx-300x225.png" alt="mix_f_vttx" width="300" height="225" class="aligncenter size-medium wp-image-4362" /></a></p>
+<p><strong>Cette fonction me semble donc pertinente pour mixer plusieurs flux audio.</strong></p>
+<h3 id="en-pratique">En pratique</h3>
+<p>Bon, jusqu&rsquo;ici nous avons fait de beaux dessins, c&rsquo;était rigolo. Maintenant, passons à la pratique, et implémentons les fonctions de mixage en <a href="http://fr.wikipedia.org/wiki/C_%28langage%29">C</a>.</p>
+<p>Nous manipulerons uniquement des flux <a href="http://fr.wikipedia.org/wiki/RAW_%28format_audio%29">audio brut</a> (des <a href="http://fr.wikipedia.org/wiki/WAVEform_audio_format">wav</a> sans en-tête), contenant uniquement des <a href="http://fr.wikipedia.org/wiki/%C3%89chantillonnage_%28signal%29">échantillons</a> encodés par des <a href="http://fr.wikipedia.org/wiki/Format_de_donn%C3%A9es#Nombres_entiers">entiers signés</a> sur 16 <a href="http://fr.wikipedia.org/wiki/Bit">bits</a>, en <a href="http://fr.wikipedia.org/wiki/Endianness#Little_endian">little endian</a>. Ça peut paraître compliqué comme ça, mais c&rsquo;est juste le format utilisé pour les <a href="http://en.wikipedia.org/wiki/CD-DA#Technical_details">cd audio</a>.</p>
+<p>Le programme est indifférent au nombre de canaux ou à la fréquence (il mixe les échantillons les uns à la suite des autres), mais bien évidemment les différentes pistes mixées doivent avoir ces paramètres identiques.</p>
+<h4 id="implémentation">Implémentation</h4>
+<p>Bien que nous n&rsquo;ayons vu jusqu&rsquo;ici que le mixage de <strong>deux</strong> pistes audio (au-delà c&rsquo;était compliqué de les visualiser sur des graphes), l&rsquo;implémentation permet de mixer <em>n</em> pistes audio.</p>
+<p>Le mixage s&rsquo;effectue sur un échantillon de chaque piste audio à la fois (il est indépendant des échantillons précédents et suivants). Les fonctions de mixage ont toutes la même signature&nbsp;:</p>
+<pre class="sourceCode c"><code class="sourceCode c"><span class="dt">int</span> mix(<span class="dt">int</span> n, <span class="dt">int</span> samples[])</code></pre>
+<dl>
+<dt><code>n</code></dt>
+<dd>le nombre de pistes audio
+</dd>
+<dt><code>samples</code></dt>
+<dd>le tableau des <code>n</code> échantillons à mixer
+</dd>
+</dl>
+<p>La valeur du retour ainsi que celles des <code>samples[i]</code> <em>tient</em> sur 16 bits (compris entre -32768 et 32767).</p>
+<p>À titre d&rsquo;exemple, voici l&rsquo;implémentation de la fonction <em>f</em> (celle qui est <em>lisse</em>)&nbsp;:</p>
+<pre class="sourceCode c"><code class="sourceCode c"><span class="dt">int</span>
+mix_f(<span class="dt">int</span> n, <span class="dt">int</span> samples[])
+{
+  <span class="dt">double</span> z = _dsum(n, samples) / n;
+  <span class="dt">int</span> sgn = z &gt;= <span class="dv">0</span> ? <span class="dv">1</span> : -<span class="dv">1</span>;
+  <span class="dt">double</span> g = sgn * (<span class="dv">1</span> - pow(<span class="dv">1</span> - sgn * z, n));
+  <span class="kw">return</span> to_int16(g);
+}</code></pre>
+<p>avec <code>_dsum</code> une fonction qui somme les <em>n</em> samples et <code>to_int16</code> une fonction qui convertit un <a href="http://fr.wikipedia.org/wiki/Virgule_flottante">flottant</a> compris entre -1 et 1 vers un entier compris entre -32768 et 32767.</p>
+<p>Une fonction <code>main</code> s&rsquo;occupe d&rsquo;ouvrir les fichiers dont les noms sont passés en paramètres et d&rsquo;appliquer pour chaque échantillon la fonction de <em>mixage</em> désirée.</p>
+<h4 id="sources">Sources</h4>
+<p>Les sources complètes sont <a href="http://fr.wikipedia.org/wiki/Git">gitées</a>&nbsp;:</p>
+<pre><code>git clone http://git.rom1v.com/mixpoc.git</code></pre>
+<p>(ou sur <a href="https://github.com/rom1v/mixpoc">github</a>).</p>
+<p>Le projet contient&nbsp;:</p>
+<ul>
+<li>le code du <a href="http://fr.wikipedia.org/wiki/Preuve_de_concept">PoC</a> (<code>mixpoc.c</code>)&nbsp;;</li>
+<li>un <a href="http://fr.wikipedia.org/wiki/Make">makefile</a> minimaliste (<code>Makefile</code>)&nbsp;;</li>
+<li>les sources des graphes <em>gnuplot</em> (<code>*.gnu</code>)&nbsp;;</li>
+<li>des scripts utilitaires (voir ci-dessous l&rsquo;utilisation).</li>
+</ul>
+<h4 id="utilisation">Utilisation</h4>
+<h5 id="fichiers-raw">Fichiers <em>raw</em></h5>
+<p>Le <em>PoC</em> ne manipule que des fichiers <em>raw</em>. Il est peu probable que vous ayez de tels fichiers sur votre ordinateurs, vous devez donc pouvoir en créer à partir de vos fichiers audio habituels.</p>
+<p><em>Vous aurez besoin de <code>sox</code> et éventuellement <code>avconv</code> ou <code>ffmpeg</code>.</em></p>
+<pre><code>./toraw file.wav file.raw
+./toraw file.ogg file.raw
+./toraw file.flac file.raw</code></pre>
+<p>Pour l&rsquo;opération inverse&nbsp;:</p>
+<pre><code>./rawtowav file.raw file.wav</code></pre>
+<p>Si le format n&rsquo;est pas supporté par <code>sox</code> (comme le <em>mp3</em>), convertissez-le en <code>wav</code> d&rsquo;abord&nbsp;:</p>
+<pre><code>avconv -i file.mp3 file.wav
+ffmpeg -i file.mp3 file.wav</code></pre>
+<h5 id="lecture-et-enregistrement">Lecture et enregistrement</h5>
+<p>Il est possible de lire des fichiers <em>raw</em> directement et d&rsquo;en enregistrer de nouveaux à partir du microphone (pratique pour essayer de mixer une musique avec une conversation).</p>
+<p><em>Le paquet <code>alsa-utils</code> doit être installé (vérifiez que le microphone est bien activé dans <code>alsamixer</code>).</em></p>
+<p>Pour enregistrer&nbsp;:</p>
+<pre><code>./record file.raw
+./record &gt; file.raw</code></pre>
+<p>Pour lire&nbsp;:</p>
+<pre><code>./play file.raw
+./play &lt; file.raw</code></pre>
+<p>Pour lire en direct le son provenant du microphone (à tester avec un casque pour éviter l&rsquo;<a href="http://fr.wikipedia.org/wiki/Effet_Larsen">effet Larsen</a>)&nbsp;:</p>
+<pre><code>./record | ./play</code></pre>
+<h5 id="mixpoc">Mixpoc</h5>
+<p>Pour compiler <code>mixpoc</code> (nécessite <code>make</code> et un compilateur C comme <code>gcc</code>)&nbsp;:</p>
+<pre><code>make</code></pre>
+<p>Pour l&rsquo;utiliser, la syntaxe est la suivante&nbsp;:</p>
+<pre><code>./mixpoc (sum|mean|ksum|vttx|f) file1 [file2 [...]]</code></pre>
+<p>Le résultat sort sur la <a href="http://fr.wikipedia.org/wiki/Flux_standard#Sortie_standard">sortie standard</a>. Ainsi&nbsp;:</p>
+<pre><code>./mixpoc f file1.raw file2.raw filen.raw &gt; result.raw</code></pre>
+<p>écrit le fichier <code>result.raw</code>.</p>
+<p>Pour lire en direct le résultat&nbsp;:</p>
+<pre><code>./mixpoc f file1.raw file2.raw filen.raw | ./play</code></pre>
+<p>ou plus simplement (grâce au script <code>mix</code>)&nbsp;:</p>
+<pre><code>./mix f file1.raw file2.raw filen.raw</code></pre>
+<p>Pour ajouter une source silencieuse, vous pouvez utiliser <code>/dev/zero</code>&nbsp;:</p>
+<pre><code>./mix f file.raw /dev/zero</code></pre>
+<p>Vous avez maintenant tout ce dont vous avez besoin pour tester.</p>
+<h5 id="gnuplot">Gnuplot</h5>
+<p>Pour visualiser les graphes <em>gnuplot</em>, je vous conseille le paquet <code>gnuplot-qt</code>.</p>
+<p>Pour les ouvrir&nbsp;:</p>
+<pre><code>gnuplot -p file.gnu</code></pre>
+<p>La souris ou les flèches du clavier permettent de tourner le graphe en 3 dimensions.</p>
+<p>Les commandes nécessaires pour générer une image <code>.png</code> sont écrites en commentaire à l&rsquo;intérieur du fichier. Je les ai fait commencer par <code>##</code> pour pouvoir les décommenter automatiquement (sans décommenter le reste) avec un script.</p>
+<p>Ainsi, pour générer les fichiers <code>.png</code>&nbsp;:</p>
+<pre><code>./gg file.gnu
+./gg *.gnu</code></pre>
+<h3 id="conclusion">Conclusion</h3>
+<p>Pour mixer plusieurs pistes son, la fonction <em>f</em> me semble très bonne, à la fois en théorie et en pratique. Sur les exemples que j&rsquo;ai testés, le résultat était celui attendu.</p>
+<p>Cependant, je n&rsquo;ai ni du matériel audio ni des oreilles de haute qualité, et mes connaissances en <a href="http://fr.wikipedia.org/wiki/Acoustique">acoustique</a> sont très limitées.</p>
+<p>Les critiques sont donc les bienvenues.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://blog.rom1v.com/2013/01/le-mixage-audio/feed/</wfw:commentRss>
+		<slash:comments>15</slash:comments>
+		</item>
+		<item>
+		<title>Paradoxes probabilistes</title>
+		<link>http://blog.rom1v.com/2012/12/paradoxes-probabilistes/</link>
+		<comments>http://blog.rom1v.com/2012/12/paradoxes-probabilistes/#comments</comments>
+		<pubDate>Sun, 09 Dec 2012 20:11:20 +0000</pubDate>
+		<dc:creator><![CDATA[®om]]></dc:creator>
+				<category><![CDATA[Analyses]]></category>
+		<category><![CDATA[Insolite]]></category>
+		<category><![CDATA[Réflexions]]></category>
+		<category><![CDATA[c]]></category>
+		<category><![CDATA[mathématiques]]></category>
+		<category><![CDATA[probabilités]]></category>
+		<category><![CDATA[scripts]]></category>
+
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4250</guid>
+		<description><![CDATA[Ce sont des cas d&#8217;école, mais j&#8217;adore ces quelques paradoxes. La simplicité de leurs énoncés et l&#8217;évidence de leur solution nous permettent de répondre en quelques secondes, sans aucune hésitation. Mais en nous trompant. Deux enfants Un couple a deux enfants dont l&#8217;un d&#8217;eux (au moins) est une fille. Quelle est la probabilité que l&#8217;autre [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p><a href="http://blog.rom1v.com/wp-content/uploads/2012/12/des.png"><img src="http://blog.rom1v.com/wp-content/uploads/2012/12/des.png" alt="" title="des" width="150" height="121" class="alignright size-full wp-image-4269" /></a></p>
+<p>Ce sont des cas d&rsquo;école, mais j&rsquo;adore ces quelques paradoxes. La simplicité de leurs énoncés et l&rsquo;évidence de leur solution nous permettent de répondre en quelques secondes, sans aucune hésitation. Mais en nous trompant.</p>
+<h3>Deux enfants</h3>
+<blockquote>
+<p>Un couple a deux enfants dont l&rsquo;un d&rsquo;eux (au moins) est une fille. Quelle est la probabilité que l&rsquo;autre soit (aussi) une fille&nbsp;?</p>
+</blockquote>
+<p><em>Par <a href="http://fr.wikipedia.org/wiki/Hypoth%C3%A8se">hypothèse</a>, la probabilité à chaque naissance d&rsquo;avoir un garçon est égale à celle d&rsquo;avoir une fille (50%), et les naissances sont <a href="http://fr.wikipedia.org/wiki/Ind%C3%A9pendance_%28probabilit%C3%A9s%29">indépendantes</a>.</em></p>
+<p>La réponse 1/2 est évidente. Mais <strong>fausse</strong>. La <em>bonne</em> réponse est <strong>1/3</strong>.</p>
+<p>En effet, un couple ayant deux enfants a 4 possiblités <a href="http://fr.wikipedia.org/wiki/%C3%89quiprobabilit%C3%A9">équiprobables</a>&nbsp;:</p>
+<ol>
+<li>garçon-garçon</li>
+<li>garçon-fille</li>
+<li>fille-garçon</li>
+<li>fille-fille</li>
+</ol>
+<p>Sachant que l&rsquo;un des deux est une fille, le cas <em>1</em> est exclu&nbsp;: il reste trois possibilités équiprobables, dont une seule correspond au cas <em>fille-fille</em>. Il y a donc une chance sur trois que les deux enfants soient des filles. <a href="http://fr.wikipedia.org/wiki/CQFD_%28math%C3%A9matiques%29">CQFD</a></p>
+<p>Pour vous en convaincre, considérez les deux phrases équivalentes suivantes&nbsp;:</p>
+<ul>
+<li>Un couple a deux enfants, dont l&rsquo;un d&rsquo;eux (au moins) est une fille.</li>
+<li>Un couple a deux enfants qui ne sont pas deux garçons.</li>
+</ul>
+<p>Pour chacune d&rsquo;elles, demandez-vous quelle est la probabilité que les deux enfants soient des filles.</p>
+<p><em>Attendez d&rsquo;être convaincus de ce résultat avant de passer à la suite.</em></p>
+<h4>Fausse implication</h4>
+<p>Une fois ce résultat compris, considérons l&rsquo;énoncé suivant&nbsp;:</p>
+<blockquote>
+<p>Un couple a deux enfants. Je le croise dans la rue avec l&rsquo;un de ses enfants, qui est une fille. Quelle est la probabilité que l&rsquo;autre enfant (celui qui est absent) soit (aussi) une fille.</p>
+</blockquote>
+<p><em>Il est possible de répondre avec certitude&nbsp;: s&rsquo;<strong>il</strong> est absent, c&rsquo;est un garçon, si <strong>elle</strong> est absente, c&rsquo;est une fille. (Ça, c&rsquo;est fait&nbsp;!)</em></p>
+<p>Alors vous appliquez le même raisonnement, et répondez <strong>1/3</strong>.<br />
+Après tout, nous sommes exactement dans le cas de l&rsquo;énoncé précédent&nbsp;: un couple a deux enfants et je sais que l&rsquo;un d&rsquo;eux (au moins) est une fille.</p>
+<p>Mais non, c&rsquo;est faux. Ici, la réponse est <strong>1/2</strong>.</p>
+<p>Pour le comprendre, il faut voir que le raisonnement menant à la réponse <strong>1/3</strong> n&rsquo;est en fait tout-à-fait valide qu&rsquo;en levant une légère ambiguïté de l&rsquo;énoncé, celle de l&rsquo;<em>acquisition de l&rsquo;information</em> : comment savons-nous que le couple ayant deux enfants a au moins une fille (pour déterminer la probabilité qu&rsquo;il en ait deux)&nbsp;?</p>
+<p>Si nous avons demandé à l&rsquo;un des parents &laquo;&nbsp;avez-vous (au moins) une fille ?&nbsp;&raquo; et qu&rsquo;il a répondu &laquo;&nbsp;oui&nbsp;&raquo;, alors la probabilité que les deux soient des filles est bien <strong>1/3</strong>.</p>
+<p>Par contre, si nous lui avons demandé &laquo;&nbsp;indiquez-moi le sexe de l&rsquo;un de vos enfants&nbsp;&raquo; et qu&rsquo;il a répondu &laquo;&nbsp;j&rsquo;ai (au moins) une fille&nbsp;&raquo;, alors la probabilité que les deux soient des filles est <strong>1/2</strong>. En effet, le fait que le parent puisse répondre <em>garçon</em> à cette question lorsqu&rsquo;il a deux enfants de sexes différents fait baisser la probabilité conditionnelle des cas <em>2</em> et <em>3</em>, et une fois le cas <em>1</em> exclu, l&rsquo;union des <em>2</em> et <em>3</em> et le cas <em>4</em> sont équiprobables. <em>Relisez la phrase précédente plusieurs fois. Comme elle n&rsquo;est pas claire, consultez le calcul sur <a href="http://fr.wikipedia.org/wiki/Paradoxe_des_deux_enfants#Acquisition_de_l.27information">Wikipedia</a>.</em></p>
+<p>Le fait de rencontrer un enfant de ce couple (ici, une fille) s&rsquo;apparente à ce dernier cas (car pour deux enfants de sexes différents, nous aurions pu rencontrer le garçon). Ainsi, la probabilité que <em>l&rsquo;autre</em> soit une fille est <strong>1/2</strong>.</p>
+<p><em>Si ce n&rsquo;est pas clair, continuez, j&rsquo;en reparle un peu plus loin lorsque j&rsquo;évoque la particularisation.</em></p>
+<h4>Deux enfants, un jour</h4>
+<blockquote>
+<p>Un couple a deux enfants dont l&rsquo;un d&rsquo;eux (au moins) est une fille <strong>née un mardi</strong>. Quelle est la probabilité que l&rsquo;autre soit (aussi) une fille&nbsp;?</p>
+</blockquote>
+<p>La réponse n&rsquo;est ni 1/2, ni 1/3, mais <strong>13/27</strong>.</p>
+<p>Un <a href="http://fr.wikipedia.org/wiki/Bourne-Again_shell"><em>bash</em></a> vaut mieux qu&rsquo;un long discours&nbsp;:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">printf</span> <span class="st">&#39;%s\n&#39;</span> <span class="dt">{G,F}{0..6}-{G,F}{0..6}</span> <span class="kw">|</span> <span class="kw">grep</span> F1 <span class="kw">|</span> <span class="kw">wc</span> -l
+<span class="kw">printf</span> <span class="st">&#39;%s\n&#39;</span> <span class="dt">{G,F}{0..6}-{G,F}{0..6}</span> <span class="kw">|</span> <span class="kw">grep</span> F1 <span class="kw">|</span> <span class="kw">grep</span> F.-F<span class="kw">.</span> <span class="kw">|</span> <span class="kw">wc</span> -l</code></pre>
+<p>(Nous supposons avoir obtenu l&rsquo;information en demandant à l&rsquo;un des parents &laquo;&nbsp;avez-vous une fille née un mardi&nbsp;?&nbsp;&raquo;. Comme dans le premier exemple, si nous lui avions demandé &laquo;&nbsp;indiquez-moi le sexe d&rsquo;un de vos enfants ainsi que son jour de naissance&nbsp;&raquo;, la probabilité que <em>l&rsquo;autre</em> soit une fille serait <strong>1/2</strong>.)</p>
+<p>Il est également possible de différencier par autre chose qu&rsquo;un jour de la semaine, par exemple faire la différence entre <em>matin</em> (entre minuit et midi) et <em>après-midi</em> (entre midi et minuit)&nbsp;:</p>
+<blockquote>
+<p>Un couple a deux enfants dont l&rsquo;un d&rsquo;eux (au moins) est une fille <strong>née un matin</strong>. Quelle est la probabilité que l&rsquo;autre soit (aussi) une fille&nbsp;?</p>
+</blockquote>
+<p>La réponse est <strong>3/7</strong>&nbsp;:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">printf</span> <span class="st">&#39;%s\n&#39;</span> <span class="dt">{G,F}{M,A}-{G,F}{M,A}</span> <span class="kw">|</span> <span class="kw">grep</span> FM <span class="kw">|</span> <span class="kw">wc</span> -l
+<span class="kw">printf</span> <span class="st">&#39;%s\n&#39;</span> <span class="dt">{G,F}{M,A}-{G,F}{M,A}</span> <span class="kw">|</span> <span class="kw">grep</span> FM <span class="kw">|</span> <span class="kw">grep</span> F.-F<span class="kw">.</span> <span class="kw">|</span> <span class="kw">wc</span> -l</code></pre>
+<h4>Deux enfants, un prénom</h4>
+<p>Supposons maintenant qu&rsquo;aucun couple n&rsquo;appelle deux de ses enfants par le même prénom, et considérons l&rsquo;énoncé suivant&nbsp;:</p>
+<blockquote>
+<p>Un couple a deux enfants dont l&rsquo;un d&rsquo;eux (au moins) est une fille <strong>prénommée Sophie</strong>. Quelle est la probabilité que l&rsquo;autre soit (aussi) une fille&nbsp;?</p>
+</blockquote>
+<p>La réponse ici est <strong>1/2</strong>.</p>
+<p>Si vous avez compris le résultat du script <em>bash</em> précédent, cela revient à supposer que les enfants ne peuvent pas être nés le même jour de la semaine (ce qui est absurde pour un jour de la semaine, mais pas pour un prénom).</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">printf</span> <span class="st">&#39;%s\n&#39;</span> <span class="dt">{G,F}{0..6}-{G,F}{0..6}</span> <span class="kw">|</span> <span class="kw">grep</span> -v <span class="st">&#39;^.\(.\)-.\1&#39;</span> <span class="kw">|</span> <span class="kw">grep</span> F1 <span class="kw">|</span> <span class="kw">wc</span> -l
+<span class="kw">printf</span> <span class="st">&#39;%s\n&#39;</span> <span class="dt">{G,F}{0..6}-{G,F}{0..6}</span> <span class="kw">|</span> <span class="kw">grep</span> -v <span class="st">&#39;^.\(.\)-.\1&#39;</span> <span class="kw">|</span> <span class="kw">grep</span> F1 <span class="kw">|</span> <span class="kw">grep</span> F.-F<span class="kw">.</span> <span class="kw">|</span> <span class="kw">wc</span> -l</code></pre>
+<h4>Synthèse et particularisation</h4>
+<p>Résumons. Sachant que l&rsquo;un des deux enfants est une fille, la probabilité que les deux soient des filles dépend de la capacité à <em>particulariser</em> l&rsquo;enfant dont on connaît le sexe. Sans aucune information supplémentaire, la probabilité est <strong>1/3</strong>.</p>
+<p>Mais si nous savons par exemple que l&rsquo;enfant en question est l&rsquo;aîné, nous le particularisons complètement&nbsp;: nous sommes sûrs que l&rsquo;autre n&rsquo;est pas l&rsquo;aîné, et donc la probabilité devient <strong>1/2</strong> (évidemment, puisque par hypothèse, les naissances sont <em>indépendantes</em>). De même, si nous supposons qu&rsquo;un couple ne donne pas le même prénom à plusieurs de ses enfants, alors préciser le prénom particularise complètement l&rsquo;enfant dont on parle. Il en va de même si nous rencontrons l&rsquo;un des enfants dans la rue&nbsp;: c&rsquo;est de celui qui est présent dont on parle, pas n&rsquo;importe lequel.</p>
+<p>Et il existe des cas intermédiaires, où nous ne particularisons que <em>partiellement</em>. Par exemple, en précisant que l&rsquo;enfant est né un mardi, dans certains cas l&rsquo;information est différenciante (l&rsquo;autre enfant n&rsquo;est pas né un mardi), dans certains cas non (les deux enfants sont nés un mardi). Le résultat n&rsquo;est donc ni 1/3, ni 1/2, mais entre les deux (<strong>13/27</strong> ici).</p>
+<p>Si vous avez du mal à vous convaincre que rencontrer l&rsquo;un des enfants dans la rue le <em>particularise</em> (et donc donne une probabilité de <strong>1/2</strong> que <em>l&rsquo;autre</em> soit une fille ou un garçon), je vous propose l&rsquo;expérience de pensée suivante (<a href="http://fr.wikipedia.org/wiki/Raisonnement_par_l%27absurde">par l&rsquo;absurde</a>). Vous rencontrez le couple avec l&rsquo;un de ses enfants, qui est une fille. D&rsquo;après le tout premier raisonnement, vous en concluez que la probabilité que <em>l&rsquo;autre</em> soit une fille est <strong>1/3</strong>. Vous lui parlez, et vous lui demandez quel jour de la semaine elle est née, elle vous répond <em>mardi</em>. Vous savez maintenant que c&rsquo;est une fille née un <em>mardi</em>. D&rsquo;après ce que nous venons de voir, vous en concluez que la probabilité que <em>l&rsquo;autre</em> soit une fille est <strong>13/27</strong>. Mais le résultat aurait été le même si elle avait répondu n&rsquo;importe quel autre jour de la semaine. Le fait d&rsquo;avoir posé la question a donc <em>changé</em> la probabilité, et ceci, indépendemment de sa réponse. Comment pourrait-elle dépendre du simple fait de poser la question&nbsp;? C&rsquo;est <em>incohérent</em>.</p>
+<p>Cette <em>particularisation</em> me fait d&rsquo;ailleurs beaucoup penser au phénomène de <a href="http://fr.wikipedia.org/wiki/D%C3%A9coh%C3%A9rence_quantique"><em>décohérence quantique</em></a>.</p>
+<h3>Monty Hall</h3>
+<p>Il s&rsquo;agit jeu télévisé avec trois portes, dont voici <a href="http://fr.wikipedia.org/wiki/Probl%C3%A8me_de_Monty_Hall#Un_.C3.A9nonc.C3.A9_actuel_exempt_d.27ambigu.C3.AFt.C3.A9">les règles</a>&nbsp;:</p>
+<blockquote>
+<ul>
+<li>Derrière chacune des trois portes se trouve soit une chèvre, soit une voiture, mais une seule porte donne sur une voiture alors que deux portes donnent sur une chèvre. La porte cachant la voiture a été choisie par tirage au sort.</li>
+<li>Le joueur choisit une des portes, sans que toutefois ce qui se cache derrière (chèvre ou voiture) ne soit révélé à ce stade.</li>
+<li>Le présentateur sait ce qu&rsquo;il y a derrière chaque porte.</li>
+<li>Le présentateur doit ouvrir l&rsquo;une des deux portes restantes et doit proposer au candidat la possibilité de changer de choix quant à la porte à ouvrir définitivement.</li>
+<li>Le présentateur ouvrira toujours une porte derrière laquelle se cache une chèvre, en effet :
+<ul>
+<li>Si le joueur choisit une porte derrière laquelle se trouve une chèvre, le présentateur ouvrira l&rsquo;autre porte où il sait que se trouve également une chèvre.</li>
+<li>Si le joueur choisit la porte cachant la voiture, le présentateur choisit au hasard parmi les deux portes cachant une chèvre. (on peut supposer qu&rsquo;un tirage au sort avant l&rsquo;émission a décidé si ce serait la plus à droite ou à gauche)</li>
+</ul>
+</li>
+<li>Le présentateur doit offrir la possibilité au candidat de rester sur son choix initial ou bien de revenir dessus et d&rsquo;ouvrir la porte qui n&rsquo;a été choisie ni par lui-même, ni par le candidat.</li>
+</ul>
+<p>La question qui se pose alors est&nbsp;: <strong>le joueur augmente-t-il ses chances de gagner la voiture en changeant son choix initial&nbsp;?</strong></p>
+</blockquote>
+<p>Vu qu&rsquo;il reste deux portes, nous pourrions nous dire que garder son choix initial ou le changer n&rsquo;a pas d&rsquo;incidence sur les probabilités. Ce qui évidemment est <strong>faux</strong> (sinon nous n&rsquo;en parlerions pas). En réalité, il a une probabilité de <strong>1/3</strong> de gagner s&rsquo;il conserve son choix initial et <strong>2/3</strong> s&rsquo;il en change.</p>
+<p>Lors de son choix initial, le joueur a une chance sur trois de sélectionner la porte gagnante. S&rsquo;il décide de toujours garder sa porte, il a donc une chance sur trois de gagner. Comme à la fin il n&rsquo;a que deux choix (<em>garder</em> ou <em>changer</em>), il aurait eu deux chances sur trois de gagner en changeant de porte.</p>
+<p>Pour mieux comprendre, généralisons le principe du jeu&nbsp;:</p>
+<ul>
+<li>Il y a 1 million de portes, avec une seule porte gagnante.</li>
+<li>Le joueur sélectionne une porte.</li>
+<li>Le présentateur retire 999&nbsp;998 portes perdantes parmi les portes restantes.</li>
+<li><strong>Le joueur doit-il changer de porte&nbsp;?</strong></li>
+</ul>
+<p>La réponse devient évidente, non&nbsp;?</p>
+<p>Si vous n&rsquo;êtes pas convaincus, <a href="http://blog.rom1v.com/wp-content/uploads/2012/12/dev.jpg">développeur</a> et que vous connaissez la <a href="http://fr.wikipedia.org/wiki/Loi_des_grands_nombres">loi des grands nombres</a>, ce programme devrait vous aider&nbsp;:</p>
+<pre class="sourceCode c"><code class="sourceCode c"><span class="ot">#include &lt;stdio.h&gt;</span>
+<span class="ot">#include &lt;stdlib.h&gt;</span>
+<span class="ot">#include &lt;time.h&gt;</span>
+
+<span class="dt">int</span> main(<span class="dt">int</span> argc, <span class="dt">char</span> *argv[])
+{
+  <span class="dt">int</span> i, winning, choice, elim, change;
+  <span class="dt">int</span> keepwin = <span class="dv">0</span>, changewin = <span class="dv">0</span>;
+
+  <span class="co">/* Initialise le seed pour la génération aléatoire */</span>
+  srand(time(NULL));
+
+  <span class="kw">for</span> (i = <span class="dv">0</span>; i &lt; <span class="dv">10000</span>; i++) {
+    <span class="co">/* Tire au sort une porte gagnante et un choix du joueur */</span>
+    winning = rand() % <span class="dv">3</span>;
+    choice = rand() % <span class="dv">3</span>;
+
+    <span class="co">/* Présentateur */</span>
+    <span class="kw">if</span> (choice == winning)
+      <span class="co">/* Choisit aléatoirement d&#39;éliminer l&#39;une des deux autres portes */</span>
+      elim = ~winning &amp; (rand() % <span class="dv">2</span> + <span class="dv">1</span>);
+    <span class="kw">else</span>
+      <span class="co">/* Désigne la porte restante perdante */</span>
+      elim = <span class="dv">3</span> - choice - winning;
+
+    <span class="co">/* Compte les choix vainqueurs */</span>
+    change = <span class="dv">3</span> - choice - elim;
+    keepwin += choice == winning;
+    changewin += change == winning;
+  }
+
+  printf(<span class="st">&quot;Victoires en gardant son choix   : %d</span><span class="ch">\n</span><span class="st">&quot;</span>, keepwin);
+  printf(<span class="st">&quot;Victoires en changeant son choix : %d</span><span class="ch">\n</span><span class="st">&quot;</span>, changewin);
+  <span class="kw">return</span> <span class="dv">0</span>;
+}</code></pre>
+<p>Ce <a href="http://fr.wikipedia.org/wiki/Probl%C3%A8me_de_Monty_Hall">problème</a> est similaire au <a href="http://fr.wikipedia.org/wiki/Paradoxe_des_prisonniers">paradoxe des prisonniers</a>.</p>
+<h4>Variante</h4>
+<p>Changeons un peu les règles&nbsp;: maintenant, le présentateur <strong>ne sait pas</strong> où se trouve la porte gagnante.<br />
+Du coup, une fois que le joueur a choisi sa porte, le présentateur indique une porte <strong>au hasard</strong> parmi les deux restantes. Si malheureusement il tombe sur la porte gagnante, la partie est annulée et on recommence.</p>
+<p>Ainsi nous <em>retirons</em> toutes les parties où le présentateur a ouvert la porte gagnante. Il ne reste donc plus que les parties où il désigne une porte perdante, et nous nous retrouvons dans le même cas que précédement.</p>
+<p>Eh bien, en fait, <a href="http://fr.wikipedia.org/wiki/Probl%C3%A8me_de_Monty_Hall#Changeons_les_r.C3.A8gles_d.27ouverture">non</a>. Ce n&rsquo;est pas le même cas que précédemment, car maintenant le joueur va gagner avec un  probabilité est de <strong>1/2</strong> qu&rsquo;il garde sa porte ou qu&rsquo;il en change. La preuve&nbsp;:</p>
+<pre class="sourceCode c"><code class="sourceCode c"><span class="ot">#include &lt;stdio.h&gt;</span>
+<span class="ot">#include &lt;stdlib.h&gt;</span>
+
+<span class="dt">int</span> main(<span class="dt">int</span> argc, <span class="dt">char</span> *argv[])
+{
+  <span class="dt">int</span> i = <span class="dv">0</span>, winning, choice, elim, change;
+  <span class="dt">int</span> keepwin = <span class="dv">0</span>, changewin = <span class="dv">0</span>;
+
+  <span class="co">/* Initialise le seed pour la génération aléatoire */</span>
+  srand(time(NULL));
+
+  <span class="kw">while</span> (i &lt; <span class="dv">10000</span>) {
+    <span class="co">/* Tire au sort une porte gagnante et un choix du joueur */</span>
+    winning = rand() % <span class="dv">3</span>;
+    choice = rand() % <span class="dv">3</span>;
+
+    <span class="co">/* Présentateur */</span>
+    elim = ~choice &amp; (rand() % <span class="dv">2</span> + <span class="dv">1</span>);
+    <span class="kw">if</span> (elim == winning)
+      <span class="kw">continue</span>;
+
+    <span class="co">/* Compte les choix vainqueurs */</span>
+    change = <span class="dv">3</span> - choice - elim;
+    keepwin += choice == winning;
+    changewin += change == winning;
+    i++;
+  }
+
+  printf(<span class="st">&quot;Victoires en gardant son choix   : %d</span><span class="ch">\n</span><span class="st">&quot;</span>, keepwin);
+  printf(<span class="st">&quot;Victoires en changeant son choix : %d</span><span class="ch">\n</span><span class="st">&quot;</span>, changewin);
+  <span class="kw">return</span> <span class="dv">0</span>;
+}</code></pre>
+<p>Intuitivement, si c&rsquo;est le hasard qui détermine à la fois la porte choisie par le joueur et la porte laissée par le présentateur, et que nous supprimons toutes les parties où le présentateur a éliminé la porte gagnante (en moyenne 1 partie sur 3), tout se passe comme s&rsquo;il n&rsquo;y avait que 2 portes dès le début du jeu.</p>
+<h4>Dissonance</h4>
+<p><em>&laquo;&nbsp;sonance&nbsp;&raquo;</em></p>
+<p>Nous disposons de pastilles de 3 couleurs (disons <span style="color: red;">rouge</span>, <span style="color: blue;">bleu</span> et <span style="color: green;">vert</span>).<br />
+Nous proposons à un singe de choisir parmi 2 de ces couleurs (par exemple <span style="color: red;">rouge</span> et <span style="color: blue;">bleu</span>) celle qu&rsquo;il préfère (par une méthode quelconque). Il <em>répond</em> «&nbsp;<span style="color: red;">rouge</span>&nbsp;».<br />
+Nous lui demandons alors laquelle il préfère parmi la couleur qu&rsquo;il n&rsquo;a pas choisie la première fois (<span style="color: blue;">bleu</span>) et celle qui reste (<span style="color: green;">vert</span>). Et le plus souvent (environ 2 fois sur 3), les chercheurs ont observé qu&rsquo;il rejetait encore la couleur qu&rsquo;il n&rsquo;avait pas choisie la première fois (<span style="color: blue;">bleu</span>).</p>
+<p>Cela <a href="http://www.nytimes.com/2008/04/08/science/08tier.html">montre</a> qu&rsquo;une fois que nous rejetons quelque chose, nous le <em>dévaluons</em>, ce qui nous amène à le rejeter de nouveau lors d&rsquo;un second choix.</p>
+<p><a href="http://www.nytimes.com/2008/04/08/science/08tier.html">Ou pas</a>. En réalité, ce raisonnement souffre de la même erreur de raisonnement qui nous induit en erreur dans le problème de <em>Monty Hall</em>.</p>
+<p>Supposons que le singe sache trier les trois couleurs par ordre de préférence. Nous lui en montrons deux. Cela revient à choisir au premier tour celle que nous ne lui montrons pas.</p>
+<p>Cette couleur non choisie peut être&nbsp;:</p>
+<ol>
+<li>celle que le singe préfère&nbsp;;</li>
+<li>la deuxième&nbsp;;</li>
+<li>celle qu&rsquo;il aime le moins.</li>
+</ol>
+<p>Parmi ces 3 possibilités <em>équiprobables</em>, seule la position 3 lui fera la rejeter lors du second choix (c&rsquo;est la seule moins bonne que la moins bonne du premier choix).</p>
+<h3>Test positif</h3>
+<blockquote>
+<p>Une maladie X touche 1 personne sur 100&nbsp;000 dans une population. Un test de la maladie X est fiable à 99%. Il se révèle positif pour vous. Quelle est la probabilité que vous soyez infecté&nbsp;?</p>
+</blockquote>
+<p>Aussi surprenant que cela puisse paraître, la réponse est <strong>0,1%</strong>.</p>
+<p>Faisons le calcul sur une population de 10 millions de personnes. La maladie touche 1 personne sur 100&nbsp;000, donc 100 personnes en moyenne.</p>
+<p>Le test est fiable à 99%, donc il provoque 1% d&rsquo;erreur. Sur les 9&nbsp;999&nbsp;900 personnes non malades, il y a donc 99 999 erreurs (faux-positifs). Sur les 100 malades, il y a 1 erreur (faux-négatif).</p>
+<p>En tout, en moyenne 99&nbsp;999 + 99 = 100&nbsp;098 personnes seront testées positives, alors que seules 99 seront malades. Donc si votre test est positif, vous avez 99 chances sur 100&nbsp;098 d&rsquo;être malade, soit <strong>moins de 0,1%</strong>.</p>
+<p>Le fait que ce résultat soit <a href="http://xkcd.com/1132/">surprenant</a> pour notre cerveau provient d&rsquo;un <a href="http://fr.wikipedia.org/wiki/Biais_cognitif">biais cognitif</a> appelé l&rsquo;<a href="http://fr.wikipedia.org/wiki/Oubli_de_la_fr%C3%A9quence_de_base">oubli de la fréquence de base</a>.</p>
+<h3>Conclusion</h3>
+<p>Méfiez-vous de vos intuitions en probabilités.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://blog.rom1v.com/2012/12/paradoxes-probabilistes/feed/</wfw:commentRss>
+		<slash:comments>17</slash:comments>
+		</item>
+		<item>
+		<title>Formater du code C avec indent et Vim</title>
+		<link>http://blog.rom1v.com/2012/11/formater-du-code-c-avec-indent-et-vim/</link>
+		<comments>http://blog.rom1v.com/2012/11/formater-du-code-c-avec-indent-et-vim/#comments</comments>
+		<pubDate>Thu, 15 Nov 2012 12:23:54 +0000</pubDate>
+		<dc:creator><![CDATA[®om]]></dc:creator>
+				<category><![CDATA[Astuces]]></category>
+		<category><![CDATA[Outils]]></category>
+		<category><![CDATA[planet-libre]]></category>
+		<category><![CDATA[puf]]></category>
+		<category><![CDATA[développement]]></category>
+		<category><![CDATA[vim]]></category>
+
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4210</guid>
+		<description><![CDATA[Pour suivre des règles de codage et s&#8217;y tenir, rien de tel qu&#8217;un outil qui formate automatiquement le code (c&#8217;est plus rapide et sans erreurs). Sous Eclipse par exemple, la combinaison de touches Ctrl+Shift+F est indispensable. Mon but est d&#8217;obtenir la même fonctionnalité sous Vim pour le langage C. indent L&#8217;outil indent permet de formater [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p><a href="http://blog.rom1v.com/wp-content/uploads/2012/11/vimlogo.png"><img src="http://blog.rom1v.com/wp-content/uploads/2012/11/vimlogo.png" alt="" title="vimlogo" width="150" height="137" class="alignright size-full wp-image-4220" /></a></p>
+<p>Pour suivre des règles de codage et s&rsquo;y tenir, rien de tel qu&rsquo;un outil qui formate automatiquement le code (c&rsquo;est plus rapide et sans erreurs). Sous <em><a href="http://fr.wikipedia.org/wiki/Eclipse_%28logiciel%29">Eclipse</a></em> par exemple, la combinaison de touches <em>Ctrl+Shift+F</em> est indispensable. Mon but est d&rsquo;obtenir la même fonctionnalité sous <a href="http://fr.wikipedia.org/wiki/Vim">Vim</a> pour le <a href="http://fr.wikipedia.org/wiki/C_%28langage%29">langage C</a>.</p>
+<h3>indent</h3>
+<p>L&rsquo;outil <a href="http://fr.wikipedia.org/wiki/Indent">indent</a> permet de formater un source C selon des règles définies par des paramètres en ligne de commande. Ces options sont <a href="http://www.gnu.org/software/indent/manual/">très nombreuses</a>. Heureusement, il y a quelques styles bien connus prédéfinis, comme le <a href="http://en.wikipedia.org/wiki/1_true_brace_style#K.26R_style">style K&#038;R</a> (option <code>-kr</code>).</p>
+<p>Pour illustrer son fonctionnement, voici un code source écrit n&rsquo;importe comment (et qui fait n&rsquo;importe quoi)&nbsp;:</p>
+<pre class="sourceCode c"><code class="sourceCode c"><span class="ot">#include &lt;stdio.h&gt;</span>
+
+<span class="dt">void</span> f (  <span class="dt">int</span>* x  )
+  {
+ *x=<span class="dv">4</span>;}
+
+<span class="dt">void</span> g(<span class="dt">int</span> x)
+{<span class="kw">goto</span> mylabel;
+        <span class="co">/* my comment */</span>
+    <span class="kw">if</span>(x&gt;<span class="dv">10</span>)x=<span class="dv">10</span>;
+       mylabel:
+    printf (<span class="st">&quot;%d</span><span class="ch">\n</span><span class="st">&quot;</span>,x *<span class="dv">2</span>);
+<span class="kw">switch</span>(x){<span class="kw">case</span> <span class="dv">1</span>:x=<span class="dv">4</span>;<span class="kw">break</span>;<span class="kw">case</span> <span class="dv">2</span>:x=<span class="dv">1</span>;}
+    <span class="kw">while</span>   ( * ( &amp;x ) &lt;<span class="dv">10</span>)x++; <span class="co">/* what? */</span>
+}
+
+<span class="dt">void</span> h(<span class="dt">char</span> ( * ( * x ( ) ) [ ] ) ( ) ) {
+<span class="dt">char</span> ( * ( * y ) [ ] ) ( ) = \
+x ( ) ; <span class="dt">char</span> ( * z ) ( ) = * \
+( * y ) ; <span class="dt">char</span> c = z ( ); putchar \
+(c);
+}
+
+<span class="dt">int</span> main(){
+<span class="dt">int</span> i=  <span class="dv">2</span>;  f(&amp;i);
+  g(i);
+
+        <span class="kw">return</span>    <span class="dv">0</span>;
+}</code></pre>
+<p>Pour formater&nbsp;:</p>
+<pre>indent -st -kr -ts4 file.c</pre>
+<ul>
+<li><code>-st</code> affiche le résultat sur la sortie standard au lieu de modifier le fichier&nbsp;;</li>
+<li><code>-kr</code> utilise le style K&#038;R&nbsp;;</li>
+<li><code>-ts4</code> considère 4 espaces comme une tabulation.</li>
+</ul>
+<p>Voici le résultat&nbsp;:</p>
+<pre class="sourceCode c"><code class="sourceCode c"><span class="ot">#include &lt;stdio.h&gt;</span>
+
+<span class="dt">void</span> f(<span class="dt">int</span> *x)
+{
+    *x = <span class="dv">4</span>;
+}
+
+<span class="dt">void</span> g(<span class="dt">int</span> x)
+{
+    <span class="kw">goto</span> mylabel;
+    <span class="co">/* my comment */</span>
+    <span class="kw">if</span> (x &gt; <span class="dv">10</span>)
+        x = <span class="dv">10</span>;
+  mylabel:
+    printf(<span class="st">&quot;%d</span><span class="ch">\n</span><span class="st">&quot;</span>, x * <span class="dv">2</span>);
+    <span class="kw">switch</span> (x) {
+    <span class="kw">case</span> <span class="dv">1</span>:
+        x = <span class="dv">4</span>;
+        <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="dv">2</span>:
+        x = <span class="dv">1</span>;
+    }
+    <span class="kw">while</span> (*(&amp;x) &lt; <span class="dv">10</span>)
+        x++;                    <span class="co">/* what? */</span>
+}
+
+<span class="dt">void</span> h(<span class="dt">char</span> (*(*x())[])())
+{
+    <span class="dt">char</span> (*(*y)[]) () = x();
+    <span class="dt">char</span> (*z) () = *(*y);
+    <span class="dt">char</span> c = z();
+    putchar(c);
+}
+
+<span class="dt">int</span> main()
+{
+    <span class="dt">int</span> i = <span class="dv">2</span>;
+    f(&amp;i);
+    g(i);
+
+    <span class="kw">return</span> <span class="dv">0</span>;
+}</code></pre>
+<p>C&rsquo;est plus joli, non&nbsp;?</p>
+<h3>vim</h3>
+<p>Pour pouvoir reformater directement dans <em>Vim</em>, il suffit d&rsquo;ajouter dans <code>~/.vimrc</code> la ligne suivante&nbsp;:</p>
+<pre>autocmd BufNewFile,BufRead *.c set formatprg=indent\ -kr\ -ts4</pre>
+<p>Ensuite, la commande <code>gq</code> formate (<code>u</code> annule).</p>
+<p>Par exemple, sur le fichier source malformaté ci-dessus&nbsp;:</p>
+<ul>
+<li>placer le curseur sur la ligne 7&nbsp;;</li>
+<li>appuyer sur <code>V</code>&nbsp;;</li>
+<li>descendre avec <code>j</code> (ou la flèche du bas) jusqu&rsquo;à la ligne 15&nbsp;;</li>
+<li>taper <code>gq</code>.</li>
+</ul>
+<p>Ainsi, seule la fonction <code>g</code> est formatée.</p>
+<p>À partir de la ligne 7, le même résultat est obtenu en tapant directement <code>gq8j</code> (descendre de 8 lignes) ou <code>gq15G</code> (jusqu&rsquo;à la ligne 15).</p>
+<p>Pour reformater un bloc, le plus simple est de se placer sur une accolade <code>{</code> ou <code>}</code> et de taper <code>gq%</code> (<code>%</code> navigue entre les <code>{}</code>, <code>()</code> et <code>[]</code> ouvrant et fermant).</p>
+<p>Pour reformater tout le fichier, il faut taper <code>gggqG</code>&nbsp;:</p>
+<ul>
+<li><code>gg</code> amène le curseur au début du fichier&nbsp;;</li>
+<li><code>gq</code> formate jusqu&rsquo;à&#8230;&nbsp;;</li>
+<li><code>G</code> va à la fin du fichier.</li>
+</ul>
+<p><code>:wq</code></p>
+]]></content:encoded>
+			<wfw:commentRss>http://blog.rom1v.com/2012/11/formater-du-code-c-avec-indent-et-vim/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+		<item>
+		<title>Free Mobile n&#8217;est pas neutre</title>
+		<link>http://blog.rom1v.com/2012/10/free-mobile-nest-pas-neutre/</link>
+		<comments>http://blog.rom1v.com/2012/10/free-mobile-nest-pas-neutre/#comments</comments>
+		<pubDate>Wed, 17 Oct 2012 10:49:53 +0000</pubDate>
+		<dc:creator><![CDATA[®om]]></dc:creator>
+				<category><![CDATA[Analyses]]></category>
+		<category><![CDATA[netneutrality]]></category>
+		<category><![CDATA[réseau]]></category>
+
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4170</guid>
+		<description><![CDATA[Intrigué par le rapport d&#8217;un utilisateur sur RespectMyNet (qu&#8217;il présente en détail), j&#8217;ai voulu vérifier par moi-même. Sur un serveur hébergé chez moi sur une ligne Free ADSL (maximum ~120Ko/s en upload), je crée un fichier totalement aléatoire dans un répertoire accessible en HTTP, avec plusieurs extensions&#160;: # crée un fichier de 2Mio dd if=/dev/urandom [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p><a href="http://blog.rom1v.com/wp-content/uploads/2012/10/tuyaux.jpg"><img src="http://blog.rom1v.com/wp-content/uploads/2012/10/tuyaux-150x150.jpg" alt="" title="tuyaux" width="150" height="150" class="alignright size-thumbnail wp-image-4179" /></a>Intrigué par le rapport d&rsquo;un utilisateur sur <a href="http://respectmynet.eu/504">RespectMyNet</a> (qu&rsquo;il présente <a href="http://www.aduf.org/viewtopic.php?t=259262">en détail</a>), j&rsquo;ai voulu vérifier par moi-même.</p>
+<p>Sur un serveur hébergé chez moi sur une ligne Free ADSL (maximum ~120Ko/s en upload), je crée un fichier totalement aléatoire dans un répertoire accessible en HTTP, avec plusieurs extensions&nbsp;:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># crée un fichier de 2Mio</span>
+<span class="kw">dd</span> if=/dev/urandom of=random count=4000
+<span class="co"># crée plusieurs liens avec des extensions différentes</span>
+<span class="kw">for</span> ext <span class="kw">in</span> avi ogg oga webm pdf mp4 mov; <span class="kw">do</span> <span class="kw">ln</span> -s random<span class="dt">{,.$ext}</span>; <span class="kw">done</span></code></pre>
+<p>Sur mon téléphone avec Android 4.11, connecté au réseau <em>Free Mobile</em> (sur une antenne d&rsquo;<em>Orange</em>), je partage la connexion avec mon PC (Paramètres, Connexion, Sans fil et réseaux, Plus&#8230;, Partage de connexion, Via USB). Avec mon PC (sous <em>Debian testing</em>), je m&rsquo;y connecte.</p>
+<p>Je télécharge alors chacun des fichiers&nbsp;:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">for</span> ext <span class="kw">in</span> avi ogg oga webm pdf mp4 mov; <span class="kw">do</span> <span class="kw">wget</span> monserveur/random.<span class="ot">$ext</span>; <span class="kw">done</span></code></pre>
+<p>Le résultat est sans appel.</p>
+<p>Pour les fichiers portant l&rsquo;extension <code>.avi</code>, <code>.ogg</code>, <code>.mp4</code>, <code>.mov</code> (et sans doute d&rsquo;autres), le débit ne dépasse pas <strong>5Ko/s</strong> et est même souvent en dessous d&rsquo;<strong>1Ko/s</strong>&nbsp;:</p>
+<pre>requête HTTP transmise, en attente de la réponse...200 OK
+Longueur: 2048000 (2,0M) 
+Sauvegarde en : «random.avi»
+
+ 1% [                                       ] 34 486       757B/s  eta 43m 6s </pre>
+<p>Par contre, pour les fichiers portant l&rsquo;extension <code>.oga</code>, <code>.webm</code>, et <code>.pdf</code>, ça fonctionne parfaitement&nbsp;:</p>
+<pre>requête HTTP transmise, en attente de la réponse...200 OK
+Longueur: 2048000 (2,0M) 
+Sauvegarde en : «random.oga»
+
+27% [=========>                             ] 570 300      104K/s  eta 14s    </pre>
+<p>Cette limite ne vient pas de ma ligne Free ADSL (qui fonctionne parfaitement par ailleurs).<br />
+<strong><em>Free Mobile</em> filtre donc les fichiers sur HTTP en fonction de leur extension.</strong></p>
+<p>Il reste à vérifier si cela se produit aussi sur une antenne <em>Free</em> (mais je n&rsquo;en capte jamais).</p>
+<p><ins datetime="2012-10-18T07:00:00+02:00">Le problème <a href="http://blog.rom1v.com/2012/10/free-mobile-nest-pas-neutre/#comment-86993">ne se produit que</a> sur une antenne <em>Orange</em>&nbsp;; sur une antenne <em>Free</em>, ça fonctionne normalement.</ins></p>
+]]></content:encoded>
+			<wfw:commentRss>http://blog.rom1v.com/2012/10/free-mobile-nest-pas-neutre/feed/</wfw:commentRss>
+		<slash:comments>53</slash:comments>
+		</item>
+		<item>
+		<title>Modifier la luminosité d&#8217;une vidéo dans avconv (ffmpeg)</title>
+		<link>http://blog.rom1v.com/2012/08/modifier-la-luminosite-dune-video-dans-avconv-ffmpeg/</link>
+		<comments>http://blog.rom1v.com/2012/08/modifier-la-luminosite-dune-video-dans-avconv-ffmpeg/#comments</comments>
+		<pubDate>Tue, 14 Aug 2012 12:26:38 +0000</pubDate>
+		<dc:creator><![CDATA[®om]]></dc:creator>
+				<category><![CDATA[Astuces]]></category>
+		<category><![CDATA[Outils]]></category>
+		<category><![CDATA[planet-libre]]></category>
+		<category><![CDATA[debian]]></category>
+		<category><![CDATA[gnu/linux]]></category>
+		<category><![CDATA[scripts]]></category>
+		<category><![CDATA[video]]></category>
+
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4122</guid>
+		<description><![CDATA[Pour partager des vidéos capturées par mon appareil photo, je les convertissais jusqu&#8217;alors en Ogg/Theora grâce à ffmpeg2theora. Ce format (contrairement au h264) est libre et lisible nativement par Firefox, y compris par la version mobile. Mais j&#8217;envisage depuis longtemps de passer à WebM (le format libéré par Google il y a un peu plus [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p><img src="http://blog.rom1v.com/wp-content/uploads/2012/08/avconv.png" alt="" title="avconv" width="128" height="128" class="alignright size-full wp-image-4131" /><br />
+Pour partager des vidéos capturées par mon appareil photo, je les convertissais jusqu&rsquo;alors en <a href="http://fr.wikipedia.org/wiki/Theora">Ogg/Theora</a> grâce à <a href="http://v2v.cc/~j/ffmpeg2theora/">ffmpeg2theora</a>. Ce format (contrairement au <a href="http://fr.wikipedia.org/wiki/Theora">h264</a>) est libre et lisible nativement par <em>Firefox</em>, y compris par la version mobile.</p>
+<p>Mais j&rsquo;envisage depuis longtemps de passer à <a href="http://fr.wikipedia.org/wiki/WebM">WebM</a> (le format <a href="http://linuxfr.org/news/webm-un-format-libre-et-ouvert-pour-html5">libéré par <em>Google</em></a> il y a un peu plus de deux ans), plus performant, lui aussi lu nativement par <em>Firefox</em> (et <a href="http://fr.wikipedia.org/wiki/WebM#Mises_en_.C5.93uvre">par d&rsquo;autres</a>). Pour cela, je vais utiliser <a href="http://libav.org/avconv.html">avconv</a>.</p>
+<h3>avconv</h3>
+<p>Qu&rsquo;est-ce qu&rsquo;<em>avconv</em>&nbsp;? Le meilleur moyen de le savoir est d&rsquo;exécuter <code>ffmpeg</code> sans arguments&nbsp;:</p>
+<pre>$ ffmpeg
+…
+*** THIS PROGRAM IS DEPRECATED ***
+This program is only provided for compatibility and will be removed in a future release. Please use avconv instead.</pre>
+<p><ins datetime="2012-12-05T10:30:00+01:00">En fait, c&rsquo;est plus <a href="http://blog.pkh.me/p/13-the-ffmpeg-libav-situation.html">compliqué</a> que ça.</ins></p>
+<p>J&rsquo;ai précisé «&nbsp;<a href="http://ffmpeg.org/"><em>ffmpeg</em></a>&nbsp;» dans le titre du billet car je pense que c&rsquo;est encore sous ce nom que l&rsquo;outil est le plus connu. Le contenu de ce billet s&rsquo;applique aussi bien à <em>ffmpeg</em> qu&rsquo;à <em>avconv</em>.</p>
+<h3>Filtres</h3>
+<p>Il m&rsquo;arrive d&rsquo;avoir besoin d&rsquo;appliquer des filtres très simples&nbsp;; typiquement, augmenter la luminosité d&rsquo;une vidéo. <em>ffmpeg2theora</em> permet de le faire directement grâce à l&rsquo;option <a href="http://manpages.debian.net/cgi-bin/man.cgi?query=ffmpeg2theora&#038;apropos=0&#038;sektion=0&#038;manpath=Debian+testing+wheezy&#038;format=ascii&#038;locale=en"><code>-B</code></a>. Mais on a beau chercher dans le <a href="http://fr.wikipedia.org/wiki/Man_%28commande_Unix%29">man</a> d&rsquo;<a href="http://manpages.ubuntu.com/manpages/precise/man1/avconv.1.html">avconv</a>, on ne trouve rien.</p>
+<h3>frei0r</h3>
+<p>C&rsquo;est là qu&rsquo;intervient le projet <a href="http://en.wikipedia.org/wiki/Frei0r">frei0r</a>. Il s&rsquo;agit d&rsquo;une <a href="http://fr.wikipedia.org/wiki/Interface_de_programmation">API</a> permettant d&rsquo;appliquer des filtres vidéo que chaque application pourra utiliser. Et ça tombe bien, l&rsquo;application <em>avconv</em> peut l&rsquo;utiliser si elle a été compilée avec l&rsquo;option <code>--enable-frei0r</code>.</p>
+<p>La bonne nouvelle, c&rsquo;est que la version distribuée par <a href="http://www.debian.org/releases/wheezy/"><em>Debian wheezy</em></a> est compilée avec cette option. La mauvaise, c&rsquo;est que celle fournie dans <a href="http://doc.ubuntu-fr.org/precise"><em>Ubuntu 12.04</em></a> ne l&rsquo;est pas.</p>
+<p><em>frei0r</em> a besoin de <em>plugins</em> permettant d&rsquo;appliquer les filtres. Il est nécessaire pour cela d&rsquo;installer <code>frei0r-plugins</code>&nbsp;:</p>
+<pre>sudo apt-get install frei0r-plugins</pre>
+<h3>avconv + frei0r</h3>
+<p>La <a href="http://ffmpeg.org/ffmpeg.html#frei0r-1">syntaxe</a> pour utiliser <em>frei0r</em> dans <em>avconv</em> est la suivante&nbsp;:</p>
+<pre>-vf frei0r=&lt;filter_name&gt;[{:|=}&lt;param1&gt;:&lt;param2&gt;:...:&lt;paramN&gt;]</pre>
+<p>Mais comment connaître les <code>filter_name</code>s disponibles et leurs paramètres&nbsp;?<br />
+Je n&rsquo;ai trouvé aucune documentation à ce sujet. J&rsquo;ai donc consulté les <a href="http://code.dyne.org/frei0r/tree/src/filter">sources</a>.</p>
+<p>À partir de là, on comprend facilement que la luminosité est modifiée par le filtre <a href="http://code.dyne.org/frei0r/tree/src/filter/brightness/brightness.c">brightness</a> comportant un paramètre de <a href="http://fr.wikipedia.org/wiki/C_%28langage%29#Types">type</a> <code>double</code> (voir notamment la fonction <code>f0r_get_param_info</code>) compris entre <code>0</code> (sombre) et <code>1</code> (clair) (<code>0.5</code> étant la luminosité de la vidéo d&rsquo;origine).</p>
+<p>En respectant la syntaxe, cela donne par exemple&nbsp;:</p>
+<pre>avconv -i video.mts -s 640x360 -ac 1 -q:a 2 -b:v 600k <strong>-vf frei0r=brightness:0.6</strong> output.webm</pre>
+<p>Il existe plein d&rsquo;autres filtres. Par exemple pour le contraste, c&rsquo;est <a href="http://code.dyne.org/frei0r/tree/src/filter/contrast0r/contrast0r.c">contrast0r</a>&nbsp;:</p>
+<pre>-vf frei0r=contrast0r:0.4</pre>
+<p>Pour les combiner, il suffit de concaténer plusieurs blocs <code>-vf</code>&nbsp;:</p>
+<pre>-vf frei0r=brightness:0.6,frei0r=contrast0r:0.4</pre>
+<h3>Conclusion</h3>
+<p>Malgré les apparences, <em>avconv</em> permet, pour peu qu&rsquo;il soit compilé avec <em>l&rsquo;option-qui-va-bien</em>, d&rsquo;encoder des vidéos en modifiant la luminosité, le contraste, et d&rsquo;appliquer bien d&rsquo;autres filtres… ce qui est très pratique.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://blog.rom1v.com/2012/08/modifier-la-luminosite-dune-video-dans-avconv-ffmpeg/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+		</item>
+		<item>
+		<title>Utiliser Wireshark sous Debian</title>
+		<link>http://blog.rom1v.com/2012/06/utiliser-wireshark-sous-debian/</link>
+		<comments>http://blog.rom1v.com/2012/06/utiliser-wireshark-sous-debian/#comments</comments>
+		<pubDate>Sat, 02 Jun 2012 13:48:21 +0000</pubDate>
+		<dc:creator><![CDATA[®om]]></dc:creator>
+				<category><![CDATA[Astuces]]></category>
+		<category><![CDATA[planet-libre]]></category>
+		<category><![CDATA[puf]]></category>
+		<category><![CDATA[debian]]></category>
+		<category><![CDATA[gnu/linux]]></category>
+		<category><![CDATA[réseau]]></category>
+		<category><![CDATA[sécurité]]></category>
+
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4095</guid>
+		<description><![CDATA[Wireshark est un outil incontournable pour connaître les paquets qui transitent sur le réseau. Mais on se retrouve vite bloqué à cause d&#8217;un problème de droits. En effet, en démarrant wireshark avec un compte utilisateur non-root, l&#8217;interface graphique s&#8217;affiche, mais il est impossible de capturer les trames&#160;: aucune interface réseau n&#8217;est disponible. Devant ce problème, [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p><a href="http://blog.rom1v.com/wp-content/uploads/2012/06/wireshark.png"><img src="http://blog.rom1v.com/wp-content/uploads/2012/06/wireshark.png" alt="" title="wireshark" width="120" height="120" class="alignright size-full wp-image-4100" /></a></p>
+<p><a href="http://fr.wikipedia.org/wiki/Wireshark">Wireshark</a> est un outil incontournable pour connaître les paquets qui transitent sur le réseau. Mais on se retrouve vite bloqué à cause d&rsquo;un problème de droits.</p>
+<p>En effet, en démarrant <code>wireshark</code> avec un compte utilisateur <em>non-root</em>, l&rsquo;interface graphique s&rsquo;affiche, mais il est impossible de capturer les trames&nbsp;: aucune interface réseau n&rsquo;est disponible.</p>
+<p>Devant ce problème, que fait l&rsquo;utilisateur pressé&nbsp;? Il démarre <code>wireshark</code> en <em>root</em>, bien sûr <em>(c&rsquo;est ce que je faisais sous Ubuntu)</em>&nbsp;! Eh bien pas de chance&nbsp;:</p>
+<pre>$ sudo wireshark
+No protocol specified
+
+(wireshark:27210): Gtk-WARNING **: cannot open display: :0</pre>
+<p>Déjà, c&rsquo;est bien fait pour lui&nbsp;: on n&rsquo;essaie pas de démarrer une interface graphique en <em>root</em>&nbsp;!</p>
+<p>Mais comment faire alors&nbsp;? En <em>non-root</em> on ne peut pas capturer, en <em>root</em> on ne peut pas démarrer…</p>
+<p>Alors on lit la doc, qui propose deux solutions&nbsp;:</p>
+<pre>less /usr/share/doc/wireshark/README.Debian</pre>
+<p><ins datetime="2012-06-04T10:00:00+02:00">Une troisième solution, donnée <a href="http://blog.rom1v.com/2012/06/utiliser-wireshark-sous-debian/#comment-84453">en commentaire</a>, me semble encore meilleure&nbsp;:</ins></p>
+<pre>sudo tcpdump -pni eth0 -s0 -U -w - | wireshark -k -i -</pre>
+<h3>Utiliser dumpcap pour capturer</h3>
+<p>Avec cette méthode, il faut d&rsquo;abord capturer les paquets réseau et les sauver dans un fichier, grâce à <code>dumpcat</code> (en <em>root</em>), puis ouvrir ce fichier dans <code>wireshark</code> (<em>non-root</em>).</p>
+<p>Pour démarrer la capture de l&rsquo;interface <code>eth0</code> dans le fichier <code>/tmp/mycapture</code>&nbsp;:</p>
+<pre>sudo dumpcap -i eth0 -w /tmp/mycapture</pre>
+<p>Pour connaître la liste des interfaces réseau capturables&nbsp;:</p>
+<pre>$ sudo dumpcap -D 
+1. eth0
+2. wlan0
+3. nflog (Linux netfilter log (NFLOG) interface)
+4. any (Pseudo-device that captures on all interfaces)
+5. lo</pre>
+<p><em>Ctrl+C</em> arrête la capture.</p>
+<p>Le fichier généré n&rsquo;est lisible que par <em>root</em>. Avant de l&rsquo;ouvrir dans <em>Wireshark</em>, il faut donc changer ses droits&nbsp;:</p>
+<pre>sudo chmod +r /tmp/mycapture</pre>
+<p>C&rsquo;est la méthode configurée par défaut sous <em>Debian</em>.</p>
+<h3>Autoriser les utilisateurs non-root</h3>
+<p>Si on souhaite à la fois capturer et analyser à partir de <em>Wireshark</em> (et permettre les captures &laquo;&nbsp;en live&nbsp;&raquo;), sans passer par <code>dumpcap</code> en ligne de commande, il faut autoriser les utilisateur <em>non-root</em> à capturer des paquets.</p>
+<p>Pour cela&nbsp;:</p>
+<pre>sudo dpkg-reconfigure wireshark-common</pre>
+<pre> ┌─────────────────────┤ Configuration de wireshark-common ├──────────────────────┐  
+ │                                                                                │  
+ │ Dumpcap peut être installé afin d'autoriser les membres du groupe              │  
+ │ « wireshark » à capturer des paquets. Cette méthode de capture est préférable  │  
+ │ à l'exécution de Wireshark ou Tshark avec les droits du superutilisateur, car  │  
+ │ elle permet d'exécuter moins de code avec des droits importants.               │  
+ │                                                                                │  
+ │ Pour plus d'informations, veuillez consulter                                   │  
+ │ /usr/share/doc/wireshark-common/README.Debian.                                 │  
+ │                                                                                │  
+ │ Cette fonctionnalité constitue un risque pour la sécurité, c'est pourquoi      │  
+ │ elle est désactivée par défaut. En cas de doute, il est suggéré de la laisser  │  
+ │ désactivée.                                                                    │  
+ │                                                                                │  
+ │ Autoriser les utilisateurs non privilégiés à capturer des paquets ?            │  
+ │                                                                                │  
+ │                      &lt;Oui&gt;                         &lt;Non&gt;                       │  
+ │                                                                                │  
+ └────────────────────────────────────────────────────────────────────────────────┘  </pre>
+<p>Après avoir répondu <em>Oui</em>, tous les utilisateurs du groupe <code>wireshark</code> (aucun, par défaut) seront autorisés à capturer les paquets.</p>
+<p><em><strong>Remarque&nbsp;:</strong> un programme </em>non-root<em> sera donc en théorie capable de savoir tout ce qui passe sur le réseau (déjà qu&rsquo;il est capable de <a href="http://blog.rom1v.com/2011/11/keylogger-sous-gnulinux-enregistrer-les-touches-tapees-au-clavier/">connaître tout ce qui est tapé au clavier</a>).</em></p>
+<p>Il ne reste donc plus qu&rsquo;à ajouter son compte utilisateur au groupe <code>wireshark</code>&nbsp;:</p>
+<pre>sudo addgroup $USER wireshark</pre>
+<p>Cette modification ne sera prise en compte qu&rsquo;après une reconnexion du compte utilisateur (il faut donc fermer la session et en démarrer une nouvelle).</p>
+<p>Avec cette méthode, seul le processus de capture aura les droits <em>root</em>, l&rsquo;interface graphique se contentant de droits <em>non-root</em> (merci la <a href="http://fr.wikipedia.org/wiki/S%C3%A9paration_des_privil%C3%A8ges">séparation des privilèges</a>).</p>
+]]></content:encoded>
+			<wfw:commentRss>http://blog.rom1v.com/2012/06/utiliser-wireshark-sous-debian/feed/</wfw:commentRss>
+		<slash:comments>14</slash:comments>
+		</item>
+		<item>
+		<title>Se connecter à un téléphone Android depuis Debian</title>
+		<link>http://blog.rom1v.com/2012/05/se-connecter-a-un-telephone-android-depuis-debian/</link>
+		<comments>http://blog.rom1v.com/2012/05/se-connecter-a-un-telephone-android-depuis-debian/#comments</comments>
+		<pubDate>Thu, 24 May 2012 22:41:09 +0000</pubDate>
+		<dc:creator><![CDATA[®om]]></dc:creator>
+				<category><![CDATA[Astuces]]></category>
+		<category><![CDATA[planet-libre]]></category>
+
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4063</guid>
+		<description><![CDATA[Je décrivais récemment la marche à suivre pour se connecter à un téléphone Android à partir d&#8217;une distribution GNU/Linux (qui correspond à ce que dit la documentation officielle). Pour résumer, il s&#8217;agit de créer un fichier /etc/udev/rules.d/51-android.rules contenant&#160;: SUBSYSTEM=="usb", MODE="0666", GROUP="plugdev" Mais ceci ne fonctionne pas sur Debian (en tout cas ni sur testing ni [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p><a href="http://blog.rom1v.com/wp-content/uploads/2012/05/debian.png"><img src="http://blog.rom1v.com/wp-content/uploads/2012/05/debian.png" alt="" title="debian" width="97" height="120" class="alignright size-full wp-image-4072" /></a><br />
+Je décrivais récemment la marche à suivre pour <a href="http://blog.rom1v.com/2012/03/android-en-ligne-de-commande/#telephone">se connecter à un téléphone Android à partir d&rsquo;une distribution GNU/Linux</a> (qui correspond à <a href="http://developer.android.com/guide/developing/device.html#setting-up">ce que dit la documentation officielle</a>).</p>
+<p>Pour résumer, il s&rsquo;agit de créer un fichier <code>/etc/udev/rules.d/51-android.rules</code> contenant&nbsp;:</p>
+<pre>SUBSYSTEM=="usb", MODE="0666", GROUP="plugdev"</pre>
+<p>Mais ceci ne fonctionne pas sur <a href="http://fr.wikipedia.org/wiki/Debian">Debian</a> (en tout cas ni sur <a href="http://www.debian.org/releases/testing/">testing</a> ni sur <a href="http://www.debian.org/releases/sid/">sid</a>)&nbsp;:</p>
+<pre>$ adb devices
+List of devices attached 
+????????????    no permissions</pre>
+<p>En effet, contrairement aux autres distributions, <em>Debian</em> possède un fichier <code>/lib/udev/rules.d/91-permissions.rules</code> qui contient, entre autres&nbsp;:</p>
+<pre># usbfs-like devices
+SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", \
+                                MODE="0664"</pre>
+<p>Comme 91&nbsp;&gt;&nbsp;51, ce fichier est parsé <strong>après</strong> notre fichier <code>51-android.rules</code>.</p>
+<p>La solution est donc très simple&nbsp;: renommer <code>51-android.rules</code> en <code>92-android.rules</code> afin que les permissions ne soient pas écrasées&nbsp;:</p>
+<pre>sudo mv /etc/udev/rules.d/{51,92}-android.rules</pre>
+<p><em>(ou en utilisant n&rsquo;importe quel entier entre 92 et 99)</em></p>
+<p>Après cette modification, <code>udev</code> doit être redémarré&nbsp;: </p>
+<pre>sudo service udev restart</pre>
+<p>et le téléphone débranché puis rebranché.</p>
+<p>Et là, ça fonctionne&nbsp;:</p>
+<pre>$ adb devices
+List of devices attached 
+040140621600C00D        device</pre>
+<p><em>Merci à <a href="http://unforgivendevelopment.com/2011/05/20/udev-headaches-on-debian-testing-wheezy/">unforgiven512</a> qui m&rsquo;a donné la solution (en anglais).</em></p>
+]]></content:encoded>
+			<wfw:commentRss>http://blog.rom1v.com/2012/05/se-connecter-a-un-telephone-android-depuis-debian/feed/</wfw:commentRss>
+		<slash:comments>7</slash:comments>
+		</item>
+		<item>
+		<title>Configurer le thème des applications GTK sous KDE</title>
+		<link>http://blog.rom1v.com/2012/05/configurer-le-theme-des-applications-gtk-sous-kde/</link>
+		<comments>http://blog.rom1v.com/2012/05/configurer-le-theme-des-applications-gtk-sous-kde/#comments</comments>
+		<pubDate>Tue, 15 May 2012 20:08:19 +0000</pubDate>
+		<dc:creator><![CDATA[®om]]></dc:creator>
+				<category><![CDATA[Astuces]]></category>
+		<category><![CDATA[planet-libre]]></category>
+		<category><![CDATA[puf]]></category>
+		<category><![CDATA[debian]]></category>
+		<category><![CDATA[gnome]]></category>
+		<category><![CDATA[gnu/linux]]></category>
+		<category><![CDATA[kde]]></category>
+		<category><![CDATA[theme]]></category>
+		<category><![CDATA[ubuntu]]></category>
+
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4007</guid>
+		<description><![CDATA[Après être passé de KDE à Gnome il y a un peu plus de 4 ans, j&#8217;ai décidé de revenir à KDE. Mais de la même manière que les applications prévues pour KDE ne s&#8217;intègrent pas correctement à Gnome, les applications prévues pour Gnome sont horribles sur KDE&#160;: elles n&#8217;ont pas de thème du tout [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p><a href="http://blog.rom1v.com/wp-content/uploads/2012/05/kde.png"><img src="http://blog.rom1v.com/wp-content/uploads/2012/05/kde.png" alt="" title="kde" width="128" height="128" class="alignright size-full wp-image-4014" /></a><br />
+Après être passé de <a href="http://fr.wikipedia.org/wiki/KDE">KDE</a> à <a href="http://fr.wikipedia.org/wiki/GNOME">Gnome</a> il y a un peu plus de 4 ans, j&rsquo;ai décidé de revenir à <em>KDE</em>. Mais de la même manière que <a href="http://blog.rom1v.com/2009/06/configurer-les-applis-kde-sous-gnome/">les applications prévues pour KDE ne s&rsquo;intègrent pas correctement à Gnome</a>, les applications prévues pour <em>Gnome</em> sont horribles sur <em>KDE</em>&nbsp;: elles n&rsquo;ont pas de thème du tout (sauf si vous appelez &laquo;&nbsp;thème&nbsp;&raquo; l&rsquo;apparence de <a href="http://fr.wikipedia.org/wiki/Windows_95">Windows 95</a>).</p>
+<p>Voici par exemple à quoi ressemble <a href="http://fr.wikipedia.org/wiki/GIMP">GIMP</a>&nbsp;:<br />
+<a href="http://blog.rom1v.com/wp-content/uploads/2012/05/gimp-moche.png"><img src="http://blog.rom1v.com/wp-content/uploads/2012/05/gimp-moche-300x160.png" alt="" title="gimp-moche" width="300" height="160" class="aligncenter size-medium wp-image-4011" /></a></p>
+<p>Le problème doit être résolu deux fois&nbsp;: une première pour les applications utilisant <a href="http://fr.wikipedia.org/wiki/GTK%2B#GTK.2B_2">GTK2</a> et une seconde pour celles utilisant <a href="http://fr.wikipedia.org/wiki/GTK%2B#GTK.2B_3">GTK3</a>.</p>
+<h3>GTK2</h3>
+<p>Pour <em>GTK2</em>, c&rsquo;est facile. Sous <a href="http://fr.wikipedia.org/wiki/Debian">Debian</a>&nbsp;:</p>
+<pre>sudo apt-get install gtk2-engines-oxygen gtk-chtheme</pre>
+<p><em>(le nom des paquets peut varier selon votre distribution)</em></p>
+<p>Il ne reste alors plus qu&rsquo;à exécuter&nbsp;:</p>
+<pre>gtk-chtheme</pre>
+<p>et choisir le thème <code>oxygen-gtk</code>&nbsp;:<br />
+<a href="http://blog.rom1v.com/wp-content/uploads/2012/05/gtk-chtheme.png"><img src="http://blog.rom1v.com/wp-content/uploads/2012/05/gtk-chtheme-272x300.png" alt="" title="gtk-chtheme" width="272" height="300" class="aligncenter size-medium wp-image-4032" /></a></p>
+<p>Le thème des applications telles que <a href="http://fr.wikipedia.org/wiki/Mozilla_Firefox">Firefox</a>/<a href="http://fr.wikipedia.org/wiki/Renommage_des_applications_de_Mozilla_par_Debian#Iceweasel">Iceweasel</a>, <a href="http://fr.wikipedia.org/wiki/GIMP">GIMP</a>, <a href="http://fr.wikipedia.org/wiki/Ario">Ario</a> ou <a href="http://fr.wikipedia.org/wiki/Eclipse_%28logiciel%29">Eclipse</a> sera alors totalement cohérent avec celui des applications prévues pour <em>KDE</em>&nbsp;:<br />
+<a href="http://blog.rom1v.com/wp-content/uploads/2012/05/gimp-oxygen.png"><img src="http://blog.rom1v.com/wp-content/uploads/2012/05/gimp-oxygen-300x160.png" alt="" title="gimp-oxygen" width="300" height="160" class="aligncenter size-medium wp-image-4012" /></a></p>
+<p>Pour pousser plus loin l&rsquo;intégration de <em>Firefox/Iceweasel</em>, il y a même un <a href="https://addons.mozilla.org/fr/firefox/addon/oxygen-kde/">module complémentaire</a>.</p>
+<h3>GTK3</h3>
+<p>Pour <em>GTK3</em>, ce devrait être presque pareil… sauf que le paquet <code>gtk3-engines-oxygen</code> (ou <code>oxygen-gtk3</code>) n&rsquo;est pas encore dans les dépôts <em>Debian</em> (il est par contre dans d&rsquo;autres distributions, comme <a href="http://fr.wikipedia.org/wiki/Ubuntu">Ubuntu</a> ou <a href="http://fr.wikipedia.org/wiki/Arch_Linux">Arch Linux</a>).<br />
+Il est bien sûr possible de <a href="https://projects.kde.org/projects/playground/artwork/oxygen-gtk">télécharger les sources</a> pour l&rsquo;installer manuellement.</p>
+<p>Mais nous pouvons nous contenter du thème natif de <em>Gnome</em>. Pour le configurer, il suffit d&rsquo;installer <code>gnome-themes-standard</code>&nbsp;:</p>
+<pre>sudo apt-get install gnome-themes-standard</pre>
+<p>et de créer un fichier <code>~/.config/gtk-3.0/settings.ini</code> contenant&nbsp;:</p>
+<pre>[Settings]
+gtk-theme-name=Adwaita
+gtk-fallback-icon-theme=gnome</pre>
+<p>(voir <a href="http://developer.gnome.org/gtk3/3.4/GtkSettings.html">GtkSettings</a>)</p>
+<p><a href="http://fr.wikipedia.org/wiki/Gedit">Gedit</a> avant&nbsp;:<br />
+<a href="http://blog.rom1v.com/wp-content/uploads/2012/05/gedit-moche.png"><img src="http://blog.rom1v.com/wp-content/uploads/2012/05/gedit-moche-300x204.png" alt="" title="gedit-moche" width="300" height="204" class="aligncenter size-medium wp-image-4022" /></a><br />
+<em>Gedit</em> après&nbsp;:<br />
+<a href="http://blog.rom1v.com/wp-content/uploads/2012/05/gedit-adwaita.png"><img src="http://blog.rom1v.com/wp-content/uploads/2012/05/gedit-adwaita-300x208.png" alt="" title="gedit-adwaita" width="300" height="208" class="aligncenter size-medium wp-image-4023" /></a></p>
+<p>En attendant qu&rsquo;<em>Oxygen GTK3</em> soit disponible dans les dépôts, c&rsquo;est mieux que rien…</p>
+]]></content:encoded>
+			<wfw:commentRss>http://blog.rom1v.com/2012/05/configurer-le-theme-des-applications-gtk-sous-kde/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Lire des images et des vidéos sans serveur X (dans un TTY)</title>
+		<link>http://blog.rom1v.com/2012/04/lire-des-images-et-des-videos-sans-serveur-x-dans-un-tty/</link>
+		<comments>http://blog.rom1v.com/2012/04/lire-des-images-et-des-videos-sans-serveur-x-dans-un-tty/#comments</comments>
+		<pubDate>Sat, 07 Apr 2012 23:01:55 +0000</pubDate>
+		<dc:creator><![CDATA[®om]]></dc:creator>
+				<category><![CDATA[Astuces]]></category>
+		<category><![CDATA[Outils]]></category>
+		<category><![CDATA[planet-libre]]></category>
+		<category><![CDATA[puf]]></category>
+		<category><![CDATA[gnu/linux]]></category>
+		<category><![CDATA[image]]></category>
+		<category><![CDATA[video]]></category>
+
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=3938</guid>
+		<description><![CDATA[Saviez-vous qu&#8217;il était possible de lire des images et des vidéos dans un TTY, sans serveur X&#160;? Je ne parle pas de les afficher en ASCII-art, mais bien de les afficher &#171;&#160;graphiquement&#160;&#187;&#160;: Je ne le savais pas jusqu&#8217;à aujourd&#8217;hui. En fait, c&#8217;est possible grâce à des programmes qui écrivent directement dans le framebuffer. Pour tester [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p>Saviez-vous qu&rsquo;il était possible de lire des images et des vidéos dans un TTY, sans <a href="http://fr.wikipedia.org/wiki/X_Window_System">serveur X</a>&nbsp;? Je ne parle pas de les afficher en <a href="http://fr.wikipedia.org/wiki/Art_ASCII">ASCII-art</a>, mais bien de les afficher &laquo;&nbsp;graphiquement&nbsp;&raquo;&nbsp;:<br />
+<a href="http://blog.rom1v.com/wp-content/uploads/2012/04/bbb-tty.jpg"><img src="http://blog.rom1v.com/wp-content/uploads/2012/04/bbb-tty-300x187.jpg" alt="" title="bbb-tty" width="300" height="187" class="aligncenter size-medium wp-image-3995" /></a></p>
+<p>Je ne le savais pas jusqu&rsquo;à <a href="http://forum.ubuntu-fr.org/viewtopic.php?pid=8739471#p8739471">aujourd&rsquo;hui</a>. En fait, c&rsquo;est possible grâce à des programmes qui écrivent directement dans le <a href="http://fr.wikipedia.org/wiki/Framebuffer_Linux">framebuffer</a>.</p>
+<p>Pour tester les outils suivants, lancez un TTY grâce aux raccourcis <em>Ctrl+Alt+F[1-6]</em>. Pour revenir à votre session graphique, faites <em>Ctrl+Alt+F7</em> (sur certaines distributions, par défaut la session graphique est plutôt accessible avec <em>Ctrl+Alt+F1</em>, <em>Ctrl+Alt+F8</em> ou <em>Ctrl+Alt+F9</em>, essayez…).</p>
+<h3>Images</h3>
+<p>Pour afficher des images, il faut installer le paquet <code>fbi</code> (<strong>f</strong>rame<strong>b</strong>uffer <strong>i</strong>mageviewer)&nbsp;:</p>
+<pre>sudo apt-get install fbi</pre>
+<p>Puis simplement exécuter&nbsp;:</p>
+<pre>fbi monimage.jpg</pre>
+<p>ou même</p>
+<pre>fbi *.jpg</pre>
+<p>(<em>PgUp</em> et <em>PgDown</em> permettent de naviguer entre les images)</p>
+<p>Cet outil est vraiment très rapide (sauf pour le zoom). C&rsquo;est un peu l&rsquo;équivalent de <a href="http://doc.ubuntu-fr.org/feh">feh</a> qui, lui, fonctionne en mode graphique.</p>
+<h3>Vidéos</h3>
+<p>Pour les vidéos, nous avons besoin de <a href="http://fr.wikipedia.org/wiki/MPlayer">MPlayer</a>&nbsp;:</p>
+<pre>sudo apt-get install mplayer</pre>
+<p>En lançant dans un TTY&nbsp;:</p>
+<pre>mplayer mavidéo.avi</pre>
+<p><em>MPlayer</em> choisit le pilote <code>fbdev</code>. Nous pouvons aussi le choisir explicitement&nbsp;:</p>
+<pre>mplayer -vo fbdev mavidéo.avi</pre>
+<p>Par contre, la vidéo s&rsquo;affiche à sa taille originale, alors que nous la voulons en plein écran. Il faut donc la <em>mettre à l&rsquo;échelle</em>, grâce aux paramètres de <code>mplayer</code>. Sur un écran 1680×1050 par exemple&nbsp;:</p>
+<pre>mplayer -fs -vf scale=1680:-3 mavidéo.avi</pre>
+<p><code>-3</code> permet de calculer la seconde composante à partir de la première et de l&rsquo;<em>aspect-ratio</em>. C&rsquo;est dans le <a href="http://man.cx/mplayer%281%29/fr">man</a>&nbsp;:</p>
+<pre> 0: largeur/hauteur dimmensionnées à d_width/d_height
+-1: largeur/hauteur originales
+-2: Calcule l/h en utilisant l'autre dimension et le rapport hauteur/largeur redimensionné.
+-3: Calcule l/h en utilisant l'autre dimension et le rapport hauteur/largeur original.
+-(n+8): Comme -n ci-dessus, mais en arrondissant les dimensions au plus proche multiple de 16.</pre>
+<p>Sur mon pc portable, j&rsquo;arrive sans problème à lire dans un TTY une vidéo <a href="http://fr.wikipedia.org/wiki/1080p">1080p</a> (j&rsquo;ai testé avec <a href="http://www.bigbuckbunny.org/index.php/download/">Big Buck Bunny</a> en MP4, redimensionnée lors de la lecture à la taille de mon écran, 1680×1050).</p>
+<p>Par contre, sur une machine moins puissante (une <a href="http://www.asus.fr/event/Eeebox_B202/">EeeBox</a>, qui <a href="http://blog.rom1v.com/2009/01/nouveau-blog-100-libre/">hébergeait ce blog</a> par le passé), <em>MPlayer</em> saccade, même sur des vidéos basse définition, que <em>VLC</em> lit sans problèmes.<br />
+Pour améliorer les performances de lecture de <em>MPlayer</em>, il est possible de changer l&rsquo;algorithme de zoom logiciel, grâce à l&rsquo;option <code>-sws</code>. Par exemple, pour utiliser <em>bilinéaire rapide</em> au lieu de <em>bicubique</em>&nbsp;:</p>
+<pre>mplayer -fs -vf scale=1680:-3 -sws 0 mavidéo.avi</pre>
+<p>Avec ce paramètre, ça ne saccade plus.</p>
+<p><em>Cependant, sur la EeeBox, dans ce cas les couleurs sont incorrectes apparemment à cause d&rsquo;un bug de pilote vidéo Intel. J&rsquo;ai donc quand même installé un serveur X avec un gestionnaire de fenêtres minimaliste, <a href="http://awesome.naquadah.org/">awesome</a>. Mais c&rsquo;est une autre histoire…</em></p>
+<h3>ASCII-art</h3>
+<p><a href="http://blog.rom1v.com/wp-content/uploads/2012/04/asciiart.png"><img src="http://blog.rom1v.com/wp-content/uploads/2012/04/asciiart-150x150.png" alt="" title="asciiart" width="150" height="150" class="alignright size-thumbnail wp-image-3956" /></a><br />
+Je vous parlais d&rsquo;<em>ASCII-art</em> au début du billet, il est également possible de lire les images ou les vidéos en <em>ASCII</em> (c&rsquo;est juste moins joli), grâce à des commandes d&rsquo;une élégance toute particulière.</p>
+<p>Pour les images, nous pouvons installer le paquet <code>caca-utils</code>&nbsp;</p>
+<pre>sudo apt-get install caca-utils</pre>
+<p>Puis utiliser <code>cacaview</code>&nbsp;:</p>
+<pre>cacaview monimage.jpg</pre>
+<p>Pour les vidéos&nbsp;:</p>
+<pre>mplayer -vo caca mavidéo.avi</pre>
+<p><a href="http://blog.rom1v.com/wp-content/uploads/2012/04/bbb-ascii.png"><img src="http://blog.rom1v.com/wp-content/uploads/2012/04/bbb-ascii-300x254.png" alt="" title="bbb-ascii" width="300" height="254" class="aligncenter size-medium wp-image-3959" /></a></p>
+<h3>Conclusion</h3>
+<p>Je n&rsquo;en revenais pas qu&rsquo;il soit possible de lire des vidéos sans serveur X.<br />
+Sur une machine destinée à une utilisation multimédia (branchée sur la TV par exemple), il n&rsquo;y a donc nullement besoin d&rsquo;un serveur X (paradoxalement).</p>
+]]></content:encoded>
+			<wfw:commentRss>http://blog.rom1v.com/2012/04/lire-des-images-et-des-videos-sans-serveur-x-dans-un-tty/feed/</wfw:commentRss>
+		<slash:comments>26</slash:comments>
+		</item>
+		<item>
+		<title>Prompt Bash pour GIT</title>
+		<link>http://blog.rom1v.com/2012/04/prompt-bash-pour-git/</link>
+		<comments>http://blog.rom1v.com/2012/04/prompt-bash-pour-git/#comments</comments>
+		<pubDate>Wed, 04 Apr 2012 23:22:55 +0000</pubDate>
+		<dc:creator><![CDATA[®om]]></dc:creator>
+				<category><![CDATA[Astuces]]></category>
+		<category><![CDATA[Outils]]></category>
+		<category><![CDATA[planet-libre]]></category>
+		<category><![CDATA[puf]]></category>
+		<category><![CDATA[développement]]></category>
+		<category><![CDATA[git]]></category>
+		<category><![CDATA[gnu/linux]]></category>
+		<category><![CDATA[scripts]]></category>
+
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=3893</guid>
+		<description><![CDATA[J&#8217;utilise GIT depuis quelques mois, et je trouve ça vraiment génial. Si vous ne connaissez pas, ou peu, vous ne pouvez pas ne pas lire le livre Pro Git (sous licence cc-by-nc-sa). Les explications très claires permettent en quelques heures de maîtriser toutes les fonctions de base, et d&#8217;être à l&#8217;aise avec la gestion des [&#8230;]]]></description>
+				<content:encoded><![CDATA[<p><a href="http://blog.rom1v.com/wp-content/uploads/2012/04/git.png"><img src="http://blog.rom1v.com/wp-content/uploads/2012/04/git.png" alt="" title="git" width="97" height="188" class="alignright size-full wp-image-3907" /></a></p>
+<p>J&rsquo;utilise <a href="http://fr.wikipedia.org/wiki/Git">GIT</a> depuis quelques mois, et je trouve ça vraiment génial. Si vous ne connaissez pas, ou peu, vous ne pouvez pas ne pas lire le livre <a href="http://progit.org/book/">Pro Git</a> (sous licence <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/fr/">cc-by-nc-sa</a>). Les explications très claires permettent en quelques heures de maîtriser toutes les fonctions de base, et d&rsquo;être à l&rsquo;aise avec la gestion des branches (et bien plus encore).</p>
+<h3>Branches visibles</h3>
+<p>Le but de ce billet est de répondre à un problème particulier&nbsp;: par manque d&rsquo;attention, il m&rsquo;est arrivé plusieurs fois de commiter des changements sur une mauvaise branche (j&rsquo;étais persuadé d&rsquo;être sur une branche, en fait j&rsquo;étais sur une autre). Ce n&rsquo;est pas très grave (on peut s&rsquo;en sortir), mais c&rsquo;est pénible.</p>
+<p>Je souhaiterais donc avoir le nom de la branche dans le <a href="http://tldp.org/HOWTO/Bash-Prompt-HOWTO/">prompt</a> <a href="http://fr.wikipedia.org/wiki/Bourne-Again_shell">bash</a>.</p>
+<p>Des solutions existent déjà&nbsp;: le paquet <code>git</code> embarque même <a href="https://gist.github.com/473838">un script</a> qui répond au besoin. Certains utilisent aussi <a href="http://blog.nicolargo.com/2012/02/configurer-votre-prompt-bash.html">des scripts personnalisés</a>. Mais aucun de ceux que j&rsquo;ai trouvés ne me convenait. J&rsquo;ai donc écrit mon propre script.</p>
+<h3>Mes prompts</h3>
+<h4>Version simple</h4>
+<p>J&rsquo;ai commencé par une version simple, qui ajoute en couleur <code>@nomdelabranche</code> à la fin du prompt. Un exemple vaut mieux qu&rsquo;un long discours&nbsp;:</p>
+<pre>rom@rom-laptop:~/dev$ cd myproject/
+rom@rom-laptop:~/dev/myproject<span style="font-family:monospace;color:#3264a3">@master</span>$ git checkout testing
+Switched to branch 'testing'
+rom@rom-laptop:~/dev/myproject<span style="font-family:monospace;color:#3264a3">@testing</span>$ cd img
+rom@rom-laptop:~/dev/myproject/img<span style="font-family:monospace;color:#3264a3">@testing</span>$ </pre>
+<p>Dans une arborescence ayant plusieurs projets <em>GIT</em> imbriqués (dans le cas de l&rsquo;utilisation de <a href="http://progit.org/book/ch6-6.html">sous-modules</a>), la branche des projets parents n&rsquo;est pas affichée&nbsp;:</p>
+<pre>rom@rom-laptop:~/dev$ cd mybigproject/
+rom@rom-laptop:~/dev/mybigproject<span style="font-family:monospace;color:#3264a3">@master</span>$ cd submodule/
+rom@rom-laptop:~/dev/mybigproject/submodule<span style="font-family:monospace;color:#3264a3">@master</span>$ git checkout exp
+Switched to branch 'exp'
+rom@rom-laptop:~/dev/mybigproject/submodule<span style="font-family:monospace;color:#3264a3">@exp</span>$ cd ..
+rom@rom-laptop:~/dev/mybigproject<span style="font-family:monospace;color:#3264a3">@master</span>$</pre>
+<h4>Version améliorée</h4>
+<p>Dans cette version simple, le nom de la branche est toujours affiché à la fin. Cela ne me convient pas, je le voudrais toujours à la racine du projet en question. C&rsquo;est ce que permet la version améliorée.</p>
+<p>Voici le résultat avec les mêmes commandes&nbsp;:</p>
+<pre>rom@rom-laptop:~/dev$ cd myproject/
+rom@rom-laptop:~/dev/myproject<span style="font-family:monospace;color:#3264a3">@master</span>$ git checkout testing
+Switched to branch 'testing'
+rom@rom-laptop:~/dev/myproject<span style="font-family:monospace;color:#3264a3">@testing</span>$ cd img
+rom@rom-laptop:~/dev/myproject<span style="font-family:monospace;color:#3264a3">@testing</span>/img$ </pre>
+<p>Et avec des sous-modules, la branche des projets parents est affichée&nbsp;:</p>
+<pre>rom@rom-laptop:~/dev$ cd mybigproject/
+rom@rom-laptop:~/dev/mybigproject<span style="font-family:monospace;color:#3264a3">@master</span>$ cd submodule/
+rom@rom-laptop:~/dev/mybigproject<span style="font-family:monospace;color:#3264a3">@master</span>/submodule<span style="font-family:monospace;color:#3264a3">@master</span>$ git checkout exp
+Switched to branch 'exp'
+rom@rom-laptop:~/dev/mybigproject<span style="font-family:monospace;color:#3264a3">@master</span>/submodule<span style="font-family:monospace;color:#3264a3">@exp</span>$ cd ..
+rom@rom-laptop:~/dev/mybigproject<span style="font-family:monospace;color:#3264a3">@master</span>$ </pre>
+<p>En image&nbsp;:<br />
+<a href="http://blog.rom1v.com/wp-content/uploads/2012/04/gitbashprompt.png"><img src="http://blog.rom1v.com/wp-content/uploads/2012/04/gitbashprompt-300x189.png" alt="" title="gitbashprompt" width="300" height="189" class="aligncenter size-medium wp-image-3900" /></a></p>
+<h3>Script</h3>
+<p>Le script, sous licence <a href="http://sam.zoy.org/wtfpl/">WTFPL</a>, est disponible sur un dépôt <em>git</em>&nbsp;:</p>
+<pre>git clone http://git.rom1v.com/gitbashprompt.git</pre>
+<p><ins datetime="2013-04-17T10:45:00+02:00">(ou sur <a href="https://github.com/rom1v/gitbashprompt">github</a>)</ins></p>
+<p>Une fois cloné, éditez le fichier <code>~/.bashrc</code> pour remplacer l&rsquo;initialisation de la variable <code>PS1</code>&nbsp;:</p>
+<pre>    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '</pre>
+<p>par&nbsp;:</p>
+<pre>    . <em>your_cloned_repo</em>/gitbashprompt</pre>
+<p><em>Pour tester, ouvrir un nouveau terminal.</em></p>
+<h3>Conclusion</h3>
+<p>Tout d&rsquo;abord, je suis content d&rsquo;avoir exactement le comportement que je souhaitais pour mon <em>GIT</em>.</p>
+<p>Ensuite, j&rsquo;ai découvert le fonctionnement du prompt, avec notamment les subtilités d&rsquo;<a href="http://fr.wikipedia.org/wiki/Caract%C3%A8re_d%27%C3%A9chappement">échappement de caractères</a> de la variable <code>PS1</code> et la prise en compte des caractères de contrôle «&nbsp;<code>\[</code>&nbsp;» et «&nbsp;<code>\]</code>&nbsp;».</p>
+<p>Enfin, je me suis enfin décidé à étudier la gestion des couleurs de <em>Bash</em> (qui, à première vue, est assez repoussante, il faut bien l&rsquo;avouer). Mes scripts seront donc plus jolis à l&rsquo;avenir <img src="http://blog.rom1v.com/wp-includes/images/smilies/icon_wink.gif" alt=";-)" class="wp-smiley" /> </p>
+]]></content:encoded>
+			<wfw:commentRss>http://blog.rom1v.com/2012/04/prompt-bash-pour-git/feed/</wfw:commentRss>
+		<slash:comments>24</slash:comments>
+		</item>
+	</channel>
+</rss>
+
+<!-- Dynamic page generated in 1.806 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2014-03-04 05:52:17 -->

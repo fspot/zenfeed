@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	
+	>
+<channel>
+	<title>Commentaires pour ®om&#039;s blog</title>
+	<atom:link href="http://blog.rom1v.com/comments/feed/" rel="self" type="application/rss+xml" />
+	<link>http://blog.rom1v.com</link>
+	<description>Un blog libre</description>
+	<lastBuildDate>Wed, 26 Feb 2014 11:07:05 +0000</lastBuildDate>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.8.1</generator>
+	<item>
+		<title>Commentaires sur Des slides Beamer en Markdown par Pandoc: simplify Beamer/LaTeX with markdown &#124; Deimosfr Blog</title>
+		<link>http://blog.rom1v.com/2014/02/des-slides-beamer-en-markdown/#comment-97444</link>
+		<dc:creator><![CDATA[Pandoc: simplify Beamer/LaTeX with markdown &#124; Deimosfr Blog]]></dc:creator>
+		<pubDate>Wed, 26 Feb 2014 11:07:05 +0000</pubDate>
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4711#comment-97444</guid>
+		<description><![CDATA[[&#8230;] discover it with the post of ®om&#8217;s blog. Thanks to him [&#8230;]]]></description>
+		<content:encoded><![CDATA[<p>[&#8230;] discover it with the post of ®om&#8217;s blog. Thanks to him [&#8230;]</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>Commentaires sur Des slides Beamer en Markdown par Rolinh</title>
+		<link>http://blog.rom1v.com/2014/02/des-slides-beamer-en-markdown/#comment-97440</link>
+		<dc:creator><![CDATA[Rolinh]]></dc:creator>
+		<pubDate>Sun, 16 Feb 2014 10:19:33 +0000</pubDate>
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4711#comment-97440</guid>
+		<description><![CDATA[Super article, très intéressant. Merci. :-)]]></description>
+		<content:encoded><![CDATA[<p>Super article, très intéressant. Merci. <img src="http://blog.rom1v.com/wp-includes/images/smilies/icon_smile.gif" alt=":-)" class="wp-smiley" /> </p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>Commentaires sur Des slides Beamer en Markdown par Gardouille</title>
+		<link>http://blog.rom1v.com/2014/02/des-slides-beamer-en-markdown/#comment-97439</link>
+		<dc:creator><![CDATA[Gardouille]]></dc:creator>
+		<pubDate>Sun, 16 Feb 2014 10:09:47 +0000</pubDate>
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4711#comment-97439</guid>
+		<description><![CDATA[Cool merci pour cette découverte :)
+
+À part d&#039;éventuelles présentations à réaliser, peu d&#039;intérêt de faire du Latex pour moi (pas de rédaction hors wiki ^^). À tester sous peu.]]></description>
+		<content:encoded><![CDATA[<p>Cool merci pour cette découverte <img src="http://blog.rom1v.com/wp-includes/images/smilies/icon_smile.gif" alt=":)" class="wp-smiley" /> </p>
+<p>À part d&rsquo;éventuelles présentations à réaliser, peu d&rsquo;intérêt de faire du Latex pour moi (pas de rédaction hors wiki ^^). À tester sous peu.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>Commentaires sur Lecture différée de la webcam d&#8217;un Rasberry Pi par chmd</title>
+		<link>http://blog.rom1v.com/2014/01/lecture-differee-de-la-webcam-dun-rasberry-pi/#comment-97432</link>
+		<dc:creator><![CDATA[chmd]]></dc:creator>
+		<pubDate>Mon, 20 Jan 2014 17:29:23 +0000</pubDate>
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4693#comment-97432</guid>
+		<description><![CDATA[Excellentissime!
+
+Ça faisait longtemps que je n&#039;avais pas lu un article de blog aussi intéressant. Avec à la clé, en plus, un outil unix générique et élégant.
+
+Bravo!
+
+Pense à soumettre ton binaire pour une inclusion dans les moreutils! http://joeyh.name/code/moreutils/]]></description>
+		<content:encoded><![CDATA[<p>Excellentissime!</p>
+<p>Ça faisait longtemps que je n&rsquo;avais pas lu un article de blog aussi intéressant. Avec à la clé, en plus, un outil unix générique et élégant.</p>
+<p>Bravo!</p>
+<p>Pense à soumettre ton binaire pour une inclusion dans les moreutils! <a href="http://joeyh.name/code/moreutils/" rel="nofollow">http://joeyh.name/code/moreutils/</a></p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>Commentaires sur Duplicity : des backups incrémentaux chiffrés par grou</title>
+		<link>http://blog.rom1v.com/2013/08/duplicity-des-backups-incrementaux-chiffres/#comment-97033</link>
+		<dc:creator><![CDATA[grou]]></dc:creator>
+		<pubDate>Thu, 29 Aug 2013 19:54:48 +0000</pubDate>
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4623#comment-97033</guid>
+		<description><![CDATA[Très bon article, merci pour ces infos :)]]></description>
+		<content:encoded><![CDATA[<p>Très bon article, merci pour ces infos <img src="http://blog.rom1v.com/wp-includes/images/smilies/icon_smile.gif" alt=":)" class="wp-smiley" /> </p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>Commentaires sur Duplicity : des backups incrémentaux chiffrés par Faites vos backups avec duplicity et duply - eniefaC&#039;s Blog</title>
+		<link>http://blog.rom1v.com/2013/08/duplicity-des-backups-incrementaux-chiffres/#comment-96979</link>
+		<dc:creator><![CDATA[Faites vos backups avec duplicity et duply - eniefaC&#039;s Blog]]></dc:creator>
+		<pubDate>Sat, 24 Aug 2013 13:54:01 +0000</pubDate>
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4623#comment-96979</guid>
+		<description><![CDATA[[&#8230;] faisant ma ronde habituelle sur le planet Ubuntu, je suis tombé sur un article de Romain Vimont détaillant l&#8217;utilisation de duplicity, que j&#8217;utilise actuellement [&#8230;]]]></description>
+		<content:encoded><![CDATA[<p>[&#8230;] faisant ma ronde habituelle sur le planet Ubuntu, je suis tombé sur un article de Romain Vimont détaillant l&rsquo;utilisation de duplicity, que j&rsquo;utilise actuellement [&#8230;]</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>Commentaires sur Duplicity : des backups incrémentaux chiffrés par eniefaC</title>
+		<link>http://blog.rom1v.com/2013/08/duplicity-des-backups-incrementaux-chiffres/#comment-96977</link>
+		<dc:creator><![CDATA[eniefaC]]></dc:creator>
+		<pubDate>Fri, 23 Aug 2013 20:17:18 +0000</pubDate>
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4623#comment-96977</guid>
+		<description><![CDATA[Bonsoir,
+
+Pour ceux qui souhaitent utiliser duplicity sans trop mettre les mains dans le cambouis, il y a &lt;a href=&quot;http://duply.net/&quot; title=&quot;duply&quot; rel=&quot;nofollow&quot;&gt;duply&lt;/a&gt;, une surcouche pour duplicity.
+
+Cela permet notamment de gérer facilement des profils et l&#039;export des données via de nombreux protocoles.
+
+Je l&#039;utilise personnellement pour gérer les backups de ma dédibox vers l&#039;espace FTP de backup proposé par mon hébergeur, cela fonctionne parfaitement bien !
+
+Très bon article !]]></description>
+		<content:encoded><![CDATA[<p>Bonsoir,</p>
+<p>Pour ceux qui souhaitent utiliser duplicity sans trop mettre les mains dans le cambouis, il y a <a href="http://duply.net/" title="duply" rel="nofollow">duply</a>, une surcouche pour duplicity.</p>
+<p>Cela permet notamment de gérer facilement des profils et l&rsquo;export des données via de nombreux protocoles.</p>
+<p>Je l&rsquo;utilise personnellement pour gérer les backups de ma dédibox vers l&rsquo;espace FTP de backup proposé par mon hébergeur, cela fonctionne parfaitement bien !</p>
+<p>Très bon article !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>Commentaires sur Duplicity : des backups incrémentaux chiffrés par ®om</title>
+		<link>http://blog.rom1v.com/2013/08/duplicity-des-backups-incrementaux-chiffres/#comment-96964</link>
+		<dc:creator><![CDATA[®om]]></dc:creator>
+		<pubDate>Mon, 19 Aug 2013 19:58:31 +0000</pubDate>
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4623#comment-96964</guid>
+		<description><![CDATA[&lt;blockquote&gt;
+    &lt;strong&gt;&lt;a href=&quot;#comment-96963&quot; rel=&quot;nofollow&quot;&gt;sybix&lt;/a&gt;&#160;:&lt;/strong&gt;
+    Juste pour dire que GPG est vraiment une meilleurs solution.
+&lt;/blockquote&gt;
+
+Pour être précis, qu&#039;on utilise le chiffrement symétrique ou asymétrique ici, il s&#039;agit toujours de &lt;code&gt;gpg&lt;/code&gt; (avant d&#039;écrire ce billet je croyais aussi que &lt;code&gt;gpg&lt;/code&gt; ne supportait que l&#039;asymétrique).
+
+&lt;blockquote&gt;
+    &lt;strong&gt;&lt;a href=&quot;#comment-96963&quot; rel=&quot;nofollow&quot;&gt;sybix&lt;/a&gt;&#160;:&lt;/strong&gt;
+    Tu transfère seulement la clef publique sur le serveur.
+&lt;/blockquote&gt;
+
+En fait, le serveur a également besoin de la clé privée. D&#039;abord parce qu&#039;il signe les backups (apparemment, &lt;em&gt;duplicity&lt;/em&gt; ne permet pas de chiffrer sans signer), ensuite parce pour une sauvegarde incrémentale il a besoin de lire les anciens backups (à vérifier quand même, peut-être qu&#039;il garde des données non chiffrées en cache).]]></description>
+		<content:encoded><![CDATA[<blockquote><p>
+    <strong><a href="#comment-96963" rel="nofollow">sybix</a>&nbsp;:</strong><br />
+    Juste pour dire que GPG est vraiment une meilleurs solution.
+</p></blockquote>
+<p>Pour être précis, qu&rsquo;on utilise le chiffrement symétrique ou asymétrique ici, il s&rsquo;agit toujours de <code>gpg</code> (avant d&rsquo;écrire ce billet je croyais aussi que <code>gpg</code> ne supportait que l&rsquo;asymétrique).</p>
+<blockquote><p>
+    <strong><a href="#comment-96963" rel="nofollow">sybix</a>&nbsp;:</strong><br />
+    Tu transfère seulement la clef publique sur le serveur.
+</p></blockquote>
+<p>En fait, le serveur a également besoin de la clé privée. D&rsquo;abord parce qu&rsquo;il signe les backups (apparemment, <em>duplicity</em> ne permet pas de chiffrer sans signer), ensuite parce pour une sauvegarde incrémentale il a besoin de lire les anciens backups (à vérifier quand même, peut-être qu&rsquo;il garde des données non chiffrées en cache).</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>Commentaires sur Duplicity : des backups incrémentaux chiffrés par sybix</title>
+		<link>http://blog.rom1v.com/2013/08/duplicity-des-backups-incrementaux-chiffres/#comment-96963</link>
+		<dc:creator><![CDATA[sybix]]></dc:creator>
+		<pubDate>Mon, 19 Aug 2013 19:41:05 +0000</pubDate>
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4623#comment-96963</guid>
+		<description><![CDATA[o/
+
+Juste pour dire que GPG est vraiment une meilleurs solution.
+Effectivement le chiffrement asymétrique te demande deux fichiers. Une clefs publique et une clefs privé. Si tu génère ta paire de clefs sur la machine qui te sers a stocker les backup. Tu transfère seulement la clef publique sur le serveur. La clef publique sers à chiffrer les données pour la clef privé, mais ne pourras pas les déchiffrer. Et il est plus dure de casser une clef gpg que de brute forcer un chiffrement symétrique. Bien entendu, il faut quand même avoir la possibilité de sauvegarder au moins la clefs privé, si tu prends en compte que le serveur de backup peux être défaillant en même temps qu&#039;un incident sur le 
+serveur principal.]]></description>
+		<content:encoded><![CDATA[<p>o/</p>
+<p>Juste pour dire que GPG est vraiment une meilleurs solution.<br />
+Effectivement le chiffrement asymétrique te demande deux fichiers. Une clefs publique et une clefs privé. Si tu génère ta paire de clefs sur la machine qui te sers a stocker les backup. Tu transfère seulement la clef publique sur le serveur. La clef publique sers à chiffrer les données pour la clef privé, mais ne pourras pas les déchiffrer. Et il est plus dure de casser une clef gpg que de brute forcer un chiffrement symétrique. Bien entendu, il faut quand même avoir la possibilité de sauvegarder au moins la clefs privé, si tu prends en compte que le serveur de backup peux être défaillant en même temps qu&rsquo;un incident sur le<br />
+serveur principal.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>Commentaires sur Duplicity : des backups incrémentaux chiffrés par Linux &#124; Pearltrees</title>
+		<link>http://blog.rom1v.com/2013/08/duplicity-des-backups-incrementaux-chiffres/#comment-96958</link>
+		<dc:creator><![CDATA[Linux &#124; Pearltrees]]></dc:creator>
+		<pubDate>Sun, 18 Aug 2013 03:02:55 +0000</pubDate>
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4623#comment-96958</guid>
+		<description><![CDATA[[&#8230;] Duplicity : des backups incrémentaux chiffrés [&#8230;]]]></description>
+		<content:encoded><![CDATA[<p>[&#8230;] Duplicity : des backups incrémentaux chiffrés [&#8230;]</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>Commentaires sur Duplicity : des backups incrémentaux chiffrés par ®om</title>
+		<link>http://blog.rom1v.com/2013/08/duplicity-des-backups-incrementaux-chiffres/#comment-96957</link>
+		<dc:creator><![CDATA[®om]]></dc:creator>
+		<pubDate>Fri, 16 Aug 2013 11:58:25 +0000</pubDate>
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4623#comment-96957</guid>
+		<description><![CDATA[@&lt;a href=&quot;#comment-96956&quot; rel=&quot;nofollow&quot;&gt;Cascador&lt;/a&gt;&#160;:
+En résumé, tu proposes d&#039;écrire manuellement une solution de sauvegardes non incrémentales et non chiffrées. Pour quels avantages&#160;?
+
+J&#039;utilisais un peu de genre de scripts manuels avant d&#039;utiliser &lt;em&gt;duplicity&lt;/em&gt;… D&#039;ailleurs, de mémoire, c&#039;est un peu ce que font &lt;em&gt;&lt;a href=&quot;http://rdiff-backup.nongnu.org/&quot; rel=&quot;nofollow&quot;&gt;rdiff-backup&lt;/a&gt;&lt;/em&gt; et &lt;em&gt;&lt;a href=&quot;http://www.rsnapshot.org/&quot; rel=&quot;nofollow&quot;&gt;rsnapshot&lt;/a&gt;&lt;/em&gt;.]]></description>
+		<content:encoded><![CDATA[<p>@<a href="#comment-96956" rel="nofollow">Cascador</a>&nbsp;:<br />
+En résumé, tu proposes d&rsquo;écrire manuellement une solution de sauvegardes non incrémentales et non chiffrées. Pour quels avantages&nbsp;?</p>
+<p>J&rsquo;utilisais un peu de genre de scripts manuels avant d&rsquo;utiliser <em>duplicity</em>… D&rsquo;ailleurs, de mémoire, c&rsquo;est un peu ce que font <em><a href="http://rdiff-backup.nongnu.org/" rel="nofollow">rdiff-backup</a></em> et <em><a href="http://www.rsnapshot.org/" rel="nofollow">rsnapshot</a></em>.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>Commentaires sur Duplicity : des backups incrémentaux chiffrés par Cascador</title>
+		<link>http://blog.rom1v.com/2013/08/duplicity-des-backups-incrementaux-chiffres/#comment-96956</link>
+		<dc:creator><![CDATA[Cascador]]></dc:creator>
+		<pubDate>Fri, 16 Aug 2013 07:55:10 +0000</pubDate>
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4623#comment-96956</guid>
+		<description><![CDATA[Hello All,
+
+Je persiste et signe comme Fred et je donne modestement mon point de vue sur ce que tu pourrais faire :
+- Tu met en place une rotation de tes sauvegardes (càd une copie des données que tu souhaites sauvegarder avec une gestion dans le temps) sur les 3 derniers jours sur ton serveur en local. Tu utilises une variable comme ça &lt;code&gt;DATE=&quot;$(date +&quot;%d-%m-%Y&quot; )&quot;&lt;/code&gt; dans le nom de tes répertoires (ça va te donner 16-08-2013, 17-08-2013 etc.) puis toujours dans le même script tu purges les dossiers plus vieux de 3 jours (&lt;code&gt;find $DEST_BACKUP -maxdepth 1 -type d -mtime +3 -exec rm -frv {} \;&lt;/code&gt;)
+- Second script du côté de ton poste à ton domicile, tu synchronises toujours le même dossier du côté de chez toi et du côté de ton serveur dédié ainsi les différences sont minimes (comme si tu faisais une sauvegarde incrémentale ou différentielle) mais tu as une sauvegarde complète de chaque côté (c&#039;est du mirroring quoi). Je pense que tu l&#039;auras compris mais du côté de ton domicile le nom du dossier de ta sauvegarde ne bougera jamais et du côté de ton serveur dédié, tu utilises la variable DATE pour faire la sauvegarde. Tu reprends ton premier script et tu met en place une rotation sur 7 jours sur ton poste en local
+- Troisième script (ultra-simple donc inutile de crier lol), tu copies les dossiers en &quot;matchant&quot; avec cp le nom de tes dossiers 01-, 08-, 15-, 22-, 29- afin d&#039;avoir un dossier avec tes sauvegardes hebdomadaires (sauvegardes du premier jour de chaque mois, du 8 de chaque mois etc.). Ca donnera &lt;code&gt;cp -pR $DEST_BACKUP&#039;/&#039;$NOM_BACKUP&#039;_01-* $WEEKLY_BACKUP&#039;/&#039; &lt;/code&gt;
+
+Pour résumer :
+- Tu as une tâche cron sur ton serveur dédié et 2 tâches cron sur ton poste à ton domicile
+- Tu as 3 sauvegardes complètes sur ton serveur en local (soit moins de 5 Go). Tu as 7 sauvegardes complètes sur ton poste à ton domicile pour les 7 derniers jours (soit moins de 10 Go) ainsi que 4 sauvegardes complètes pour les 4 dernières semaines (soit moins de 6 Go)
+- Tu as des scripts simples (avec des outils ultra-connus comme cp, rsync ou duplicity) et réutilisables pour d&#039;autres serveurs
+- Tu as une méthode de sauvegarde 4 étoiles, increvable, facile à restaurer
+- Tu peux évidemment te passer du troisième script
+- Tout cela en ne consommant pas beaucoup d&#039;espace sur tes machines et en minimisant le trafic réseau (dans ce cas via internet) pour la sauvegarde distante à ton domicile
+
+Tcho !]]></description>
+		<content:encoded><![CDATA[<p>Hello All,</p>
+<p>Je persiste et signe comme Fred et je donne modestement mon point de vue sur ce que tu pourrais faire :<br />
+- Tu met en place une rotation de tes sauvegardes (càd une copie des données que tu souhaites sauvegarder avec une gestion dans le temps) sur les 3 derniers jours sur ton serveur en local. Tu utilises une variable comme ça <code>DATE="$(date +"%d-%m-%Y" )"</code> dans le nom de tes répertoires (ça va te donner 16-08-2013, 17-08-2013 etc.) puis toujours dans le même script tu purges les dossiers plus vieux de 3 jours (<code>find $DEST_BACKUP -maxdepth 1 -type d -mtime +3 -exec rm -frv {} \;</code>)<br />
+- Second script du côté de ton poste à ton domicile, tu synchronises toujours le même dossier du côté de chez toi et du côté de ton serveur dédié ainsi les différences sont minimes (comme si tu faisais une sauvegarde incrémentale ou différentielle) mais tu as une sauvegarde complète de chaque côté (c&rsquo;est du mirroring quoi). Je pense que tu l&rsquo;auras compris mais du côté de ton domicile le nom du dossier de ta sauvegarde ne bougera jamais et du côté de ton serveur dédié, tu utilises la variable DATE pour faire la sauvegarde. Tu reprends ton premier script et tu met en place une rotation sur 7 jours sur ton poste en local<br />
+- Troisième script (ultra-simple donc inutile de crier lol), tu copies les dossiers en &laquo;&nbsp;matchant&nbsp;&raquo; avec cp le nom de tes dossiers 01-, 08-, 15-, 22-, 29- afin d&rsquo;avoir un dossier avec tes sauvegardes hebdomadaires (sauvegardes du premier jour de chaque mois, du 8 de chaque mois etc.). Ca donnera <code>cp -pR $DEST_BACKUP'/'$NOM_BACKUP'_01-* $WEEKLY_BACKUP'/' </code></p>
+<p>Pour résumer :<br />
+- Tu as une tâche cron sur ton serveur dédié et 2 tâches cron sur ton poste à ton domicile<br />
+- Tu as 3 sauvegardes complètes sur ton serveur en local (soit moins de 5 Go). Tu as 7 sauvegardes complètes sur ton poste à ton domicile pour les 7 derniers jours (soit moins de 10 Go) ainsi que 4 sauvegardes complètes pour les 4 dernières semaines (soit moins de 6 Go)<br />
+- Tu as des scripts simples (avec des outils ultra-connus comme cp, rsync ou duplicity) et réutilisables pour d&rsquo;autres serveurs<br />
+- Tu as une méthode de sauvegarde 4 étoiles, increvable, facile à restaurer<br />
+- Tu peux évidemment te passer du troisième script<br />
+- Tout cela en ne consommant pas beaucoup d&rsquo;espace sur tes machines et en minimisant le trafic réseau (dans ce cas via internet) pour la sauvegarde distante à ton domicile</p>
+<p>Tcho !</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>Commentaires sur Duplicity : des backups incrémentaux chiffrés par François</title>
+		<link>http://blog.rom1v.com/2013/08/duplicity-des-backups-incrementaux-chiffres/#comment-96954</link>
+		<dc:creator><![CDATA[François]]></dc:creator>
+		<pubDate>Thu, 15 Aug 2013 19:12:57 +0000</pubDate>
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4623#comment-96954</guid>
+		<description><![CDATA[Pour ma part, je fais des sauvegardes pseudo-incrémentales avec des liens en dur.
+Ca ressemble en tant qu&#039;utilisateur à du non incrémentale, mais pour le disque c&#039;est bel et bien de l&#039;incrémental. Si une sauvegarde plante, on ne brise pas les autres sauvegardes.]]></description>
+		<content:encoded><![CDATA[<p>Pour ma part, je fais des sauvegardes pseudo-incrémentales avec des liens en dur.<br />
+Ca ressemble en tant qu&rsquo;utilisateur à du non incrémentale, mais pour le disque c&rsquo;est bel et bien de l&rsquo;incrémental. Si une sauvegarde plante, on ne brise pas les autres sauvegardes.</p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>Commentaires sur Duplicity : des backups incrémentaux chiffrés par Fred</title>
+		<link>http://blog.rom1v.com/2013/08/duplicity-des-backups-incrementaux-chiffres/#comment-96953</link>
+		<dc:creator><![CDATA[Fred]]></dc:creator>
+		<pubDate>Thu, 15 Aug 2013 15:59:24 +0000</pubDate>
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4623#comment-96953</guid>
+		<description><![CDATA[Merci pour les précisions. Je vais quand même faire mon lourdingue en disant que pour 1,4 Go de données, on peut faire du backup complet quotidien :p
+
+Mon credo est de dire que le stockage ne coûte pas cher, sauf si vous voulez du stockage rapide (SSD, disques à 15k tours, SAN...). Côté pro, j&#039;ai 1,2 To de données à gérer (fichiers, boites mail, multiples BDD) et je fais quand même du complet chaque jour pour pas très cher (dans un contexte perso, ça peut être vécu autrement) avec rsync. Par contre, je commence à atteindre un cap côté performances et synchro des scripts des différents serveurs, du coup je me fais ma petite veille sur des outils comme celui-ci
+
+&lt;q cite=&quot;rom&quot;&gt;La complète a mis 5mn06s. La complète avec 30 incrémentales, 7mn49s. Donc on s’en fiche, ça reste rapide (la restauration est un événement rare).&lt;/q&gt;
+A peu près 50% plus lent avec 29x15 Mo d&#039;incrémentales. Curieux de voir si quelqu&#039;un a des stats avec de plus gros volumes. En tout cas, merci pour ces infos, très instructif.
+
+
+&lt;q cite=&quot;Cascador&quot;&gt;C’est simple à restaurer, il y a tout et la simplicité est trop souvent un critère négligée.&lt;/q&gt;
+Ah, voilà un commentaire qui me fait bien plaisir. C&#039;est beaucoup de travail de faire des choses simples et efficaces :)]]></description>
+		<content:encoded><![CDATA[<p>Merci pour les précisions. Je vais quand même faire mon lourdingue en disant que pour 1,4 Go de données, on peut faire du backup complet quotidien :p</p>
+<p>Mon credo est de dire que le stockage ne coûte pas cher, sauf si vous voulez du stockage rapide (SSD, disques à 15k tours, SAN&#8230;). Côté pro, j&rsquo;ai 1,2 To de données à gérer (fichiers, boites mail, multiples BDD) et je fais quand même du complet chaque jour pour pas très cher (dans un contexte perso, ça peut être vécu autrement) avec rsync. Par contre, je commence à atteindre un cap côté performances et synchro des scripts des différents serveurs, du coup je me fais ma petite veille sur des outils comme celui-ci</p>
+<p><q cite="rom">La complète a mis 5mn06s. La complète avec 30 incrémentales, 7mn49s. Donc on s’en fiche, ça reste rapide (la restauration est un événement rare).</q><br />
+A peu près 50% plus lent avec 29&#215;15 Mo d&rsquo;incrémentales. Curieux de voir si quelqu&rsquo;un a des stats avec de plus gros volumes. En tout cas, merci pour ces infos, très instructif.</p>
+<p><q cite="Cascador">C’est simple à restaurer, il y a tout et la simplicité est trop souvent un critère négligée.</q><br />
+Ah, voilà un commentaire qui me fait bien plaisir. C&rsquo;est beaucoup de travail de faire des choses simples et efficaces <img src="http://blog.rom1v.com/wp-includes/images/smilies/icon_smile.gif" alt=":)" class="wp-smiley" /> </p>
+]]></content:encoded>
+	</item>
+	<item>
+		<title>Commentaires sur Duplicity : des backups incrémentaux chiffrés par Logicos</title>
+		<link>http://blog.rom1v.com/2013/08/duplicity-des-backups-incrementaux-chiffres/#comment-96952</link>
+		<dc:creator><![CDATA[Logicos]]></dc:creator>
+		<pubDate>Thu, 15 Aug 2013 11:31:52 +0000</pubDate>
+		<guid isPermaLink="false">http://blog.rom1v.com/?p=4623#comment-96952</guid>
+		<description><![CDATA[Salut tous!
+
+Bah j&#039;utilise &quot;dar&quot; pour faire des backups.
+Full tout les dimanches, Incrémental les autres jours.
+Mais le plus marrant, c&#039;est que je balance mes backups (chiffrés) sur http://dl.free.fr ...
+Il reste 1 mois minimum bien au chaud sur les serveurs de Free, et je suis notifié par mail de chaque transfert.
+
+A+]]></description>
+		<content:encoded><![CDATA[<p>Salut tous!</p>
+<p>Bah j&rsquo;utilise &laquo;&nbsp;dar&nbsp;&raquo; pour faire des backups.<br />
+Full tout les dimanches, Incrémental les autres jours.<br />
+Mais le plus marrant, c&rsquo;est que je balance mes backups (chiffrés) sur <a href="http://dl.free.fr" rel="nofollow">http://dl.free.fr</a> &#8230;<br />
+Il reste 1 mois minimum bien au chaud sur les serveurs de Free, et je suis notifié par mail de chaque transfert.</p>
+<p>A+</p>
+]]></content:encoded>
+	</item>
+</channel>
+</rss>
+
+<!-- Dynamic page generated in 0.739 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2014-03-04 14:52:44 -->

@@ -4,14 +4,32 @@
 from __future__ import print_function, unicode_literals
 import unittest
 
-class TestFonctionGet(unittest.TestCase):
- 
+import feedparser
+from path import path
+
+class TestFeedParsing(unittest.TestCase):
+
     def setUp(self):
-        print('Setup !')
+        self.files = path("fixtures/feeds").listdir()
  
-    def tearDown(self):
-        print('Teardown !')
+    def test_feeds_parsing_succeed(self):
+        self.assertTrue(len(self.files) > 0)
+        for filename in self.files:
+            feed = feedparser.parse(filename)
+            self.assertIsInstance(feed, feedparser.FeedParserDict, msg=filename)
+
+
+class TestFeedFields(unittest.TestCase):
+    
+    def setUp(self):
+        files = path("fixtures/feeds").listdir()
+        self.feeds = [feedparser.parse(filename) for filename in files]
  
-    def test_get_element(self):
-        self.assertEqual('Oui', 'Je tres clair, Luc')
+    def test_feeds_have_string_title(self):
+        for feed in self.feeds:
+            self.assertIsInstance(feed['feed']['title'], basestring)
+
+
+if __name__ == '__main__':
+    unittest.main()
 

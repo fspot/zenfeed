@@ -1,0 +1,1410 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:creativeCommons="http://backend.userland.com/creativeCommonsRssModule" xmlns:re="http://purl.org/atompub/rank/1.0">
+    <title type="text">Recent Questions - Stack Overflow</title>
+    <link rel="self" href="http://stackoverflow.com/feeds" type="application/atom+xml" />
+    <link rel="alternate" href="http://stackoverflow.com/questions" type="text/html" />
+    <subtitle>most recent 30 from stackoverflow.com</subtitle>
+    <updated>2014-03-04T14:03:54Z</updated>
+    <id>http://stackoverflow.com/feeds</id>
+    <creativeCommons:license>http://www.creativecommons.org/licenses/by-sa/3.0/rdf</creativeCommons:license> 
+    <entry>
+        <id>http://stackoverflow.com/q/22174081</id>
+        <re:rank scheme="http://stackoverflow.com">0</re:rank>
+        <title type="text">Stack overflow around variable &quot;nom&quot;</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="c++"/>
+        <author>
+            <name>user3379289</name>
+            <uri>http://stackoverflow.com/users/3379289</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/22174081/stack-overflow-around-variable-nom" />
+        <published>2014-03-04T14:03:14Z</published>
+        <updated>2014-03-04T14:03:14Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;Hello i got this error after writing the second FOR inside the CONV function, each of the FORs work fine on their own but for some reason i get an overflow when i put both inside the function. Please help.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#pragma warning(disable: 4996)
+#include&amp;lt;stdio.h&amp;gt;
+#include&amp;lt;stdlib.h&amp;gt;
+#include&amp;lt;string.h&amp;gt;
+typedef struct nodo{
+    char dato[100];
+    struct nodo *sig;
+}*pun;
+typedef struct nodos{
+    char nom[50];
+    int num[20];
+    struct nodos *sig;
+}*puns;
+
+void cargar(pun &amp;amp;top,pun &amp;amp;fin);
+void mostrar(pun &amp;amp;top);
+void conv(pun &amp;amp;top,pun &amp;amp;fin,puns &amp;amp;tops,puns &amp;amp;fins);
+int main(){
+    pun top=NULL,fin=NULL;
+    puns tops=NULL,fins=NULL;
+    cargar(top,fin);
+    conv(top,fin,tops,fins);
+    mostrar(top);
+}
+
+void cargar(pun &amp;amp;top,pun &amp;amp;fin){
+    FILE *arch;
+    pun aux=NULL;
+    arch=fopen(&quot;nombres.txt&quot;,&quot;rt&quot;);
+    if(arch==NULL){
+        printf(&quot;No se puede abrir el archivo \n&quot;);
+    }else{
+        while(!feof(arch)){
+            if(top==NULL){
+                top=(nodo *)malloc(sizeof(nodo));
+            fgets(top-&amp;gt;dato,100,arch);
+                        fin=top;
+            }else{
+                 aux=(nodo *)malloc(sizeof(nodo));
+             fgets(aux-&amp;gt;dato,100,arch);
+             fin-&amp;gt;sig=aux;
+             fin=aux;
+            }
+        }
+        fin-&amp;gt;sig=NULL;
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;}&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;void mostrar(pun &amp;amp;top){
+    pun aux=top;
+    while(aux!=NULL){
+        puts(aux-&amp;gt;dato);
+        aux=aux-&amp;gt;sig;
+    }
+}
+
+void conv(pun &amp;amp;top,pun &amp;amp;fin,puns &amp;amp;tops,puns &amp;amp;fins){
+    pun aux=top;
+    puns auxs=tops;
+    char nom[50],num[50],*p;
+    int i,j=0,a;
+    while(aux!=NULL){
+        p=strchr(aux-&amp;gt;dato,&#39; &#39;);
+        for(i=0;i&amp;lt;p-aux-&amp;gt;dato+1;i++){
+             nom[i]=aux-&amp;gt;dato[i];
+        }
+        nom[i]=&#39;\0&#39;;
+        for(i;i&amp;lt;50;i++){
+            num[j]=aux-&amp;gt;dato[i];
+            j++;
+        }
+        num[j]=&#39;\0&#39;;
+        aux=aux-&amp;gt;sig;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/22174079</id>
+        <re:rank scheme="http://stackoverflow.com">0</re:rank>
+        <title type="text">ASP.NET Identity UpdateAsync lose IdentityResult.Failed</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="c#"/><category scheme="http://stackoverflow.com/feeds/tags" term="asp.net"/><category scheme="http://stackoverflow.com/feeds/tags" term="asp.net-mvc"/><category scheme="http://stackoverflow.com/feeds/tags" term="asp.net-identity"/>
+        <author>
+            <name>Edi</name>
+            <uri>http://stackoverflow.com/users/1016557</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/22174079/asp-net-identity-updateasync-lose-identityresult-failed" />
+        <published>2014-03-04T14:03:12Z</published>
+        <updated>2014-03-04T14:03:12Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;I&#39;ve wrote a custom UserStore for the ASP.NET Identity which I&#39;m using it in an ASP.NET MVC 5.1 application. Everything is working as expected and I&#39;m very happy with this new feature (Identity) of ASP.NET... &lt;/p&gt;
+
+&lt;p&gt;The issue is that I think is almost 2 days since I&#39;m trying to return an error from the UpdateAsync method and somehow it seems that I&#39;m not able to return anything.&lt;/p&gt;
+
+&lt;p&gt;LE: I&#39;m using ASP.NET Identity Core 2.0.0-beta1&lt;/p&gt;
+
+&lt;p&gt;This is my code in few lines:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public Task UpdateAsync(IdentityUser user)
+    {
+        AdminUserEntity userEntity = new AdminUserEntity();
+        userEntity.IsNew = false;
+        userEntity.Id = user.UserModel.Id;
+        userEntity.UserCompleteName = user.UserModel.UserCompleteName;
+        userEntity.IsDisabled = user.UserModel.IsDisabled;
+
+        if (!String.IsNullOrEmpty(user.UserModel.PasswordHash))
+            userEntity.PasswordHash = user.UserModel.PasswordHash;
+
+        if (user.Claims != null &amp;amp;&amp;amp; user.Claims.Count &amp;gt; 0)
+        {
+            foreach (Claim claim in user.Claims)
+            {
+                AdminUserClaimEntity claimEntity = userEntity.AdminUserClaims.AddNew();
+                claimEntity.AdminUserUniqueId = user.UserModel.UniqueId;
+                claimEntity.ClaimType = claim.Type;
+                claimEntity.ClaimValue = claim.Value;
+            }
+        }
+
+        try
+        {
+            byte[] timestamp = Convert.FromBase64String(user.UserModel.Timestamp);
+            AdminUserEntityManagement.UpdateCompleteAdminUserEntity(userEntity, timestamp);
+        }
+        catch (Exception exception)
+        {
+            List&amp;lt;string&amp;gt; errors = new List&amp;lt;string&amp;gt;() {exception.Message};
+            return Task.FromResult&amp;lt;IdentityResult&amp;gt;(IdentityResult.Failed(errors.ToArray()));
+        }
+
+        return Task.FromResult&amp;lt;object&amp;gt;(null);
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Though there is an exception and the catch block is getting executed, the following line always returns success:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;IdentityResult result = await UserManager.UpdateAsync(identityUser);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Can someone please tell me what am I missing?&lt;/p&gt;
+
+&lt;p&gt;Thank you in advance for your time and help.&lt;/p&gt;
+
+&lt;p&gt;Evdin&lt;/p&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/22174078</id>
+        <re:rank scheme="http://stackoverflow.com">0</re:rank>
+        <title type="text">jquery-mobile collapsible accordion won&#39;t work when loaded in via Javascript</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="javascript"/><category scheme="http://stackoverflow.com/feeds/tags" term="html"/><category scheme="http://stackoverflow.com/feeds/tags" term="json"/><category scheme="http://stackoverflow.com/feeds/tags" term="jquery-mobile"/>
+        <author>
+            <name>Darragh</name>
+            <uri>http://stackoverflow.com/users/3170291</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/22174078/jquery-mobile-collapsible-accordion-wont-work-when-loaded-in-via-javascript" />
+        <published>2014-03-04T14:03:12Z</published>
+        <updated>2014-03-04T14:03:12Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;I have a jquery-mobile page with a javascript function included that takes information from a JSON sheet and injects it into the page. I am taking information and formatting it in a Collapsible set (accordion) format and when the page is loaded the information appears on the page but just as text and not the desired format. I tested exactly what the js was printing out by hardcoding it into the div and when I do that it is formatted so its clearly something to do with the function. It is reading and printing out the information, just failing to recognise the collapsible format. Heres the function and html and I&#39;d appreciate it if you could help me out:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  &amp;lt;!DOCTYPE html&amp;gt;
+
+&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;
+&amp;lt;meta http-equiv=&quot;Content-type&quot; value=&quot;text/html; charset=UTF-8&quot; /&amp;gt;
+&amp;lt;meta charset=&quot;utf-8&quot; /&amp;gt;
+&amp;lt;meta name=&quot;format-detection&quot; content=&quot;telephone=no&quot; /&amp;gt;
+&amp;lt;!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 --&amp;gt;
+&amp;lt;meta name=&quot;viewport&quot; content=&quot;user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi&quot; /&amp;gt;
+&amp;lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;css/index.css&quot;/&amp;gt;
+
+&amp;lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery-1.11.0.min.js&quot;&amp;gt; &amp;lt;/script&amp;gt; 
+&amp;lt;/head&amp;gt;
+
+&amp;lt;body&amp;gt;
+&amp;lt;div data-role=&quot;page&quot; data-theme=&quot;a&quot; id=&quot;Page1&quot;&amp;gt;
+
+&amp;lt;div data-role=&quot;header&quot; data-theme=&quot;c&quot;&amp;gt;
+  &amp;lt;a data-rel=&quot;back&quot; data-role=&quot;button&quot; class=&quot;ui-btn-left&quot; data-transition=&quot;flip&quot; data- icon=&quot;back&quot;&amp;gt; Back &amp;lt;/a&amp;gt;
+  &amp;lt;a href=&quot;info.html&quot; data-role=&quot;button&quot; class=&quot;ui-btn-right&quot; data-transition=&quot;flip&quot; data-icon=&quot;info&quot;&amp;gt; Info &amp;lt;/a&amp;gt;
+  &amp;lt;h2&amp;gt;Septicaemia&amp;lt;/h2&amp;gt;
+ &amp;lt;/div&amp;gt;
+
+&amp;lt;div data-role=&quot;content&quot; data-theme=&quot;c&quot; id=&quot;Page1_Content&quot;&amp;gt;
+
+&amp;lt;p class=&quot;infotext&quot;&amp;gt;&amp;lt;b&amp;gt;Clinical Condition:&amp;lt;/b&amp;gt;&amp;lt;/p&amp;gt;
+
+&amp;lt;div id=&quot;texts&quot; data-role=&quot;collapsible-set&quot;&amp;gt;
+
+&amp;lt;/div&amp;gt;
+
+
+&amp;lt;script type=&quot;text/javascript&quot;&amp;gt;
+
+$(document).on(&quot;pageinit&quot;, &quot;#Page1&quot;, function(){ 
+  var info=&quot;&quot;;  
+  var imp= &quot;Json/empirical.json&quot;;
+  $.getJSON(imp, function(data) {
+
+   $.each(data.tcontent, function(i, item) {
+    if(item.Name==&#39;Septicaemia&#39;){
+     var search=item.Variations;
+     $.each(search, function(j, subitem) {
+        info += &#39;&amp;lt;div data-role=&quot;collapsible&quot; data-mini=&quot;true&quot; data-collapsed-icon=&quot;arrow-    r&quot; data-expanded-icon=&quot;arrow-d&quot; data-iconpos=&quot;right&quot; data-theme=&quot;d&quot; data-content-theme=&quot;d&quot;&amp;gt; &amp;lt;h3&amp;gt;&#39; + subitem.condition +&#39;&amp;lt;/h3&amp;gt; &amp;lt;p class=&quot;guidelinetext&quot;&amp;gt;&#39; +  subitem.organisms + subitem.antimicrobial + subitem.alternative + subitem.comments + &#39;&amp;lt;/p&amp;gt; &amp;lt;/div&amp;gt;&#39;;                        
+    });
+ }
+    $(&quot;#texts&quot;).empty().append(info);
+  });
+ });
+});
+
+&amp;lt;/script&amp;gt; 
+
+&amp;lt;/div&amp;gt;
+&amp;lt;div data-role=&quot;footer&quot; data-theme=&quot;c&quot;&amp;gt;
+&amp;lt;h2&amp;gt;(c) Darragh O&#39;Connor &amp;lt;/h2&amp;gt;
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;            &lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/22174073</id>
+        <re:rank scheme="http://stackoverflow.com">0</re:rank>
+        <title type="text">Fullscreen HTML5 Section Background Video</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="javascript"/><category scheme="http://stackoverflow.com/feeds/tags" term="jquery"/><category scheme="http://stackoverflow.com/feeds/tags" term="css"/><category scheme="http://stackoverflow.com/feeds/tags" term="html5"/><category scheme="http://stackoverflow.com/feeds/tags" term="html5-video"/>
+        <author>
+            <name>Mohamed Samy</name>
+            <uri>http://stackoverflow.com/users/1863241</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/22174073/fullscreen-html5-section-background-video" />
+        <published>2014-03-04T14:03:01Z</published>
+        <updated>2014-03-04T14:03:01Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;i tried to make Full screen HTML5 Section Background Video with css and HTML5 . i found many article nut all with same concept . &lt;/p&gt;
+
+&lt;p&gt;The problem is that , all the Articles make the video with  &lt;code&gt;position: fixed;&lt;/code&gt; that make the video scroll with you . all i need to found any way to make the video in the first section in the site only like this site : &lt;a href=&quot;http://riskeverything.us/&quot; rel=&quot;nofollow&quot;&gt;http://riskeverything.us/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The General Concept is :
+&lt;strong&gt;HTML :&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;video autoplay loop poster=&quot;polina.jpg&quot; id=&quot;bgvid&quot;&amp;gt;
+
+&amp;lt;source src=&quot;polina.webm&quot; type=&quot;video/webm&quot;&amp;gt;
+
+&amp;lt;source src=&quot;polina.mp4&quot; type=&quot;video/mp4&quot;&amp;gt;
+
+&amp;lt;/video&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;CSS :&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;video#bgvid { 
+
+position: fixed; right: 0; bottom: 0;
+
+min-width: 100%; min-height: 100%;
+
+width: auto; height: auto; z-index: -100;
+
+background: url(polina.jpg) no-repeat;
+
+background-size: cover; 
+
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/22174071</id>
+        <re:rank scheme="http://stackoverflow.com">0</re:rank>
+        <title type="text">how to display the ajax results as tool tip by using qtip</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="jquery"/><category scheme="http://stackoverflow.com/feeds/tags" term="ajax"/><category scheme="http://stackoverflow.com/feeds/tags" term="qtip"/>
+        <author>
+            <name>javalearner</name>
+            <uri>http://stackoverflow.com/users/3021604</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/22174071/how-to-display-the-ajax-results-as-tool-tip-by-using-qtip" />
+        <published>2014-03-04T14:02:55Z</published>
+        <updated>2014-03-04T14:02:55Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;I making a Ajax call and the results returned by the Ajax call should be used to display as tool tip using qtip&lt;/p&gt;
+
+&lt;p&gt;Here is my Ajax call&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    $.ajax({
+    cache : true,
+    url : componentUrl,
+    contentType : &#39;application/json; charset=utf-8&#39;,
+    success : function(data) {
+    networkData = getTreeJsonNew(data);
+    addNetworkFrame(networkData);
+    },
+
+    error : function(msg, url, line) {
+    networkData = getNetworkInitData(); 
+    addNetworkFrame(networkData);
+    }
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/22174066</id>
+        <re:rank scheme="http://stackoverflow.com">0</re:rank>
+        <title type="text">Soundcloud player not working in Firefox</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="html5"/><category scheme="http://stackoverflow.com/feeds/tags" term="flash"/><category scheme="http://stackoverflow.com/feeds/tags" term="firefox"/><category scheme="http://stackoverflow.com/feeds/tags" term="soundcloud"/>
+        <author>
+            <name>frankie</name>
+            <uri>http://stackoverflow.com/users/1390395</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/22174066/soundcloud-player-not-working-in-firefox" />
+        <published>2014-03-04T14:02:40Z</published>
+        <updated>2014-03-04T14:02:40Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;Using the factory SoundCloud code. Flash embeds work fine in Chrome/Safari. Firefox just has a placeholder.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://puremagnetik.com/&quot; rel=&quot;nofollow&quot;&gt;http://puremagnetik.com/&lt;/a&gt; - each &quot;record sleeve&quot; has it&#39;s own player underneath (in Chrome and Safari).&lt;/p&gt;
+
+&lt;p&gt;Any thoughts?&lt;/p&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/22174065</id>
+        <re:rank scheme="http://stackoverflow.com">0</re:rank>
+        <title type="text">Checking file if exist then append record</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="python"/>
+        <author>
+            <name>Volatil3</name>
+            <uri>http://stackoverflow.com/users/275002</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/22174065/checking-file-if-exist-then-append-record" />
+        <published>2014-03-04T14:02:38Z</published>
+        <updated>2014-03-04T14:02:38Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;I am creating a log file with line by line records.&lt;/p&gt;
+
+&lt;p&gt;1- If file does not exist, it creates file and append header row and the record
+2- if it exists, check the text &lt;code&gt;timeStamp&lt;/code&gt; in first line. If it exist then append the record otherwise add header columns and record itself&lt;/p&gt;
+
+&lt;p&gt;I tried both w,a and r+; nothing worked for me. Below is my code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;log = open(&#39;Dump.log&#39;, &#39;r+&#39;)
+datalogFile = log.readline()
+if &#39;Timestamp&#39; in datalogFile:
+    logFile.write(&#39;%s\t%s\t%s\t%s\t\n&#39;%(timestamp,logread,logwrite,log_skipped_noweight))
+    logFile.flush()
+else:
+    logFile.write(&#39;Timestamp\t#Read\t#Write\t#e\n&#39;)
+    logFile.flush()
+    logFile.write(&#39;%s\t%s\t%s\t%s\t\n&#39;%(timestamp,logread,logwrite,log_skipped))
+    logFile.flush()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Code fails if file don&#39;t exist&lt;/p&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/22174017</id>
+        <re:rank scheme="http://stackoverflow.com">0</re:rank>
+        <title type="text">PHP IF Statements Error is_string</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="php"/><category scheme="http://stackoverflow.com/feeds/tags" term="if-statement"/><category scheme="http://stackoverflow.com/feeds/tags" term="statements"/>
+        <author>
+            <name>Marc Salcedo</name>
+            <uri>http://stackoverflow.com/users/2372223</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/22174017/php-if-statements-error-is-string" />
+        <published>2014-03-04T14:00:26Z</published>
+        <updated>2014-03-04T14:03:13Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;I&#39;ve been studying PHP using only the internet, so I&#39;ve been experiencing errors.&lt;/p&gt;
+
+&lt;pre class=&quot;lang-php prettyprint-override&quot;&gt;&lt;code&gt;&amp;lt;?php
+$name = $_POST[&#39;name&#39;];
+$lg = $_POST[&#39;lg&#39;];
+if (is_string($name) &amp;amp;&amp;amp; is_numeric($lg)) {
+    header( &quot;Location: portal.php?ejhbusbhdubr=nennuncuiecbdhbcvhebchebcdjebcdsjhbcebhfcvebhdchebhcvhervbhecbvecveh&quot; ) ;
+}
+if (empty($name) &amp;amp;&amp;amp; is_numeric($lg)) {
+    echo &quot;Please enter your name.&quot;;
+}
+else {
+   header (&quot;Location: index.php?invalid=true&quot;);
+}
+?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I&#39;m having problems with the second if statement. What I&#39;m trying to do is that I&#39;m trying to make an error message appear when the $name variable is left empty, and the $lg variable isn&#39;t. I think the is_string variable handler&#39;s the problem here. Perhaps a string can be empty. But as I said, since I don&#39;t have a book, I don&#39;t know what to change it too. &lt;/p&gt;
+
+&lt;p&gt;In case you still don&#39;t get what I mean,&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Name: &quot;&quot;
+LG: &quot;1234&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I want the above to return as error. Help would be appreciated.&lt;/p&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/22173928</id>
+        <re:rank scheme="http://stackoverflow.com">0</re:rank>
+        <title type="text">while running the update query in foxpro getting this error</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="foxpro"/>
+        <author>
+            <name>user3379310</name>
+            <uri>http://stackoverflow.com/users/3379310</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/22173928/while-running-the-update-query-in-foxpro-getting-this-error" />
+        <published>2014-03-04T13:56:23Z</published>
+        <updated>2014-03-04T14:02:49Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;&lt;strong&gt;while runing the following code for update :&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre class=&quot;lang-php prettyprint-override&quot;&gt;&lt;code&gt;$conn = new COM(&quot;ADODB.Connection&quot;);
+
+$conn-&amp;gt;Open(&#39;Provider=VFPOLEDB.1;
+Data Source=&quot;C:\Users\TEMP.HIDEAZSERVER\Desktop\databaseetc\testdata&quot;;&#39;);
+
+$query = &quot;UPDATE sitedetl set NAME = \&quot;AA\&quot;, CUST_CODE = \&quot;Updated value\&quot; &quot;; 
+
+$conn-&amp;gt;Execute($query);
+
+$query = &quot;SELECT * FROM sitedetl WHERE UNIQUEID = &#39;00000000190&#39;&quot;;
+
+$rs = $conn-&amp;gt;Execute($query) or die(&quot;Error in query: $query. &quot; . $conn-&amp;gt;ErrorMsg());
+
+while (!$rs-&amp;gt;EOF) {
+
+    echo &quot; Got NAME: &quot; . $rs-&amp;gt;Fields(&quot;NAME&quot;) . &quot; :: CUST_CODE: &quot; . $rs-&amp;gt;Fields
+    (&quot;CUST_CODE&quot;);
+
+     $rs-&amp;gt;MoveNext();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;select query is running but update query is not running....&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;I am getting this error while update query execute:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Fatal error: Uncaught exception &#39;com_exception&#39; with message &#39;
+Source: Microsoft OLE DB Provider for Visual FoxPro
+Description: File &#39;ws_ri.prg&#39; does not exist.&#39; in D:\xampp\htdocs\websims\test_config.php:7
+Stack trace:
+#0 D:\xampp\htdocs\websims\test_config.php(7): com-&amp;gt;Execute(&#39;UPDATE sitedetl...&#39;)
+#1 {main} thrown in D:\xampp\htdocs\websims\test_config.php on line 7
+&lt;/code&gt;&lt;/pre&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/22173923</id>
+        <re:rank scheme="http://stackoverflow.com">0</re:rank>
+        <title type="text">Cakephp 2 - Use Auth-Component in another Component</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="cakephp"/>
+        <author>
+            <name>xcy7e</name>
+            <uri>http://stackoverflow.com/users/3048505</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/22173923/cakephp-2-use-auth-component-in-another-component" />
+        <published>2014-03-04T13:56:03Z</published>
+        <updated>2014-03-04T14:03:11Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;I am trying to access the AuthComponent in another component using&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;App::uses(&#39;AuthComponent&#39;, &#39;Controller/Component&#39;);
+class AccessComponent extends Object {
+
+public function foo() {
+    $this-&amp;gt;user = $this-&amp;gt;Auth-&amp;gt;User();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But retrieve an error:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Undefined property: AccessComponent::$Auth
+  [APP\Controller\Component\AccessComponent.php, line 21]&lt;/p&gt;
+&lt;/blockquote&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/22173906</id>
+        <re:rank scheme="http://stackoverflow.com">1</re:rank>
+        <title type="text">MySQL count time spent on site by user</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="mysql"/><category scheme="http://stackoverflow.com/feeds/tags" term="sql"/>
+        <author>
+            <name>matt</name>
+            <uri>http://stackoverflow.com/users/795970</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/22173906/mysql-count-time-spent-on-site-by-user" />
+        <published>2014-03-04T13:55:14Z</published>
+        <updated>2014-03-04T14:02:46Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;I have a MySQL table like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;+-----+---------+-------+------------+
+|  Id |  UserId |  Page |  Timestamp |
++-----+---------+-------+------------+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And it contains a row for each page loaded by users:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;+-------+--------+---------+--------------+
+|     1 |  user1 |  page_x |  1393940340  |
+|     2 |  user1 |  page_x |  1393940348  |
+|     3 |  user1 |  page_x |  1393940390  |
+|     4 |  user2 |  page_x |  1393940740  |
+|     5 |  user2 |  page_x |  1393940781  |
+|     6 |  user3 |  page_x |  1393910220  |
+|     7 |  user1 |  page_x |  1393945555  |
+|     8 |  user1 |  page_x |  1393945565  |
++-------+--------+---------+--------------+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I would like to calculate how much time each user has spent on the site.
+As you can see for row 1, 2 and 3 (that were visited by user1) are easy to calculate as clearly the user spent 50 seconds but then on row 7 the same user returned to the site later on, if I keep counting as usual it will say that the user spent several hours or days as opposed to just 60 seconds.&lt;/p&gt;
+
+&lt;p&gt;Anyone has any idea on how to overcome this?&lt;/p&gt;
+
+&lt;p&gt;I though of maybe adding some limits, like if the time spent from one page to the other is over ~20 minutes then don&#39;t count it but I&#39;m not sure how to add this to a MySQL query.&lt;/p&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/22173860</id>
+        <re:rank scheme="http://stackoverflow.com">0</re:rank>
+        <title type="text">Issue with `coldfusion.sql.QueryTable` (ColdFusion 10) and Java</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="java"/><category scheme="http://stackoverflow.com/feeds/tags" term="coldfusion"/><category scheme="http://stackoverflow.com/feeds/tags" term="coldfusion-10"/>
+        <author>
+            <name>user3279437</name>
+            <uri>http://stackoverflow.com/users/3279437</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/22173860/issue-with-coldfusion-sql-querytable-coldfusion-10-and-java" />
+        <published>2014-03-04T13:53:41Z</published>
+        <updated>2014-03-04T14:03:10Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;After upgrading to &lt;strong&gt;ColdFusion 10&lt;/strong&gt;, we are facing an issue with Java objects passed from ColdFusion to Java and vice versa.&lt;/p&gt;
+
+&lt;p&gt;We have one functions &lt;code&gt;myfunctionname()&lt;/code&gt; in Java, which receives one parameter of type &lt;code&gt;coldfusion.sql.QueryTable&lt;/code&gt;.
+Now if I call this Java function from my ColdFusion code with a &lt;code&gt;cfquery&lt;/code&gt; variable as parameter, either :&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;there are no methods with the specified method name and argument types&lt;/li&gt;
+&lt;li&gt;the &lt;code&gt;myfunctionname()&lt;/code&gt;  method is overloaded with argument types that ColdFusion cannot decipher reliably&lt;/li&gt;
+&lt;li&gt;ColdFusion found 0 methods that match the provided arguments. If this is a Java object and you verified that the method exists, use the &lt;code&gt;JavaCast()&lt;/code&gt; function to reduce ambiguity&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Also at some other places I am getting this errors :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Cannot convert coldfusion.sql.QueryTable to coldfusion.sql.QueryTable
+Ljava.lang.String; cannot be cast to java.lang.String
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;All these functions were working fine in &lt;strong&gt;ColdFusion 8&lt;/strong&gt;.&lt;/p&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/22173837</id>
+        <re:rank scheme="http://stackoverflow.com">0</re:rank>
+        <title type="text">Access members of inner class in c#</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="c#"/><category scheme="http://stackoverflow.com/feeds/tags" term=".net"/><category scheme="http://stackoverflow.com/feeds/tags" term="class"/><category scheme="http://stackoverflow.com/feeds/tags" term="serialization"/><category scheme="http://stackoverflow.com/feeds/tags" term="deserialization"/>
+        <author>
+            <name>Maxsteel</name>
+            <uri>http://stackoverflow.com/users/1264703</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/22173837/access-members-of-inner-class-in-c-sharp" />
+        <published>2014-03-04T13:52:37Z</published>
+        <updated>2014-03-04T14:02:50Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;I tried finding way of this seemingly easy task but with no success. Sorry I&#39;m new to oop and c#. Pardon if it&#39;s trivial.&lt;br&gt;
+I have to access &lt;code&gt;verb&lt;/code&gt; in following class.&lt;br&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;public class testclass
+{
+ public class selector
+  {
+    public static string verb { get; set; }
+  }
+  //some other classes here
+ }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;One api class deserliazes and return an object of testclass. &lt;br/&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;var res = apicall(); //retruns testclass object
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I want to access verb and retrieve it&#39;s value. How can this be done?&lt;/p&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/22173783</id>
+        <re:rank scheme="http://stackoverflow.com">0</re:rank>
+        <title type="text">Angular nested filters in controller</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="javascript"/><category scheme="http://stackoverflow.com/feeds/tags" term="angularjs"/><category scheme="http://stackoverflow.com/feeds/tags" term="angularjs-scope"/><category scheme="http://stackoverflow.com/feeds/tags" term="angularjs-filter"/>
+        <author>
+            <name>Tib</name>
+            <uri>http://stackoverflow.com/users/1235943</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/22173783/angular-nested-filters-in-controller" />
+        <published>2014-03-04T13:50:35Z</published>
+        <updated>2014-03-04T14:02:40Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;I have items to search by title(string) or tags(array of strings)&lt;/p&gt;
+
+&lt;p&gt;In my template, this works well :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;form&amp;gt;
+    &amp;lt;input type=&quot;text&quot; ng-model=&quot;query&quot;&amp;gt;
+&amp;lt;/form&amp;gt;
+
+&amp;lt;li ng-repeat=&quot;item in items | filter:query:title | filter:query:tags&quot;&amp;gt;
+    &amp;lt;p&amp;gt;{{item.title}}&amp;lt;/p&amp;gt;
+&amp;lt;/li&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;All my items are shown and if I enter text, it filter by title or tags.&lt;/p&gt;
+
+&lt;p&gt;Now, I need to have an other scope with the results of that search filter.&lt;/p&gt;
+
+&lt;p&gt;In my controller/directive, I tryied : &lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;scope.filteredItems = $filter(&#39;filter&#39;)($filter(&#39;filter&#39;)(scope.items, {title: scope.query}), {tags: scope.query});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;But I don&#39;t have the same results, what did I miss.&lt;/p&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/22173730</id>
+        <re:rank scheme="http://stackoverflow.com">0</re:rank>
+        <title type="text">SELECT Name WHERE LevenshteinFunction ReturnValue &gt; 80 AND also select the ReturnValue</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="sql"/><category scheme="http://stackoverflow.com/feeds/tags" term="sql-server"/><category scheme="http://stackoverflow.com/feeds/tags" term="tsql"/><category scheme="http://stackoverflow.com/feeds/tags" term="select"/>
+        <author>
+            <name>user2834172</name>
+            <uri>http://stackoverflow.com/users/2834172</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/22173730/select-name-where-levenshteinfunction-returnvalue-80-and-also-select-the-retur" />
+        <published>2014-03-04T13:48:45Z</published>
+        <updated>2014-03-04T14:03:41Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;I have the following SQL-Select Statement:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;SELECT [Name], 
+       [No_] 
+  FROM [Table] 
+ WHERE dbo.fn_Levenshtein(&#39;Mobel Meller&#39;, [Name]) &amp;gt; 80
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Then i get&lt;/strong&gt;: Name, No &lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;What i want&lt;/strong&gt;: Name, No, ReturnValue&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;My solution is the following, but i don&#39;t wanna call the function for each record &lt;strong&gt;two&lt;/strong&gt; times because of performance... Is there an other way to do this? &lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;SELECT [Name], 
+       [No_], 
+       dbo.fn_Levenshtein(&#39;Mobel Meller&#39;, [Name]) 
+  FROM [Table] 
+ WHERE dbo.fn_Levenshtein(&#39;Mobel Meller&#39;, [Name]) &amp;gt; 80
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Edit: I&#39;m not shure, if it really does run twice. And also not how to check that. &lt;/p&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/22173661</id>
+        <re:rank scheme="http://stackoverflow.com">0</re:rank>
+        <title type="text">Changing between applications in a django site</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="html"/><category scheme="http://stackoverflow.com/feeds/tags" term="django"/><category scheme="http://stackoverflow.com/feeds/tags" term="python-3.x"/>
+        <author>
+            <name>preetam</name>
+            <uri>http://stackoverflow.com/users/2079759</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/22173661/changing-between-applications-in-a-django-site" />
+        <published>2014-03-04T13:45:23Z</published>
+        <updated>2014-03-04T14:03:18Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;I have 2 applications in my site:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;users&lt;/li&gt;
+&lt;li&gt;base&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The main url conf always raises urls with the appname of base/index.html
+When a url action say href=&quot;login&quot; is provided from base/index.html it automatically
+searches for &quot;base/login.html&quot;&lt;/p&gt;
+
+&lt;p&gt;I want it to switch the application and search for &quot;users/login.html&quot;&lt;/p&gt;
+
+&lt;p&gt;How do I force it to switch applications either in the html href or in the urlconf. I prefer to use url conf but don&#39;t konw how to.&lt;/p&gt;
+
+&lt;p&gt;users/url.py&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;from django.conf.urls import patterns, include, url
+from emp_users.views import *
+from django.conf import settings
+from django.views.generic.base import RedirectView
+
+urlpatterns = patterns(&#39;&#39;,
+    url(r&#39;^index/$&#39;, RedirectView.as_view(url=&#39;/hr_base/index&#39;, permanent=False), name=&#39;index&#39;),
+    url(r&#39;^new_user/$&#39;, register_user),
+    url(r&#39;^new_hr_user/$&#39;, register_hr_user),
+)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;site/urls.py : This is the main project urls.py&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;urlpatterns = patterns(&#39;&#39;,
+    url(r&#39;^base/index$&#39;,&#39;hr_base.views.index&#39;),
+    url(r&#39;^users/&#39;, include(&#39;emp_users.urls&#39;)),
+)
+urlpatterns += patterns(&#39;&#39;,
+    (r&#39;^static/(?P&amp;lt;path&amp;gt;.*)$&#39;, &#39;django.views.static.serve&#39;, {&#39;document_root&#39;: settings.STATIC_ROOT},),# &#39;show_indices&#39;:True}),
+)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;site/base/templates/base/index.html
+    \Login\&amp;lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;That should pointgenerate the url users/login and then access user/views.py&lt;/p&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/22173628</id>
+        <re:rank scheme="http://stackoverflow.com">0</re:rank>
+        <title type="text">Scaling ImageView to size of a TextView in XML</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="android"/><category scheme="http://stackoverflow.com/feeds/tags" term="layout"/><category scheme="http://stackoverflow.com/feeds/tags" term="scaling"/>
+        <author>
+            <name>mfc</name>
+            <uri>http://stackoverflow.com/users/1254278</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/22173628/scaling-imageview-to-size-of-a-textview-in-xml" />
+        <published>2014-03-04T13:44:06Z</published>
+        <updated>2014-03-04T14:03:02Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;I have a TextView and a ImageView in a horizontal linear layout. Is it possible to scale the ImageView so that it is relative to the size of the TextView in the layout file?&lt;/p&gt;
+
+&lt;p&gt;Basically I want something like :-&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i.stack.imgur.com/PRDbB.png&quot; alt=&quot;enter image description here&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Instead of something like this&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i.stack.imgur.com/RR7OU.png&quot; alt=&quot;enter image description here&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;The layout file would be &lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;LinearLayout
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    android:orientation=&quot;horizontal&quot; &amp;gt;
+    &amp;lt;ImageView /&amp;gt;
+    &amp;lt;TextView /&amp;gt;
+&amp;lt;/LinearLayout&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/22173617</id>
+        <re:rank scheme="http://stackoverflow.com">0</re:rank>
+        <title type="text">Could not find a part of the path &#39;C:\images\login3.png&#39;. at htmlparser.Parse(sr); for itextsharp</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="c#"/><category scheme="http://stackoverflow.com/feeds/tags" term="asp.net"/>
+        <author>
+            <name>user3363485</name>
+            <uri>http://stackoverflow.com/users/3363485</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/22173617/could-not-find-a-part-of-the-path-c-images-login3-png-at-htmlparser-parsesr" />
+        <published>2014-03-04T13:43:18Z</published>
+        <updated>2014-03-04T14:02:59Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;I am trying to convert HTML to PDF in ASP.NET C# using &lt;code&gt;itextsharp&lt;/code&gt;.
+It gives error of  &lt;code&gt;C:\images\login3.png&lt;/code&gt;. at  &lt;code&gt;htmlparser.Parse(sr);&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;I don&#39;t have any image named &lt;code&gt;login3.png&lt;/code&gt;, I don&#39;t understand.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;protected void btnExport_Click(object sender, EventArgs e)
+{
+    Response.ContentType = &quot;application/pdf&quot;;
+    Response.AddHeader(&quot;content-disposition&quot;, &quot;attachment;filename=TestPage.pdf&quot;);
+    Response.Cache.SetCacheability(HttpCacheability.NoCache);
+    StringWriter sw = new StringWriter();
+    HtmlTextWriter hw = new HtmlTextWriter(sw);
+    this.Page.RenderControl(hw);
+    StringReader sr = new StringReader(sw.ToString());
+    Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 100f, 0f);
+    HTMLWorker htmlparser = new HTMLWorker(pdfDoc);
+    PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
+    pdfDoc.Open();
+    htmlparser.Parse(sr);
+    pdfDoc.Close();
+    Response.Write(pdfDoc);
+    Response.End();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;} &lt;/p&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/22173353</id>
+        <re:rank scheme="http://stackoverflow.com">0</re:rank>
+        <title type="text">Where to add custom methods for controller in rails 4?</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="ruby-on-rails"/><category scheme="http://stackoverflow.com/feeds/tags" term="ruby-on-rails-4"/>
+        <author>
+            <name>Giri</name>
+            <uri>http://stackoverflow.com/users/736037</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/22173353/where-to-add-custom-methods-for-controller-in-rails-4" />
+        <published>2014-03-04T13:31:41Z</published>
+        <updated>2014-03-04T14:03:21Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;I have a controller called &lt;code&gt;bookmarks_controller&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;It has all RESTful actions.&lt;/p&gt;
+
+&lt;p&gt;My &lt;code&gt;new.html.erb&lt;/code&gt; has 4 fields &lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Url &lt;/li&gt;
+&lt;li&gt;Title &lt;/li&gt;
+&lt;li&gt;Descripion&lt;/li&gt;
+&lt;li&gt;Thumbnail url&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;I have a &lt;code&gt;fetch button&lt;/code&gt; right next to &lt;code&gt;url&lt;/code&gt; field. When the user click fetch button I need to fetch title, content and populate it in the form.&lt;/p&gt;
+
+&lt;p&gt;This feature require some additional methods. So I need to define some additional methods.&lt;/p&gt;
+
+&lt;p&gt;But i&#39;m confused since I have no idea where to add those methods.&lt;/p&gt;
+
+&lt;p&gt;Some says helper methods defined in &lt;code&gt;bookmarks_helper&lt;/code&gt; only available in views and not in controllers. &lt;/p&gt;
+
+&lt;p&gt;So what is the proper way to add my custom methods for controllers?&lt;/p&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/22173248</id>
+        <re:rank scheme="http://stackoverflow.com">2</re:rank>
+        <title type="text">Am I computing the big O correctly?</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="algorithm"/><category scheme="http://stackoverflow.com/feeds/tags" term="big-o"/><category scheme="http://stackoverflow.com/feeds/tags" term="logarithm"/>
+        <author>
+            <name>TonyTerminator</name>
+            <uri>http://stackoverflow.com/users/2498144</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/22173248/am-i-computing-the-big-o-correctly" />
+        <published>2014-03-04T13:26:41Z</published>
+        <updated>2014-03-04T14:02:45Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;is it true that &lt;code&gt;log(log(n)) = O(log(n))&lt;/code&gt; ?&lt;/p&gt;
+
+&lt;p&gt;The reason I say so is because when I plug both the functions into wolfram alpha I get the following.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://www4c.wolframalpha.com/Calculate/MSP/MSP5492271c2a7i8a8eda000004ig09dh4f9ahdd6i?MSPStoreType=image/gif&amp;amp;s=31&amp;amp;w=333.&amp;amp;h=320.&amp;amp;cdf=RangeControl&quot; alt=&quot;graph&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;I multiplied &lt;code&gt;log(n)&lt;/code&gt; by the constant &lt;code&gt;0.1&lt;/code&gt;, and I observed that &lt;code&gt;(0.1)log(x)&lt;/code&gt; ends up being greater than &lt;code&gt;log(log(x))&lt;/code&gt;. From what I understand, &lt;code&gt;f(n) = O(g(n)) if C * g(n) &amp;gt;= f(n)&lt;/code&gt;, however I am not certain.&lt;/p&gt;
+
+&lt;p&gt;Also, based on the following image, would it be true that &lt;code&gt;log(log(n)) = Ω(log(n))&lt;/code&gt; 
+and ∴ &lt;code&gt;log(log(n)) = Θ(log(n))&lt;/code&gt;?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://www4c.wolframalpha.com/Calculate/MSP/MSP3961hh83399508g0h4000000e65c9c04c5b5e37?MSPStoreType=image/gif&amp;amp;s=2&amp;amp;w=333.&amp;amp;h=319.&amp;amp;cdf=RangeControl&quot; alt=&quot;graph 2&quot;&gt;&lt;/p&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/22173161</id>
+        <re:rank scheme="http://stackoverflow.com">1</re:rank>
+        <title type="text">How do I format an MD5 hash with dashes between pairs of digits in python?</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="python"/><category scheme="http://stackoverflow.com/feeds/tags" term="asp.net-membership"/><category scheme="http://stackoverflow.com/feeds/tags" term="md5"/>
+        <author>
+            <name>Daniel Fortunov</name>
+            <uri>http://stackoverflow.com/users/5975</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/22173161/how-do-i-format-an-md5-hash-with-dashes-between-pairs-of-digits-in-python" />
+        <published>2014-03-04T13:22:34Z</published>
+        <updated>2014-03-04T14:02:40Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;How do I format an MD5 hash with dashes between pairs of digits in python?&lt;/p&gt;
+
+&lt;p&gt;For example, I can generate a hex string like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;from hashlib import md5
+print md5(&quot;Testing123!&quot;).hexdigest()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Which gives this output:
+    b8f58c3067916bbfb50766aa8bddd42c&lt;/p&gt;
+
+&lt;p&gt;How can I format the output like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;B8-F5-8C-30-67-91-6B-BF-B5-07-66-AA-8B-DD-D4-2C
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;(Note: This is to match the format used by the ASP.NET Membership Provider to store password hashes in the database, so I can interface with it from Python.)&lt;/p&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/22173081</id>
+        <re:rank scheme="http://stackoverflow.com">0</re:rank>
+        <title type="text">ProgressBar not working</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="android"/><category scheme="http://stackoverflow.com/feeds/tags" term="progress-bar"/>
+        <author>
+            <name>user3278732</name>
+            <uri>http://stackoverflow.com/users/3278732</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/22173081/progressbar-not-working" />
+        <published>2014-03-04T13:18:41Z</published>
+        <updated>2014-03-04T14:03:03Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;I got a circular &lt;code&gt;ProgressBar&lt;/code&gt;. &lt;/p&gt;
+
+&lt;p&gt;I want the circular not to rotate, but to fill in. Like say maxvalue is 100... let&#39;s say s&lt;code&gt;etprogress(10)&lt;/code&gt; then 10 % of the progress bar is colored... and so on&lt;/p&gt;
+
+&lt;p&gt;how can this be done? How can I handle it? it keeps rotating over and over....&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;progress_bar.xml&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  &amp;lt;ProgressBar
+    android:id=&quot;@+id/progress&quot;
+    android:layout_width=&quot;100dp&quot;
+    android:layout_height=&quot;100dp&quot;
+    android:layout_centerHorizontal=&quot;true&quot;
+    android:layout_centerVertical=&quot;true&quot;
+    android:layout_marginBottom=&quot;20dp&quot;
+    android:indeterminate=&quot;false&quot;
+    android:indeterminateDrawable=&quot;@drawable/progress_bar&quot;
+    android:max=&quot;100&quot; /&amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;progress_bar.xml&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&amp;gt;
+   &amp;lt;animated-rotate xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+   android:pivotX=&quot;50%&quot;
+   android:pivotY=&quot;50%&quot;&amp;gt; 
+  &amp;lt;shape android:shape=&quot;ring&quot; android:innerRadiusRatio=&quot;4&quot;
+       android:thicknessRatio=&quot;48&quot; android:useLevel=&quot;false&quot;&amp;gt;
+       &amp;lt;size android:width=&quot;18dip&quot; android:height=&quot;18dip&quot; /&amp;gt;
+       &amp;lt;gradient android:type=&quot;sweep&quot; android:useLevel=&quot;false&quot;
+              android:startColor=&quot;#52c1b1&quot; android:centerColor=&quot;#52c1b1&quot;
+              android:endColor=&quot;#ffffff&quot; android:centerY=&quot;0.50&quot; /&amp;gt;
+ &amp;lt;/shape&amp;gt;
+&amp;lt;/animated-rotate&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/22170735</id>
+        <re:rank scheme="http://stackoverflow.com">0</re:rank>
+        <title type="text">FileOutputStream not work on scheduled task</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="java"/><category scheme="http://stackoverflow.com/feeds/tags" term="windows-7"/><category scheme="http://stackoverflow.com/feeds/tags" term="jar"/><category scheme="http://stackoverflow.com/feeds/tags" term="scheduled-tasks"/><category scheme="http://stackoverflow.com/feeds/tags" term="fileoutputstream"/>
+        <author>
+            <name>T30</name>
+            <uri>http://stackoverflow.com/users/1677209</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/22170735/fileoutputstream-not-work-on-scheduled-task" />
+        <published>2014-03-04T11:29:39Z</published>
+        <updated>2014-03-04T14:03:05Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;I have a jar file that works correctly when double clicking on it, but when I schedule a task for run it, FileOutputStream won&#39;t work.&lt;/p&gt;
+
+&lt;p&gt;It does correctly other tasks such sending email and connect to router, but it can&#39;t write on a file.&lt;/p&gt;
+
+&lt;p&gt;I&#39;ve extracted the simplest code that gives that error:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package testjar;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class TestJar {
+    public static void main(String[] args) throws FileNotFoundException, IOException {
+        FileOutputStream fout = new FileOutputStream(&quot;TestJar.log&quot;, true);
+        fout.write(&quot;TestJar ok.&quot;.getBytes());
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I&#39;ve tried to schedule by calling a .bat file that runs the jar and also to make an .exe from the jar with Launch4j: it does everything well when clicked, but when I call it from scheduled task it doesn&#39;t write the file.
+(I&#39;m working on Window7 Professional)&lt;/p&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/21257688</id>
+        <re:rank scheme="http://stackoverflow.com">7</re:rank>
+        <title type="text">Paste rich text into content-editable div and only keep bold and italics formatting</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="javascript"/><category scheme="http://stackoverflow.com/feeds/tags" term="html"/>
+        <author>
+            <name>JoeRocc</name>
+            <uri>http://stackoverflow.com/users/993683</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/21257688/paste-rich-text-into-content-editable-div-and-only-keep-bold-and-italics-formatt" />
+        <published>2014-01-21T12:06:09Z</published>
+        <updated>2014-03-04T14:03:12Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;I want to paste some rich text which has different fonts, font sizes, font weights, etc. into a content-editable &lt;code&gt;div&lt;/code&gt; and ONLY keep boldness and italics. Any idea how to go about this?&lt;/p&gt;
+
+&lt;p&gt;The following code turns rich text into plain text when pasted into content-editable div.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$(&#39;[contenteditable]&#39;).on(&#39;paste&#39;,function(e) {
+    e.preventDefault();
+    var text = (e.originalEvent || e).clipboardData.getData(&#39;text/plain&#39;) || prompt(&#39;Paste something..&#39;);
+    document.execCommand(&#39;insertText&#39;, false, text);
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I&#39;ve tried looking at the &lt;code&gt;text&lt;/code&gt; variable in the above code, but it doesn&#39;t seem to be formatted.&lt;/p&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/14335763</id>
+        <re:rank scheme="http://stackoverflow.com">2</re:rank>
+        <title type="text">Magento: Add Widget tool onto product and category WYSIWYG</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="magento"/><category scheme="http://stackoverflow.com/feeds/tags" term="content-management-system"/><category scheme="http://stackoverflow.com/feeds/tags" term="widget"/><category scheme="http://stackoverflow.com/feeds/tags" term="wysiwyg"/>
+        <author>
+            <name>Adam Moss</name>
+            <uri>http://stackoverflow.com/users/750537</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/14335763/magento-add-widget-tool-onto-product-and-category-wysiwyg" />
+        <published>2013-01-15T10:31:03Z</published>
+        <updated>2014-03-04T14:02:41Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;On the WYSIWYG editor for CMS pages in Magento there&#39;s a tool to add Magento widgets to the editor. I&#39;d like this also to be available for the WYSIWYG on the product and category descriptions.&lt;/p&gt;
+
+&lt;p&gt;I&#39;m struggling to find where the editor is even loaded at the moment. Could anyone let me know what I might have to do or at least point me in the right direction?&lt;/p&gt;
+
+&lt;p&gt;Thanks in advance.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i.stack.imgur.com/UNeHB.jpg&quot; alt=&quot;enter image description here&quot;&gt;&lt;/p&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/13079662</id>
+        <re:rank scheme="http://stackoverflow.com">0</re:rank>
+        <title type="text">Change default program output colors on mac terminal</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="osx"/><category scheme="http://stackoverflow.com/feeds/tags" term="colors"/><category scheme="http://stackoverflow.com/feeds/tags" term="terminal"/><category scheme="http://stackoverflow.com/feeds/tags" term="osx-lion"/><category scheme="http://stackoverflow.com/feeds/tags" term="background-color"/>
+        <author>
+            <name>inspectorG4dget</name>
+            <uri>http://stackoverflow.com/users/198633</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/13079662/change-default-program-output-colors-on-mac-terminal" />
+        <published>2012-10-26T01:36:46Z</published>
+        <updated>2014-03-04T14:03:16Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;I don&#39;t know if this is the right place to post this question, but here goes:&lt;/p&gt;
+
+&lt;p&gt;I recently (less than a year ago) made the switch to a mac from my ubuntu setup. One of the first things I changed was terminal.app&#39;s background color and opacity. In my old setup, it was a semi-transparent, black window, which I would put on top of other windows, so I could see the code on it, as well as look through it at the window under it. terminal.app on my mac looks like this now. This is great… except when I have to use programs like sphinx or look at man pages.&lt;/p&gt;
+
+&lt;p&gt;Some programs have outputs in black font; man pages have entries in black font. Since the background of my terminal.app is also black, this font is rendered almost invisible (seen in the two screenshots below):&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i.stack.imgur.com/sFo5V.jpg&quot; alt=&quot;Invisible font in terminal.app&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://i.stack.imgur.com/MJlrF.png&quot; alt=&quot;Highlighting the invisible font in terminal.app&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Is there any way that I can tell terminal.app to display all black text as some other color?&lt;/p&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/12519305</id>
+        <re:rank scheme="http://stackoverflow.com">0</re:rank>
+        <title type="text">Dynamically add/delete rows</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="javascript"/><category scheme="http://stackoverflow.com/feeds/tags" term="spring"/><category scheme="http://stackoverflow.com/feeds/tags" term="jstl"/><category scheme="http://stackoverflow.com/feeds/tags" term="el"/>
+        <author>
+            <name>user1480277</name>
+            <uri>http://stackoverflow.com/users/0</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/12519305/dynamically-add-delete-rows" />
+        <published>2012-09-20T19:11:20Z</published>
+        <updated>2014-03-04T14:02:53Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;I have a table, following is my code:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;table id=&quot;div1&quot; style=&quot;display:none&quot;&amp;gt;
+        &amp;lt;tr&amp;gt;&amp;lt;td&amp;gt;Host Name&amp;lt;/td&amp;gt;&amp;lt;td&amp;gt;Directory&amp;lt;/td&amp;gt;&amp;lt;td&amp;gt;User Name&amp;lt;/td&amp;gt;&amp;lt;td&amp;gt;Password&amp;lt;/td&amp;gt;&amp;lt;/tr&amp;gt;
+        &amp;lt;c:if test=&quot;${empty location.fEvents}&quot;&amp;gt;
+        &amp;lt;tr&amp;gt;&amp;lt;td&amp;gt;&amp;lt;form:input path=&quot;userEnteredHostNameString&quot; size=&quot;30&quot; maxlength=&quot;200&quot;/&amp;gt;&amp;lt;/td&amp;gt;
+            &amp;lt;td&amp;gt;&amp;lt;form:input path=&quot;userEnteredDirectoryString&quot; size=&quot;30&quot; maxlength=&quot;200&quot;/&amp;gt;&amp;lt;/td&amp;gt;
+            &amp;lt;td&amp;gt;&amp;lt;form:input path=&quot;userEnteredUserNameString&quot; size=&quot;20&quot; maxlength=&quot;20&quot;/&amp;gt;&amp;lt;/td&amp;gt;
+            &amp;lt;td&amp;gt;&amp;lt;form:input path=&quot;userEnteredPasswordString&quot; size=&quot;20&quot; maxlength=&quot;20&quot;/&amp;gt;&amp;lt;/td&amp;gt;
+        &amp;lt;/tr&amp;gt;
+        &amp;lt;/c:if&amp;gt;
+            &amp;lt;c:forEach items=&quot;${location.fEvents}&quot; var=&quot;item&quot; varStatus=&quot;loop&quot;&amp;gt;
+                &amp;lt;tr&amp;gt;&amp;lt;td&amp;gt;&amp;lt;form:input path=&quot;fEvents[${loop.index}].hostName&quot; size=&quot;30&quot; maxlength=&quot;200&quot;/&amp;gt;&amp;lt;/td&amp;gt;
+                &amp;lt;td&amp;gt;&amp;lt;form:input path=&quot;fEvents[${loop.index}].directory&quot; size=&quot;30&quot; maxlength=&quot;200&quot;/&amp;gt;&amp;lt;/td&amp;gt;
+                &amp;lt;td&amp;gt;&amp;lt;form:input path=&quot;fEvents[${loop.index}].userName&quot; size=&quot;20&quot; maxlength=&quot;20&quot;/&amp;gt;&amp;lt;/td&amp;gt;
+                &amp;lt;td&amp;gt;&amp;lt;form:input path=&quot;fEvents[${loop.index}].password&quot; size=&quot;20&quot; maxlength=&quot;20&quot;/&amp;gt;&amp;lt;/td&amp;gt;&amp;lt;/tr&amp;gt;
+            &amp;lt;/c:forEach&amp;gt;
+        &amp;lt;/table&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;whatever this &lt;code&gt;${location.fEvents}&lt;/code&gt; comes to either empty or with values..if User wants...user can add/delete a row and the values of the row should save back in the database..&lt;/p&gt;
+
+&lt;p&gt;what is the best way to do it..can we do it in &lt;code&gt;spring&lt;/code&gt; or we need to use &lt;code&gt;javascript&lt;/code&gt;..suggestions are really appreciated&lt;/p&gt;
+
+&lt;p&gt;EDITED: How can add validation errors to these fields if they are empty or null(just to the above code without javascript)&lt;/p&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/10193199</id>
+        <re:rank scheme="http://stackoverflow.com">2</re:rank>
+        <title type="text">How can I get a shortcut to show its &#39;normal&#39; icon?</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="wix"/><category scheme="http://stackoverflow.com/feeds/tags" term="icons"/><category scheme="http://stackoverflow.com/feeds/tags" term="shortcut"/>
+        <author>
+            <name>Tom Medley</name>
+            <uri>http://stackoverflow.com/users/319618</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/10193199/how-can-i-get-a-shortcut-to-show-its-normal-icon" />
+        <published>2012-04-17T14:28:52Z</published>
+        <updated>2014-03-04T14:03:17Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;I&#39;m adding a shortcut in the Start Menu to a documentation pdf. I am not specifying the &lt;code&gt;Icon&lt;/code&gt; parameter. After installation, it is coming up with a blank white icon. I would like it to have the appropriate document Icon as would normally be provided by Windows (I have Adobe Reader installed). What do I need to do?&lt;/p&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/6256353</id>
+        <re:rank scheme="http://stackoverflow.com">0</re:rank>
+        <title type="text">coldfusion 8 server startup issue</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="coldfusion"/>
+        <author>
+            <name>Sean Kimball</name>
+            <uri>http://stackoverflow.com/users/575872</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/6256353/coldfusion-8-server-startup-issue" />
+        <published>2011-06-06T18:24:59Z</published>
+        <updated>2014-03-04T14:03:11Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;I&#39;m getting this error on coldfusion 8 server startup, most things seem to work, but certain pages throw a 500 error. I&#39;ve no idea what is causing this or how to fix.&lt;/p&gt;
+
+&lt;p&gt;Has anyone seen this before? [coldfuison_8 linux Centos5] &lt;/p&gt;
+
+&lt;p&gt;UPDATE - I&#39;ve done some tinkering and found a directory full of what look like compliled class files: /opt/coldfusion8/wwwroot/WEB-INF/cfclasses seems to contain all the compiled java classes &amp;amp; is persistent from one restart to another.&lt;/p&gt;
+
+&lt;p&gt;If I delete the contents of this directory everything is fine, no more errors on startup. SO:
+- it seems that maybe one or more of these files is going corrupt and causing the 500 issue?  When I went to delete the files there were actually more than the server could delete [argument list too long] - I had to whack the whole directory &amp;amp; recreate it. &lt;/p&gt;
+
+&lt;p&gt;Any thoughts/ideas on why or how these files are going bad [assumption] &amp;amp; how to prevent it in the future?&lt;/p&gt;
+
+&lt;p&gt;-thanks
+-sean&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;service coldfusion_8 start
+Starting ColdFusion 8...
+The ColdFusion 8 server is starting up and will be available shortly.
+======================================================================
+Running the ColdFusion 8 connector wizard
+======================================================================
+Configuring the web server connector (Launched on the first run of the ColdFusion 8 start script)
+Running apache connector wizard...
+*** glibc detected *** /opt/coldfusion8/runtime/jre/bin/java: free(): invalid pointer: 0xb7e4e290 ***
+======= Backtrace: =========
+/lib/libc.so.6[0xb7eddaa6]
+/lib/libc.so.6(cfree+0x90)[0xb7ee0fc0]
+/opt/coldfusion8/runtime/jre/lib/i386/server/libjvm.so[0x6602f93]
+/opt/coldfusion8/runtime/jre/lib/i386/server/libjvm.so[0x65b3fe0]
+/opt/coldfusion8/runtime/jre/lib/i386/server/libjvm.so[0x65b5c1d]
+/opt/coldfusion8/runtime/jre/lib/i386/server/libjvm.so[0x65b9099]
+/opt/coldfusion8/runtime/jre/lib/i386/server/libjvm.so(JNI_CreateJavaVM+0x53)[0x639c293]
+/opt/coldfusion8/runtime/jre/bin/java[0x804afcc]
+/opt/coldfusion8/runtime/jre/bin/java(JavaMain+0x72)[0x8049942]
+/lib/libpthread.so.0[0xb7fc945b]
+/lib/libc.so.6(clone+0x5e)[0xb7f4524e]
+======= Memory map: ========
+06000000-0665c000 r-xp 00000000 00:59 86672232   /opt/coldfusion8/runtime/jre/lib/i386/server/libjvm.so
+0665c000-066a0000 rwxp 0065c000 00:59 86672232   /opt/coldfusion8/runtime/jre/lib/i386/server/libjvm.so
+066a0000-06ac2000 rwxp 066a0000 00:00 0
+08048000-08052000 r-xp 00000000 00:59 86638734   /opt/coldfusion8/runtime/jre/bin/java
+08052000-08053000 rwxp 00009000 00:59 86638734   /opt/coldfusion8/runtime/jre/bin/java
+08053000-08074000 rwxp 08053000 00:00 0
+80300000-80321000 rwxp 80300000 00:00 0
+80321000-80400000 --xp 80321000 00:00 0
+804aa000-804b5000 r-xp 00000000 00:59 25170338   /lib/libgcc_s-4.1.2-20070626.so.1
+804b5000-804b6000 rwxp 0000a000 00:59 25170338   /lib/libgcc_s-4.1.2-20070626.so.1
+b4cbf000-b4cc8000 rwxp b4cbf000 00:00 0
+b4cc8000-b4d7f000 rwxp b4cc8000 00:00 0
+b4d7f000-b4fbf000 rwxp b4d7f000 00:00 0
+b4fbf000-b7d7f000 rwxp b4fbf000 00:00 0
+b7d7f000-b7d8e000 r-xp 00000000 00:59 86672238   /opt/coldfusion8/runtime/jre/lib/i386/libzip.so
+b7d8e000-b7d90000 rwxp 0000e000 00:59 86672238   /opt/coldfusion8/runtime/jre/lib/i386/libzip.so
+b7d90000-b7db3000 r-xp 00000000 00:59 86672272   /opt/coldfusion8/runtime/jre/lib/i386/libjava.so
+b7db3000-b7db5000 rwxp 00023000 00:59 86672272   /opt/coldfusion8/runtime/jre/lib/i386/libjava.so
+b7db5000-b7dc0000 r-xp 00000000 00:59 86672264   /opt/coldfusion8/runtime/jre/lib/i386/libverify.so
+b7dc0000-b7dc1000 rwxp 0000b000 00:59 86672264   /opt/coldfusion8/runtime/jre/lib/i386/libverify.so
+b7dc1000-b7dca000 r-xp 00000000 00:59 25170318   /lib/libnss_files-2.5.so
+b7dca000-b7dcb000 r-xp 00008000 00:59 25170318   /lib/libnss_files-2.5.so
+b7dcb000-b7dcc000 rwxp 00009000 00:59 25170318   /lib/libnss_files-2.5.so
+b7dcc000-b7ddf000 r-xp 00000000 00:59 25170304   /lib/libnsl-2.5.so
+b7ddf000-b7de0000 r-xp 00012000 00:59 25170304   /lib/libnsl-2.5.so
+b7de0000-b7de1000 rwxp 00013000 00:59 25170304   /lib/libnsl-2.5.so
+b7de1000-b7de3000 rwxp b7de1000 00:00 0
+b7de4000-b7dec000 rwxs 00000000 68:05 48545826   (deleted) /tmp/hsperfdata_root/23911
+b7dec000-b7df3000 r-xp 00000000 00:59 25170246   /lib/librt-2.5.so
+b7df3000-b7df4000 r-xp 00006000 00:59 25170246   /lib/librt-2.5.so
+b7df4000-b7df5000 rwxp 00007000 00:59 25170246   /lib/librt-2.5.so
+b7df5000-b7dfb000 r-xp 00000000 00:59 86672314   /opt/coldfusion8/runtime/jre/lib/i386/native_threads/libhpi.so
+b7dfb000-b7dfc000 rwxp 00006000 00:59 86672314   /opt/coldfusion8/runtime/jre/lib/i386/native_threads/libhpi.so
+b7dfc000-b7dfd000 rwxp b7dfc000 00:00 0
+b7dfd000-b7dfe000 r-xp b7dfd000 00:00 0
+b7dfe000-b7e01000 --xp b7dfe000 00:00 0
+b7e01000-b7e4f000 rwxp b7e01000 00:00 0
+b7e4f000-b7e74000 r-xp 00000000 00:59 25170336   /lib/libm-2.5.so
+b7e74000-b7e75000 r-xp 00024000 00:59 25170336   /lib/libm-2.5.so
+b7e75000-b7e76000 rwxp 00025000 00:59 25170336   /lib/libm-2.5.so
+b7e76000-b7e77000 rwxp b7e76000 00:00 0
+b7e77000-b7fb1000 r-xp 00000000 00:59 25170592   /lib/libc-2.5.so
+b7fb1000-b7fb3000 r-xp 0013a000 00:59 25170592   /lib/libc-2.5.so
+b7fb3000-b7fb4000 rwxp 0013c000 00:59 25170592   /lib/libc-2.5.so
+b7fb4000-b7fb7000 rwxp b7fb4000 00:00 0
+b7fb7000-b7fb9000 r-xp 00000000 00:59 25170292   /lib/libdl-2.5.so
+b7fb9000-b7fba000 r-xp 00001000 00:59 25170292   /lib/libdl-2.5.so
+b7fba000-b7fbb000 rwxp 00002000 00:59 25170292   /lib/libdl-2.5.so
+b7fbb000-b7fc2000 r-xp 00000000 00:59 86672248   /opt/coldfusion8/runtime/jre/lib/i386/jli/libjli.so
+b7fc2000-b7fc4000 rwxp 00006000 00:59 86672248   /opt/coldfusion8/runtime/jre/lib/i386/jli/libjli.so
+b7fc4000-b7fd7000 r-xp 00000000 00:59 25170430   /lib/libpthread-2.5.so
+b7fd7000-b7fd8000 r-xp 00012000 00:59 25170430   /lib/libpthread-2.5.so
+b7fd8000-b7fd9000 rwxp 00013000 00:59 25170430   /lib/libpthread-2.5.so
+b7fd9000-b7fdb000 rwxp b7fd9000 00:00 0
+b7fe4000-b7fe5000 rwxp b7fe4000 00:00 0
+b7fe5000-b7ffe000 r-xp 00000000 00:59 25170244   /lib/ld-2.5.so
+b7ffe000-b7fff000 r-xp 00019000 00:59 25170244   /lib/ld-2.5.so
+b7fff000-b8000000 rwxp 0001a000 00:59 25170244   /lib/ld-2.5.so
+bffca000-bfffe000 rwxp bffc9000 00:00 0
+ffffe000-fffff000 r-xp 00000000 00:00 0
+/opt/coldfusion8/bin/cf-connectors.sh: line 68: 23911 Aborted                 $CONNECTOR_JAVA -Dtrace.ci=1 -jar $CF_DIR/runtime/lib/wsconfig.jar -server coldfusion -ws apache -dir /etc/httpd/conf -bin /usr/sbin/httpd -script /etc/rc.d/init.d/httpd -ws32 -coldfusion -v &amp;gt;/opt/coldfusion8/ConnectorInstall0.txt 2&amp;gt;&amp;amp;1
+=======================================
+There was an error while running the connector wizard
+Connector installation was not successful
+=======================================
+======================================================================
+ColdFusion 8 has been started.
+ColdFusion 8 will write logs to /opt/coldfusion8/logs/cfserver.log
+======================================================================
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here are the Java args...&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;java.args=-server  -Djava.awt.headless=true -Djava.security.manager &quot;-Djava.security.policy=/opt/coldfusion8/lib/coldfusion.policy&quot; &quot;-Djava.security.auth.policy=/opt/coldfusion8/lib/neo_jaas.policy&quot; -Xms128m -Xmx512m -Dsun.io.useCanonCaches=false -XX:MaxPermSize=192m -XX:+UseParallelGC -Dcoldfusion.rootDir={application.home}/../ -Dcoldfusion.libPath={application.home}/../lib -Dcoldfusion.classPath={application.home}/../lib/updates,{application.home}/../lib,{application.home}/../gateway/lib/,{application.home}/../wwwroot/WEB-INF/flex/jars,{application.home}/../wwwroot/WEB-INF/cfform/jars
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;any ideas?&lt;/p&gt;
+
+&lt;p&gt;thanks&lt;/p&gt;
+
+        </summary>
+    </entry>
+    <entry>
+        <id>http://stackoverflow.com/q/3469448</id>
+        <re:rank scheme="http://stackoverflow.com">35</re:rank>
+        <title type="text">Installing &amp; using the Android NDK in Eclipse</title>
+        <category scheme="http://stackoverflow.com/feeds/tags" term="android"/><category scheme="http://stackoverflow.com/feeds/tags" term="android-ndk"/><category scheme="http://stackoverflow.com/feeds/tags" term="installation"/>
+        <author>
+            <name>ing0</name>
+            <uri>http://stackoverflow.com/users/143979</uri>
+        </author>
+        <link rel="alternate" href="http://stackoverflow.com/questions/3469448/installing-using-the-android-ndk-in-eclipse" />
+        <published>2010-08-12T15:42:18Z</published>
+        <updated>2014-03-04T14:02:48Z</updated>
+        <summary type="html">
+            
+
+            &lt;p&gt;I&#39;ve been running the Android SDK for a while now in Eclipse (MAC OSX). I&#39;ve downloaded the NDK and installed the C/C++ tools in Eclipse, but could anyone guide me on using the NDK? For example, do I just create an Android project like normal and build it with the NDK instead?&lt;/p&gt;
+
+&lt;p&gt;Really could do with a decent tutorial if anyone know of any.&lt;/p&gt;
+
+&lt;p&gt;EDIT: OK so I have the NDK installed now (I think) but does anyone have any idea how to use it? I got as far as this (taken from &lt;a href=&quot;http://sseyod.blogspot.com/2009/08/android-jnindk-notes-on-getting-started.html&quot; rel=&quot;nofollow&quot;&gt;here&lt;/a&gt;):&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Run Terminal&lt;/p&gt;
+  
+  &lt;p&gt;cd ~/android-ndk-1.5_r1&lt;/p&gt;
+  
+  &lt;p&gt;make APP=hello-jni&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;In order to run the hello-jni sample application, but I get an error in terminal saying:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Android NDK:  APP variable defined to
+  unknown applications: hellojni&lt;br&gt;
+  Android NDK:  You might want to use
+  one of the following:&lt;br&gt;
+  build/core/main.mk:81: &lt;em&gt;*&lt;/em&gt; Android
+  NDK:  Aborting    .  Stop.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Any ideas why?&lt;/p&gt;
+
+        </summary>
+    </entry>
+</feed>

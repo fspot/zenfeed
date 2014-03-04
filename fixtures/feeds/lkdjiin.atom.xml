@@ -1,0 +1,1551 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[lkdjiin's blog]]></title>
+  <link href="http://lkdjiin.github.io/atom.xml" rel="self"/>
+  <link href="http://lkdjiin.github.io/"/>
+  <updated>2014-03-03T21:18:02+01:00</updated>
+  <id>http://lkdjiin.github.io/</id>
+  <author>
+    <name><![CDATA[Xavier Nayrac]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Écrire un éditeur pour le terminal - partie 6]]></title>
+    <link href="http://lkdjiin.github.io/blog/2014/03/03/ecrire-un-editeur-pour-le-terminal-partie-6/"/>
+    <updated>2014-03-03T21:10:00+01:00</updated>
+    <id>http://lkdjiin.github.io/blog/2014/03/03/ecrire-un-editeur-pour-le-terminal-partie-6</id>
+    <content type="html"><![CDATA[<div class='level-tag level-tag-2'>Niveau : <span>intermédiaire</span></div>
+
+
+<p>Après avoir vu
+<a href="http://lkdjiin.github.io/blog/2014/03/01/ecrire-un-editeur-pour-le-terminal-partie-4/">comment centrer du texte</a>
+et
+<a href="http://lkdjiin.github.io/blog/2014/03/02/ecrire-un-editeur-pour-le-terminal-partie-5/">comment faire du fenêtrage</a>,
+on peut réunir les deux pour afficher un fichier, et le nom de ce fichier
+centré sur la première ligne du terminal.</p>
+
+<!-- more -->
+
+
+
+
+<figure class='code'><figcaption><span>test.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#!/usr/bin/env ruby</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;curses&#39;</span>
+</span><span class='line'><span class="kp">include</span> <span class="no">Curses</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">display_filename</span>
+</span><span class='line'>  <span class="n">setpos</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">cols</span> <span class="o">-</span> <span class="no">ARGV</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="n">size</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">addstr</span><span class="p">(</span><span class="no">ARGV</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">display_file</span>
+</span><span class='line'>  <span class="n">setpos</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>  <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="no">ARGV</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">line</span><span class="o">|</span> <span class="n">addstr</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">begin</span>
+</span><span class='line'>  <span class="n">init_screen</span>
+</span><span class='line'>  <span class="n">display_filename</span>
+</span><span class='line'>  <span class="n">display_file</span>
+</span><span class='line'>  <span class="n">refresh</span>
+</span><span class='line'>  <span class="n">getch</span>
+</span><span class='line'><span class="k">ensure</span>
+</span><span class='line'>  <span class="n">close_screen</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Et voilà.</p>
+
+<script id='fb33k8u'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=lkdjiin&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb33k8u');</script>
+
+
+<p>À demain.</p>
+
+<p><section><h1>Articles connexes</h1><ul><li><a href='http://lkdjiin.github.io/blog/2014/03/02/ecrire-un-editeur-pour-le-terminal-partie-5/'>Écrire un éditeur pour le terminal &ndash; partie 5</a></li><li><a href='http://lkdjiin.github.io/blog/2014/03/01/ecrire-un-editeur-pour-le-terminal-partie-4/'>Écrire un éditeur pour le terminal &ndash; partie 4</a></li><li><a href='http://lkdjiin.github.io/blog/2014/02/24/ecrire-un-editeur-pour-le-terminal-partie-3/'>Écrire un éditeur pour le terminal &ndash; partie 3</a></li></ul></section></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Écrire un éditeur pour le terminal - partie 5]]></title>
+    <link href="http://lkdjiin.github.io/blog/2014/03/02/ecrire-un-editeur-pour-le-terminal-partie-5/"/>
+    <updated>2014-03-02T20:54:00+01:00</updated>
+    <id>http://lkdjiin.github.io/blog/2014/03/02/ecrire-un-editeur-pour-le-terminal-partie-5</id>
+    <content type="html"><![CDATA[<div class='level-tag level-tag-2'>Niveau : <span>intermédiaire</span></div>
+
+
+<p>La bibliothèque <em>curses</em> sait gérer le fenêtrage. Voici un programme qui
+montre comment faire.</p>
+
+<!-- more -->
+
+
+<p>C&#8217;est une traduction en ruby d&#8217;un programme C issu d&#8217;un tutoriel
+sur <em>ncurses</em> (dont je ne retrouve plus la référence dans l&#8217;immédiat).</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;curses&#39;</span>
+</span><span class='line'><span class="kp">include</span> <span class="no">Curses</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">create_newwin</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">local_win</span> <span class="o">=</span> <span class="no">Window</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">local_win</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="sc">?|</span><span class="p">,</span> <span class="sc">?-</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">local_win</span><span class="o">.</span><span class="n">refresh</span>
+</span><span class='line'>  <span class="n">local_win</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">destroy_win</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">clear</span>
+</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">refresh</span>
+</span><span class='line'>  <span class="n">w</span><span class="o">.</span><span class="n">close</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">begin</span>
+</span><span class='line'>  <span class="n">init_screen</span>
+</span><span class='line'>  <span class="n">cbreak</span>
+</span><span class='line'>  <span class="n">stdscr</span><span class="o">.</span><span class="n">keypad</span><span class="p">(</span><span class="kp">true</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">height</span> <span class="o">=</span> <span class="mi">3</span>
+</span><span class='line'>  <span class="n">width</span> <span class="o">=</span> <span class="mi">10</span>
+</span><span class='line'>  <span class="n">top</span> <span class="o">=</span> <span class="p">(</span><span class="n">lines</span> <span class="o">-</span> <span class="n">height</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+</span><span class='line'>  <span class="n">left</span> <span class="o">=</span> <span class="p">(</span><span class="n">cols</span> <span class="o">-</span> <span class="n">width</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+</span><span class='line'>  <span class="n">addstr</span><span class="p">(</span><span class="s2">&quot;Press F1 to exit&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">refresh</span>
+</span><span class='line'>  <span class="n">my_win</span> <span class="o">=</span> <span class="n">create_newwin</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">while</span> <span class="p">(</span><span class="n">ch</span> <span class="o">=</span> <span class="n">getch</span><span class="p">)</span> <span class="o">!=</span> <span class="no">KEY_F1</span>
+</span><span class='line'>    <span class="k">case</span> <span class="n">ch</span>
+</span><span class='line'>    <span class="k">when</span> <span class="no">KEY_LEFT</span> <span class="k">then</span> <span class="n">left</span> <span class="o">-=</span> <span class="mi">1</span>
+</span><span class='line'>    <span class="k">when</span> <span class="no">KEY_RIGHT</span> <span class="k">then</span> <span class="n">left</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>    <span class="k">when</span> <span class="no">KEY_UP</span> <span class="k">then</span> <span class="n">top</span> <span class="o">-=</span> <span class="mi">1</span>
+</span><span class='line'>    <span class="k">when</span> <span class="no">KEY_DOWN</span> <span class="k">then</span> <span class="n">top</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="n">destroy_win</span><span class="p">(</span><span class="n">my_win</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">my_win</span> <span class="o">=</span> <span class="n">create_newwin</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">ensure</span>
+</span><span class='line'>  <span class="n">close_screen</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>En étudiant ce programme avec en parallèle la documentation ruby
+de <a href="http://ruby-doc.org/stdlib-2.1.0/libdoc/curses/rdoc/Curses.html">curses</a>,
+vous devriez comprendre sans problèmes la gestion des fenêtres.</p>
+
+<script id='fb33k8u'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=lkdjiin&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb33k8u');</script>
+
+
+<p>À demain.</p>
+
+<p><section><h1>Articles connexes</h1><ul><li><a href='http://lkdjiin.github.io/blog/2014/03/03/ecrire-un-editeur-pour-le-terminal-partie-6/'>Écrire un éditeur pour le terminal &ndash; partie 6</a></li><li><a href='http://lkdjiin.github.io/blog/2014/03/01/ecrire-un-editeur-pour-le-terminal-partie-4/'>Écrire un éditeur pour le terminal &ndash; partie 4</a></li><li><a href='http://lkdjiin.github.io/blog/2014/02/24/ecrire-un-editeur-pour-le-terminal-partie-3/'>Écrire un éditeur pour le terminal &ndash; partie 3</a></li></ul></section></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Écrire un éditeur pour le terminal - partie 4]]></title>
+    <link href="http://lkdjiin.github.io/blog/2014/03/01/ecrire-un-editeur-pour-le-terminal-partie-4/"/>
+    <updated>2014-03-01T17:47:00+01:00</updated>
+    <id>http://lkdjiin.github.io/blog/2014/03/01/ecrire-un-editeur-pour-le-terminal-partie-4</id>
+    <content type="html"><![CDATA[<div class='level-tag level-tag-2'>Niveau : <span>intermédiaire</span></div>
+
+
+<p>Aujourd&#8217;hui on voit comment écrire un message centré horizontalement et
+verticalement, comment lire une chaîne de caractères, et comment être
+tranquille avec les caractères non ASCII.</p>
+
+<!-- more -->
+
+
+<p>Voici un programme qui montre tout ça:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;curses&#39;</span>
+</span><span class='line'><span class="kp">include</span> <span class="no">Curses</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Enter a string: &quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">begin</span>
+</span><span class='line'>  <span class="n">init_screen</span>
+</span><span class='line'>  <span class="n">setpos</span><span class="p">(</span><span class="n">lines</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">cols</span> <span class="o">-</span> <span class="n">message</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">addstr</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">str</span> <span class="o">=</span> <span class="n">getstr</span>
+</span><span class='line'>  <span class="n">setpos</span><span class="p">(</span><span class="n">lines</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">addstr</span><span class="p">(</span><span class="nb">sprintf</span><span class="p">(</span><span class="s2">&quot;You entered: %s&quot;</span><span class="p">,</span> <span class="n">str</span><span class="p">))</span>
+</span><span class='line'>  <span class="n">getch</span>
+</span><span class='line'><span class="k">ensure</span>
+</span><span class='line'>  <span class="n">close_screen</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Quelques brèves explications maintenant:</p>
+
+<p>Tout d&#8217;abord, on affiche un message centré ainsi:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="n">setpos</span><span class="p">(</span><span class="n">lines</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">cols</span> <span class="o">-</span> <span class="n">message</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">addstr</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour lire une chaîne de caractères, on utilise <code>getstr</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="n">str</span> <span class="o">=</span> <span class="n">getstr</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Puis on affiche ce qu&#8217;on vient de lire sur l&#8217;avant-dernière ligne du
+terminal:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="n">setpos</span><span class="p">(</span><span class="n">lines</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">addstr</span><span class="p">(</span><span class="nb">sprintf</span><span class="p">(</span><span class="s2">&quot;You entered: %s&quot;</span><span class="p">,</span> <span class="n">str</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Le <a href="http://www.ruby-doc.org/core-2.1.1/Kernel.html#method-i-sprintf">sprintf</a>,
+qui vous rappelera des choses si vous avez fait du C, est ce que j&#8217;ai
+trouvé de mieux pour ne pas avoir de soucis avec les caractères
+non ASCII.</p>
+
+<script id='fb33k8u'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=lkdjiin&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb33k8u');</script>
+
+
+<p>À demain.</p>
+
+<p><section><h1>Articles connexes</h1><ul><li><a href='http://lkdjiin.github.io/blog/2014/03/03/ecrire-un-editeur-pour-le-terminal-partie-6/'>Écrire un éditeur pour le terminal &ndash; partie 6</a></li><li><a href='http://lkdjiin.github.io/blog/2014/03/02/ecrire-un-editeur-pour-le-terminal-partie-5/'>Écrire un éditeur pour le terminal &ndash; partie 5</a></li><li><a href='http://lkdjiin.github.io/blog/2014/02/24/ecrire-un-editeur-pour-le-terminal-partie-3/'>Écrire un éditeur pour le terminal &ndash; partie 3</a></li></ul></section></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Filtrer ses logs en direct]]></title>
+    <link href="http://lkdjiin.github.io/blog/2014/02/28/filtrer-ses-logs-en-direct/"/>
+    <updated>2014-02-28T20:50:00+01:00</updated>
+    <id>http://lkdjiin.github.io/blog/2014/02/28/filtrer-ses-logs-en-direct</id>
+    <content type="html"><![CDATA[<div class='level-tag level-tag-2'>Niveau : <span>intermédiaire</span></div>
+
+
+<p>Aujourd&#8217;hui on voit comment filtrer nos fichiers de log en direct à l&#8217;aide
+des commandes UNIX <code>tail</code> et <code>sed</code>.</p>
+
+<!-- more -->
+
+
+<p>Pour afficher un fichier en direct live sur le terminal, autrement dit pour
+visualiser au fur et à mesure les ajouts dans ce fichier, on utilise
+<code>tail -f</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>tail -f un/fichier/de/log
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour afficher <strong>uniquement</strong> les lignes d&#8217;un fichier qui contiennent la
+chaîne de caractères <code>ERROR</code>, on va utiliser <code>sed</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sed -n <span class="s1">&#39;/ERROR/p&#39;</span> un/fichier/de/log
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ou bien pour afficher toutes les lignes d&#8217;un fichier <strong>sauf</strong> celles qui
+contiennent la chaîne de caractères <code>bruit</code>, on utilisera:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sed <span class="s1">&#39;/bruit/d&#39;</span> un/fichier/de/log
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Et en combinant les deux, on aura un log en direct et filtré:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>tail -f un/fichier/de/log | sed -n <span class="s1">&#39;/ERROR/p&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Et vous, vous utilisez quelle(s) commande(s) ?</p>
+
+<script id='fb33k8u'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=lkdjiin&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb33k8u');</script>
+
+
+<p>À demain.</p>
+
+<p><section><h1>Articles connexes</h1><ul><li><a href='http://lkdjiin.github.io/blog/2014/02/17/afficher-larborescence-dun-dossier-dans-le-terminal/'>Afficher l&#8217;arborescence d&#8217;un dossier dans le terminal</a></li><li><a href='http://lkdjiin.github.io/blog/2014/01/17/raccourcis-clavier-pour-le-terminal/'>Raccourcis clavier pour le terminal</a></li><li><a href='http://lkdjiin.github.io/blog/2014/03/03/ecrire-un-editeur-pour-le-terminal-partie-6/'>Écrire un éditeur pour le terminal &ndash; partie 6</a></li></ul></section></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[La commande cat peut aussi afficher les numéros de lignes]]></title>
+    <link href="http://lkdjiin.github.io/blog/2014/02/27/la-commande-cat-peut-aussi-afficher-les-numeros-de-lignes/"/>
+    <updated>2014-02-27T20:48:00+01:00</updated>
+    <id>http://lkdjiin.github.io/blog/2014/02/27/la-commande-cat-peut-aussi-afficher-les-numeros-de-lignes</id>
+    <content type="html"><![CDATA[<div class='level-tag level-tag-1'>Niveau : <span>facile</span></div>
+
+
+<p>Je crois bien que je n&#8217;avais jamais regardé la documentation de la commande
+unix <code>cat</code> jusqu&#8217;à il y a quelques jours. Je viens donc tout juste
+d&#8217;apprendre qu&#8217;on pouvait afficher les numéros de lignes.</p>
+
+<!-- more -->
+
+
+<p>Afficher un fichier avec <code>cat</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cat exemple
+</span><span class='line'>Je suis
+</span><span class='line'>un fichier
+</span><span class='line'>exemple.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Afficher avec les numéros de ligne:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cat -n exemple
+</span><span class='line'>     1    Je suis
+</span><span class='line'>     2    un fichier
+</span><span class='line'>     3    exemple.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Voilà, ça peut servir de temps en temps…</p>
+
+<script id='fb33k8u'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=lkdjiin&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb33k8u');</script>
+
+
+<p>À demain.</p>
+
+<p><section><h1>Articles connexes</h1><ul><li><a href='http://lkdjiin.github.io/blog/2014/02/17/afficher-larborescence-dun-dossier-dans-le-terminal/'>Afficher l&#8217;arborescence d&#8217;un dossier dans le terminal</a></li><li><a href='http://lkdjiin.github.io/blog/2014/01/17/raccourcis-clavier-pour-le-terminal/'>Raccourcis clavier pour le terminal</a></li><li><a href='http://lkdjiin.github.io/blog/2014/02/28/filtrer-ses-logs-en-direct/'>Filtrer ses logs en direct</a></li></ul></section></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[De Linux (Debian) vers OS X - Supprimer un fichier dans le finder]]></title>
+    <link href="http://lkdjiin.github.io/blog/2014/02/26/de-linux-debian-vers-os-x-supprimer-un-fichier-dans-le-finder/"/>
+    <updated>2014-02-26T20:52:00+01:00</updated>
+    <id>http://lkdjiin.github.io/blog/2014/02/26/de-linux-debian-vers-os-x-supprimer-un-fichier-dans-le-finder</id>
+    <content type="html"><![CDATA[<div class='level-tag level-tag-1'>Niveau : <span>facile</span></div>
+
+
+<p>Aujourd&#8217;hui : Comment supprimer un fichier dans le finder en gardant
+ses doigts sur le clavier.</p>
+
+<!-- more -->
+
+
+<h2>Pour supprimer un fichier au clavier</h2>
+
+<p>Sur Linux, il faut appuyer sur la touche «Suppression» pour supprimer un
+fichier depuis l&#8217;exporateur.</p>
+
+<p>Sur OS X, il faudra appuyer sur «Meta Backspace».</p>
+
+<p><a href="http://lkdjiin.github.io/blog/2014/02/14/de-linux-debian-vers-os-x-un-terminal-qui-dechire/">Astuce précédente</a></p>
+
+<script id='fb33k8u'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=lkdjiin&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb33k8u');</script>
+
+
+<p>À demain.</p>
+
+<p><section><h1>Articles connexes</h1><ul><li><a href='http://lkdjiin.github.io/blog/2014/02/14/de-linux-debian-vers-os-x-un-terminal-qui-dechire/'>De Linux (Debian) vers OS X &ndash; Un terminal qui déchire</a></li><li><a href='http://lkdjiin.github.io/blog/2014/02/13/de-linux-debian-vers-os-x-lauto-completion-dans-irb/'>De Linux (Debian) vers OS X &ndash; L&#8217;auto-complétion dans Irb</a></li><li><a href='http://lkdjiin.github.io/blog/2014/02/06/de-linux-debian-vers-os-x-dossier-parent-dans-lexplorateur/'>De Linux (Debian) vers OS X &ndash; Dossier parent dans l&#8217;explorateur</a></li></ul></section></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Sed - Remplacer la n-ième occurence]]></title>
+    <link href="http://lkdjiin.github.io/blog/2014/02/25/sed-remplacer-la-n-ieme-occurence/"/>
+    <updated>2014-02-25T21:10:00+01:00</updated>
+    <id>http://lkdjiin.github.io/blog/2014/02/25/sed-remplacer-la-n-ieme-occurence</id>
+    <content type="html"><![CDATA[<p>J&#8217;adore Sed. Je l&#8217;utilise depuis de longues années. Et pourtant je n&#8217;avais
+jamais remarqué qu&#8217;on pouvait remplacer la n-ième occurence d&#8217;un pattern
+dans une ligne.</p>
+
+<!-- more -->
+
+
+<p>Soit le fichier <code>test</code> suivant:</p>
+
+<pre><code>Bonjour le monde !
+</code></pre>
+
+<p>Pour remplacer le premier <code>o</code> par un <code>-</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sed <span class="s1">&#39;s/o/-/&#39;</span> <span class="nb">test</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour remplacer tous les <code>o</code> par des <code>-</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sed <span class="s1">&#39;s/o/-/g&#39;</span> <span class="nb">test</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pour remplacer le deuxième <code>o</code> par un <code>-</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sed <span class="s1">&#39;s/o/-/2&#39;</span> <span class="nb">test</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Sed, c&#8217;est magique !</p>
+
+<script id='fb33k8u'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=lkdjiin&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb33k8u');</script>
+
+
+<p>À demain.</p>
+
+<p><section><h1>Articles connexes</h1><ul><li><a href='http://lkdjiin.github.io/blog/2014/02/28/filtrer-ses-logs-en-direct/'>Filtrer ses logs en direct</a></li><li><a href='http://lkdjiin.github.io/blog/2014/01/15/lauto-completion-en-bash-partie-5/'>L&#8217;auto-complétion en Bash &ndash; partie 5</a></li><li><a href='http://lkdjiin.github.io/blog/2014/01/14/lauto-completion-programmable-en-bash-partie-4/'>L&#8217;auto-complétion programmable en bash &ndash; partie 4</a></li></ul></section></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Écrire un éditeur pour le terminal - partie 3]]></title>
+    <link href="http://lkdjiin.github.io/blog/2014/02/24/ecrire-un-editeur-pour-le-terminal-partie-3/"/>
+    <updated>2014-02-24T20:59:00+01:00</updated>
+    <id>http://lkdjiin.github.io/blog/2014/02/24/ecrire-un-editeur-pour-le-terminal-partie-3</id>
+    <content type="html"><![CDATA[<div class='level-tag level-tag-2'>Niveau : <span>intermédiaire</span></div>
+
+
+<p>Comment connaitre le nombre de lignes et de colonnes du terminal ?
+Voici la réponse…</p>
+
+<!-- more -->
+
+
+<p>Le programme suivant utilise les méthodes <code>cols</code> et <code>lines</code> de la
+bibliothèque <code>Curses</code> pour avoir ces informations:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;curses&#39;</span>
+</span><span class='line'><span class="kp">include</span> <span class="no">Curses</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">begin</span>
+</span><span class='line'>  <span class="n">init_screen</span>
+</span><span class='line'>  <span class="n">addstr</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">cols</span><span class="si">}</span><span class="s2"> x </span><span class="si">#{</span><span class="n">lines</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">getch</span>
+</span><span class='line'><span class="k">ensure</span>
+</span><span class='line'>  <span class="n">close_screen</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Redimensionnez votre terminal et relancez le programme pour être sûr
+que ça fonctionne ;)</p>
+
+<p>Ces informations nous seront bien utiles pour l&#8217;écriture d&#8217;un éditeur…</p>
+
+<script id='fb33k8u'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=lkdjiin&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb33k8u');</script>
+
+
+<p>À demain.</p>
+
+<p><section><h1>Articles connexes</h1><ul><li><a href='http://lkdjiin.github.io/blog/2014/03/03/ecrire-un-editeur-pour-le-terminal-partie-6/'>Écrire un éditeur pour le terminal &ndash; partie 6</a></li><li><a href='http://lkdjiin.github.io/blog/2014/03/02/ecrire-un-editeur-pour-le-terminal-partie-5/'>Écrire un éditeur pour le terminal &ndash; partie 5</a></li><li><a href='http://lkdjiin.github.io/blog/2014/03/01/ecrire-un-editeur-pour-le-terminal-partie-4/'>Écrire un éditeur pour le terminal &ndash; partie 4</a></li></ul></section></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Écrire un éditeur pour le terminal - partie 2]]></title>
+    <link href="http://lkdjiin.github.io/blog/2014/02/23/ecrire-un-editeur-pour-le-terminal-partie-2/"/>
+    <updated>2014-02-23T16:33:00+01:00</updated>
+    <id>http://lkdjiin.github.io/blog/2014/02/23/ecrire-un-editeur-pour-le-terminal-partie-2</id>
+    <content type="html"><![CDATA[<div class='level-tag level-tag-2'>Niveau : <span>intermédiaire</span></div>
+
+
+<p>Comme j&#8217;ai eu un peu trop de problêmes à faire tourner <em>ncurses</em> sur
+plusieurs machines, j&#8217;ai décidé de repasser à <em>curses</em>.</p>
+
+<!-- more -->
+
+
+<p>Voici donc le programme de <a href="http://lkdjiin.github.io/blog/2014/02/22/ecrire-un-editeur-pour-le-terminal-partie-1/">la dernière fois</a>, réécrit pour <em>curses</em>:</p>
+
+<figure class='code'><figcaption><span>redvim.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#!/usr/bin/env ruby</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;curses&#39;</span>
+</span><span class='line'><span class="kp">include</span> <span class="no">Curses</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">file</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span> <span class="no">ARGV</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">begin</span>
+</span><span class='line'>  <span class="n">init_screen</span>
+</span><span class='line'>  <span class="n">file</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">line</span><span class="o">|</span> <span class="n">addstr</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">refresh</span>
+</span><span class='line'>  <span class="n">getch</span>
+</span><span class='line'><span class="k">ensure</span>
+</span><span class='line'>  <span class="n">close_screen</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Un problème avec Unicode ?</h2>
+
+<p>Il se peut que vous ayez des problèmes pour afficher correctement les
+caractères unicode. À tous les coups, c&#8217;est parce que la gem <em>curses</em>
+à été compilée sans les headers indispensables.
+Installez donc ces headers: libncurses5.dev et libncurses5w.dev, ensuite
+vous avez deux solutions:</p>
+
+<ol>
+<li>Si vous utilisez Ruby 2.1, désinstallez <em>curses</em> et réinstallez la:
+<code>gem uninstall curses &amp;&amp; gem install curses</code>.</li>
+<li>Si vous utilisez Ruby 2.0 ou inférieur, <em>curses</em> fait partie de la
+bibliothèque standard, c&#8217;est donc Ruby qu&#8217;il faudra recompiler.</li>
+</ol>
+
+
+<script id='fb33k8u'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=lkdjiin&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb33k8u');</script>
+
+
+<p>À demain.</p>
+
+<p><section><h1>Articles connexes</h1><ul><li><a href='http://lkdjiin.github.io/blog/2014/03/03/ecrire-un-editeur-pour-le-terminal-partie-6/'>Écrire un éditeur pour le terminal &ndash; partie 6</a></li><li><a href='http://lkdjiin.github.io/blog/2014/03/02/ecrire-un-editeur-pour-le-terminal-partie-5/'>Écrire un éditeur pour le terminal &ndash; partie 5</a></li><li><a href='http://lkdjiin.github.io/blog/2014/03/01/ecrire-un-editeur-pour-le-terminal-partie-4/'>Écrire un éditeur pour le terminal &ndash; partie 4</a></li></ul></section></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Écrire un éditeur pour le terminal - partie 1]]></title>
+    <link href="http://lkdjiin.github.io/blog/2014/02/22/ecrire-un-editeur-pour-le-terminal-partie-1/"/>
+    <updated>2014-02-22T15:14:00+01:00</updated>
+    <id>http://lkdjiin.github.io/blog/2014/02/22/ecrire-un-editeur-pour-le-terminal-partie-1</id>
+    <content type="html"><![CDATA[<div class='level-tag level-tag-2'>Niveau : <span>intermédiaire</span></div>
+
+
+<p>Après avoir parler quelque peu de ncurses, on passe à la première étape
+de l&#8217;écriture d&#8217;un éditeur qui ressemblerait à Vim: afficher le contenu
+d&#8217;un fichier.</p>
+
+<!-- more -->
+
+
+<p>Le progamme est très proche de ce qu&#8217;on avait obtenu
+<a href="http://lkdjiin.github.io/blog/2014/02/16/curses-et-ncurses-en-ruby/">la dernière fois</a>,
+et pour cause, la seule différence étant l&#8217;ouverture/affichage du
+fichier passé en argument:</p>
+
+<figure class='code'><figcaption><span>redvim.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#!/usr/bin/env ruby</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;ffi-ncurses&#39;</span>
+</span><span class='line'><span class="kp">include</span> <span class="ss">FFI</span><span class="p">:</span><span class="ss">:NCurses</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">file</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span> <span class="no">ARGV</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">begin</span>
+</span><span class='line'>  <span class="n">initscr</span>
+</span><span class='line'>  <span class="n">file</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">line</span><span class="o">|</span> <span class="n">printw</span> <span class="n">line</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">refresh</span>
+</span><span class='line'>  <span class="n">getch</span>
+</span><span class='line'><span class="k">ensure</span>
+</span><span class='line'>  <span class="n">endwin</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>N&#8217;oubliez pas de donner les droits d&#8217;exécution à ce programme:</p>
+
+<pre><code>chmod +x redvim.rb
+</code></pre>
+
+<p>Et lancez-le ainsi pour qu&#8217;il s&#8217;affiche lui-même:</p>
+
+<pre><code>./redvim.rb redvim.rb
+</code></pre>
+
+<p>Si vous essayez de lui faire afficher un fichier trop long pour tenir
+dans le terminal, il va se passer des choses bizarres. On corrigera
+ça plus tard. Pour l&#8217;instant notre programme affiche un fichier, c&#8217;est
+déjà le début de la gloire ;)</p>
+
+<script id='fb33k8u'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=lkdjiin&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb33k8u');</script>
+
+
+<p>À demain.</p>
+
+<p><section><h1>Articles connexes</h1><ul><li><a href='http://lkdjiin.github.io/blog/2014/03/03/ecrire-un-editeur-pour-le-terminal-partie-6/'>Écrire un éditeur pour le terminal &ndash; partie 6</a></li><li><a href='http://lkdjiin.github.io/blog/2014/03/02/ecrire-un-editeur-pour-le-terminal-partie-5/'>Écrire un éditeur pour le terminal &ndash; partie 5</a></li><li><a href='http://lkdjiin.github.io/blog/2014/03/01/ecrire-un-editeur-pour-le-terminal-partie-4/'>Écrire un éditeur pour le terminal &ndash; partie 4</a></li></ul></section></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[L'auto-complétion programmable en Bash - partie 11]]></title>
+    <link href="http://lkdjiin.github.io/blog/2014/02/21/lauto-completion-programmable-en-bash-partie-11/"/>
+    <updated>2014-02-21T20:53:00+01:00</updated>
+    <id>http://lkdjiin.github.io/blog/2014/02/21/lauto-completion-programmable-en-bash-partie-11</id>
+    <content type="html"><![CDATA[<div class='level-tag level-tag-3'>Niveau : <span>avancé</span></div>
+
+
+<p>Cet article est la suite de:
+<a href="http://lkdjiin.github.io/blog/2014/02/10/lauto-completion-programmable-en-bash-partie-10/">L&#8217;auto complétion programmable en bash: partie 10</a>.</p>
+
+<h2>Complétion des options longues &ndash; suite</h2>
+
+<p>Aujourd&#8217;hui on voit que <code>_get_comp_words_by_ref</code> peut être appellée
+avec une option bien utile qui modifie <code>COMP_WORDBREAKS</code>.</p>
+
+<!-- more -->
+
+
+<p>La variable <code>COMP_WORDBREAKS</code> contient les caractères qui permettent
+de splitter les mots pour la complétion. Voici son contenu:</p>
+
+<pre><code>$  echo $COMP_WORDBREAKS 
+"'&gt;&lt;=;|&amp;(:
+</code></pre>
+
+<p>On voit que <code>=</code> en fait partie, et c&#8217;est ce qui rendait un peu compliqué
+le <a href="http://lkdjiin.github.io/blog/2014/02/10/lauto-completion-programmable-en-bash-partie-10/">code de la dernière fois</a>.
+Grâce à l&#8217;option <code>-n</code> de la fonction <code>_get_comp_words_by_ref</code>, on va pouvoir
+simplifier ça:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>_mytool_long_options<span class="o">()</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>    <span class="k">case</span> <span class="nv">$1</span> in
+</span><span class='line'>        --format<span class="o">)</span>
+</span><span class='line'>            <span class="nv">options</span><span class="o">=</span><span class="s1">&#39;dot documentation&#39;</span>
+</span><span class='line'>            ;;
+</span><span class='line'>    <span class="k">esac</span>
+</span><span class='line'><span class="k">    </span><span class="nv">COMPREPLY</span><span class="o">=(</span> <span class="k">$(</span> <span class="nb">compgen</span> -W <span class="s2">&quot;$options&quot;</span> -- <span class="s2">&quot;$2&quot;</span> <span class="k">)</span> <span class="o">)</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>_mytool<span class="o">()</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>    <span class="nb">local </span>cur prev <span class="nb">command </span>options
+</span><span class='line'>    <span class="nv">COMPREPLY</span><span class="o">=(</span> <span class="o">)</span>
+</span><span class='line'>    _get_comp_words_by_ref -n <span class="o">=</span> cur prev
+</span><span class='line'>    <span class="nv">commands</span><span class="o">=</span><span class="s1">&#39;new compile test&#39;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="o">[[</span> <span class="nv">$COMP_CWORD</span> -eq 1 <span class="o">]]</span>; <span class="k">then</span>
+</span><span class='line'><span class="k">        </span><span class="nv">COMPREPLY</span><span class="o">=(</span> <span class="k">$(</span> <span class="nb">compgen</span> -W <span class="s2">&quot;$commands&quot;</span> -- <span class="s2">&quot;$cur&quot;</span> <span class="k">)</span> <span class="o">)</span>
+</span><span class='line'>    <span class="k">elif</span> <span class="o">[[</span> <span class="s2">&quot;$cur&quot;</span> <span class="o">==</span> --*<span class="o">=</span>* <span class="o">]]</span>; <span class="k">then</span>
+</span><span class='line'><span class="k">        </span>_split_longopt
+</span><span class='line'>        _mytool_long_options <span class="s2">&quot;$prev&quot;</span> <span class="s2">&quot;$cur&quot;</span>
+</span><span class='line'>    <span class="k">elif</span> <span class="o">[[</span> <span class="s2">&quot;$cur&quot;</span> <span class="o">==</span> -* <span class="o">]]</span>; <span class="k">then</span>
+</span><span class='line'><span class="k">        </span><span class="nb">command</span><span class="o">=</span><span class="k">${</span><span class="nv">COMP_WORDS</span><span class="p">[1]</span><span class="k">}</span>
+</span><span class='line'>        <span class="k">case</span> <span class="nv">$command</span> in
+</span><span class='line'>            new<span class="o">)</span>
+</span><span class='line'>                <span class="nv">options</span><span class="o">=</span><span class="s1">&#39;--without-test&#39;</span>
+</span><span class='line'>                ;;
+</span><span class='line'>            compile<span class="o">)</span>
+</span><span class='line'>                <span class="nv">options</span><span class="o">=</span><span class="s1">&#39;--verbose&#39;</span>
+</span><span class='line'>                ;;
+</span><span class='line'>            <span class="nb">test</span><span class="o">)</span>
+</span><span class='line'>                <span class="nv">options</span><span class="o">=</span><span class="s1">&#39;--format=&#39;</span>
+</span><span class='line'>                compopt -o nospace
+</span><span class='line'>                ;;
+</span><span class='line'>        <span class="k">esac</span>
+</span><span class='line'><span class="k">        </span><span class="nv">COMPREPLY</span><span class="o">=(</span> <span class="k">$(</span> <span class="nb">compgen</span> -W <span class="s2">&quot;$options&quot;</span> -- <span class="s2">&quot;$cur&quot;</span> <span class="k">)</span> <span class="o">)</span>
+</span><span class='line'>    <span class="k">fi</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="nb">complete</span> -F _mytool mytool
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ce code fait la même chose que celui du <a href="http://lkdjiin.github.io/blog/2014/02/10/lauto-completion-programmable-en-bash-partie-10/">dernier article</a>,
+mais est bien plus simple et lisible.</p>
+
+<script id='fb33k8u'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=lkdjiin&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb33k8u');</script>
+
+
+<p>À demain.</p>
+
+<p><section><h1>Articles connexes</h1><ul><li><a href='http://lkdjiin.github.io/blog/2014/02/10/lauto-completion-programmable-en-bash-partie-10/'>L&#8217;auto-complétion programmable en Bash &ndash; partie 10</a></li><li><a href='http://lkdjiin.github.io/blog/2014/02/09/lauto-completion-programmable-en-bash-partie-9/'>L&#8217;auto-complétion programmable en Bash &ndash; partie 9</a></li><li><a href='http://lkdjiin.github.io/blog/2014/02/08/lauto-completion-programmable-en-bash-partie-8/'>L&#8217;auto-complétion programmable en Bash &ndash; partie 8</a></li></ul></section></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Astuce Bash - Améliorer l'historique]]></title>
+    <link href="http://lkdjiin.github.io/blog/2014/02/20/astuce-bash-ameliorer-lhistorique/"/>
+    <updated>2014-02-20T21:02:00+01:00</updated>
+    <id>http://lkdjiin.github.io/blog/2014/02/20/astuce-bash-ameliorer-lhistorique</id>
+    <content type="html"><![CDATA[<div class='level-tag level-tag-1'>Niveau : <span>facile</span></div>
+
+
+<p>Dans Bash, chaque appui sur la touche «flêche vers le haut» fait défiler
+l&#8217;historique des commandes. Si la commande recherchée se situe à quelques
+dizaines d&#8217;appuis, ça n&#8217;est pas très pratique. Voici une astuce pour
+aller plus vite.</p>
+
+<!-- more -->
+
+
+<p>Ajoutez les lignes suivantes dans votre fichier <code>~/.inputrc</code>. Si ce dernier
+n&#8217;existe pas, créez le.</p>
+
+<figure class='code'><figcaption><span>~/.input</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="s2">&quot;\e[A&quot;</span>: <span class="nb">history</span>-search-backward
+</span><span class='line'><span class="s2">&quot;\e[B&quot;</span>: <span class="nb">history</span>-search-forward
+</span><span class='line'><span class="nb">set </span>show-all-if-ambiguous on
+</span><span class='line'><span class="nb">set </span>completion-ignore-case on
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Maintenant il suffit de saisir les premières lettres de la commande
+recherchée et la flêche vers le haut ne fera défilée que les commandes
+de votre historique qui commencent par ces caractères.</p>
+
+<p>Quand j&#8217;aurais plus de temps, j&#8217;aimerais revenir sur ces lignes pour
+fournir une explication, en attendant je vous souhaite une bonne
+utilisation de votre historique boosté ;)</p>
+
+<script id='fb33k8u'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=lkdjiin&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb33k8u');</script>
+
+
+<p>À demain.</p>
+
+<p><section><h1>Articles connexes</h1><ul><li><a href='http://lkdjiin.github.io/blog/2014/02/19/astuce-pour-git-merge-et-checkout-en-une-commande/'>Astuce pour Git &ndash; merge et checkout en une commande</a></li><li><a href='http://lkdjiin.github.io/blog/2014/02/18/comment-mettre-temporairement-de-cote-ses-modifications-de-code-avec-git/'>Comment mettre temporairement de coté ses modifications de code avec Git</a></li><li><a href='http://lkdjiin.github.io/blog/2014/02/17/afficher-larborescence-dun-dossier-dans-le-terminal/'>Afficher l&#8217;arborescence d&#8217;un dossier dans le terminal</a></li></ul></section></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Astuce pour Git - merge et checkout en une commande]]></title>
+    <link href="http://lkdjiin.github.io/blog/2014/02/19/astuce-pour-git-merge-et-checkout-en-une-commande/"/>
+    <updated>2014-02-19T20:49:00+01:00</updated>
+    <id>http://lkdjiin.github.io/blog/2014/02/19/astuce-pour-git-merge-et-checkout-en-une-commande</id>
+    <content type="html"><![CDATA[<div class='level-tag level-tag-2'>Niveau : <span>intermédiaire</span></div>
+
+
+<p>Aujourd&#8217;hui, je vous présente un petit script pour Git. Il vous permettra,
+en une commande, de merger la branche courante dans <code>master</code> et de vous
+retrouver sur <code>master</code>.</p>
+
+<!-- more -->
+
+
+<p>Ce script, <code>merge-me</code>, est a placer quelquepart dans votre <code>$PATH</code>.
+N&#8217;oubliez pas de lui fournir les droits d&#8217;exécution (<code>chmod +x</code>).</p>
+
+<figure class='code'><figcaption><span>merge-me</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/bash</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">BRANCH_TO_MERGE</span><span class="o">=</span><span class="sb">`</span>git rev-parse --abbrev-ref HEAD<span class="sb">`</span>
+</span><span class='line'>git checkout master
+</span><span class='line'>git merge <span class="nv">$BRANCH_TO_MERGE</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Une fois installé, en partant d&#8217;une branche <code>ma-branche</code>, vous tapez:</p>
+
+<pre><code>git merge-me
+</code></pre>
+
+<p>et la branche <code>ma-branche</code> sera mergée dans la branche <code>master</code>.</p>
+
+<p>N&#8217;hésitez pas à vous en servir comme d&#8217;un point de départ et à le modifier,
+à lui ajouter des fonctionnalités.</p>
+
+<p>Tiens, d&#8217;ailleurs ! Vous y ajouteriez quoi ?</p>
+
+<script id='fb33k8u'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=lkdjiin&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb33k8u');</script>
+
+
+<p>À demain.</p>
+
+<p><section><h1>Articles connexes</h1><ul><li><a href='http://lkdjiin.github.io/blog/2014/02/12/quelques-commandes-git-par-michael-hartl/'>Quelques commandes Git par Michael Hartl</a></li><li><a href='http://lkdjiin.github.io/blog/2014/02/20/astuce-bash-ameliorer-lhistorique/'>Astuce Bash &ndash; Améliorer l&#8217;historique</a></li><li><a href='http://lkdjiin.github.io/blog/2014/02/18/comment-mettre-temporairement-de-cote-ses-modifications-de-code-avec-git/'>Comment mettre temporairement de coté ses modifications de code avec Git</a></li></ul></section></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Comment mettre temporairement de coté ses modifications de code avec Git]]></title>
+    <link href="http://lkdjiin.github.io/blog/2014/02/18/comment-mettre-temporairement-de-cote-ses-modifications-de-code-avec-git/"/>
+    <updated>2014-02-18T21:03:00+01:00</updated>
+    <id>http://lkdjiin.github.io/blog/2014/02/18/comment-mettre-temporairement-de-cote-ses-modifications-de-code-avec-git</id>
+    <content type="html"><![CDATA[<div class='level-tag level-tag-1'>Niveau : <span>facile</span></div>
+
+
+<p><strong>Scénario</strong> : Vous êtes en train de travailler sur la branche
+<code>ma-nouvelle-fonction</code> et on vous demande de réparer un bug de toute
+urgence. Ce bug est sur la branche <code>master</code>.</p>
+
+<p><strong>Problème</strong> : votre branche
+<code>ma-nouvelle-fonction</code> est dans un état instable, vous n&#8217;êtes pas prêt
+à commiter les changements. Il se peut que le code ne fonctionne pas,
+qu&#8217;il vous faille 10 minutes pour faire des commits propres, etc.</p>
+
+<!-- more -->
+
+
+<p><strong>Solution</strong> : Utilisez <code>git stash</code>.</p>
+
+<p>Il vous suffit d&#8217;entrer:</p>
+
+<pre><code>git stash
+</code></pre>
+
+<p>et tous vos changements vont être mis dans la «zone de stashing». Une
+espèce d&#8217;endroit à part. Votre branche <code>ma-nouvelle-fonction</code> se retrouve
+dans l&#8217;état stable du dernier commit.</p>
+
+<p>Vous pouvez maintenant créer une nouvelle branche <code>mon-fix</code> à partir de
+<code>master</code>, travailler dessus, commiter, pusher, merger, enfin bref faire
+ce que vous avez à faire.</p>
+
+<p>Quand vous en avez fini, vous pouvez retourner sur la branche
+<code>ma-nouvelle-fonction</code> et récupérer vos modifications:</p>
+
+<pre><code>git checkout ma-nouvelle-fonction
+git stash pop
+</code></pre>
+
+<p><code>git stash pop</code> va réintroduire vos modifications et effacer la zone de
+stashing.</p>
+
+<p>La commande <code>stash</code> peut faire bien d&#8217;autres choses que ce que je viens
+de montrer, c&#8217;est tout juste le sommet de l&#8217;iceberg. Je vous recommande
+donc un petit <code>git help stash</code> pour en savoir plus.</p>
+
+<script id='fb33k8u'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=lkdjiin&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb33k8u');</script>
+
+
+<p>À demain.</p>
+
+<p><section><h1>Articles connexes</h1><ul><li><a href='http://lkdjiin.github.io/blog/2014/02/20/astuce-bash-ameliorer-lhistorique/'>Astuce Bash &ndash; Améliorer l&#8217;historique</a></li><li><a href='http://lkdjiin.github.io/blog/2014/02/19/astuce-pour-git-merge-et-checkout-en-une-commande/'>Astuce pour Git &ndash; merge et checkout en une commande</a></li><li><a href='http://lkdjiin.github.io/blog/2014/02/07/astuce-ruby-utiliser-les-variables-denvironnement/'>Astuce Ruby &ndash; Utiliser les variables d&#8217;environnement</a></li></ul></section></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Afficher l'arborescence d'un dossier dans le terminal]]></title>
+    <link href="http://lkdjiin.github.io/blog/2014/02/17/afficher-larborescence-dun-dossier-dans-le-terminal/"/>
+    <updated>2014-02-17T20:56:00+01:00</updated>
+    <id>http://lkdjiin.github.io/blog/2014/02/17/afficher-larborescence-dun-dossier-dans-le-terminal</id>
+    <content type="html"><![CDATA[<p>Pour comprendre l&#8217;arborescence des dossiers d&#8217;un projet, rien de mieux
+que de l&#8217;afficher. On peut le faire dans l&#8217;explorateur graphique fournit
+par l&#8217;OS, ou bien dans son éditeur/EDI, ou encore dans le terminal.</p>
+
+<!-- more -->
+
+
+<p>Je travaille depuis janvier sur OS X et je n&#8217;arrive pas à me faire à son
+explorateur. Dans Vim, je n&#8217;ai pas de plugin pour faire ça, et je n&#8217;en veux
+pas. Il ne me restait plus qu&#8217;à renouer avec une vieille copine, la commande
+<code>tree</code>.</p>
+
+<h2>Installation</h2>
+
+<p><code>tree</code> n&#8217;est pas installée par défaut, il faut donc passer par le gestionnaire
+de paquet.</p>
+
+<pre><code>apt-get install tree # Debian, Ubuntu, etc
+
+brew install tree # OS X
+</code></pre>
+
+<h2>Utilisation</h2>
+
+<p>Afficher l&#8217;arborescence du dossier courant:</p>
+
+<pre><code>tree
+</code></pre>
+
+<p>Afficher l&#8217;arborescence d&#8217;un sous-dossier:</p>
+
+<pre><code>tree sous/dossier
+</code></pre>
+
+<h2>Options utiles</h2>
+
+<p>Du moins celles que j&#8217;utilise couramment.</p>
+
+<p>Pour avoir la couleur:</p>
+
+<pre><code>tree -C
+</code></pre>
+
+<p>Pour un affichage graphique plus sympa:</p>
+
+<pre><code>tree -A
+</code></pre>
+
+<p>Pour inclure les fichiers et dossiers cachés:</p>
+
+<pre><code>tree -a
+</code></pre>
+
+<p>Pour n&#8217;afficher que les dossiers:</p>
+
+<pre><code>tree -d
+</code></pre>
+
+<p>Pour limiter la profondeur:</p>
+
+<pre><code>tree -L 2 # N'affiche que les sous-dossiers directs
+</code></pre>
+
+<h2>Alias</h2>
+
+<p>Pour finir, voici les alias que j&#8217;utilise:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">alias </span><span class="nv">tree</span><span class="o">=</span><span class="s1">&#39;tree -CA&#39;</span>
+</span><span class='line'><span class="nb">alias </span><span class="nv">dirtree</span><span class="o">=</span><span class="s1">&#39;tree -d&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<script id='fb33k8u'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=lkdjiin&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb33k8u');</script>
+
+
+<p>À demain.</p>
+
+<p><section><h1>Articles connexes</h1><ul><li><a href='http://lkdjiin.github.io/blog/2014/01/17/raccourcis-clavier-pour-le-terminal/'>Raccourcis clavier pour le terminal</a></li><li><a href='http://lkdjiin.github.io/blog/2014/02/28/filtrer-ses-logs-en-direct/'>Filtrer ses logs en direct</a></li><li><a href='http://lkdjiin.github.io/blog/2014/02/27/la-commande-cat-peut-aussi-afficher-les-numeros-de-lignes/'>La commande cat peut aussi afficher les numéros de lignes</a></li></ul></section></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Curses et ncurses en Ruby]]></title>
+    <link href="http://lkdjiin.github.io/blog/2014/02/16/curses-et-ncurses-en-ruby/"/>
+    <updated>2014-02-16T14:29:00+01:00</updated>
+    <id>http://lkdjiin.github.io/blog/2014/02/16/curses-et-ncurses-en-ruby</id>
+    <content type="html"><![CDATA[<div class='level-tag level-tag-2'>Niveau : <span>intermédiaire</span></div>
+
+
+<p>Tiens, j&#8217;ai envie d&#8217;écrire en Ruby un embryon d&#8217;éditeur pour le terminal, qui
+serait fortement inspiré de Vim. Juste histoire de voir comment ça marche.
+La première étape sera d&#8217;utiliser la bibliothèque curses (ou ncurses) à
+partir de Ruby.</p>
+
+<!-- more -->
+
+
+<h2>Curses</h2>
+
+<p>La bibliothèque <em>curses</em> permet de gérer toutes les interactions
+clavier et souris avec un terminal. Jusqu&#8217;à la version 2.1 de Ruby, elle
+faisait partie de la bibliothèque standard. Donc, si vous utilisez
+Ruby 2.1, n&#8217;oubliez pas de faire:</p>
+
+<pre><code>gem install curses
+</code></pre>
+
+<p>Si vous utilisez Ruby 2.0 où inférieur, vous possédez déjà la bibliothèque
+<em>curses</em>.</p>
+
+<p>Voici donc un <em>hello world</em>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;curses&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kp">include</span> <span class="no">Curses</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">begin</span>
+</span><span class='line'>  <span class="n">init_screen</span>
+</span><span class='line'>  <span class="n">setpos</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">addstr</span><span class="p">(</span><span class="s1">&#39;Hello, world!&#39;</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">refresh</span>
+</span><span class='line'>  <span class="n">getch</span>
+</span><span class='line'><span class="k">ensure</span>
+</span><span class='line'>  <span class="n">close_screen</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On remarque tout d&#8217;abord la paire:</p>
+
+<pre><code>init_screen
+close_screen
+</code></pre>
+
+<p>Il faut toujours appeler <code>close_screen</code> à la fin de votre programme, pour
+remettre le terminal dans l&#8217;état où il se trouvait avant le lancement de
+votre programme.</p>
+
+<p>Pour positionner le curseur, on utilise:</p>
+
+<pre><code>setpos(0, 0)
+</code></pre>
+
+<p>Attention, le premier nombre est le numéro de la ligne, et le second est le
+numéro de la colonne. Et lignes et colonnes se comptent à partir de 0…</p>
+
+<p>Pour écrire une chaîne de caractère à la position du curseur:</p>
+
+<pre><code>addstr('Hello, world!')
+refresh
+</code></pre>
+
+<p>Curses n&#8217;écrit directement dans le terminal, mais dans un buffer en mémoire,
+c&#8217;est pourquoi il faut appeler <code>refresh</code> pour voir les changements.</p>
+
+<p>Ensuite, on attends l&#8217;appui sur une touche du clavier avec:</p>
+
+<pre><code>getch
+</code></pre>
+
+<h2>Ncurses</h2>
+
+<p>Il existe aussi la bibliothèque <em>ncurses</em>, un peu plus puissante. Il existe
+plusieurs wrappers pour Ruby. J&#8217;utilise personnelement <a href="https://github.com/seanohalpin/ffi-ncurses">ffi-ncurses</a>.</p>
+
+<p>Le même programme que le précédent, mais pour ncurses:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;ffi-ncurses&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kp">include</span> <span class="ss">FFI</span><span class="p">:</span><span class="ss">:NCurses</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">begin</span>
+</span><span class='line'>  <span class="n">initscr</span>
+</span><span class='line'>  <span class="n">printw</span> <span class="s2">&quot;Hello World !!!&quot;</span>
+</span><span class='line'>  <span class="n">refresh</span>
+</span><span class='line'>  <span class="n">getch</span>
+</span><span class='line'><span class="k">ensure</span>
+</span><span class='line'>  <span class="n">endwin</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Les deux programmes se ressemblent beaucoup. Et pour cause, <em>ncurses</em> fait
+la même chose que <em>curses</em>, avec des extensions en plus.</p>
+
+<h2>Choisir entre curses et ncurses</h2>
+
+<p>L&#8217;une et l&#8217;autre ont leurs avantages et leurs inconvénients. <em>curses</em> à
+l&#8217;avantage d&#8217;avoir été distribuée en standard avec Ruby jusqu&#8217;à la version
+2.0 incluse, et est donc très bien intégrée. Je pense qu&#8217;on doit pouvoir
+l&#8217;utiliser facilement, même sur Windows. <em>ncurses</em> est plus puissante mais
+requiert plus de dépendances, et il n&#8217;est pas toujours évident de trouver
+un wrapper qui fonctionne avec une version récente de Ruby, même sur Linux.</p>
+
+<p>Si je devais écrire un programme grand public, j&#8217;utiliserais <em>curses</em>, mais
+comme il s&#8217;agit juste d&#8217;un programme exemple pour ce blog, je vais me faire
+plaisir et utiliser <em>ncurses</em>…</p>
+
+<p>La prochaine fois on commencera à écrire l&#8217;éditeur.</p>
+
+<script id='fb33k8u'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=lkdjiin&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb33k8u');</script>
+
+
+<p>À demain.</p>
+
+<p><section><h1>Articles connexes</h1><ul><li><a href='http://lkdjiin.github.io/blog/2014/03/03/ecrire-un-editeur-pour-le-terminal-partie-6/'>Écrire un éditeur pour le terminal &ndash; partie 6</a></li><li><a href='http://lkdjiin.github.io/blog/2014/03/02/ecrire-un-editeur-pour-le-terminal-partie-5/'>Écrire un éditeur pour le terminal &ndash; partie 5</a></li><li><a href='http://lkdjiin.github.io/blog/2014/03/01/ecrire-un-editeur-pour-le-terminal-partie-4/'>Écrire un éditeur pour le terminal &ndash; partie 4</a></li></ul></section></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Simuler une honnête pièce de monnaie à partir d'une truquée]]></title>
+    <link href="http://lkdjiin.github.io/blog/2014/02/15/simuler-une-honnete-piece-de-monnaie-a-partir-dune-truquee/"/>
+    <updated>2014-02-15T12:20:00+01:00</updated>
+    <id>http://lkdjiin.github.io/blog/2014/02/15/simuler-une-honnete-piece-de-monnaie-a-partir-dune-truquee</id>
+    <content type="html"><![CDATA[<div class='level-tag level-tag-2'>Niveau : <span>intermédiaire</span></div>
+
+
+<p><em>Ce qui suit est une traduction assez libre de l&#8217;article original
+<a href="http://jeremykun.com/2014/02/08/simulating-a-fair-coin-with-a-biased-coin/">Simulating a Fair Coin with a Biased Coin</a>,
+j&#8217;ai laissé le code python original et ajouté du code Ruby.</em></p>
+
+<!-- more -->
+
+
+<p><strong>Problème</strong> : Simuler une honnête pièce de monnaie, alors qu&#8217;on a uniquement
+accès à une pièce truquée.</p>
+
+<p><strong>Solution</strong> :</p>
+
+<p>En Python</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">fairCoin</span><span class="p">(</span><span class="n">biasedCoin</span><span class="p">):</span>
+</span><span class='line'>   <span class="n">coin1</span><span class="p">,</span> <span class="n">coin2</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="mi">0</span>
+</span><span class='line'>   <span class="k">while</span> <span class="n">coin1</span> <span class="o">==</span> <span class="n">coin2</span><span class="p">:</span>
+</span><span class='line'>      <span class="n">coin1</span><span class="p">,</span> <span class="n">coin2</span> <span class="o">=</span> <span class="n">biasedCoin</span><span class="p">(),</span> <span class="n">biasedCoin</span><span class="p">()</span>
+</span><span class='line'>   <span class="k">return</span> <span class="n">coin1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>En Ruby</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">fair_coin</span>
+</span><span class='line'>  <span class="n">coin1</span><span class="p">,</span> <span class="n">coin2</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="n">coin1</span><span class="p">,</span> <span class="n">coin2</span> <span class="o">=</span> <span class="n">biased_coin</span><span class="p">,</span> <span class="n">biased_coin</span> <span class="k">while</span> <span class="n">coin1</span> <span class="o">==</span> <span class="n">coin2</span>
+</span><span class='line'>  <span class="n">coin1</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Discussion</strong> : C&#8217;est à l&#8217;origine une idée brillante de
+<a href="http://en.wikipedia.org/wiki/John_von_Neumann">von Neumann</a>. Si nous avons
+une pièce truquée (c&#8217;est à dire une pièce qui tombe sur face avec une
+probabilité différente de &frac12;), on peut simuler une pièce non truquée
+en lançant deux pièces jusqu&#8217;à ce que les deux résultats (pile ou face)
+soient différents. Comme on a des résultats différents, la probabilité que
+la première pièce donne face et que la seconde donne pile est la même que
+la probabilité d&#8217;obtenir le résultat inverse (pièce 1 donnant pile et pièce 2
+donnant face). Donc, si on retourne simplement le résultat de la première
+pièce, on aura pile ou face avec une probabilité de &frac12;.</p>
+
+<p>Notez que l&#8217;on a pas besoin de connaître ni d&#8217;assumer quoique ce soit de
+la fonction <code>biasedCoin</code>/<code>biased_coin</code>, mis à part qu&#8217;elle renvoit 1 ou 0
+à chaque appel et que les résultats sont indépendant les uns des autres.
+En particulier, nous n&#8217;avons pas besoin de connaître la probabilité
+d&#8217;obtenir 1. De plus, nous n&#8217;utilisons pas le hasard directement (seulement
+à travers la fonction <code>biasedCoin</code>/<code>biased_coin</code>).</p>
+
+<p>Voici une simulation simple :</p>
+
+<p>En python</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">random</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">biasedCoin</span><span class="p">():</span>
+</span><span class='line'>   <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.2</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>En Ruby</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">biased_coin</span>
+</span><span class='line'>  <span class="nb">rand</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">.</span><span class="mi">2</span> <span class="o">?</span> <span class="mi">1</span> <span class="p">:</span>  <span class="mi">0</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cette fonction renvoie 1 avec une probabilité de 0.2. Si nous essayons
+maintenant:</p>
+
+<p>En Python</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="nb">sum</span><span class="p">(</span><span class="n">biasedCoin</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>En Ruby</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">10_000</span><span class="p">)</span><span class="o">.</span><span class="n">reduce</span> <span class="p">{</span><span class="o">|</span><span class="n">sum</span><span class="o">|</span> <span class="n">sum</span> <span class="o">+</span> <span class="n">biased_coin</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Nous devrions obtenir un nombre proche de 2000. J&#8217;ai obtenu 2058.</p>
+
+<p>D&#8217;un autre coté, si nous faisons:</p>
+
+<p>En Python</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="nb">sum</span><span class="p">(</span><span class="n">fairCoin</span><span class="p">(</span><span class="n">biasedCoin</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>En Ruby</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">10_000</span><span class="p">)</span><span class="o">.</span><span class="n">reduce</span> <span class="p">{</span><span class="o">|</span><span class="n">sum</span><span class="o">|</span> <span class="n">sum</span> <span class="o">+</span> <span class="n">fair_coin</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Nous devrions obtenir approximativement 5000. Et quand j&#8217;ai essayé, j&#8217;ai
+obtenu 4982, ce qui est la preuve que <code>fairCoin</code>/<code>fair_coin</code> renvoie bien
+1 avec une probabilité de &frac12; (même si j&#8217;ai déjà fourni cette preuve !).</p>
+
+<p>Pour plus d&#8217;informations sur ce sujet, regardez
+<a href="http://www.eecs.harvard.edu/~michaelm/coinflipext.pdf">ces notes</a> par Michael Mitzenmacher de l&#8217;université de Harvard.</p>
+
+<script id='fb33k8u'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=lkdjiin&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb33k8u');</script>
+
+
+<p>À demain.</p>
+
+<p><section><h1>Articles connexes</h1><ul><li><a href='http://lkdjiin.github.io/blog/2013/11/05/une-regex-pour-savoir-si-un-nombre-est-premier/'>Une regex pour savoir si un nombre est premier</a></li><li><a href='http://lkdjiin.github.io/blog/2014/03/03/ecrire-un-editeur-pour-le-terminal-partie-6/'>Écrire un éditeur pour le terminal &ndash; partie 6</a></li><li><a href='http://lkdjiin.github.io/blog/2014/03/02/ecrire-un-editeur-pour-le-terminal-partie-5/'>Écrire un éditeur pour le terminal &ndash; partie 5</a></li></ul></section></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[De Linux (Debian) vers OS X - Un terminal qui déchire]]></title>
+    <link href="http://lkdjiin.github.io/blog/2014/02/14/de-linux-debian-vers-os-x-un-terminal-qui-dechire/"/>
+    <updated>2014-02-14T20:42:00+01:00</updated>
+    <id>http://lkdjiin.github.io/blog/2014/02/14/de-linux-debian-vers-os-x-un-terminal-qui-dechire</id>
+    <content type="html"><![CDATA[<div class='level-tag level-tag-1'>Niveau : <span>facile</span></div>
+
+
+<p>Aujourd&#8217;hui : Quel terminal utiliser sur OS X ?</p>
+
+<p>Ces derniers jours j&#8217;ai du travailler avec une dizaine de sessions
+shell ouverte en même temps, tout en surveillant régulièrement plusieurs
+d&#8217;entre elles pour voir si des processus plantait. Je n&#8217;en pouvait plus
+du terminal par défaut de OS X…</p>
+
+<!-- more -->
+
+
+<h2>iTerm2, le terminal parfait ?</h2>
+
+<p>Il y a quelque temps un collègue m&#8217;a parlé de <a href="http://www.iterm2.com/#/section/home">iTerm2</a>
+comme étant potentiellement ce que je cherchais. J&#8217;ai eu aujourd&#8217;hui
+le temps de l&#8217;installer et de me familiariser avec. Et depuis que je
+travaille sur OS X, c&#8217;est la première fois que je dit <strong>Waou !!!</strong>
+à propos d&#8217;un logiciel. Il a un tas de très très bonnes fonctionnalités,
+les raccourcis clavier sont très bien pensés de base et sont
+configurables, on peut splitter dans tous les sens, la gestion du
+clipboard est intelligente, etc.</p>
+
+<p>Allez, une dernière fois : <strong>Waou !!!</strong>.</p>
+
+<p><a href="http://lkdjiin.github.io/blog/2014/02/26/de-linux-debian-vers-os-x-supprimer-un-fichier-dans-le-finder/">Astuce suivante</a>  <br/>
+<a href="http://lkdjiin.github.io/blog/2014/02/13/de-linux-debian-vers-os-x-lauto-completion-dans-irb/">Astuce précédente</a></p>
+
+<script id='fb33k8u'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=lkdjiin&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb33k8u');</script>
+
+
+<p>À demain.</p>
+
+<p><section><h1>Articles connexes</h1><ul><li><a href='http://lkdjiin.github.io/blog/2014/02/26/de-linux-debian-vers-os-x-supprimer-un-fichier-dans-le-finder/'>De Linux (Debian) vers OS X &ndash; Supprimer un fichier dans le finder</a></li><li><a href='http://lkdjiin.github.io/blog/2014/02/13/de-linux-debian-vers-os-x-lauto-completion-dans-irb/'>De Linux (Debian) vers OS X &ndash; L&#8217;auto-complétion dans Irb</a></li><li><a href='http://lkdjiin.github.io/blog/2014/02/06/de-linux-debian-vers-os-x-dossier-parent-dans-lexplorateur/'>De Linux (Debian) vers OS X &ndash; Dossier parent dans l&#8217;explorateur</a></li></ul></section></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[De Linux (Debian) vers OS X - L'auto-complétion dans Irb]]></title>
+    <link href="http://lkdjiin.github.io/blog/2014/02/13/de-linux-debian-vers-os-x-lauto-completion-dans-irb/"/>
+    <updated>2014-02-13T20:39:00+01:00</updated>
+    <id>http://lkdjiin.github.io/blog/2014/02/13/de-linux-debian-vers-os-x-lauto-completion-dans-irb</id>
+    <content type="html"><![CDATA[<div class='level-tag level-tag-1'>Niveau : <span>facile</span></div>
+
+
+<p>Aujourd&#8217;hui : Comment obtenir l&#8217;auto-complétion dans <code>irb</code>,
+certaines machines OS X (dont la mienne) souffrant de ce bug.</p>
+
+<!-- more -->
+
+
+<h2>Activer l&#8217;auto-complétion dans irb</h2>
+
+<p>Si votre <code>irb</code> refuse de faire de l&#8217;auto-complétion, c&#8217;est un bug.
+Pour l&#8217;activer, vous pouvez utiliser la
+<a href="https://github.com/cldwalker/bond">gem Bond</a> (j&#8217;adore ce jeu de
+mot, <em>-si ça en est un ?&ndash;</em>):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;bond&#39;</span>
+</span><span class='line'><span class="no">Bond</span><span class="o">.</span><span class="n">start</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Mieux vaut bien sûr mettre ça directement dans le fichier <code>.irbrc</code>,
+par exemple:</p>
+
+<figure class='code'><figcaption><span>.irbrc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">begin</span>
+</span><span class='line'>  <span class="nb">require</span> <span class="s1">&#39;bond&#39;</span>
+</span><span class='line'>  <span class="no">Bond</span><span class="o">.</span><span class="n">start</span>
+</span><span class='line'><span class="k">rescue</span> <span class="no">LoadError</span> <span class="o">=&gt;</span> <span class="n">err</span>
+</span><span class='line'>  <span class="nb">warn</span> <span class="s2">&quot;Couldn&#39;t load bond: </span><span class="si">#{</span><span class="n">err</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://lkdjiin.github.io/blog/2014/02/14/de-linux-debian-vers-os-x-un-terminal-qui-dechire/">Astuce suivante</a>  <br/>
+<a href="http://lkdjiin.github.io/blog/2014/02/06/de-linux-debian-vers-os-x-dossier-parent-dans-lexplorateur/">Astuce précédente</a></p>
+
+<script id='fb33k8u'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=lkdjiin&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb33k8u');</script>
+
+
+<p>À demain.</p>
+
+<p><section><h1>Articles connexes</h1><ul><li><a href='http://lkdjiin.github.io/blog/2014/02/26/de-linux-debian-vers-os-x-supprimer-un-fichier-dans-le-finder/'>De Linux (Debian) vers OS X &ndash; Supprimer un fichier dans le finder</a></li><li><a href='http://lkdjiin.github.io/blog/2014/02/14/de-linux-debian-vers-os-x-un-terminal-qui-dechire/'>De Linux (Debian) vers OS X &ndash; Un terminal qui déchire</a></li><li><a href='http://lkdjiin.github.io/blog/2014/02/06/de-linux-debian-vers-os-x-dossier-parent-dans-lexplorateur/'>De Linux (Debian) vers OS X &ndash; Dossier parent dans l&#8217;explorateur</a></li></ul></section></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Quelques commandes Git par Michael Hartl]]></title>
+    <link href="http://lkdjiin.github.io/blog/2014/02/12/quelques-commandes-git-par-michael-hartl/"/>
+    <updated>2014-02-12T20:29:00+01:00</updated>
+    <id>http://lkdjiin.github.io/blog/2014/02/12/quelques-commandes-git-par-michael-hartl</id>
+    <content type="html"><![CDATA[<div class='level-tag level-tag-2'>Niveau : <span>intermédiaire</span></div>
+
+
+<p>Michael Hartl, l&#8217;auteur de <a href="http://ruby.railstutorial.org/">Ruby on Rails Tutorial</a>
+a écrit plusieurs commandes Git bien utiles.</p>
+
+<!-- more -->
+
+
+<p>Le code se trouve sur Github : <a href="https://github.com/mhartl/git-utils">git-utils</a>.
+On y trouve par exemple une commande <code>git cleanup</code>, qui supprime toutes
+les branches locales qui ne sont pas encore mergées dans la branche
+courante. Ou encore <code>git merge-branch</code>, qui merge la branche courante
+dans master par défaut.</p>
+
+<p>Aujourd&#8217;hui, toutes ces commandes sont écrites en Ruby, mais avant
+elle l&#8217;était en Bash, comme la suivante:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/bash git-merge-branch</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Copyright (c) 2013 Michael Hartl</span>
+</span><span class='line'><span class="c"># Released under the MIT License (http://opensource.org/licenses/MIT)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># Merges the current branch into the given branch (defaults to master).</span>
+</span><span class='line'><span class="c"># E.g., &#39;git merge-branch foobar&#39; merges the current branch into foobar.</span>
+</span><span class='line'><span class="c"># &#39;git merge-branch&#39;, merges the current branch into master.</span>
+</span><span class='line'><span class="c"># git merge-branch uses the --no-ff --log options to ensure that the </span>
+</span><span class='line'><span class="c"># merge creates a new commit object and that the individual commits appear</span>
+</span><span class='line'><span class="c"># in the log file.</span>
+</span><span class='line'><span class="nv">CURRENT_BRANCH</span><span class="o">=</span><span class="sb">`</span>git rev-parse --abbrev-ref HEAD<span class="sb">`</span>
+</span><span class='line'><span class="k">if</span> <span class="o">[</span> <span class="nv">$# </span>-eq 1 <span class="o">]</span>
+</span><span class='line'><span class="k">then</span>
+</span><span class='line'><span class="k">  </span><span class="nv">TARGET_BRANCH</span><span class="o">=</span><span class="nv">$1</span>
+</span><span class='line'><span class="k">else</span>
+</span><span class='line'><span class="k">  </span><span class="nv">TARGET_BRANCH</span><span class="o">=</span><span class="s2">&quot;master&quot;</span>
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'>git checkout <span class="nv">$TARGET_BRANCH</span>
+</span><span class='line'>git merge --no-ff --log <span class="nv">$CURRENT_BRANCH</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Essayez les, certaines pourraient bien vous changer la vie.</p>
+
+<script id='fb33k8u'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=lkdjiin&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fb33k8u');</script>
+
+
+<p>À demain.</p>
+
+<p><section><h1>Articles connexes</h1><ul><li><a href='http://lkdjiin.github.io/blog/2014/02/19/astuce-pour-git-merge-et-checkout-en-une-commande/'>Astuce pour Git &ndash; merge et checkout en une commande</a></li><li><a href='http://lkdjiin.github.io/blog/2014/03/03/ecrire-un-editeur-pour-le-terminal-partie-6/'>Écrire un éditeur pour le terminal &ndash; partie 6</a></li><li><a href='http://lkdjiin.github.io/blog/2014/03/02/ecrire-un-editeur-pour-le-terminal-partie-5/'>Écrire un éditeur pour le terminal &ndash; partie 5</a></li></ul></section></p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Function What What]]></title><description><![CDATA[“This masterclass in clickbait titling pulled in 735 comments and counting on /r/programming. Watch and learn, bloggers!” — HN commenter]]></description><link>http://127.0.0.1/</link><generator>Ghost v0.4.1</generator><lastBuildDate>Tue, 04 Mar 2014 14:00:09 GMT</lastBuildDate><atom:link href="http://127.0.0.1/rss/" rel="self" type="application/rss+xml"/><author><![CDATA[Tamas Czinege]]></author><ttl>60</ttl><item><title><![CDATA[Go’s Type System Is An Embarrassment]]></title><description><![CDATA[<p><strong>Go is one of the best tools out there today for heavy lifting and backend code. It’s my go to language when it’s time to bring out the big guns and I enjoy working with it immensely. That being said, its type system is an embarrassment. It’s meant to be <a href='http://www.informit.com/articles/article.aspx?p=1623555' >clear and comprehensible</a> yet it’s full of awkward surprises.</strong></p>
+
+<h2 id="lackofgenerics">Lack Of Generics</h2>
+
+<p>Most modern type systems have some notion of generics. Generics allow types to interact with other types in a type-safe manner. <a href='http://golang.org/doc/faq' #generics">Go has no support for generics.</a> It’s possible to live without generics by using <a href='http://golang.org/ref/spec' #Type_assertions">type assertions</a> (casting) and <a href='http://golang.org/ref/spec' #Interface_types">empty interfaces</a> but these are not checked at compile time. Some built-in functions of Go work with pseudo-generic types (e.g. <a href='http://golang.org/pkg/builtin/' #len">len()</a>, <a href='http://golang.org/pkg/builtin/' #append">append()</a>) so the language designers are clearly aware of the problem, and yet this pseudo-generic functionality is not exposed to regular users of the language. The compiler and the type system are there to help the developer; having to cast types back and forth in a statically typed language is just embarrassing.</p>
+
+<h2 id="confusingsemanticsofexportedidentifiers">Confusing Semantics Of Exported Identifiers</h2>
+
+<p>Many modern languages provide some mechanism to hide methods and data internal to various compilation units or data structures. This is a good thing; it makes programs more reliable by limiting interfaces exposed by modules and by abstracting away implementation details.</p>
+
+<p>Most programming languages allow this by having a mechanism to expose or hide functions, data fields, and types. Go does this with a twist: <strong>it exports the lexical identifier, not program element (e.g. type or function) the identifier represents</strong>. As a consequence, if there are no identifiers involved, unexported program elements can leak into other packages. What does this mean? Consider the following example:</p>
+
+<pre><code>package p1
+
+type hidden struct {
+    Field int
+}
+
+func NewHidden() hidden {
+    return hidden{Field:1337}
+} 
+
+package main
+
+import (
+    "fmt"
+    "p1"
+)
+
+func main () {
+    myHidden := p1.NewHidden()
+    fmt.Println(myHidden.Field)
+    myHidden.Field = 9000
+    fmt.Println(myHidden.Field)
+}
+</code></pre>
+
+<p>This example will compile and work. Go will have absolutely no problem with this as it’s not the “<code>hidden</code>” type that is unexported, only its identifier. Since the <code>:=</code> operator infers the type of the variable on its left side from the expression on the its right, there are no unexported identifiers involved. People on the <a href='https://groups.google.com/forum/' #!topic/golang-nuts/UpxU4rwM0OQ/discussion">golang-nuts mailing list seem to think</a> that this makes the type system “easier to understand and explain” but in my opinion these sort of unintended consequences only make things worse.</p>
+
+<p>In addition, the <a href='http://golang.org/pkg/reflect/' >reflect package</a> does not allow reading or writing struct fields with unexported identifiers (even if the field was reached without using any identifiers) which seems to completely contradict the philosophy of exporting being a strictly lexical concept.</p>
+
+<h2 id="theverdict">The Verdict</h2>
+
+<p>If we were still living in the ’90s or Golang was a hobbyist or experimental programming language, these shortcomings would be acceptable. The year is 2014 however and Golang is heavily backed by Google itself so there is simply no other way to say it: Go’s type system is an embarrassment.</p>
+
+<p>I don’t believe that the lexical exporting issue will ever be resolved, partly because it appears to be an inherent part of the language and partly because I don’t think the designers of the language will ever admit it’s an issue. On the other hand, I’m almost certain that generics will be added at some point, hopefully sooner rather than later. That will make things better.</p>
+
+<p>Follow me on Twitter: <a href='https://twitter.com/tamasczinege' >@tamasczinege</a></p>]]></description><link>http://127.0.0.1/go’s-type-system-is-an-embarrassment/</link><guid isPermaLink="false">cba313d3-dceb-4b61-818b-ca476e556cb4</guid><category><![CDATA[golang]]></category><category><![CDATA[type system]]></category><dc:creator><![CDATA[Tamas Czinege]]></dc:creator><pubDate>Sun, 05 Jan 2014 23:09:13 GMT</pubDate></item><item><title><![CDATA[The Web is Slow Because of Database Queries in Loops]]></title><description><![CDATA[<p><strong>After reading Stoyan Stefanov’s article about the perceived performance of websites (<a href='http://calendar.perfplanet.com/2013/why-is-the-web-so-slow/' >“Why the web is so slow?”</a>) I was compelled to provide an answer. Although my answer won’t appease desperate users venting their frustration in a Google search, it will hopefully help developers build snappier web applications.</strong></p>
+
+<h2 id="thewebisslowbecausedatabasequeriesareperformedwithinthebodiesofloops">The Web is slow because database queries are performed within the bodies of loops.</h2>
+
+<p>Even though this idea is obvious to many developers, I regularly come across code that does exactly this.</p>
+
+<p>To demonstrate the problem, I’ve created a test database in PostgreSQL with a single, very simple table using the following schema and then proceeded to populate it with 10,000,000 random rows:</p>
+
+<pre><code># create table test (id serial not null, data uuid not null, constraint pk_test primary key (id));
+</code></pre>
+
+<p>A recent Mac mini served as my test environment.</p>
+
+<h3 id="approach1">Approach 1</h3>
+
+<h4 id="queriesperformedwithinaloopopenanewdatabaseconnectionforeachquery">Queries Performed Within a Loop, Open a New Database Connection for Each Query</h4>
+
+<p>Pseudo code:</p>
+
+<pre><code>for i from 0 to 5000
+    connect
+    query = "select data from test where id = " + random()
+    execute query
+    disconnect
+</code></pre>
+
+<p>Node.js source: <a href='https://gist.github.com/drjokepu/7749595' >https://gist.github.com/drjokepu/7749595</a></p>
+
+<p>Average execution time: <strong>9.3976 seconds</strong> (on my test environment, using my test data).</p>
+
+<p>As opening a new database connection carries a significant overheard, it’s not surprising that this approach is very slow. Don’t do it.</p>
+
+<h3 id="approach2anameapproach_2a">Approach 2<a name="approach_2"></a></h3>
+
+<h4 id="queriesperformedwithinaloopreusedatabaseconnection">Queries Performed within a Loop, Reuse Database Connection</h4>
+
+<p>Pseudo code:</p>
+
+<pre><code>connect
+for i from 0 to 5000
+    query = "select data from test where id = " + random()
+    execute query
+disconnect
+</code></pre>
+
+<p>Node.js source: <a href='https://gist.github.com/drjokepu/7749761' >https://gist.github.com/drjokepu/7749761</a></p>
+
+<p>Average execution time: <strong>0.6108 seconds</strong> (on my test environment, using my test data).</p>
+
+<p>The difference is shocking. </p>
+
+<p>This is very similar to the previous approach; the only difference is that, rather than opening a new connection for every query, the same database connection is reused. Normally connection pooling is provided automatically and transparently by the client-side library used to access the database (e.g. ADO.NET drivers, ActiveRecord, not sure about JDBC) so typically developers don’t need to worry about this. As this is the default behaviour in many runtimes this approach will be used as the baseline to compare various approaches.</p>
+
+<h3 id="approach3anameapproach_3a">Approach 3<a name="approach_3"></a></h3>
+
+<h4 id="singlequerywithmultiplecommands">Single Query with Multiple Commands</h4>
+
+<p>To improve upon the previous approach it is beneficial to think of the cost of query execution as the sum of two components:</p>
+
+<ul>
+<li>A static part that takes the same time to process regardless of the complexity or size of the query.</li>
+<li>A dynamic part that correlates to the complexity and size of the query, e.g. if the query is more complicated, this part will take longer to execute.</li>
+</ul>
+
+<p>Thus:</p>
+
+<p><center>T<sub>execution</sub> = T<sub>static</sub> + T<sub>dynamic</sub></center></p>
+
+<p>For five thousand individual, equivalent queries this translates to:</p>
+
+<p><center>T<sub>execution</sub> = 5000(T<sub>static</sub> + T<sub>dynamic</sub>)</center></p>
+
+<p>By concatenating all the commands, separated by semicolons in the case of SQL, five thousand queries can be turned into a single query that is five thousand times as complex. This will change the equation to:</p>
+
+<p><center>T<sub>execution</sub> = T<sub>static</sub> + 5000 T<sub>dynamic</sub></center></p>
+
+<p>This is always going to be faster by 4999 times T<sub>static</sub>. If the size of T<sub>static</sub> is comparable to (or larger than) T<sub>dynamic</sub>, this should yield a measurable increase in speed. How much, exactly?</p>
+
+<p>Pseudo code:</p>
+
+<pre><code>query = ""
+for i from 0 to 5000
+    query = query + "select data from test where id = " + random() + ";"
+connect
+execute query
+disconnect
+</code></pre>
+
+<p>Node.js source: <a href='https://gist.github.com/drjokepu/7749794' >https://gist.github.com/drjokepu/7749794</a></p>
+
+<p>Average execution time: <strong>0.28 seconds</strong> (on my test environment, using my test data).</p>
+
+<p><strong>In this instance, issuing a single query (comprising of many commands) instead of a loop makes the code run twice as fast.</strong></p>
+
+<h3 id="approach4">Approach 4</h3>
+
+<h4 id="singlecommand">Single Command</h4>
+
+<p>The solution above can be further streamlined by turning the single query, multiple command solution into single query, single command. The IN operator (or in the linked example, a combination of PostgreSQL’s <a href='http://www.postgresql.org/docs/9.3/static/arrays.html' >arrays</a> and the <a href='http://www.postgresql.org/docs/9.3/static/functions-comparisons.html' #AEN18479">ANY operator</a>) makes this possible. This approach should eliminate the static overhead of individual queries such as building query plans.</p>
+
+<p>Pseudo code:</p>
+
+<pre><code>id_list = array of 5000 random integers
+query =
+    "select data from test where id in (" +
+    concatenate id_list separated by "," +
+    ")"
+// query will be something like this:
+// select data from test where id in (1, 2, 3, 4, 5)
+connect
+execute query
+disconnect
+</code></pre>
+
+<p>Node.js source: <a href='https://gist.github.com/drjokepu/7749822' >https://gist.github.com/drjokepu/7749822</a></p>
+
+<p>Average execution time: <strong>0.1596 seconds</strong> (on my test environment, using my test data).</p>
+
+<p>This is almost four times as fast as the baseline solution described in <a href="#approach_2">Approach 2</a> and nearly twice as fast as the single query, multiple commands solution described in <a href="#approach_3">Approach 3</a>. More complex queries or loops within loops could yield even more significant performance gains.</p>
+
+<h3 id="overviewandconclusion">Overview and Conclusion</h3>
+
+<p>The following approaches to querying multiple rows from a table have been compared above:</p>
+
+<ol>
+<li>Multiple queries, opening a new database connection for each query.  </li>
+<li>Multiple queries, reusing the database connection.  </li>
+<li>Single query with multiple commands.  </li>
+<li>Single query with single command.</li>
+</ol>
+
+<p>After discarding the first approach (as it is so slow it distorts any attempts at comparing the others) the following graph can be plotted:</p>
+
+<p><img src='http://127.0.0.1/content/images/2013/Dec/Query_Execution_Times-1.png'  alt="Query Execution Times Of Various Approaches" /></p>
+
+<p>It’s easy to see that consolidating queries offers significant performance advantages.</p>
+
+<p>And this concept is not limited to SQL databases. The same approach greatly improves query performance when using NoSQL databases such as Redis, CouchDB, and MongoDB. In fact, it works with any type of I/O operation; for example, it’s advantageous to serve a single JavaScript bundle rather then a number of individual JavaScript files.</p>
+
+<p>Follow me on Twitter: <a href='https://twitter.com/tamasczinege' >@tamasczinege</a> or send me an email: <a href='mailto:' <a href='mailto:tomi.czinege@gmail.com' >tomi.czinege@gmail.com</a>"><a href='mailto:tomi.czinege@gmail.com' >tomi.czinege@gmail.com</a></a>.</p>]]></description><link>http://127.0.0.1/the-web-is-slow-because-of-database-queries-in-loops/</link><guid isPermaLink="false">5c6306a7-011f-42ca-b793-837836e80b34</guid><category><![CDATA[PostgreSQL]]></category><dc:creator><![CDATA[Tamas Czinege]]></dc:creator><pubDate>Mon, 02 Dec 2013 21:37:41 GMT</pubDate></item><item><title><![CDATA[Why JSON in PostgreSQL is Awesome]]></title><description><![CDATA[<p><strong>Recently a commenter on Hacker News questioned the usefulness of the JSON data type in PostgreSQL. At the time I posted a <a href='https://news.ycombinator.com/item?id=6573119' >brief response</a>, but I have decided to take the time to write up a more detailed explanation here as I believe the JSON data type provides a significant benefit to developers.</strong> </p>
+
+<p><strong>Too long; didn’t read:</strong> The JSON data type is useful for storing multi-level object graphs. It provides better performance and the code itself is easier (and therefore cheaper) to write and maintain. The developer will be happier and the development will be cheaper.</p>
+
+<h3 id="multilevelobjectgraphnames">Multi-Level Object Graph: Names</h3>
+
+<p>To demonstrate the difficulties of handling multi-level object graphs in relational databases, consider names as an example.</p>
+
+<p>Handling names in computer systems correctly is a difficult task. <a href='http://www.kalzumeus.com/2010/06/17/falsehoods-programmers-believe-about-names/' >Programmers tend to believe falsehoods about names</a>. They often assume that everybody has a first name and a last name (and in that order), but, realistically, one cannot make such “brosumptions” about people’s names. Different cultures have different naming conventions. Over the years I have come to the conclusion that the best way to handle names while preserving practicality is to:</p>
+
+<ol>
+<li>store the full name,  </li>
+<li>keep an ordered list of name type–name pairs.</li>
+</ol>
+
+<p>For example:</p>
+
+<pre><code>{
+    "fullName": "Charles John Huffam Dickens",
+    "names":
+    [
+        { "type": "firstName", "value": "Charles" },
+        { "type": "middleName", "value": "John" },
+        { "type": "middleName", "value": "Huffam" },
+        { "type": "lastName", "value": "Dickens" }
+    ]
+}
+</code></pre>
+
+<h3 id="bookstore">Book Store</h3>
+
+<p>Imagine an application that manages books, such as that used by a library or a book store. Books have authors, authors have names and these names have name parts (e.g. first name, last name, etc.). The application must keep track all of this data. If one follows the requirements of the <a href='http://en.wikipedia.org/wiki/Third_normal_form' >third normal form</a>, this will result in database tables such as the ones below.</p>
+
+<p><em>Note: for the sake of simplicity, we’ll ignore the fact that the example below wouldn’t meet the requirements of the third normal form if one person could author multiple titles.</em></p>
+
+<table>  
+    <caption>Book Table</caption>
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>title</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>A Christmas Carol</td>
+        </tr>
+    </tbody>
+</table>
+
+<table>  
+    <caption>Author Table</caption>
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>book_id</th>
+            <th>full_name</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>101</td>
+            <td>1</td>
+            <td>Charles John Huffam Dickens</td>
+        </tr>
+    </tbody>
+</table>
+
+<table>  
+    <caption>Author Name Part Table</caption>
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>author_id</th>
+            <th>type</th>
+            <th>value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>201</td>
+            <td>101</td>
+            <td>first_name</td>
+            <td>Charles</td>
+        </tr>
+        <tr>
+            <td>202</td>
+            <td>101</td>
+            <td>middle_name</td>
+            <td>John</td>
+        </tr>
+        <tr>
+            <td>203</td>
+            <td>101</td>
+            <td>middle_name</td>
+            <td>Huffam</td>
+        </tr>
+        <tr>
+            <td>204</td>
+            <td>101</td>
+            <td>last_name</td>
+            <td>Dickens</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>To fetch a book from the database there are 3 options. An ORM will probably attempt option 2.</p>
+
+<ol>
+<li><p><strong>Everything is joined in a single query.</strong> This will yield a row for every name part within the name of each author. The columns derived from the book table will have the same data repeated in every row. The book data structure must be assembled from multiple rows. Things will get very convoluted if one attempts to retrieve multiple books at the same time as every row will need to be carefully matched to the correct author and book.</p></li>
+<li><p><strong>A separate query is run for each table.</strong> First the book is returned, then the authors, then the name parts. To retrieve multiple books, either  </p>
+
+<ul><li>the author and name part queries must be repeated for each book (and the name part query for each author in each book) OR</li>
+<li>the author and name part queries must be constructed in a manner that retrieves all of the authors of all the books (and all the name parts of all the authors of the books) in a single result at which point the matching exercise described in the previous section must be executed.</li></ul>
+
+<p>The first variant results in a separate query for each piece of data, which will have a significantly detrimental impact on performance. While the second variant will be much faster, it is still not a very elegant solution as it requires the database to repeat the (possibly expensive) filter that was used to select the books 3 times: once for the books, once for the authors and once for the name parts themselves.</p></li>
+<li><p><strong>There is no third option!</strong> Everybody loses. Always. This is why object–relational mapping is hard.</p></li>
+</ol>
+
+<h3 id="serialisationtojson">Serialisation to JSON</h3>
+
+<p>Fortunately, it is possible to serialise the entirety of this madness into a single JSON string (or XML or something similar but this post is about JSON). The serialised object can then be stored in a text column. When reading from the database, the text can be deserialised back to an object graph. While this was possible with earlier versions of the software, PostgreSQL 9.2 and 9.3 have introduced a number of features that make working with JSON data a very pleasant experience:</p>
+
+<ul>
+<li>The <code>json</code> data type is basically the same as <code>text</code> in terms of behaviour and storage, but the database checks that the value is valid JSON. This was introduced in PostgreSQL 9.2.</li>
+<li>With <a href='http://www.postgresql.org/docs/9.3/static/functions-json.html' >JSON functions and operators</a> introduced in PostgreSQL 9.3 one can <code>select authors-&gt;1-&gt;'fullName' from book</code> to get the full name of the first author of every book. It is even possible to create indexes that traverse JSON values with <a href='http://www.postgresql.org/docs/9.3/static/functions-json.html' >indexes on expressions</a>. </li>
+</ul>
+
+<p>Without JSON columns, functions and operators, such queries become complex and possibly inefficient. With JSON, only a single table is required:</p>
+
+<table>  
+    <caption>Book Table</caption>
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>title</th>
+            <th>authors</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>A Christmas Carol</td>
+            <td>
+
+<pre><code>[
+ {
+  "fullName": "Charles John Huffam Dickens",
+  "names":
+  [
+   { "type": "firstName", "value": "Charles" },
+   { "type": "middleName", "value": "John" },
+   { "type": "middleName", "value": "Huffam" },
+   { "type": "lastName", "value": "Dickens" }
+  ]
+ }
+]</code></pre></td>
+        </tr>
+    </tbody>
+</table>
+
+<p>Less code = faster queries. It’s hard not to be excited about this.</p>
+
+<h3 id="thedownsides">The Downsides</h3>
+
+<p><strong>No loops in the object graph.</strong> Circular references are not permitted in JSON. An author cannot belong to two books and authors cannot reference each other. The first problem can be tackled by repeating an author’s data for each book he/she has authored. This means, however, that the database will be larger and updating (renaming) authors a very expensive operation. It is up to the programmer to decide if this is compatible with the requirements of the application.</p>
+
+<p><strong>No referential integrity.</strong> While it is possible to generate pseudo unique keys by creating a unique index on a JSON expression, foreign keys cannot be created on (or reference) JSON expressions. For a field to reference another column or be referenced by another column, it needs to be promoted into an actual column or perhaps even a table.</p>
+
+<p><strong>Not portable.</strong> This is a non-standard extension to SQL specific to PostgreSQL only. It cannot be used with other databases even if they have some JSON support as the actual implementation is probably very different. This means that the application will be locked in to PostgreSQL. In my view, there are worse things than being locked in to an open source technology. However again, it is up to the judgement of the stakeholders to determine whether this meets the needs of the business.</p>
+
+<p>Follow me on Twitter: <a href='https://twitter.com/tamasczinege' >@tamasczinege</a></p>]]></description><link>http://127.0.0.1/json-in-postgresql/</link><guid isPermaLink="false">e26b5bdf-1773-4c71-a98e-431f3cb81a1f</guid><category><![CDATA[PostgreSQL]]></category><category><![CDATA[JSON]]></category><dc:creator><![CDATA[Tamas Czinege]]></dc:creator><pubDate>Sun, 10 Nov 2013 22:56:01 GMT</pubDate></item><item><title><![CDATA[Introduction to Promises in JavaScript]]></title><description><![CDATA[<h2 id="callbackhell">Callback Hell</h2>
+
+<p>Callbacks are frequently used in both Node.js and client-side JavaScript to implement an asynchronous program flow.</p>
+
+<p>Perhaps the most common usages are jQuery’s AJAX callbacks, such as:</p>
+
+<pre><code>$.get('http://my-url', function(data) {
+    // this function will be invoked
+    // at some point in the future
+    // once the ajax request
+    // has completed successfully.
+});
+</code></pre>
+
+<p>Things get more complicated once multiple asynchronous steps are chained together:</p>
+
+<pre><code>$.get('http://my-url/0', function(data0) {
+    // callback #1
+    $.get('http://my-url/1', function(data1) {
+        // callback #2
+        $.post('http://my-url/2', function(data2) {
+            // callback #3
+        });
+    });
+});
+</code></pre>
+
+<p>This will get out of control rather quickly. Nested callbacks have other dangers aside from poor readability: error handling (exceptions cannot bubble up which means errors must always be handled locally) and flow control (limited if-else, loops). There exist several approaches that attempt to tackle the problem; this post is going to discuss promises, the technique that I believe offers the best solution.</p>
+
+<h2 id="promises">Promises</h2>
+
+<p>The principle is simple; a promise object represents a commitment by the framework to either accept it (resolve) or reject it at some undefined point in the future (possibly never). The outcome (either resolve or reject, never both) can only occur once per each promise object. When a promise is fulfilled (resolved or rejected), the framework invokes a callback function provided by the programmer. The callback can then return another promise thereby permitting them to be chained to one another. </p>
+
+<p>jQuery has inbuilt support for promises. This is what the previous example looks like using them:</p>
+
+<pre><code>// returns a promise
+$.get('http://my-url/0')    
+.then(function(data) {
+    // callback 1
+    // returns a promise
+    return $.get('http://my-url/1');   
+})
+.then(function(data) {
+    // callback 2
+    // returns a promise
+    return $.post('http://my-url/2');
+})
+.then(function(data) {
+    // callback 3
+});
+</code></pre>
+
+<p>The second line begins an AJAX request using jQuery; this function call returns a promise. The third line chains this promise by calling its <code>.then()</code> function. The argument given to <code>.then()</code> is a callback function that is invoked when the promise is resolved. The argument of this callback function (called data in the example) is the value the promise was originally resolved with. In the context of jQuery AJAX requests, the above happens when the request has completed successfully. The argument, then, is the data returned by the request.</p>
+
+<p>The callback function can do several things to affect the outcome of the promise:</p>
+
+<ul>
+<li>Return another promise (see line 6 of the example above). The parent promise (created by <code>.then()</code> in line 3) will be resolved or rejected when the returned promise (created by <code>$.get()</code> in line 6) is resolved or rejected. </li>
+<li>Return normally. This will immediately resolve the promise with the returned value.</li>
+<li>Throw an exception. This will result in the promise being immediately rejected.</li>
+</ul>
+
+<p>For improved readability, the previous example can be rewritten with named functions separating out the callbacks (lines 6-15) from the promise chain (lines 1-4):</p>
+
+<pre><code>$.get('http://my-url/0')   
+.then(callback1)
+.then(callback2)
+.then(callback3);
+
+function callback1(data) {
+    return $.get('http://my-url/1');
+}
+
+function callback2(data) {
+    return $.post('http://my-url/2');
+}
+
+function callback3(data) {
+}
+</code></pre>
+
+<h3 id="standards">Standards</h3>
+
+<p>There are a number of JavaScript libraries that help with the creation and manipulation of promises. Most implementations conform to the <a href='http://promises-aplus.github.io/promises-spec/' >Promises/A+</a> standard. While jQuery itself implements this standard, albeit partially, a much more complete implementation is provided by the <a href='https://github.com/kriskowal/q' >Q library</a>.</p>
+
+<h2 id="q">Q</h2>
+
+<p>Q works both in the browser and in Node.js; it is available in npm and bower. The basic usage of Q is very similar to that of jQuery owing to the aforementioned Promises/A+ standard. In fact, promises created by jQuery are accepted by Q:</p>
+
+<pre><code>Q.fcall(callback1)
+.then(callback2);
+
+Q.fcall(function() {
+    // the next line will return a jQuery
+    // promise that Q.fcall() accepts
+    // as if it was a Q promise:
+    return $.get('http://my-url');
+})
+.then(callback3);
+</code></pre>
+
+<p>Aside from the functionality mentioned above (immediate fulfilment of promises and chaining), Q also permits the creation of custom promises by using <em>deferred</em> objects. Deferred objects allow one to postpone the fulfilment (resolution or rejection) of a promise.</p>
+
+<pre><code>function waitForClick() {
+    var deferred = Q.defer();
+
+    $('#okButton').click(function() {
+        deferred.resolve();
+    });
+
+    $('#cancelButton').click(function() {
+        deferred.reject();
+    });
+
+    return deferred.promise;
+}
+
+Q.fcall(waitForClick)
+.then(function() {
+    // do something when ok button was clicked
+}, function() {
+    // do something when cancel button was clicked
+});
+</code></pre>
+
+<p>The second line in the sample above creates a deferred object. The promise of this deferred object is returned at the end of the function. When 'okButton' is clicked, Q is instructed to resolve the promise that was just returned. Alternatively, when 'cancelButton' is clicked the fulfilment of that same promise becomes a rejection. Remember, once a promise is fulfilled, regardless of whether it was resolved or rejected, it becomes immutable and cannot be fulfilled again.</p>
+
+<p>As usual, the first function passed in to <code>.then()</code> is invoked when the promise is resolved. The second function is a <em>rejection handler</em> that is invoked when the promise is rejected. </p>
+
+<p>If a promise is rejected but there is no rejection handler, Q will traverse the rest of the chain looking for one:</p>
+
+<pre><code>Q.fcall(myFunction1)
+.then(success1)
+.then(success2, failure1);
+</code></pre>
+
+<p>If <code>myFunction1</code> fails, <code>success1</code> will be skipped and <code>failure1</code> will be invoked. Similarly, if <code>success1</code> fails, <code>failure1</code> will also be invoked. However, the failure of <code>success2</code> will <strong>not</strong> result in <code>failure1</code> being invoked as the <code>.then()</code> in line 3 <strong>only</strong> handles the outcome of the previous lines.</p>
+
+<h3 id="utilityfunctionsinq">Utility Functions in Q</h3>
+
+<p>There are several convenience functions provided by Q that build on the functions above, offering shortcuts. </p>
+
+<h4 id="err">.err()</h4>
+
+<p>The function <code>.err(fn)</code> is equivalent to <code>.then(null, fn)</code>. That is, its argument is only invoked when a promise is rejected:</p>
+
+<pre><code>Q.fcall(function1)
+.then(function2)
+.err(error1)
+.then(function3);
+</code></pre>
+
+<h4 id="fin">.fin()</h4>
+
+<p>The <code>.fin()</code> function always invokes its argument. It plays a similar role to the <code>finally</code> statement in JavaScript and other programming languages:</p>
+
+<pre><code>Q.fcall(function1)
+.then(function2)
+.fin(cleanUpResources);
+</code></pre>
+
+<h4 id="nodejshelpers">Node.js helpers</h4>
+
+<p>There are also a number of utility functions to aid Node.js development. </p>
+
+<p>The <code>.nfcall()</code> function takes a Node.js-style function and wraps     it in a promise. So instead of</p>
+
+<pre><code>someNodeFunction(arg, function(err, value) {
+});
+</code></pre>
+
+<p>one can write</p>
+
+<pre><code>Q.nfcall(someNodeFunction, arg)
+.then(function(value) {
+    // success
+}, function(err) {
+    // error (rejection) handler
+});
+</code></pre>
+
+<p>Unfortunately, due to <a href='http://www.quirksmode.org/js/this.html' >some of the more questionable design decisions in JavaScript</a>, often it is necessary to invoke a function using its owner, e.g. <code>someLibrary.someFunction()</code>. This form binds <code>this</code> to the owner (<code>someLibrary</code>) within the scope of the function. Many libraries depend on this behaviour. Q provides <code>.ninvoke()</code> to assist in such cases. Again, instead of</p>
+
+<pre><code>someLibrary.someFunction(args, function(err, value) {
+});
+</code></pre>
+
+<p>one can write</p>
+
+<pre><code>Q.ninvoke(someLibrary, 'someFunction', args)
+.then(function(value) {
+    // success
+}, function(err) {
+    // error (rejection) handler
+});
+</code></pre>
+
+<p>Q also supplies <code>apply()</code>-style versions of these functions: <code>.nfapply()</code> and <code>.nfpost()</code>.</p>
+
+<h4 id="done">.done()</h4>
+
+<p>Finally, the <code>.done()</code> function reports any unhandled rejections on the console:</p>
+
+<pre><code>Q.fcall(function1)
+.then(function2)
+.fin(cleanUpResources)
+.done();
+</code></pre>
+
+<p>It is recommended to <strong>always</strong> close promise chains with <code>.done()</code> as it makes identifying issues easier.</p>]]></description><link>http://127.0.0.1/introduction-to-promises-in-javascript/</link><guid isPermaLink="false">92efa376-1353-459b-a075-d567e4465550</guid><category><![CDATA[JavaScript]]></category><category><![CDATA[promises]]></category><dc:creator><![CDATA[Tamas Czinege]]></dc:creator><pubDate>Sat, 19 Oct 2013 22:17:08 GMT</pubDate></item></channel></rss>

@@ -1,0 +1,1181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:feedburner="http://rssnamespace.org/feedburner/ext/1.0">
+<title />
+<link href="http://blog.huoc.org" />
+
+<updated>2013-03-22T10:08:41+01:00</updated>
+<id>tag:blog.huoc.org,2009:atom</id>
+<atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="self" type="application/atom+xml" href="http://feeds.huoc.org/ourshippy" /><feedburner:info uri="ourshippy" /><atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="hub" href="http://pubsubhubbub.appspot.com/" /><entry>
+<id>tag:blog.huoc.org,2009:posts/static-type-assert-c11</id>
+<link rel="alternate" type="text/html" href="http://feeds.huoc.org/~r/ourshippy/~3/nsylmSNUvTw/static-type-assert-c11.html" />
+<title>Statically asserting types in C11</title>
+<category term="c" />
+<category term="c11" />
+<category term="c99" />
+<category term="static_assert" />
+<category term="types" />
+<author><name>Nhat Minh Lê (rz0)</name></author>
+<published>2013-03-22T10:08:41+01:00</published>
+<updated>2013-04-07T13:09:32+02:00</updated>
+<content type="html">
+&lt;p&gt;Yesterday, at the lab. Just another day at work… but then! After
+wrapping up the last lemma of my proof, I spontaneously decided my
+labmate needed to know more about C and its typing system, and even
+though we discussed none of the stuff I’m going to talk about now, it
+brings me to today’s topic: how to force the compiler to do some type
+checking at compile time (in C11)?
+&lt;/p&gt;&lt;p&gt;That might be a bit of a dumb question, so let me clarify. The
+compiler does a lot of type checking by itself, but imagine that for
+some reason, you have two type names and you want to know whether they
+are the same. Of course, you could just look at them, but what if you
+want to do it &lt;em&gt;programmatically&lt;/em&gt;? What about if you had a value and
+a type name?
+&lt;/p&gt;&lt;p&gt;This blog post is all about trying to answer that, so, if you don’t
+really care about fun (modern) C tricks that you’ll probably never
+use, you can stop reading now. :-) If not…
+&lt;/p&gt;&lt;h3&gt;Checking whether two types are equal
+&lt;/h3&gt;&lt;p&gt;The setting is as follows: you have two type names &lt;code&gt;T&lt;/code&gt; and &lt;code&gt;U&lt;/code&gt;, that
+you probably got through layers and layers of hardcore preprocessor
+macroing. You’ve been dispatching, splitting, combining, and you’re
+now wondering whether that type &lt;code&gt;T&lt;/code&gt; the user gave you matches the type
+&lt;code&gt;U&lt;/code&gt; of the specialized routine you’ve selected — just as
+a precaution. (We’ll assume the types are &amp;quot;simple types&amp;quot; that only
+have a left-hand-side component.)
+&lt;/p&gt;&lt;h4&gt;Solution 1: with variable definitions
+&lt;/h4&gt;&lt;p&gt;There’s a couple of things you can try, depending on the current
+syntactic context. If you have access to variable definitions (at file
+or function scope) and don’t mind relying on dead code elimination
+from your compiler, you can simply create two variables and try to
+assign one to the other, like so:
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;#define CHECK_TYPE_COMPAT(T, U) T t; U u = t
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;If &lt;code&gt;U&lt;/code&gt; can’t be assigned to &lt;code&gt;T&lt;/code&gt;, the program won’t type check and the
+compiler will complain. Assignment is great since almost every type
+has it (exceptions being arrays and incomplete types). There’s one
+problem, however: &lt;code&gt;CHECK_TYPE_COMPAT(int *, const int *)&lt;/code&gt; compiles
+happily. You might be tempted to write the following, then:
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;#define CHECK_TYPE_COMPAT(T, U) T t0; U u0 = t0; U u1; T t1 = u1
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;It does solve the above issue, but what about &lt;code&gt;CHECK_TYPE_COMPAT(void
+*, int *)&lt;/code&gt; or &lt;code&gt;CHECK_TYPE_COMPAT(double, int)&lt;/code&gt;? Obviously, this method
+does not work well if you want to test compatibility (equality, in
+standard jargon), but sometimes you just want to know whether &lt;code&gt;U&lt;/code&gt; is
+assignable to &lt;code&gt;T&lt;/code&gt;, and for that purpose, it’s a fine technique.
+&lt;/p&gt;&lt;p&gt;Another issue here is that you’re creating variables. In function
+scope, you can put a block around your definitions, to isolate them;
+however, at the top level, you’ll have to mint variable names, e.g.,
+with &lt;code&gt;__LINE__&lt;/code&gt;.
+&lt;/p&gt;&lt;h4&gt;Solution 2: with &lt;code&gt;typedef&lt;/code&gt;
+&lt;/h4&gt;&lt;p&gt;With C11, you now have a pretty nifty alternative in the form of
+&lt;code&gt;typedef&lt;/code&gt;. Of course, &lt;code&gt;typedef&lt;/code&gt; itself is hardly a new
+construct. What’s new, however, is that you can now have multiple
+definitions of a &lt;code&gt;typedef&lt;/code&gt; name. The only constraint is that they must
+be equal… which is exactly what we’re looking for!
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;#define CHECK_TYPE_COMPAT(T, U)                     \
+    typedef T TC##__LINE__; typedef U TC##__LINE__
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;And here you go, manual type checking for everybody! And we don’t even
+generate variables anymore. Isn’t that perfect?
+&lt;/p&gt;&lt;p&gt;Well, of course, the answer is no; using &lt;code&gt;__LINE__&lt;/code&gt; means you can only
+have one of these per line, which may become problematic if you’re
+macro-expanding a lot, but there isn’t much you can do about it as
+long as you rely on introducing declarations. Besides, it doesn’t work
+everywhere…
+&lt;/p&gt;&lt;h4&gt;Solution 3: with assignments
+&lt;/h4&gt;&lt;p&gt;If you’ve been following, you should notice that the previous
+solutions only work if you have access to declarations, which excludes
+cases when you’d like to do it from within expressions. For these
+special occasions, you can use assignments instead… which brings us
+to a related but slightly different problem.
+&lt;/p&gt;&lt;h3&gt;Checking whether a value can be assigned to a type
+&lt;/h3&gt;&lt;p&gt;Here’s another story: you are given a type name &lt;code&gt;T&lt;/code&gt; and an expression
+&lt;code&gt;x&lt;/code&gt;. You want to know whether you could assign &lt;code&gt;x&lt;/code&gt; to an object of
+type &lt;code&gt;T&lt;/code&gt;. That’s a pretty legitimate situation when writing type-aware
+and other kinds of pseudo-polymorphic macros, I guess.
+&lt;/p&gt;&lt;p&gt;In any case, this check most probably needs to take place in the
+context of an expression, otherwise, &lt;code&gt;x&lt;/code&gt; would be pretty limited. So,
+let’s assume we are in an expression. We can’t declare any new
+variable, so the previous tricks won’t work. But C99 offers a nice
+little feature I’m sure you all know and love (I do): compound
+litterals.
+&lt;/p&gt;&lt;p&gt;Compound litterals are nice in that they let you create anonymous
+aggregate values… but they don’t actually need to be constant. In
+the general case, compount litterals introduce anonymous
+objects. Using that fact, we can come up with a first attempt:
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;#define CHECK_ASSIGNABLE(T, x) ((T){ 0 } = (x))
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;To check whether you can assign &lt;code&gt;x&lt;/code&gt; to an object of type &lt;code&gt;T&lt;/code&gt;… simply
+create an object of type &lt;code&gt;T&lt;/code&gt; and try to assign to it. You need to pass
+something inside the braces, so I put &lt;code&gt;0&lt;/code&gt;. It’s fine, though, since
+zero is the default initializer for every type in C.
+&lt;/p&gt;&lt;p&gt;Now, the only issue is that we just want to &lt;em&gt;check&lt;/em&gt;, not read the
+value of &lt;code&gt;x&lt;/code&gt; (which might be a side-effecting expression). Time to
+apply the good old tricks to deny evaluation! Finally, we get
+something like this:
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;#define CHECK_ASSIGNABLE(T, x) (0 &amp;amp;&amp;amp; ((T){ 0 } = (x)))
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This concludes this short blog post. You can try it at home, too, if
+your compiler supports C99 (or C11 for the &lt;code&gt;typedef&lt;/code&gt; method
+above). Also, I haven’t given any code for solution 3; it’s very
+similar to &lt;code&gt;CHECK_ASSIGNABLE&lt;/code&gt;. I’ll leave it as an exercise to the
+bored reader. If you’re really bored, you could also try to think
+about what the limits of these techniques are — of course, they have
+shortcomings, since they’re basically hacks, but in a sense, I find it
+amazing enough that such tricks exist (and work) in the first place.
+&lt;/p&gt;
+&lt;img src="http://feeds.feedburner.com/~r/ourshippy/~4/nsylmSNUvTw" height="1" width="1"/&gt;</content>
+<feedburner:origLink>http://blog.huoc.org/static-type-assert-c11.html</feedburner:origLink></entry>
+<entry>
+<id>tag:blog.huoc.org,2009:posts/assertions-defensif</id>
+<link rel="alternate" type="text/html" href="http://feeds.huoc.org/~r/ourshippy/~3/sJ2NEbevV6Q/assertions-defensif.html" />
+<title>Le C et ses raisons : assertions ou programmation défensive ?</title>
+<category term="assert" />
+<category term="c" />
+<category term="contrats" />
+<category term="débutants" />
+<category term="test" />
+<author><name>Nhat Minh Lê (rz0)</name></author>
+<published>2012-06-11T23:48:11+02:00</published>
+<updated>2012-06-11T23:48:11+02:00</updated>
+<content type="html">
+&lt;div class="Edito"&gt;&lt;p&gt;Je profite d’une &lt;a class="extern" href="http://www.siteduzero.com/forum-83-775787-p1-verification-des-parametres-d-une-fonction.html"&gt;question récente sur le Site du
+  Zéro&lt;/a&gt; pour écrire un petit billet sur un sujet que je
+voulais aborder depuis un moment : les assertions, leur usage en C,
+et le lien avec la programmation par contrats ainsi que la
+programmation dite défensive.
+&lt;/p&gt;&lt;/div&gt;&lt;h3&gt;Le problème
+&lt;/h3&gt;&lt;p&gt;Le contexte est le suivant : on a une fonction, qui accepte des
+arguments et renvoie un résultat (valeur de retour, ou en écrivant
+dans des pointeurs passés en arguments). Ça ne casse pas de briques,
+pour l’instant.
+&lt;/p&gt;&lt;p&gt;Dans un monde idéal, chaque paramètre de la fonction a un type qui
+décrit toutes les valeurs qu’un argument peut prendre, et s’il
+y a erreur de typage à la compilation, c’est que l’on s’est planté
+dans notre logique de programme.
+&lt;/p&gt;&lt;p&gt;En pratique, ça ne se passe jamais comme ça dans un langage avec un
+système de types (très) faible comme le C. On n’a pas de type pour
+dire « un entier entre 1 et 10 » ou encore « un pointeur valide » ;
+clairement, il y a des valeurs pour lesquelles la fonction ne peut pas
+faire ce pour quoi elle est prévue.
+&lt;/p&gt;&lt;p&gt;Prenons un exemple, une fonction pas très utile qui ajoute un entier
+à une variable en mémoire et retourne l’ancienne valeur, avant
+addition :
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;int
+exchange_add(int *p, int x)
+{
+    int old = *p;
+    *p += x;
+    return old;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Que peut-on dire de cette fonction ? Quelles sont les valeurs valides
+en entrée ? Quel est le domaine des valeurs de retour ?
+&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Le paramètre &lt;code&gt;p&lt;/code&gt; doit être un pointeur valide sur un &lt;code&gt;int&lt;/code&gt;. En
+particulier, &lt;code&gt;p&lt;/code&gt; ne peut pas être nul ; mais sont également exclus
+les pointeurs vers d’autres types d’objets, ou de la mémoire non
+allouée.
+&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;La somme de &lt;code&gt;*p&lt;/code&gt; et &lt;code&gt;x&lt;/code&gt; ne doit pas dépasser &lt;code&gt;INT_MAX&lt;/code&gt;, car les
+dépassements entiers en C sont indéfinis.
+&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;La valeur de retour, quant à elle, peut être un peu n’importe quoi.
+&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;On voit donc que le domaine (en entrée) sur lequel la fonction est
+réellement définie est bien loin de ce que laisserait croire le
+typage. Que peut-on faire ?
+&lt;/p&gt;&lt;h3&gt;Solution 1 : ne rien faire
+&lt;/h3&gt;&lt;p&gt;Bah oui, l’appelant n’a qu’à pas faire de bêtises ! S’il fait
+n’importe quoi, c’est de sa faute, nah…
+&lt;/p&gt;&lt;h3&gt;Solution 2 : agrandir le domaine de définition
+&lt;/h3&gt;&lt;p&gt;Une solution plus conciliante est d’étendre le domaine de définition,
+en traitant à part certaines valeurs qui causeraient une erreur avec
+le code précédent, par exemple en ne faisant rien quand &lt;code&gt;p&lt;/code&gt; est nul :
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;int
+exchange_add(int *p, int x)
+{
+    if (p == NULL)
+        return 0;
+    int old = *p;
+    *p += x;
+    return old;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;exchange_add&lt;/code&gt; est maintenant définie pour une valeur supplémentaire :
+le pointeur nul. Cela nous pose un problème, toutefois, quant à la
+valeur à retourner… on peut choisir quelque chose d’arbitraire,
+comme zéro, ou changer la signature de la fonction pour pouvoir
+identifier les cas exceptionnels ; c’est selon les besoins.
+&lt;/p&gt;&lt;p&gt;Cette méthode s’appelle la programmation défensive : on essaie
+d’anticiper les erreurs possibles et de les ajouter au domaine de
+définition. Il faut remarquer, cependant, qu’en général il est
+impossible de couvrir toutes les valeurs possibles autorisées par le
+typage, ne serait-ce que parce que l’on n’a typiquement aucun moyen de
+savoir si un pointeur est valide…
+&lt;/p&gt;&lt;h3&gt;Solution 3 : détecter et prévenir
+&lt;/h3&gt;&lt;p&gt;Entre les deux extrêmes ci-dessus, on a une solution intermédiaire qui
+consiste à effectuer les tests comme si l’on programmait
+défensivement… sauf qu’au lieu de renvoyer un résultat, on se
+contente de détecter le problème… Détecter le problème ? Mais
+pourquoi faire ?
+&lt;/p&gt;&lt;p&gt;Le plus souvent, il s’agit d’en avertir le programmeur, généralement
+par un petit message dans une sortie de débogage ou juste sur
+&lt;code&gt;stderr&lt;/code&gt;. Une fois l’avertissement envoyé, on a plusieurs choix :
+&lt;/p&gt;&lt;ul&gt;&lt;li&gt;quitter le programme ;
+&lt;/li&gt;&lt;li&gt;quitter la fonction ;
+&lt;/li&gt;&lt;li&gt;continuer comme si de rien n’était ;
+&lt;/li&gt;&lt;li&gt;ou éventuellement emprunter un chemin non local (p.ex. avec un
+&lt;code&gt;longjmp&lt;/code&gt;, ce qui se traduirait dans d’autres langages par une
+exception).
+&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;La décision de prévenir l’utilisateur du programme et l’action qui
+suit dépendent le plus souvent de la nature de l’exécution. Si c’est
+le programmeur même qui fait tourner son programme à des fins de
+tests, l’avertir est la moindre des choses, et arrêter le programme,
+afin qu’il puisse être débogué, n’est pas une mauvaise idée. En
+production… tout dépend des contraintes et des mécanismes de
+secours disponibles.
+&lt;/p&gt;&lt;p&gt;Cette approche est basée sur l’idée de contrats : la notion que c’est
+à l’appelant d’établir un certain nombre de conditions avant de passer
+la main à la fonction sous contrats. Celle-ci est libre de vérifier
+ses termes par prudence et par courtoisie, mais rien ne l’y
+contraint. Entre autres, si certaines propriétés ne sont pas vérifiées
+pour une raison ou une autre (trop compliquées ou impossibles
+à vérifier, p.ex. qu’un pointeur non nul est valide), aucune garantie
+n’est donnée. La différence fondamentale avec la programmation
+défensive est que le domaine de définition de la fonction ne change
+pas. Encore une fois, &lt;em&gt;aucune garantie&lt;/em&gt;.
+&lt;/p&gt;&lt;h3&gt;Assertions et contrats
+&lt;/h3&gt;&lt;p&gt;J’ai mentionné &lt;code&gt;assert&lt;/code&gt; dans mon titre, mais quel est donc le rapport
+avec tout ça ?
+&lt;/p&gt;&lt;p&gt;&lt;code&gt;assert&lt;/code&gt; est une macro-fonction définie dans &lt;code&gt;assert.h&lt;/code&gt;. Elle teste
+une condition qui &lt;em&gt;devrait&lt;/em&gt; être vérifiée ; et si ce n’est pas le
+cas… &lt;i&gt;boum&lt;/i&gt; ! &lt;code&gt;assert&lt;/code&gt; avertit l’utilisateur sur &lt;code&gt;stderr&lt;/code&gt; avant de
+quitter le programme. Si vous avez suivi, c’est l’un des cas de figure
+évoqués dans la troisième solution ci-dessus. Par exemple :
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;int
+exchange_add(int *p, int x)
+{
+    assert(p != NULL);
+    int old = *p;
+    *p += x;
+    return old;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Un autre scénario est également pris en charge, avec la macro
+&lt;code&gt;NDEBUG&lt;/code&gt; ; si celle-ci est définie par l’utilisateur avant d’inclure
+&lt;code&gt;assert.h&lt;/code&gt; (typiquement &lt;i&gt;via&lt;/i&gt; l’invocation du compilateur), les appels
+à la macro &lt;code&gt;assert&lt;/code&gt; sont sans effets. Cela correspond au cas de figure
+où aucun avertissement n’est émis, et le programme tente de continuer
+malgré la violation de contrat.
+&lt;/p&gt;&lt;p&gt;En pratique, &lt;code&gt;assert&lt;/code&gt; est rarement suffisant ; on a souvent envie d’un
+mécanisme plus flexible (plus finement configurable, affichant plus
+d’informations pour le débogage, etc.), et il n’est pas rare de se
+créer sa propre collection de macros similaires.
+&lt;/p&gt;&lt;h3&gt;Conclusion : assertions ou défensif ?
+&lt;/h3&gt;&lt;p&gt;Finalement, la programmation défensive n’est-elle pas juste un cas
+particulier de la solution 3 ? Si l’on se place hors du contexte
+immédiat du C, et que l’on regarde des langages tels que Java, il est
+courant de lever une exception au lieu de retourner une valeur ;
+est-ce défensif, ou par contrats ?
+&lt;/p&gt;&lt;p&gt;Au fond, peu importe. L’important est de savoir ce que l’on fait, et
+savoir l’expliquer. Il y a beaucoup de nuances, et chacun a ses
+préférences. Si je devais me prononcer, je dirais que c’est surtout
+une question philosophique, à la base : les valeurs supplémentaires
+prises en charge dans les tests font-elles partie du domaine de
+définition de la fonction ? Autrement dit, est-ce qu’un utilisateur
+peut légitimement prétendre passer &lt;code&gt;NULL&lt;/code&gt; à ma fonction
+&lt;code&gt;exchange_add&lt;/code&gt; ? Est-ce un comportement que j’estime valide et que je
+souhaite garantir ? Pour moi, non, mais c’est essentiellement une
+question de goûts.
+&lt;/p&gt;&lt;p&gt;À titre personnel, je dirais qu’avec le temps, je me suis mis à écrire
+du code avec de plus en plus d’assertions (ou équivalents). Ce n’est
+pas tant une décision idéologique que pragmatique : cela m’aide
+à tester et déboguer, sans m’imposer la lourdeur et le coût de la
+programmation défensive.  En pratique, cela me permet d’écrire des
+contrats relativement élaborés, ou pour de petites fonctions
+fréquemment appelées (p.ex. des accesseurs) pour lesquelles la
+programmation défensive est souvent exclue pour des raisons de
+performances en production.&lt;sup&gt;1&lt;/sup&gt;
+&lt;/p&gt;&lt;div class="Notes"&gt;&lt;p class="note"&gt;&lt;dfn class="notedfn"&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/dfn&gt; Si j’ai le temps et la motivation, je publierai peut-être un
+autre billet sur ce que j’ai appris (par l’expérience) sur
+l’écriture de contrats dans la pratique.
+&lt;/p&gt;&lt;/div&gt;&lt;h3&gt;Bonus : quelle résolution après une assertion fausse ?
+&lt;/h3&gt;&lt;p&gt;J’ai évoqué plus haut que l’on avait plusieurs possibilités quant à la
+résolution d’une assertion fausse : on peut ne rien faire, quitter le
+programme, etc.
+&lt;/p&gt;&lt;p&gt;Ne rien faire (pour du code en production) et prévenir puis quitter le
+programme (en phase de test) sont des options populaires, probablement
+parce que ce sont les choix par défauts disponibles avec
+&lt;code&gt;assert&lt;/code&gt;. Juste afficher un avertissement et continuer est également
+très répandu, pour du code destiné à l’utilisateur final.
+&lt;/p&gt;&lt;p&gt;Mais qu’en est-il du scénario où l’on veut pouvoir se rattraper ?
+Continuer comme si de rien n’était va probablement engendrer des
+comportements bizarres au mieux, et juste planter le programme un peu
+plus loin dans beaucoup de cas.
+&lt;/p&gt;&lt;p&gt;Si l’on a du courage, on peut opter pour un style défensif (mais cela
+demande à ce que toute l’application soit construite autour de cette
+approche, pour propager et gérer correctement les erreurs
+« imprévues »), et dérouler la pile jusqu’à atteindre un état que l’on
+considère stable ou récupérable (bonne chance…).
+&lt;/p&gt;&lt;p&gt;De manière similaire, si l’on a un système d’exceptions ou équivalent
+en place, on peut l’utiliser pour dérouler la pile. On substitue la
+gestion délicate des ressources non locales (pensez RAII en C++ ou
+&lt;code&gt;finally&lt;/code&gt; en Java, et imaginez vous faire ça en C…) à la lourdeur de
+devoir gérer des codes d’erreurs en retour des fonctions appelées.
+&lt;/p&gt;&lt;p&gt;L’un ou l’autre, c’est beaucoup de boulot, et risqué en même
+temps. Risqué parce qu’une petite erreur imprévue dans la gestion des
+erreurs imprévues (autant dire que cela ne manquera pas de se
+produire…) peut vite compromettre l’état « stable » duquel on
+souhaite repartir (fuites de ressources, corruption mémoire, et j’en
+passe).
+&lt;/p&gt;&lt;p&gt;Et puis, parfois, il est tout simplement trop tard : si l’on détecte
+une valeur aberrante dans un champ de structure, il est tout à fait
+possible que la mémoire soit vastement corrompue, et que quelqu’un ait
+écrit des choses où il ne fallait pas, y compris, par hasard, là où
+l’on a eu la bonne idée de regarder… Le C tout seul ne fournit pas
+vraiment les bons outils pour garder tout cela sous contrôle…
+&lt;/p&gt;&lt;p&gt;Il n’y a pas une réponse unique à ce problème : « que faire quand le
+programme rencontre une erreur fatale » est une question difficile et
+mérite généralement que l’on s’y intéresse de manière spécifique.
+C’est le but des stratégies de secours (&lt;i&gt;fallback&lt;/i&gt; en anglais) dans
+les systèmes complexes et importants. Soudainement mettre fin au
+programme peut paraître brutal, mais c’est parfois une option tout
+à fait viable, si par exemple un mécanisme de réplication se charge de
+prendre le relais.
+&lt;/p&gt;&lt;p&gt;Mais tout cela dépasse d’un peu loin le cadre de ce modeste
+billet. :-)
+&lt;/p&gt;
+&lt;img src="http://feeds.feedburner.com/~r/ourshippy/~4/sJ2NEbevV6Q" height="1" width="1"/&gt;</content>
+<feedburner:origLink>http://blog.huoc.org/assertions-defensif.html</feedburner:origLink></entry>
+<entry>
+<id>tag:blog.huoc.org,2009:posts/indirect-call-inlining</id>
+<link rel="alternate" type="text/html" href="http://feeds.huoc.org/~r/ourshippy/~3/KeN_1mMk4PQ/indirect-call-inlining.html" />
+<title>Does your compiler handle indirect function call folding and inlining?</title>
+<category term="c" />
+<category term="c99" />
+<category term="functions" />
+<category term="inlining" />
+<category term="optimization" />
+<category term="pointers" />
+<author><name>Nhat Minh Lê (rz0)</name></author>
+<published>2012-06-09T10:16:32+02:00</published>
+<updated>2012-06-09T10:16:32+02:00</updated>
+<content type="html">
+&lt;p&gt;Every once in a while, I ask myself this question: does my C&lt;sup&gt;1&lt;/sup&gt;
+compiler correctly optimize &lt;em&gt;it&lt;/em&gt;? And today, &lt;em&gt;it&lt;/em&gt; is indirect function
+call inlining. I usually poke around the output of various compilers
+I use, every few months or so, to see how their understanding of my
+code has evolved… but this time around I decided to write something
+a bit more structured so I could share it with whoever might be
+interested in the same data.
+&lt;/p&gt;&lt;p&gt;You can find the &lt;a class="extern" href="http://git.huoc.org/?p=finline-test.git;a=summary"&gt;code and listings on my Git page&lt;/a&gt; and
+the &lt;a class="extern" href="http://www.huoc.org/~minh/finline.html"&gt;HTML-formatted results on its own web page&lt;/a&gt;. But
+what is this all about?
+&lt;/p&gt;&lt;div class="Notes"&gt;&lt;p class="note"&gt;&lt;dfn class="notedfn"&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/dfn&gt; This whole test was designed for C and C compilers. Though it
+is also probably relevant to C++ to the extent that most of the
+tested compilers also process C++, the test code and patterns are
+not what you’d typically find in C++. Hence, how meaningful this
+information may be to the average C++ programmer is questionable.
+&lt;/p&gt;&lt;/div&gt;&lt;h3&gt;What is being tested
+&lt;/h3&gt;&lt;p&gt;The tests exercise various scenarios involving inlining in the
+presence of indirect function calls through function
+pointers. Inlining can occur at different levels: for the outer
+function being directly called, and for the function arguments called
+from within the first inlined function. To make this completely clear,
+let’s look at an example:
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;static inline int foo(int (int));
+static inline int f0(int);
+
+static inline int
+foo(int f(int))
+{
+    return f(42);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;When &lt;code&gt;foo(f0)&lt;/code&gt; is called somewhere, and if the compiler decides to
+inline it, then it also gets an opportunity to &lt;em&gt;fold&lt;/em&gt; and &lt;em&gt;inline&lt;/em&gt;
+&lt;code&gt;f0&lt;/code&gt; at its call site.
+&lt;/p&gt;&lt;p&gt;I won’t go into the details of what each test does; you should really
+read the description on the &lt;a class="extern" href="http://www.huoc.org/~minh/finline.html"&gt;results page&lt;/a&gt; and then &lt;a class="extern" href="http://git.huoc.org/?p=finline-test.git;a=blob;f=finline.c"&gt;the
+code&lt;/a&gt; for yourself. Things to look out for:
+&lt;/p&gt;&lt;ol&gt;&lt;li&gt;&lt;p&gt;Inlining of &lt;em&gt;direct calls&lt;/em&gt; (outer function and subsequent calls in
+the direct chain between &lt;code&gt;call_*&lt;/code&gt; functions). This should be
+trivial.
+&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;&lt;em&gt;Folding&lt;/em&gt; of known function constants. This is where things are
+likely to go wrong. The tests exhibit various ways to pass the
+function pointer constants around: as arguments or in a constant
+structure (compound literal or &lt;code&gt;const&lt;/code&gt; variable); with explicit
+typing or hidden behind a void pointer.
+&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Elimination of &lt;em&gt;indirect calls&lt;/em&gt; (either into a direct call or
+inline call when possible), after the folding pass. This is not
+difficult &lt;i&gt;per se&lt;/i&gt; once constant propagation has been done, but some
+compilers &amp;quot;forget&amp;quot; to do so.
+&lt;/p&gt;&lt;/li&gt;&lt;/ol&gt;&lt;p&gt;One thing that has &lt;em&gt;not&lt;/em&gt; been tested is indirect call chaining, as it
+is really not that common in C (maybe due to the cumbersome syntaxe
+associated).
+&lt;/p&gt;&lt;h3&gt;Why it matters
+&lt;/h3&gt;&lt;p&gt;A rather difficult question, really. Truth be told, it may not matter
+to you. The kind of scenario described here most prominently arises
+when inline functions are used for their generative properties, rather
+than simply to make some call faster.&lt;sup&gt;2&lt;/sup&gt;
+&lt;/p&gt;&lt;p&gt;For example, you could imagine having two versions of &lt;code&gt;qsort&lt;/code&gt;: the
+default one, which exists as an external definition, and
+a specializable one, which expands inline. Defining specialized
+versions of &lt;code&gt;qsort&lt;/code&gt; would then be a matter of wrapping the inline call
+in a definition of your own.
+&lt;/p&gt;&lt;p&gt;Whether this is &amp;quot;good&amp;quot;, &amp;quot;bad&amp;quot;, &amp;quot;interesting&amp;quot;, or downright &amp;quot;awful&amp;quot;, is
+for you to decide. But if, like me, you think that this may have fun
+applications, then you should check first that whatever compilers you
+wish to build with do the job. And this is why I wrote this little
+test.
+&lt;/p&gt;&lt;div class="Notes"&gt;&lt;p class="note"&gt;&lt;dfn class="notedfn"&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/dfn&gt; In a sense, as opposed to how we used to write macros to get
+&amp;quot;faster functions&amp;quot;, we can now — with enough compiler support —
+write inline functions instead of macros to generate code. Inlining
+replaces macro expansion, and constant propagation does a similar
+job to argument substitution.
+&lt;/p&gt;&lt;/div&gt;&lt;h3&gt;Conclusions
+&lt;/h3&gt;&lt;p&gt;From the results, I think we can draw a few general conclusions:
+&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Non-optimizing compilers such as PCC predictably produce code that
+does not take advantage of the inlining and folding opportunities;
+when using such a compiler, using inline expansions to generate code
+is likely to just bloat your program without much guaranteed gain
+(there should be a trade-off there between increased code size,
+which impacts code caching negatively, and separate call sites,
+which improves indirect call prediction).
+&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Passing known functions as direct arguments seems to work reasonably
+well for all optimizing compilers. In the worst case, no further
+inlining takes place after constant folding (ICC and old GCC 3.x),
+but at least indirect calls have been eliminated.
+&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Passing functions in structures yields mixed results. Compound
+literals and constant variables do not behave the same but incur
+different penalties depending on the compiler (ICC prefers literals
+but old GCC does better with constant variables).
+&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Overall, if you want to cater to the widest range of (optimizing)
+compilers, keeping to immediate parameters is the safest choice. For
+modern C99 compilers only, I believe compound literals will become (if
+they’re not already) a viable alternative in the near future.
+&lt;/p&gt;
+&lt;img src="http://feeds.feedburner.com/~r/ourshippy/~4/KeN_1mMk4PQ" height="1" width="1"/&gt;</content>
+<feedburner:origLink>http://blog.huoc.org/indirect-call-inlining.html</feedburner:origLink></entry>
+<entry>
+<id>tag:blog.huoc.org,2009:posts/pointeurs-restrict</id>
+<link rel="alternate" type="text/html" href="http://feeds.huoc.org/~r/ourshippy/~3/ZC4XAqDTA28/pointeurs-restrict.html" />
+<title>Le C et ses raisons : les pointeurs restreints</title>
+<category term="aliasing" />
+<category term="c" />
+<category term="c99" />
+<category term="débutants" />
+<category term="optimisation" />
+<category term="pointeurs" />
+<category term="restrict" />
+<author><name>Nhat Minh Lê (rz0)</name></author>
+<published>2012-05-29T17:21:51+02:00</published>
+<updated>2012-05-29T22:05:50+02:00</updated>
+<content type="html">
+&lt;div class="Edito"&gt;&lt;p&gt;Après un an et demi de pause, le &lt;em&gt;Code et ses raisons&lt;/em&gt; revient !
+Dans ce nouvel épisode, je vais vous parler des pointeurs
+restreints, introduits en C99 avec le mot-clef &lt;code&gt;restrict&lt;/code&gt;. C’est une
+question qui revient souvent parmi les enthousiastes qui découvrent
+le C99… Les explications sur Internet (merci Google) ne manquent
+pas, mais comme on m’a posé la question plusieurs fois, je me suis
+dit que j’allais rédiger ma propre réponse une bonne fois pour toute
+dans un petit billet !
+&lt;/p&gt;&lt;/div&gt;&lt;h3&gt;&lt;code&gt;restrict&lt;/code&gt;, où, comment ?
+&lt;/h3&gt;&lt;p&gt;Hop, dans le vif du sujet ! &lt;code&gt;restrict&lt;/code&gt; est un qualificateur de type
+(comme &lt;code&gt;const&lt;/code&gt; ou &lt;code&gt;volatile&lt;/code&gt;) ajouté en C99. Il ne s’applique qu’aux
+types pointeurs. Syntaxiquement, pas de problème donc… il suffit de
+se rappeler que les qualificateurs se placent &lt;em&gt;à droite&lt;/em&gt; du signe &lt;code&gt;*&lt;/code&gt;
+qui déclare le pointeur :
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;int * restrict        // pointeur restreint sur int
+int * restrict *      // pointeur sur pointeur restreint sur int
+int restrict *        // ILLÉGAL
+int ** restrict       // pointeur restreint sur pointeur sur int
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Un peu comme pour pointeur sur &lt;code&gt;const&lt;/code&gt;, un pointeur normal peut être
+affecté à un pointeur déclaré &lt;code&gt;restrict&lt;/code&gt;. Mais l’inverse est également
+vrai. En fait, &lt;code&gt;restrict&lt;/code&gt; n’a pas beaucoup d’influence sur le typage
+à la compilation ; ses effets sont d’ordre dynamique.
+&lt;/p&gt;&lt;h3&gt;Une définition intuitive
+&lt;/h3&gt;&lt;p&gt;Si vous lisez la description de la norme à propos de &lt;code&gt;restrict&lt;/code&gt; (toute
+une section lui est dédiée), vous vous rendrez vite compte que c’est
+assez indigeste. Même avec l’habitude de lire des spécifications, des
+références et des normes, la définition n’en demeure pas moins
+relativement obscure…
+&lt;/p&gt;&lt;p&gt;Mais, en essence, quelle est l’intention derrière &lt;code&gt;restrict&lt;/code&gt; ? Il faut
+savoir que &lt;code&gt;restrict&lt;/code&gt; n’est utile que dans le contexte d’optimisations
+du compilateur. Vous ne gagnez rien en ce qui concerne
+l’expressivité ; au contraire, en utilisant &lt;code&gt;restrict&lt;/code&gt;, vous &lt;em&gt;vous&lt;/em&gt;
+imposez des contraintes supplémentaires. Déclarer un pointeur comme
+restreint, c’est assurer au compilateur que vous avez pris soin de
+vérifier certaines hypothèses pour lui, qu’il pourra utiliser pour
+mieux optimiser votre code. Mais quelles hypothèses au juste ?
+&lt;/p&gt;&lt;p&gt;L’idée est d’avoir un unique pointeur (le pointeur restreint) vers une
+zone mémoire qui lui est attitrée. Tant qu’il existe (tant que l’on se
+trouve dans la durée de vie de la variable correspondante), aucun
+autre pointeur ne peut être utilisé pour accéder au même objet en
+mémoire… à moins d’en avoir hérité le titre. En effet, affecter un
+pointeur (ou le résultat d’une opération sur celui-ci) à un autre lui
+transfère non seulement la valeur, mais également les droits d’accès
+du premier.
+&lt;/p&gt;&lt;h3&gt;La règle du pouce
+&lt;/h3&gt;&lt;p&gt;En fait, il est très courant de supposer cette propriété sans s’en
+apercevoir : la plupart du temps, dans un contexte donné, on accède
+à chaque objet séparément, &lt;i&gt;via&lt;/i&gt; son propre pointeur. On peut
+éventuellement en faire une copie, ou prendre l’adresse d’un de ses
+sous-éléments (p.ex. un membre d’une structure ou un élément d’un
+tableau), mais tout va bien, car ce faisant, on se donne le droit
+d’utiliser ces nouveaux pointeurs pour accéder à la même zone mémoire.
+&lt;/p&gt;&lt;p&gt;Votre compilateur est suffisamment intelligent pour comprendre que si
+un pointeur &lt;code&gt;q&lt;/code&gt; prend pour valeur le résultat d’un calcul basé sur un
+autre pointeur &lt;code&gt;p&lt;/code&gt;, alors &lt;code&gt;q&lt;/code&gt; doit aussi pouvoir avoir accès aux mêmes
+éléments. (Et c’est garanti par la norme.)
+&lt;/p&gt;&lt;p&gt;En pratique, &lt;code&gt;restrict&lt;/code&gt; se comporte quasiment comme nous l’avons
+décrit jusqu’ici, à l’exception que la norme spécifie quelques
+subtilités concernant l’écriture. On peut résumer son fonctionnement
+en deux règles pas trop compliquées. Soit &lt;code&gt;p&lt;/code&gt; un pointeur restreint
+(déclaré &lt;code&gt;T * restrict p&lt;/code&gt;), alors :
+&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Soit la valeur pointée par &lt;code&gt;p&lt;/code&gt; n’est jamais modifiée durant toute la
+durée de vie de &lt;code&gt;p&lt;/code&gt;, et &lt;code&gt;restrict&lt;/code&gt; ne garantit rien de spécial dans
+ce cas.
+&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Soit la valeur pointée par &lt;code&gt;p&lt;/code&gt; change à un moment ou un autre durant
+la vie de &lt;code&gt;p&lt;/code&gt; (directement dans la fonction qui a déclaré &lt;code&gt;p&lt;/code&gt;, ou
+indirectement dans une des fonctions appelée par celle-ci), et dans
+ce cas seulement &lt;code&gt;restrict&lt;/code&gt; postule que tout accès à cette valeur
+(en lecture ou en écriture) durant la durée de vie de &lt;code&gt;p&lt;/code&gt; doit
+passer par &lt;code&gt;p&lt;/code&gt; (directement, ou indirectement &lt;i&gt;via&lt;/i&gt; un pointeur
+résultant d’une opération sur &lt;code&gt;p&lt;/code&gt;).
+&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;Dans la pratique
+&lt;/h3&gt;&lt;p&gt;Des règles ci-dessus, nous pouvons déduire deux cas de figure
+pratiques :
+&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Un pointeur restreint sur un objet constant (&lt;code&gt;T const * restrict&lt;/code&gt;)
+garantit que durant toute sa durée de vie, l’objet pointé n’est
+jamais modifié du tout. C’est une conséquence directe : si la valeur
+devait changer, l’écriture devrait obligatoirement se faire en
+passant par notre pointeur restreint ; or, celui-ci pointe sur un
+objet constant : impossible, donc.
+&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Un pointeur restreint sur un objet non constant garantit que seules
+les fonctions auxquelles on passe une copie ou un dérivé de ce
+pointeur peuvent modifier la valeur pointée. Ou de manière
+équivalente, que toute action qui ne touche pas à ce pointeur
+directement ou indirectement ne peut pas changer la valeur pointée.
+&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Mais plus concrètement encore, qu’est-ce que cela nous interdit ?  Les
+possibilités sont multiples, mais voici quelques pistes de
+réflexion :
+&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Dans une fonction qui prend des pointeurs restreints en arguments,
+écrire dans l’un ne doit pas changer la valeur lue dans l’autre.
+&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Appeler une fonction sans lui passer un certain pointeur restreint
+implique qu’elle n’a pas accès à cette adresse par d’autres moyens
+(p.ex. une variable globale).
+&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Typiquement, l’usage de &lt;code&gt;restrict&lt;/code&gt; se limite aux paramètres de
+fonctions ; il est possible d’utiliser le mot-clef dans d’autres
+contextes (p.ex. sur un membre de structure), mais la sémantique est
+plus complexe, et moins utile.
+&lt;/p&gt;&lt;h3&gt;Une histoire d’optimisation
+&lt;/h3&gt;&lt;p&gt;Plus haut, j’ai mentionné le fait que &lt;code&gt;restrict&lt;/code&gt; trouve son utilité
+dans l’optimisation avant tout. Cependant, contrairement à &lt;code&gt;inline&lt;/code&gt;,
+un autre ajout de C99, il n’est pas aisé pour quelqu’un qui ne fait
+pas de compilation ou de programmation bas niveau de comprendre
+l’impact que peut avoir &lt;code&gt;restrict&lt;/code&gt; sur l’efficacité de son
+programme. Après tout, à quoi cela sert-il de garantir que l’on
+n’accède pas au même emplacement mémoire par deux pointeurs
+différents ?
+&lt;/p&gt;&lt;h4&gt;Compilation des variables et des pointeurs, introduction accélérée
+&lt;/h4&gt;&lt;p&gt;Pour comprendre pourquoi c’est utile, il faut regarder comment un
+compilateur typique gère les opérations sur les pointeurs. Naïvement,
+on pourrait penser que chaque opération comportant un accès à la
+mémoire &lt;i&gt;via&lt;/i&gt; un pointeur induit une instruction pour lire la valeur
+à l’adresse concernée une fois traduit en langage machine. En vérité,
+ce n’est pas forcément le cas. Il serait plus précis de dire qu’un
+compilateur (typique) travaille tout d’abord avec des variables
+abstraites (vous pouvez voir cela comme une mémoire séparée, qui
+n’existe pas réellement, et qui sert au compilateur pour raisonner sur
+les calculs qu’on lui demande d’effectuer), qu’il est obligé de
+synchroniser de temps à autre avec la vraie mémoire de
+l’ordinateur. Un exemple :
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;int x;
+f(&amp;amp;x);
+/*
+ * La valeur de x peut avoir changé ; il faut la relire depuis la
+ * mémoire.
+ */
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Comme la mémoire abstraite avec laquelle travaille le compilateur
+n’existe que dans sa tête au moment où il compile un bout de code
+précis, dès lors qu’il interagit avec d’autres composants, il est
+obligé de matérialiser ses pensées dans la vraie mémoire, afin d’être
+cohérent avec ceux-ci. Il existe deux types de synchronisation,
+correspondant à la lecture et l’écriture :
+&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Si le compilateur veut que la valeur d’une variable soit lisible par
+un autre bout de code, il faut qu’il l’inscrive dans la mémoire.
+&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Inversement, s’il veut lire la valeur d’une variable qui a été
+écrite par un autre bout de code, il faut qu’il la charge depuis la
+mémoire.
+&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Interagir avec la mémoire réelle peut être coûteux en soi, mais un
+problème plus important encore est que de telles opérations sont
+autant de contraintes supplémentaires pour le compilateur, qui
+l’empêchent de transformer et réarranger librement les opérations…
+&lt;/p&gt;&lt;h4&gt;Mémoire abstraite et problèmes d’alias
+&lt;/h4&gt;&lt;p&gt;C’est là qu’intervient la notion d’alias, directement liée à nos
+pointeurs restreints. Un pointeur est un alias d’un autre, à un moment
+donné de l’exécution, s’il pointe au même endroit.
+&lt;/p&gt;&lt;p&gt;Avoir des alias, c’est mal, du moins, ça mène la vie dure à votre
+compilateur. Prenons un exemple :
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;void
+foo(int *p, int *q)
+{
+    /* ... */
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Dans cette fonction &lt;code&gt;foo&lt;/code&gt;, si nous mettons de côté l’arithmétique des
+pointeurs, nous nous retrouvons avec deux cas :
+&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;code&gt;p&lt;/code&gt; et &lt;code&gt;q&lt;/code&gt; sont égaux ;
+&lt;/li&gt;&lt;li&gt;ou &lt;code&gt;p&lt;/code&gt; et &lt;code&gt;q&lt;/code&gt; sont différents.
+&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;On a un problème d’alias. Ici, le compilateur n’est pas capable de
+représenter correctement dans son espace de variables abstraites les
+« variables » &lt;code&gt;*p&lt;/code&gt; et &lt;code&gt;*q&lt;/code&gt; (les objets pointés par &lt;code&gt;p&lt;/code&gt; et &lt;code&gt;q&lt;/code&gt;). En
+effet, il pourrait s’agir d’une seule variable si &lt;code&gt;p&lt;/code&gt; et &lt;code&gt;q&lt;/code&gt; sont
+égaux, ou de deux variables si les adresses sont distinctes. Il
+faudrait explorer les deux possibilités séparément, ce qui n’est pas
+faisable (si on avait &lt;i&gt;n&lt;/i&gt; pointeurs…).
+&lt;/p&gt;&lt;p&gt;Une solution pragmatique, mais pas vraiment satisfaisante, est de
+considérer les accès à &lt;code&gt;*p&lt;/code&gt; et &lt;code&gt;*q&lt;/code&gt; comme des opérations externes, qui
+requièrent une synchronisation avec la vraie mémoire. En quelque
+sorte, on est obligé d’abandonner notre modèle dans lequel un pointeur
+désigne une variable pour une boîte noire capable de renvoyer ou
+stocker une valeur qu’on lui donne. Et tout cela parce que l’on est
+incapable d’identifier ladite variable pointée !
+&lt;/p&gt;&lt;div class="Remarque"&gt;Je ne vais pas le détailler, mais si on ajoute l’arithmétique des
+pointeurs, on se retrouve avec trois options :
+&lt;ul&gt;&lt;li&gt;&lt;code&gt;p&lt;/code&gt; et &lt;code&gt;q&lt;/code&gt; pointent sur des objets disjoints en mémoire ;
+&lt;/li&gt;&lt;li&gt;&lt;code&gt;p&lt;/code&gt; et &lt;code&gt;q&lt;/code&gt; pointent à la même adresse exactement ;
+&lt;/li&gt;&lt;li&gt;&lt;code&gt;p&lt;/code&gt; et &lt;code&gt;q&lt;/code&gt; pointent sur différentes parties d’un même objet en
+mémoire (par exemple un tableau d’entiers).
+&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;p&gt;Maintenant, regardons ce qui se passe si nous déclarons nos deux
+pointeurs &lt;code&gt;restrict&lt;/code&gt; :
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;void
+foo(int * restrict p, int * restrict q)
+{
+    /* ... */
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;D’après les règles décrites plus haut, nous savons que selon que
+l’objet pointé soit modifié ou non, les propriétés
+changent. Néanmoins, nous pouvons toujours choisir de représenter &lt;code&gt;*p&lt;/code&gt;
+et &lt;code&gt;*q&lt;/code&gt; comme deux variables distinctes dans l’espace abstrait. En
+effet :
+&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;Si durant l’exécution de &lt;code&gt;foo&lt;/code&gt;, quelqu’un écrit dans l’emplacement
+associé à &lt;code&gt;p&lt;/code&gt; ou à &lt;code&gt;q&lt;/code&gt;, alors les règles qui gouvernent les
+pointeurs restreints nous garantissent que &lt;code&gt;p&lt;/code&gt; et &lt;code&gt;q&lt;/code&gt; pointent sur
+des objets différents.
+&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;Sinon, la valeur des objets pointés ne change jamais, et nous nous
+retrouvons avec deux variables abstraites parfaitement égales,
+à tout moment ; sans conséquence pour la suite des opérations.
+&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;h4&gt;Un mot sur la vectorisation
+&lt;/h4&gt;&lt;p&gt;Nous avons vu comment &lt;code&gt;restrict&lt;/code&gt; permettait d’affiner notre
+représentation des variables pointées, ce qui permet d’être plus
+agressif au niveau des échanges avec la mémoire réelle.
+&lt;/p&gt;&lt;p&gt;Un autre effet positif, qui est souvent davantage médiatisé, mais qui
+découle essentiellement des mêmes principes, est une meilleure
+vectorisation du code. La vectorisation (ou auto-vectorisation) est
+l’optimisation par laquelle le compilateur traduit des boucles ou
+morceaux de boucles en instructions spécialisées qui opèrent sur des
+(petits) tableaux de plusieurs valeurs à la fois.
+&lt;/p&gt;&lt;p&gt;Typiquement, ces instructions se présentent comme des opérations
+classiques sur les scalaires, excepté qu’elles consomment et
+produisent des vecteurs. Une conséquence de cette description en
+apparence anodine est que le compilateur doit pouvoir réarranger les
+boucles afin de grouper plusieurs lectures et plusieurs écritures
+ensemble. Dans le cas où les pointeurs utilisés pour ces accès se
+comportent comme des boîtes noires, de telles permutations sont en
+général illégales, car une inscription dans la boîte noire pourrait
+influencer le prochain chargement depuis une &lt;em&gt;autre&lt;/em&gt; boîte noire. Et
+nous retrouvons notre cher problème d’alias.
+&lt;/p&gt;&lt;p&gt;Pour illustrer cette question, regardons un dernier exemple, une
+fonction qui additionne deux vecteurs et place le résultat dans un
+troisième :
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;int *
+vector_add(int *a, int *b, int *result, size_t n)
+{
+    for (size_t i = 0; i &amp;lt; n; ++i)
+        result[i] = a[i] + b[i];
+    return result;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Admettons que &lt;code&gt;n&lt;/code&gt; soit un multiple de 4 et que par chance, nous
+disposions d’une instruction machine qui ajoute deux vecteurs de
+taille fixe 4 et place le résultat dans un troisième. Il faudrait
+modifier la boucle précédente pour traiter les données par paquets de
+4, comme suit :
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;int *
+vector_add_1(int *a, int *b, int *result, size_t n)
+{
+    for (size_t i = 0; i &amp;lt; n; i += 4) {
+        int tmp[4];
+        tmp[0] = a[i] + b[i];
+        tmp[1] = a[i+1] + b[i+1];
+        tmp[2] = a[i+2] + b[i+2];
+        tmp[3] = a[i+3] + b[i+3];
+        memcpy(result + i, tmp, 4 * sizeof *result);
+    }
+    return result;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;La variable &lt;code&gt;tmp&lt;/code&gt; illustre ici le fait que notre instruction
+vectorielle prend place entièrement avant l’écriture dans le
+tableau-résultat. Malheureusement, ces deux fonctions ne sont pas
+équivalentes dans le cas où &lt;code&gt;a&lt;/code&gt;, ou &lt;code&gt;b&lt;/code&gt;, et &lt;code&gt;result&lt;/code&gt; pointent sur des
+parties du même vecteur !
+&lt;/p&gt;&lt;h3&gt;Conclusion
+&lt;/h3&gt;&lt;p&gt;Voilà qui conclut notre petit tour des pointeurs restreints. J’espère
+que cela aura été instructif pour certains, ou donné envie à d’autres
+d’essayer le mot-clef &lt;code&gt;restrict&lt;/code&gt; ! Pour ma part, j’ai encore un peu de
+mal à me faire à son usage. La charge de réflexion supplémentaire pour
+savoir quand un pointeur doit être restreint ou non n’est pas
+exactement négligeable, et je ne pense pas non plus qu’il faille
+essayer de toute spécifier à l’aide de ce seul qualificateur, mais,
+comme pour &lt;code&gt;const&lt;/code&gt;, il permet d’expliciter certaines hypothèses que je
+fais parfois sans m’en apercevoir, et en cela, je considère son ajout
+comme une bonne chose… les performances, c’est que du bonus ! ;)
+&lt;/p&gt;
+&lt;img src="http://feeds.feedburner.com/~r/ourshippy/~4/ZC4XAqDTA28" height="1" width="1"/&gt;</content>
+<feedburner:origLink>http://blog.huoc.org/pointeurs-restrict.html</feedburner:origLink></entry>
+<entry>
+<id>tag:blog.huoc.org,2009:posts/breves-de-mai</id>
+<link rel="alternate" type="text/html" href="http://feeds.huoc.org/~r/ourshippy/~3/u_1C6r9c_uU/breves-de-mai.html" />
+<title>Brèves de mai</title>
+<category term="histoire" />
+<category term="programmation" />
+<category term="réaction" />
+<category term="web" />
+<author><name>Gabriel Scherer (gasche)</name></author>
+<published>2012-05-27T15:40:00+02:00</published>
+<updated>2012-05-27T15:40:00+02:00</updated>
+<content type="html">
+&lt;p&gt;Ce matin j’ai lu tous les liens qui m’avaient l’air intéressants, mais
+trop longs pour que je prenne le temps de les lire pendant la
+semaine. Ils font donc parti de la petite centaine de nouvelles,
+issues principalement de mes flux de syndication, que j’ai accumulées
+au cours de la semaine. Je me suis dit que cette sélection serait
+parfaite pour un petit billet, et le voilà.
+&lt;/p&gt;&lt;h3&gt;Xerox parc et la naissance de l’informatique contemporaine
+&lt;/h3&gt;&lt;p&gt;&lt;a class="extern" href="http://interstices.info/jcms/int_64091/xerox-parc-et-la-naissance-de-linformatique-contemporaine"&gt;http://interstices.info/jcms/int_64091/xerox-parc-et-la-naissance-de-linformatique-contemporaine&lt;/a&gt;
+&lt;/p&gt;&lt;p&gt;(source : Ptival)
+&lt;/p&gt;&lt;p&gt;C’est intéressant et bien raconté ; en particulier j’aime bien le soin
+qui a été pris dans cet article de s’intéresser aux chercheurs
+individuellement, et de garder leur trace pour montrer d’où les gens
+venaient et où ils sont partis. Ça donne une meilleure vision du
+milieu des laboratoires privés de recherche aux USA dans ces années
+là. J’ai l’impression que nous manquons un peu de ce genre de choses
+en France : quelles sont aujourd’hui les entreprises installées en
+France qui ont une politique de recherche ambitieuse et intéressante
+en informatique ? Il y a des interactions avec des acteurs industriels
+(dans le domaine de la fiabilité du logiciel par exemple, les
+entreprises d’aéronautique, de train ou d’automobile ont des contacts
+avec le milieu de la recherche), mais pas à ma connaissance de vrais
+laboratoires de recherche non publics ayant une politique sur le long
+terme, en tout cas dans les domaines qui m’intéressent le plus.
+&lt;/p&gt;&lt;p&gt;Il y a par contre un petit je ne sais quoi qui est casse-pieds sur ce
+site. Il y a beaucoup de liens externes vers Wikipédia (liens « W »), et
+c’est bien, mais sinon il y a des « encarts » qui sont désagréables
+à utiliser (liens « ? »), et de même les liens internes (liens « i ») sont
+malcommodes.
+&lt;/p&gt;&lt;h3&gt;Story Bricks : The Future of User-Driven Narrative is At Stake
+&lt;/h3&gt;&lt;p&gt;&lt;a class="extern" href="http://aigamedev.com/open/interview/storybricks-preview/"&gt;Http://aigamedev.com/open/interview/storybricks-preview/&lt;/a&gt;
+&lt;/p&gt;&lt;p&gt;Un point intéressant sur l’interface graphique que l’on voit, qui
+est bien une forme de programmation visuelle : il y a du typage
+apparent. Ça se voit bien sur &lt;a class="extern" href="https://aigamedev.com/wp-content/blogs.dir/5/files/2012/05/RodolfoJuliette-280x300.png"&gt;cette
+image&lt;/a&gt;
+par exemple : les connecteurs entre blocs ont une forme précise qui
+définit leur type ; par exemple les émotions ont un connecteur en
+forme de cœur, et les messages (de conversation) en forme de
+bulle. C’est une technique maintenant bien connue pour rendre le
+typage tangible aux utilisateurs, mais il est intéressant de voir
+que même des gens dont le domaine métier n’est pas directement la
+conception de langages (même s’il en est proche) les ont intégrées.
+&lt;/p&gt;&lt;p&gt;Ça me fait penser, au moins visuellement, au travail de Sean
+Mcdirmid sur le concept de &lt;em&gt;touch programming&lt;/em&gt; (&lt;a class="extern" href="http://lambda-the-ultimate.org/node/4257"&gt;sur
+Lambda-the-Ultimate
+(LtU)&lt;/a&gt;, et &lt;a class="extern" href="http://alarmingdevelopment.org/?p=616"&gt;sur le
+blog&lt;/a&gt; de Jonathan Edwards).
+&lt;/p&gt;&lt;p&gt;Plus généralement c’est le genre de projet qui montre qu’il continue
+à y avoir une interaction intéressante entre le domaine de
+l’intelligence artificielle (AI) et celui des langages de
+programmation. Je connais peu le domaine mais j’ai l’impression qu’une
+des questions importantes en AI des jeux vidéos est de trouver le bon
+langage déclaratif pour décrire le système désiré (automates,
+&lt;i&gt;behavior trees&lt;/i&gt;, &lt;i&gt;rule-based systems&lt;/i&gt;, …).
+&lt;/p&gt;&lt;p&gt;Par contre je n’aime pas trop la façon dont le projet se vend. Ils
+ont une page Kickstarter qui demande au public de leur donner de
+l’argent pour financer le développement, mais pour donner quoi en
+retour ? Ils comptent simplement commercialiser leur produit et le
+revendre ensuite à d’autres concepteurs de jeux vidéo. Je pense
+qu’un travail entièrement financé par le public devrait, au final,
+revenir au public — par exemple sous la forme d’un logiciel
+libre. Je peux comprendre que ce n’est pas dans la culture du
+domaine du jeu vidéo ; que certains joueurs soient satisfaits de
+financer un jeu pour pouvoir simplement y jouer en retour, parce
+qu’il a l’air bien (mais je m’attends au moins à ce que les
+personnes qui ont donné reçoivent une version du jeu en retour), ou
+financer un groupe de musique pour le simple plaisir de pouvoir
+entendre leur nouvel album. Visiblement ça ne marche pas bien fort
+pour ce projet ; et je pense que c’est parce qu’il joue plutôt sur le
+développement de nouvelles abstractions, qui auraient sans doute, au
+moins au départ, peu d’impact sur l’utilisateur final, et qui
+gagneraient donc plus à être rendues libres.
+&lt;/p&gt;&lt;p&gt;En plus, même moi qui ne fait plus partie du milieu du jeu vidéo,
+j’ai déjà entendu trop de fois le refrain « avec notre nouveau jeu,
+les personnages auront de vraies émotions et ce sera formidable ». Je
+ne comprends pas comment on peut encore séduire avec un discours
+aussi stéréotypé. En plus leur discours est parfois franchement
+condescendant :
+&lt;/p&gt;&lt;blockquote&gt;&lt;div&gt;&lt;p&gt;But, it takes a bit of imagination to draw the line between where
+we are today and what we can be. Imagination that gamers have that
+others tend to lack. Game developers are happy providing the same
+old types of gameplay that people are ready to pay for rather than
+taking risks. Investors aren’t sure that there is even a demand
+for MMOs or new forms of gameplay.
+&lt;/p&gt;&lt;/div&gt;&lt;/blockquote&gt;&lt;h3&gt;The quest to replace passwords
+&lt;/h3&gt;&lt;p&gt;&lt;a class="extern" href="http://www.lightbluetouchpaper.org/2012/05/22/the-quest-to-replace-passwords/"&gt;http://www.lightbluetouchpaper.org/2012/05/22/the-quest-to-replace-passwords/&lt;/a&gt;
+&lt;/p&gt;&lt;p&gt;(source : Bruce Schneier)
+&lt;/p&gt;&lt;p&gt;Une présentation intéressante d’un article de recherche sur les
+façons de comprendre et comparer les techniques
+d’authentification. L’auteur dit explicitement que cette recherche
+est le fruit d’une section &lt;em&gt;Related Works&lt;/em&gt; bien écrite, ce qui
+renforce mon idée que c’est souvent la partie la plus importante
+d’un article.
+&lt;/p&gt;&lt;h3&gt;A uTouch architecture introduction
+&lt;/h3&gt;&lt;p&gt;&lt;a class="extern" href="http://lwn.net/SubscriberLink/497905/b8c6ef50db5cfb2c/"&gt;http://lwn.net/SubscriberLink/497905/b8c6ef50db5cfb2c/&lt;/a&gt;
+&lt;/p&gt;&lt;p&gt;(Je trouve que LWN fait un boulot formidable; si vous vous
+intéressez à GNU/Linux, n’hésitez pas à vous abonner !)
+&lt;/p&gt;&lt;p&gt;Ce lien sans grande prétention fait une description technique des
+interrogations que se posent les développeurs desktop Linux pour la
+gestion du « touch », toutes ces nouvelles méthodes d’entrée que l’on
+caresse des doigts. L’article, et les commentaires qui le suivent,
+montrent bien que ces nouvelles méthodes d’entrée posent des problèmes
+pour les développeurs.
+&lt;/p&gt;&lt;p&gt;Le problème de fond est que langage des événement d’entrées est
+ambigu : contrairement aux appuis de touches atomiques sur un
+clavier ou de boutons sur une souris, un même signal peut être
+interprété de plusieurs façons différentes. L’appui à un endroit
+peut être un clic ou, s’il est prolongé dans le temps et suivi par
+un déplacement du doigt, être en fait seulement le début d’un
+déplacement ; pour le savoir il faut attendre, mais les bons
+principes d’interface utilisateur poussent au contraire à envoyer un
+retour immédiat à l’utilisateur ; il devient donc nécessaire de
+modéliser des états intermédiaires ambigus, et ce n’est pas de la
+tarte à gérer pour le développeur.
+&lt;/p&gt;&lt;p&gt;(On avait déjà des problèmes de ce genre avec les doubles et triple
+clics, ou les « accords » sur le clavier, mais dans le cadre du
+« touch » ils semblent prendre une place encore plus importante.)
+&lt;/p&gt;&lt;p&gt;Ce que je trouve intéressant est que c’est exactement le problème
+dont parlait dmbarbour dans son dernier billet, &lt;a class="extern" href="http://awelonblue.wordpress.com/2012/05/20/abandoning-commitment-in-hci/"&gt;Abandoning
+Commitment in Human Computer
+Interfaces&lt;/a&gt;
+(&lt;i&gt;fun fact&lt;/i&gt; : mon cerveau a fait une typo et j’ai commencé par
+écrire &lt;i&gt;Huser&lt;/i&gt; Computer Interfaces). Ce billet a d’ailleurs donné
+lieu à une &lt;a class="extern" href="http://www.reddit.com/r/programming/comments/tx6s3/abandoning_commitment_in_human_computer_interfaces/"&gt;discussion
+fournie&lt;/a&gt;
+sur reddit ; mais son niveau d’abstraction un peu trop élevé rend
+difficile, je trouve, une discussion vraiment convaincante.
+&lt;/p&gt;&lt;p&gt;Je me demande comment ces choses-là vont évoluer avec l’apparition
+de nouvelles méthodes d’entrée. dmbarbour (il est un peu trop
+insistant sur ses sujets fétiches, et un peu trop abstrait, mais
+c’est quand même un type intéressant) en parle dans &lt;a href="#comment-70840"&gt;une autre
+discussion&lt;/a&gt;
+sur LtU.
+&lt;/p&gt;&lt;p&gt;En ce moment on nous fait rêver avec des gants 3D (« comme dans
+Minority Report huhu ») et autres gadgets du genre. Je pense qu’une
+généralisation de ces périphériques pourrait changer les outils
+qu’on utilise pour éditer les programmes&lt;sup&gt;1&lt;/sup&gt;, et donc la syntaxe, mais
+sans doute pas fondamentalement la sémantique des langages de
+programmation.
+&lt;/p&gt;&lt;div class="Notes"&gt;&lt;p class="note"&gt;&lt;dfn class="notedfn"&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/dfn&gt; Ça me semble plus facile que pour éditer du texte libre
+&lt;/p&gt;&lt;/div&gt;&lt;p&gt;(par exemples pour les auteurs et journalistes), parce que les
+programmes informatiques sont plus structurés.
+&lt;/p&gt;&lt;h3&gt;How the professor who fooled Wikipedia got caught by reddit
+&lt;/h3&gt;&lt;p&gt;&lt;a class="extern" href="http://www.theatlantic.com/national/archive/2012/05/how-the-professor-who-fooled-wikipedia-got-caught-by-reddit/257134/"&gt;http://www.theatlantic.com/national/archive/2012/05/how-the-professor-who-fooled-wikipedia-got-caught-by-reddit/257134/&lt;/a&gt;
+&lt;/p&gt;&lt;p&gt;(source : Bruce Schneier)
+&lt;/p&gt;&lt;p&gt;J’ai un peu honte de le mettre entre d’autres liens que je trouve
+objectivement intéressants, mais je trouve l’histoire amusante. Un
+professeur fait un cours sur « comment falsifier des faits
+historiques », ils montent un &lt;em&gt;hoax&lt;/em&gt; qui survit sur Wikipédia, et
+l’année d’après ils essaient de faire pareil sur reddit, et se font
+démontrer. Un petit moment de Schadenfreude.
+&lt;/p&gt;&lt;h3&gt;Les communs culturels et la justice sociale : fondations pour un nouvel humanisme européen
+&lt;/h3&gt;&lt;p&gt;&lt;a class="extern" href="http://paigrain.debatpublic.net/?p=4846"&gt;http://paigrain.debatpublic.net/?p=4846&lt;/a&gt;
+&lt;/p&gt;&lt;p&gt;Un billet qui a le tout premier avantage de me faire déculpabiliser un
+peu à l’idée d’écrire systématiquement des pavés.
+&lt;/p&gt;&lt;p&gt;Il y a quelque chose qui me met mal à l’aise dans les débats actuels
+sur le partage des fichiers soumis au droit d’auteur, le piratage,
+HADOPI, etc. Une grande partie du débat concerne « ce qui est juste »,
+et des discussions de comment adapter les moyens techniques à cette
+idée de ce qui est juste.
+&lt;/p&gt;&lt;p&gt;J’ai l’intuition que ce n’est pas forcément la bonne approche :
+quand un changement technique rend extrêmement simple de faire
+quelque chose (partager des fichiers), et que tout le monde le fait,
+est-ce que ça a du sens d’essayer de discuter de si c’est « bien » ou
+« mal » ? Mon intuition est que dans ce cas c’est à la société
+d’adapter ses notions de justice aux possibilités techniques, et pas
+l’inverse.
+&lt;/p&gt;&lt;p&gt;Je n’ai jamais réfléchi très en profondeur à la question (par manque
+de temps) et je pense qu’il y a des choses à dire sur le
+sujet. Philippe Aigrain met en avant une notion d’« échanges
+non marchands » (il a écrit un livre sur le sujet, que je n’ai pas eu
+le temps de lire) qui est intéressante et qui s’approche peut-être
+de cette idée de reconnaître et accepter les pratiques de société.
+&lt;/p&gt;&lt;p&gt;Je trouve le billet un peu (trop) politique, sans doute parce qu’il
+s’agit d’une transcription d’un texte initialement écrit dans un
+autre contexte ; mais ça reste une lecture intéressante sur ce sujet
+d’ensemble.
+&lt;/p&gt;&lt;p&gt;Dans le même genre et aussi dans mes lectures de ces derniers jours :
+&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;OWNI a &lt;a class="extern" href="http://owni.fr/2012/05/24/pour-que-vive-le-domaine-public-numerique/"&gt;un bon
+  article&lt;/a&gt;
+de de Lionel Maurel sur Communia, une nébuleuse « initiative
+européenne » qui s’intéresse de près au Domaine Public et fait
+pression pour renforcer ce concept dans le droit d’auteur européen,
+en le présentant comme une richesse plutôt que comme &lt;em&gt;les limbes&lt;/em&gt;&lt;sup&gt;2&lt;/sup&gt;
+des œuvres de l’esprit.
+&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;John Purdy (un type dont je ne me souviens plus comment le blog
+est arrivé dans mon lecteur de flux) a un petit billet nommé
+&lt;a class="extern" href="http://evincarofautumn.blogspot.fr/2012/05/utopian-university.html"&gt;Utopian
+  University&lt;/a&gt;
+sur un lieu de vie pour l’aide à la création
+(artistique et/ou informatique). Avec un commentaire intéressant
+qui m’a permis d’apprendre l’existence d’un &lt;a class="extern" href="http://www.basicincome.org/bien/"&gt;réseau
+  mondial&lt;/a&gt; en faveur du salaire
+minimal automatique (traduction maladroite ; Wikipédia parle
+d’&lt;a class="extern" href="http://fr.wikipedia.org/wiki/Allocation_universelle"&gt;allocation
+  universelle&lt;/a&gt;).
+&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;&lt;a class="extern" href="http://www.gironde.pref.gouv.fr/Dossiers-d-actus/Lancement-d-un-Guide-de-l-intelligence-economique-pour-la-recherche"&gt;Lancement d'un guide de l'intelligence économique pour la
+  recherche&lt;/a&gt;.
+Je n’ai pas lu ce lien récemment mais j’ai lu il y a quelques
+semaines le document qu’il présente, le « guide de l’intelligence
+économique pour la recherche ». Ce document d’une vingtaine de pages
+a été écrit par le ministère de la recherche, et il explique en gros
+comment les acteurs du monde de la recherche devraient essayer de
+faire gagner de l’argent à l’État avec leur travail. La position sur
+le logiciel libre est hideuse ; de manière général ce document
+(dont j’espère qu’il montre la vision du gouvernement précédent, et
+pas de l’actuel, mais je suis légèrement pessimiste sur ces
+sujets-là) on y lit que pour être un bon chercheur qui « valorise »
+(financièrement, bien sûr) son travail, il faut surtout n’en parler
+à personne.
+&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;div class="Notes"&gt;&lt;p class="note"&gt;&lt;dfn class="notedfn"&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/dfn&gt; quand on cherche &amp;quot;les limbes&amp;quot; sur internet on trouve dans les
+&lt;/p&gt;&lt;/div&gt;&lt;p&gt;premier résultats &amp;quot;définition des limbes dans Inception&amp;quot;. Où va-t-on,
+mon bon monsieur ou ma bonne dame ?
+&lt;/p&gt;&lt;h3&gt;Flymake
+&lt;/h3&gt;&lt;p&gt;&lt;a class="extern" href="http://flymake.sourceforge.net/"&gt;http://flymake.sourceforge.net/&lt;/a&gt;
+&lt;/p&gt;&lt;p&gt;Il faudrait vraiment que j’apprenne à m’en servir.
+&lt;/p&gt;&lt;h3&gt;En route pour HTTP 2.0
+&lt;/h3&gt;&lt;p&gt;&lt;a class="extern" href="http://linuxfr.org/news/en-route-pour-http-2-0"&gt;http://linuxfr.org/news/en-route-pour-http-2-0&lt;/a&gt;
+&lt;/p&gt;&lt;p&gt;Il y a vraiment de bonnes dépêches sur LinuxFR (oui, je suis un
+groupie de patrick_g, je lis religieusement ses dépêches noyau ;
+d’ailleurs j’ai essayé de l’encourager à faire traduire ses dépêches
+vers l’anglais, pour leur donner un lectorat plus large, mais il n’a
+pas pris ma suggestion au sérieux et je n’ai pas le temps de m’en
+occuper tout seul). Cette présentation de HTTP 2.0 est vraiment
+passionnante (bon après c’est technique, hein), en particulier
+l’interview de Willie Tarreau qui dit des choses très intéressantes
+sur les processus de normalisation.
+&lt;/p&gt;&lt;p&gt;D’ailleurs, contrairement à d’autres fois, la discussion dans les
+commentaires est plutôt intéressante. J’ai l’impression que les
+visiteurs de LinuxFR sont souvent très pertinents sur les questions
+d’administration système et de réseau, beaucoup plus que par exemple
+les langages de programmation (j’arrête de lire les commentaires sur
+les dépêches Go, Pypy ou Scala sur LinuxFR, le rapport signal/bruit
+est trop faible).
+&lt;/p&gt;&lt;h3&gt;Thoughts on Gamifying Textbooks
+&lt;/h3&gt;&lt;p&gt;&lt;a class="extern" href="http://blog.ezyang.com/2012/05/thoughts-on-gamifying-textbooks/"&gt;http://blog.ezyang.com/2012/05/thoughts-on-gamifying-textbooks/&lt;/a&gt;
+&lt;/p&gt;&lt;p&gt;Edward Yang est un type très intéressant et, bien que j’aie arrêté de
+suivre Planet Haskell (signal/bruit), son blog est resté dans mes flux
+de syndication. Récemment il a fait le pari d’implémenter du logiciel
+interactif sur le web pour jouer avec des arbres de preuve formelle
+(le résultat n’est pas non plus à en tomber par terre à mon avis, mais
+la combinaison technique, &lt;a class="extern" href="http://blog.ezyang.com/2012/05/what-happens-when-you-mix-three-research-programming-languages-together/"&gt;Haskell + Ur/Web +
+Coq&lt;/a&gt;,
+mérite le plus grand respect). Ça l’a mis en verve et il fait des
+grands discours sur l’éducation avec de nouveaux moyens techniques, et
+ce n’est pas mal.
+&lt;/p&gt;&lt;h3&gt;No-cost desktop software development is dead on Windows 8
+&lt;/h3&gt;&lt;p&gt;&lt;a class="extern" href="http://arstechnica.com/information-technology/2012/05/no-cost-desktop-software-development-is-dead-on-windows-8/"&gt;http://arstechnica.com/information-technology/2012/05/no-cost-desktop-software-development-is-dead-on-windows-8/&lt;/a&gt;
+&lt;/p&gt;&lt;p&gt;Le choix de Microsoft de restreindre l’accès à leurs outils de
+développement et utilitaires de compilation pour Windows me paraît
+très mauvais, et surtout susceptible d’avoir des conséquences
+importantes sur le long terme (s’ils ne changent pas d’avis, ce que je
+leur souhaite).
+&lt;/p&gt;&lt;p&gt;Pour conclure, j’ai discuté de ça avec Nhat (rz0) par e-mail, et, en
+tant que développeur orienté bas niveau, il semble partager mon
+scepticisme sur la question :
+&lt;/p&gt;&lt;blockquote&gt;&lt;div&gt;&lt;p&gt;Il est dommage de voir Microsoft abandonner, voire rejeter,
+certaines catégories de programmeurs après ce qui est apparu pendant
+quelques années comme une période d’ouverture, avec Visual Studio
+Express. C’est peut-être une option défendable d’un point de vue
+&lt;i&gt;marketing&lt;/i&gt; à court terme, mais le risque dans la durée est de voir
+une raréfaction des talents dans des domaines tels que la
+programmation systèmes sous Windows, pourtant essentiels à leur
+propre écosystème.
+&lt;/p&gt;&lt;/div&gt;&lt;/blockquote&gt;
+&lt;img src="http://feeds.feedburner.com/~r/ourshippy/~4/u_1C6r9c_uU" height="1" width="1"/&gt;</content>
+<feedburner:origLink>http://blog.huoc.org/breves-de-mai.html</feedburner:origLink></entry>
+<entry>
+<id>tag:blog.huoc.org,2009:posts/conditionals-constants-c11-generic</id>
+<link rel="alternate" type="text/html" href="http://feeds.huoc.org/~r/ourshippy/~3/szhI939A5P4/conditionals-constants-c11-generic.html" />
+<title>Compile-time conditionals and unique constants using C11 _Generic</title>
+<category term="c" />
+<category term="c11" />
+<category term="c99" />
+<category term="generic" />
+<category term="preprocessor" />
+<author><name>Nhat Minh Lê (rz0)</name></author>
+<published>2012-05-16T18:42:17+02:00</published>
+<updated>2012-05-16T18:58:45+02:00</updated>
+<content type="html">
+&lt;p&gt;About a month ago, I started playing around with the new C standard,
+namely C11, and its new features. While I have always been fond of
+some of them, such as explicit alignment support, others never really
+caught my interest. One of those not-so-interesting additions was the
+new &lt;code&gt;_Generic&lt;/code&gt; construct, which allows rather limited &lt;i&gt;ad-hoc&lt;/i&gt;
+compile-time type-based dispatching. While I reckon it was necessary
+in order to support the &lt;code&gt;&amp;lt;tgmath.h&amp;gt;&lt;/code&gt; header in a meaningful way, as
+well as, &lt;em&gt;perhaps&lt;/em&gt;, the growing number of integral types, I’d never
+seen it as anything more than that: an implementor’s device given
+standard blessing.
+&lt;/p&gt;&lt;p&gt;Well, that was until a few days ago. While experimenting with a macro
+of mine, I tried to improve it by using C11 features, and, in doing
+so, stumbled upon a rather less boring use of &lt;code&gt;_Generic&lt;/code&gt;: compile-time
+&amp;quot;type-level&amp;quot; constants, and conditional compilation based on it!
+(Well, maybe it sounds obvious to some of you; for the rest, please
+read on!)
+&lt;/p&gt;&lt;h3&gt;The basics of &lt;code&gt;_Generic&lt;/code&gt; constants
+&lt;/h3&gt;&lt;p&gt;Usually, symbolic constants are some arbitrary literal cast to an
+appropriate type, like this:
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;#define MY_MAGIC_PONY ((pony_t)-1)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This works for integer and floating point values, but is not
+guaranteed by the standard to work for pointers (except for &lt;code&gt;0&lt;/code&gt;, which
+yields a null pointer constant). You might want to try anyway, or you
+may take the address of some private dummy object instead.
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;#define MY_MAGIC_PONY (&amp;amp;my_magic_pony_)
+extern struct pony my_magic_pony_;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Well, the bad news is that if you need that constant at run time,
+there’s not much I can do for you; you’ll have to keep using that. On
+the bright side, if the constant is only needed at compile time
+(e.g. if it is always generated by some macro, to induce a specific
+path in a conditional), there may be hope still.
+&lt;/p&gt;&lt;p&gt;With &lt;code&gt;_Generic&lt;/code&gt;, you can now specify conditions based on types, which
+means, you can use dummy types instead of dummy values for your
+symbolic compile-time-only constants:
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;#define MY_MAGIC_PONY ((struct dummy_magic_pony *)NULL)
+struct dummy_magic_pony;
+
+#define MY_MAGIC_MACRO(..., p, ...)                   \
+        ... _Generic((p),                             \
+            struct dummy_magic_pony *: ...,           \
+            default: ...) ...
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;OK, so what does this bring us? Well, three things:
+&lt;/p&gt;&lt;ul&gt;&lt;li&gt;We don’t need to create random objects for pointer constants.
+&lt;/li&gt;&lt;li&gt;We don’t need to set aside a special value.
+&lt;/li&gt;&lt;li&gt;And we don’t need to rely on the compiler eliminating spurious dead
+branches everywhere because of macro expansion.
+&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;Sample application 1: default arguments
+&lt;/h3&gt;&lt;p&gt;So, we’ve seen how it’s done; sounds trivial, looks trivial, but what
+can we use it for? If this were just for me, I’d say &amp;quot;it comes in
+handy when you write complex macros sometimes&amp;quot;, but I tried to come up
+with a simple enough example for this short article: default
+arguments. In case you may be wondering, though, this is &lt;em&gt;for
+demonstration purposes only&lt;/em&gt;; don’t try this at home… well, what
+I mean is that probably nobody is going to use this, which is totally
+fine.
+&lt;/p&gt;&lt;p&gt;Anyway, while it is well-known(?) that default arguments were possible
+in C99 using preprocessor hacks, all solutions I’ve seen were rather
+cumbersome to implement (you’re welcome to prove me wrong; I haven’t
+tried too hard to look for the nicest way).
+&lt;/p&gt;&lt;p&gt;Probably the most usable solution comes with free keyword arguments
+(called &lt;i&gt;named parameters&lt;/i&gt;, in some languages, as well) as
+a bonus. Just use a structure as your last parameter and stuff it with
+a compound literal. The disadvantage is that your defaults are all
+zeros (or whatever default initializer you get for the field
+type)… unless you name all of your arguments and include defaults in
+the compound literal; but that’s not what we’re aiming for here: we’re
+looking for plain old optional positional parameters.
+&lt;/p&gt;&lt;p&gt;You could also count the number of arguments in the variable argument
+list of a macro, but this requires a lot of boilerplate to define
+a version for each possible number of arguments.
+&lt;/p&gt;&lt;p&gt;Lastly, you could use arbitrary symbols and test for equality using
+preprocessor logic (for those who don’t know, it &lt;em&gt;is&lt;/em&gt; possible with
+the standard C99 preprocessor to macro-branch on whether a given
+argument is equal to a few different things… it just requires quite
+a lot of work in the background and has some limitations as well —
+read the sources of any heavyweight preprocessor library and you’ll
+see; e.g. the one provided with &lt;a class="extern" href="http://sourceforge.net/projects/cos/"&gt;COS&lt;/a&gt;). However, this has some quirks
+(which are outside of the scope of this article) and is definitely not
+for the casual preprocessor user. But the overall design is rather
+appealing, so we’ll keep with that except…
+&lt;/p&gt;&lt;p&gt;We can now use &lt;code&gt;_Generic&lt;/code&gt; type constants instead of symbols. Let’s
+look at some code:
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;/* Generic definitions, for all functions thereafter. */
+struct dflarg_;
+#define DFLARG ((struct dflarg_ *)NULL)
+#define IFDFL(arg, dflval)                                    \
+        _Generic((arg),                                       \
+            struct dflarg_ *: dflval,                         \
+            default: (arg))
+
+/*
+ * Some function foobar with two optional arguments.
+ * We take the second (non-optional) argument as part of
+ * __VA_ARGS__ so the list is never empty.
+ */
+int foobar(int, int, int, int);
+#define foobar(x, ...)                                        \
+        foobar_((x), __VA_ARGS__, DFLARG, DFLARG)
+#define foobar_(x, y, z, t, ...)                              \
+        (foobar)((x), (y), IFDFL((z), 42), IFDFL((t), 36))
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;And here you go! Default arguments in C11 using &lt;code&gt;_Generic&lt;/code&gt;.
+&lt;/p&gt;&lt;h3&gt;Sample application 2: argument list length check
+&lt;/h3&gt;&lt;p&gt;In our previous example, you’ve probably noticed that &lt;code&gt;foobar&lt;/code&gt; now
+accepts extra arguments, which is not exactly ideal. More generally,
+it happens quite often with variadic macros (in my experience,
+especially &amp;quot;helper&amp;quot; macros that tend to be buried under more
+user-friendly ones, and that may need to handle the results of
+concatenating, splitting, mapping, and other operations on previous
+argument lists) that there’s a limit to how many arguments you
+actually want to handle.
+&lt;/p&gt;&lt;p&gt;Again, it is possible with the C99 preprocessor to check for the
+argument list length, but this typically involves even more heavy
+preprocessor logic than before, as you’ll want to do arithmetic with
+the preprocessor. There are ways to avoid the arithmetics, but as far
+as I know, they all require quite a bit of preprocessor
+metaprogramming in their own right.
+&lt;/p&gt;&lt;p&gt;With C11 and &lt;code&gt;_Generic&lt;/code&gt;, however, you could just use a type-level
+constant… how? This is really just more of the above (well, it &lt;em&gt;is&lt;/em&gt;
+the same trick, after all):
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;/* Our end-of-list marker is really just another default. */
+#define EOARGS DFLARG
+#define ISEOARGS(arg)                                         \
+        _Generic((arg),                                       \
+            struct dflarg_ *: true,                           \
+            default: false)
+
+#define foobar(x, ...)                                        \
+        foobar_((x), __VA_ARGS__, DFLARG, DFLARG, EOARGS)
+#define foobar_(x, y, z, t, eoargs, ...)                      \
+        (_Static_assert(ISEOARGS(eoargs),                     \
+            &amp;quot;too many arguments to foobar&amp;quot;),                  \
+        (foobar)((x), (y), IFDFL((z), 42), IFDFL((t), 36)))
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;If you try this code… it should fail. That is because
+&lt;code&gt;_Static_assert&lt;/code&gt; is a declaration according to the C11 grammar. This
+can be worked around by wrapping the &lt;code&gt;_Static_assert&lt;/code&gt; in an inline
+structure declaration within a compound literal, like so:
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;#define inline_static_assert(x, s)                            \
+        ((void)(const struct { int _unused;                   \
+            _Static_assert((x), s); }){ 0 })
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Unfortunately, this (supposedly corrected) code does not compile
+with Clang 3.0. Otherwise, we’d get the following final macro for
+&lt;code&gt;foobar_&lt;/code&gt;:
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;#define foobar_(x, y, z, t, eoargs, ...)                      \
+        (inline_static_assert(ISEOARGS(eoargs),               \
+            &amp;quot;too many arguments to foobar&amp;quot;),                  \
+        (foobar)((x), (y), IFDFL((z), 42), IFDFL((t), 36)))
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I only have the N1570 draft so I can’t say for sure that this is
+correct, but my copy specifically states that a &lt;code&gt;_Static_assert&lt;/code&gt; can
+occur inside a structure declaration (§ 6.7.2.1).
+&lt;/p&gt;&lt;p&gt;Hence we’re left with emulating &lt;code&gt;_Static_assert&lt;/code&gt;, with the traditional
+negative array size trick, for example:
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;#define inline_static_assert(x, s)                            \
+        ((void)(char * [(x) ? 1 : -1]){ s })
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Now, the following call will fail to compile, although with an ugly
+message — can’t have it all, I guess:
+&lt;/p&gt;&lt;pre&gt;&lt;code&gt;foobar(6, 7, 1+1, 3*4, 5/5);
+&lt;/code&gt;&lt;/pre&gt;&lt;h3&gt;Conclusion
+&lt;/h3&gt;&lt;p&gt;Well, this is it. &lt;code&gt;_Generic&lt;/code&gt; is not widely supported yet, but
+hopefully support will come soon enough (and in the meantime, you can
+use &lt;a class="extern" href="http://p99.gforge.inria.fr/"&gt;P99&lt;/a&gt; if you’re so inclined), at least for people living outside
+of the C-hater kingdom that Visual Studio has become. And once it
+does, I think it will help with simplifying some preprocessor hacks
+that used to require a lot of added ma^Wlogic in order to branch at
+macro-expansion time.
+&lt;/p&gt;
+&lt;img src="http://feeds.feedburner.com/~r/ourshippy/~4/szhI939A5P4" height="1" width="1"/&gt;</content>
+<feedburner:origLink>http://blog.huoc.org/conditionals-constants-c11-generic.html</feedburner:origLink></entry>
+</feed>

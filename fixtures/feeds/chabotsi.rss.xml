@@ -1,0 +1,1322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>››› import this</title><link>https://chabotsi.fr/blog/</link><description></description><atom:link href="https://chabotsi.fr/blog/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 11 Feb 2014 09:45:00 +0100</lastBuildDate><item><title>Équa-diff, du second ordre au premier ordre</title><link>https://chabotsi.fr/blog/equa-diff-du-second-ordre-au-premier-ordre.html</link><description>&lt;p&gt;Je sais pas si vous avez déjà remarqué, mais dans la littérature des
+mathématiques appliquées qui traitent des équations différentielles, très
+souvent on cherche à résoudre des équations du type&amp;nbsp;:&lt;/p&gt;
+&lt;p&gt;\begin{equation}
+y^\prime = f(y, t)
+\end{equation}&lt;/p&gt;
+&lt;p&gt;Pour cela, il existe plein de méthodes. Les plus connues et utilisées étant, je
+pense, celles du type &lt;a class="reference external" href="http://fr.wikipedia.org/wiki/Méthodes_de_Runge-Kutta"&gt;Runge-Kutta&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;La question qu’on peut se poser est &lt;em&gt;«&amp;nbsp;comme diable puis-je faire si j’ai une
+équation du second ordre&amp;nbsp;?&amp;nbsp;»&lt;/em&gt; et d’ailleurs, &lt;em&gt;«&amp;nbsp;pourquoi personne ne parle de
+ces équations&amp;nbsp;?&amp;nbsp;»&lt;/em&gt;. La réponse à ça est simple, on peut ramener une équation du
+second ordre à une équation du premier ordre&amp;nbsp;! Et donc appliquer les méthodes
+connues&amp;nbsp;! Voyons comment faire…&lt;/p&gt;
+&lt;div class="section" id="vous-changerez-bien-un-peu-de-variable"&gt;
+&lt;h2&gt;Vous changerez bien un peu de variable&amp;nbsp;?&lt;/h2&gt;
+&lt;p&gt;Donc, nous avons l’équation $\ref{eq:2nd}$ à résoudre et seulement des méthodes
+pour des équations du premier ordre à notre disposition. Comment faire…&lt;/p&gt;
+&lt;p&gt;\begin{equation}
+y^{\prime\prime} = f(y^\prime, y, t)
+\label{eq:2nd}
+\end{equation}&lt;/p&gt;
+&lt;p&gt;Je vous ai mis un peu sur la piste avec le titre, nous allons faire un
+changement de variable. On va poser $Y = \begin{pmatrix} y^\prime \
+y\end{pmatrix}^T$. Quelle est la dérivée de ce vecteur&amp;nbsp;? Et bien tout
+simplement $Y^\prime = \begin{pmatrix} y^{\prime\prime} \
+y^\prime\end{pmatrix}^T$. Or $y^{\prime\prime}$ est défini par la fonction
+$f$, d’où&amp;nbsp;:&lt;/p&gt;
+&lt;p&gt;\begin{equation}
+Y^\prime = \begin{pmatrix}f(Y_0, Y_1) \ Y_0\end{pmatrix}^T = F(Y)
+\label{eq:1er}
+\end{equation}&lt;/p&gt;
+&lt;p&gt;où $Y_0$ et $Y_1$ refèrent à la première et second composante du vecteur $Y$
+(soit $y^\prime$ et $y$). Et &lt;em&gt;tadaaa&lt;/em&gt;, sous vos yeux ébaillis, on vient de se
+rammener à une équation du premier ordre. L’idée est simplement de mettre les
+dérivées dans un vecteur… Maintenant, il n’y a plus qu’à appliquer une méthode
+connue, par exemple un Runge-Kutta sur $\ref{eq:1er}$, et vous obtenez votre
+solution $y$ dans le seconde composante de $Y$. C’est pas beau&amp;nbsp;?&lt;/p&gt;
+&lt;p&gt;C’est méthode est généralisable à l’ordre $n$ si vous avez une équation du
+type&amp;nbsp;:&lt;/p&gt;
+&lt;p&gt;\begin{equation}
+y^{(n)} = f(y^{(n-1)}, y^{(n-2)},  \ldots, y, t)
+\end{equation}&lt;/p&gt;
+&lt;p&gt;Naturellement, plus l’ordre de l’équation à résoudre sera grand, plus votre
+vecteur $Y$ le sera, mais c’est tout ce qui changera.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="oui-mais-si-jai-pas-ca"&gt;
+&lt;h2&gt;Oui mais… si j’ai pas ça.&lt;/h2&gt;
+&lt;blockquote&gt;
+Oui… mais, si mon équation est du type $y^{\prime\prime} = f(y,t)$, j’fais
+comment moi&amp;nbsp;?&lt;/blockquote&gt;
+&lt;p&gt;Bonne question cher lecteur. Et bien, pour ça, il y a des &lt;a class="reference external" href="http://fr.wikipedia.org/wiki/Méthodes_de_Runge-Kutta#La_m.C3.A9thode_de_Runge-Kutta_d.27ordre_quatre_avec_d.C3.A9riv.C3.A9e_seconde"&gt;méthodes dédiées&lt;/a&gt;
+et je te laisse en faire la lecture toi même&amp;nbsp;;)&lt;/p&gt;
+&lt;p&gt;À plus&amp;nbsp;!&lt;/p&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">chabotsi</dc:creator><pubDate>Tue, 11 Feb 2014 09:45:00 +0100</pubDate><guid>tag:https://chabotsi.fr/blog,2014-02-11:equa-diff-du-second-ordre-au-premier-ordre.html</guid><category>équations différentielles</category></item><item><title>algèbre des opérateurs</title><link>https://chabotsi.fr/blog/algebre-des-operateurs.html</link><description>&lt;p&gt;Un petit article assez rapide pour vous parlez de l’&lt;em&gt;algèbre des opérateurs&lt;/em&gt;.
+C’est quelque chose que je ne connaissais pas avant hier et vu que j’ai trouvé
+ça bien sympa, je me suis dit que je pourrais vous en parler. Étant donné que
+c’est assez récent dans ma tête, excusez moi à l’avance si je prends des
+(gros) raccourcis ou si je fais des imprécisions &lt;a class="footnote-reference" href="#id3" id="id1"&gt;[0]&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Comme j’ai été confronté à l’&lt;em&gt;algèbre des opérateurs&lt;/em&gt; pour résoudre des
+équations aux dérivées partielles (EDP), résoudre des EPD sera finalité de cet
+article. Je ne m’intéresse ici qu’aux équations aux dérivées du premier ordre en
+temps et en espace, et homogènes, peut être ferai-je une suite…&lt;/p&gt;
+&lt;div class="section" id="une-equation-simple"&gt;
+&lt;h2&gt;Une équation simple&lt;/h2&gt;
+&lt;p&gt;Soit l’équation différentielle suivante&amp;nbsp;:&lt;/p&gt;
+&lt;p&gt;\begin{equation}
+y^\prime - ay = 0
+\label{eq:diff-simple}
+\end{equation}&lt;/p&gt;
+&lt;p&gt;où $a$ une constante. La solution de cette équation est de la forme suivante&amp;nbsp;:
+$y(x) = Ce^{ax}$.  Cela se vérifie très simplement en plaçant $y$ dans l’équation.
+La constante $C$ est déterminée par les conditions initiales. Par exemple, si
+l’on a $y(0) = 10$, alors on voit que nécessairement il nous faut $C = 10$.&lt;/p&gt;
+&lt;p&gt;Maintenant, une équation un peu plus compliquée. Prenons l’équation suivante&amp;nbsp;:
+\begin{equation}
+\partial_t T - \alpha\partial_xT = 0
+\end{equation}&lt;/p&gt;
+&lt;p&gt;où $T(x, t)$ est une fonction qui dépend de $x$ et de $t$. On connait la
+valeur initiale de $T$ en tout point, on a $T(x, 0) = f(x)$. Notre but est de
+trouver une expression de $T$. On peut remarquer que si l’on pose $A =
+\alpha\partial_x$, alors on retrouve quasiment la même équation qu’en
+$\ref{eq:diff-simple}$.  On a&amp;nbsp;:&lt;/p&gt;
+&lt;p&gt;\begin{equation}
+\partial_t T - AT = 0
+\label{eq:diff-operateur}
+\end{equation}&lt;/p&gt;
+&lt;p&gt;on dit que $A$ est un opérateur, un opérateur chargé de dériver une fois par
+rapport à $x$ puis de multiplier par $\alpha$. Étant donné que la forme de
+l’équation $\ref{eq:diff-operateur}$ est très très proche de la forme de
+l’équation $\ref{eq:diff-simple}$, on peut se demander si la solution ne serait
+pas de la même forme… À savoir quelque chose du type «&amp;nbsp;une “constante” multipliée
+par une exponentielle de quelque chose&amp;nbsp;». Et bien, c’est que nous allons voir,
+mais avant cela nous devons définir quelques notions.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="id2"&gt;
+&lt;h2&gt;Algèbre des opérateurs&lt;/h2&gt;
+&lt;p&gt;Bon, là on va prendre une définition tout à fait informelle de ce qu’est un
+&lt;em&gt;opérateur&lt;/em&gt;, juste pour saisir de quoi il retourne. (Pour plus de détails et de
+précisions, je vous laisse lire la page &lt;a class="reference external" href="https://fr.wikipedia.org/wiki/Opérateur_(mathématiques)"&gt;wikipédia&lt;/a&gt;) Donc grosso-modo,
+un opérateur est une application qui «&amp;nbsp;fait un truc », par exemple dériver par
+rapport à une variable, multiplier par une constante, faire une rotation, faire
+une translation, une addition avec une constante ou une fonction, etc. Bref, ça
+peut faire un peu tout.&lt;/p&gt;
+&lt;p&gt;Deux opérateurs peuvent être additionnés, et on a $(O_1 + O_2)f = O_1f + O_2f$.
+Ils peuvent aussi être multipliés, (ce qui fait une composition), $(O_1×O_2)f =
+O_1(O_2f)$. C’est à dire qu’on applique $O_2$ à $f$ puis $O_1$ au résultat.
+Attention, ce n’est PAS communtatif&amp;nbsp;! Étant donné un opérateur, il existe un
+autre opérateur, unique, qui est appelé &lt;em&gt;inverse&lt;/em&gt;, on le note $O^{-1}$ et on a
+$OO^{-1}f = O^{-1}Of = f$. Pour finir, on s’intéresse seulement aux opérateurs
+linéaires, c’est à dire que l’on a&amp;nbsp;:&lt;/p&gt;
+&lt;p&gt;$$\forall (\lambda, \mu) \in \mathbb{C}, \forall (x_1, x_2) \in E,
+O(\lambda x_1 + \mu x_2) = \lambda O(x_1) + \mu O(x_2)$$&lt;/p&gt;
+&lt;p&gt;Voyons ce que l’on peut faire de tout ça…&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="exponentielle-doperateur"&gt;
+&lt;h2&gt;Exponentielle d’opérateur&lt;/h2&gt;
+&lt;p&gt;Étant donné que l’on peut additionner, multiplier des opérateurs, on peut
+définir, par exemple, l’exponentielle d’un opérateur en utilisant les séries. Et
+on a&amp;nbsp;:&lt;/p&gt;
+&lt;p&gt;\begin{equation}
+\exp(A) = \sum_{n = 0}^\infty \frac{A^n}{n!}
+\end{equation}&lt;/p&gt;
+&lt;p&gt;Ce qui définit alors un nouvel opérateur noté $\exp(A)$.&lt;/p&gt;
+&lt;p&gt;On va s’intéresser maintenant à un opérateur particulier, noté $D$. Cet
+opérateur correspond à dériver par rapport à $x$. On a donc $Df(x) =
+\frac{d}{dx}f(x)$. Si on multiplie cet opérateur par lui même, $D^2$, on dérive
+deux fois par rapport à $x$. On a donc $D^n$ qui va dériver $n$ fois. Regardons
+ce que fait l’exponentielle de cet opérateur, multiplié par une constante $a$.&lt;/p&gt;
+&lt;p&gt;\begin{equation}
+\exp(aD) = \sum_{n = 0}^\infty \frac{a^nD^n}{n!}
+\end{equation}&lt;/p&gt;
+&lt;p&gt;Si on applique cet opérateur à une fonction, on a donc&amp;nbsp;:&lt;/p&gt;
+&lt;p&gt;\begin{equation}
+\exp(aD)f(x) = \sum_{n = 0}^\infty \frac{a^nD^n}{n!}f(x) = \sum_{n = 0}^\infty \frac{a^n}{n!}f^{(n)}(x)
+\end{equation}&lt;/p&gt;
+&lt;p&gt;En regardant bien ce résultat, on s’aperçoit qu’il s’agit du développement de
+$f(x + a)$&amp;nbsp;! En d’autres termes, $\exp(aD)$ est l’opérateur de translation
+$T_a$.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="solution-de-lequation-ref-eq-diff-operateur"&gt;
+&lt;h2&gt;Solution de l’équation $\ref{eq:diff-operateur}$&lt;/h2&gt;
+&lt;p&gt;Revenons maintenant à l’équation $\ref{eq:diff-operateur}$, qui
+est $\partial_tT - AT = 0$. Avec $A$ l’opérateur qui dérive par rapport à $x$
+et qui multiplie par $\alpha$. En s’inspirant de la solution de l’équation
+$\ref{eq:diff-simple}$, nous avons envie de dire que la solution de l’équation
+est de la forme&amp;nbsp;:&amp;nbsp;$$T(x, t) = \exp(tA)C$$&lt;/p&gt;
+&lt;p&gt;Il est important de noter que maintenant l’exponentielle est, ici, un
+&lt;em&gt;opérateur&lt;/em&gt; et non plus une fonction comme avant. C’est pour ça que l’ordre est
+important, car la multiplication des opérateurs n’est pas commutative
+contrairement à la multiplication des réels. Pour rappel, on a $T(x, 0) = f(x)$.
+Donc, nécessairement, on a $C = f(x)$. Ainsi on a&amp;nbsp;:&amp;nbsp;$T(x, t) = \exp(tA)f(x)$,
+or $A = aD$. Donc $T(x, t) = \exp(tcD)f(x)$. On reconnait ici l’opérateur de
+translation et on trouve&amp;nbsp;:&lt;/p&gt;
+&lt;p&gt;\begin{equation}
+T(x, t) = f(x+ct)
+\end{equation}&lt;/p&gt;
+&lt;p&gt;On vérifie aisément que la fonction trouvée est bien solution de l’équation
+initiale. La solution de l’équation est ni plus ni moins que la translation de
+la forme initiale.&lt;/p&gt;
+&lt;p&gt;À plus&amp;nbsp;!&lt;/p&gt;
+&lt;table class="docutils footnote" frame="void" id="id3" rules="none"&gt;
+&lt;colgroup&gt;&lt;col class="label" /&gt;&lt;col /&gt;&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td class="label"&gt;&lt;a class="fn-backref" href="#id1"&gt;[0]&lt;/a&gt;&lt;/td&gt;&lt;td&gt;n’hésitez pas à me le signaler s’il y a des spécialistes… Je suis
+d’ailleurs preneur de tout papier ou support de cours à ce sujet&amp;nbsp;!&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">chabotsi</dc:creator><pubDate>Sat, 01 Feb 2014 19:15:00 +0100</pubDate><guid>tag:https://chabotsi.fr/blog,2014-02-01:algebre-des-operateurs.html</guid><category>équations différentielles</category></item><item><title>cacert, comment on s’en sert ?</title><link>https://chabotsi.fr/blog/cacert-comment-on-sen-sert.html</link><description>&lt;p&gt;Bonjour bonjour,&lt;/p&gt;
+&lt;p&gt;Il y a un petit mois, je vous parlais &lt;a class="reference external" href="https://chabotsi.fr/blog/cacert-a-quoi-ca-sert.html"&gt;déjà&lt;/a&gt; de &lt;a class="reference external" href="http://cacert.org"&gt;cacert&lt;/a&gt; et vous disais pourquoi je
+voulais utiliser cette autorité de certification et pas une autre.&lt;/p&gt;
+&lt;p&gt;Le “problème” de cette autorité est qu’elle n’est pas intégrée dans tous les
+navigateurs ou tous les systèmes d’exploitations. De base, seulement quelques
+distributions GNU/Linux l’intègrent (plus d’info &lt;a class="reference external" href="http://wiki.cacert.org/InclusionStatus"&gt;ici&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;Donc, si vous n’avez pas la chance d’être un utilisateur d’une
+distribution GNU/Linux qui intègre les certificats racines de CACert, il est
+fort probable que vous ayez eu une image qui ressemble à la suivante en venant
+sur mon site&amp;nbsp;:&lt;/p&gt;
+&lt;img alt="" class="align-center" src="https://chabotsi.fr/blog/files/certificat_firefox.png" /&gt;
+&lt;p&gt;Et là, la pratique classique consiste à cliquer sur &lt;em&gt;Ajouter une exception&lt;/em&gt;, faire
+&lt;em&gt;suivant&lt;/em&gt;, &lt;em&gt;suivant&lt;/em&gt; jusqu’à ce que ça fonctionne sans trop comprendre ce qui se
+passe. C’est mal :D&lt;/p&gt;
+&lt;p&gt;C’est mal parce que si le site sur lequel vous souhaitez vous rendre à bien été
+attaqué, vous ne vous en rendrez juste pas compte.&lt;/p&gt;
+&lt;div class="section" id="la-bonne-pratique"&gt;
+&lt;h2&gt;La bonne pratique&lt;/h2&gt;
+&lt;p&gt;Dans le cas de &lt;a class="reference external" href="http://cacert.org"&gt;cacert&lt;/a&gt;, le bonne pratique consiste à ajouter le
+certificat racine de CACert à la liste de vos certificats. Comme ça,
+votre navigateur reconnaîtra illico tous les sites utilisant CACert
+&lt;a class="footnote-reference" href="#id2" id="id1"&gt;[0]&lt;/a&gt; et vous alertera en cas d’attaque réelle (&lt;a class="reference external" href="https://fr.wikipedia.org/wiki/Attaque_de_l'homme_du_milieu"&gt;man-in-the-middle&lt;/a&gt; par exemple).
+L’installation est d’une simplicité enfantine, il faut juste la faire…&lt;/p&gt;
+&lt;p&gt;Tout se passe ici&amp;nbsp;: &lt;a class="reference external" href="http://wiki.cacert.org/FAQ/BrowserClients"&gt;http://wiki.cacert.org/FAQ/BrowserClients&lt;/a&gt;. Je vais
+reprendre pour les systèmes d’exploitation et navigateurs courants.&lt;/p&gt;
+&lt;p&gt;La liste des certificats dont nous auront besoin est
+ici&amp;nbsp;:&amp;nbsp;&lt;a class="reference external" href="https://www.cacert.org/?id=3"&gt;https://www.cacert.org/?id=3&lt;/a&gt;&lt;/p&gt;
+&lt;div class="section" id="sous-ubuntu"&gt;
+&lt;h3&gt;Sous Ubuntu&lt;/h3&gt;
+&lt;p&gt;Il existe un paquet qui vous permet de reconnaître les certificats CACert, il
+suffit de l’installer&amp;nbsp;:&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;sudo aptitude install ca-certificates
+&lt;/pre&gt;
+&lt;p&gt;Ensuite, y’a plus que dire à votre navigateur de manger le certificat. Par
+exemple, si vous utilisez Firefox, ça donne&amp;nbsp;:&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;firefox /usr/share/ca-certificates/cacert.org/*.crt
+&lt;/pre&gt;
+&lt;p&gt;Voilà, c’est tout.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="sous-windows"&gt;
+&lt;h3&gt;Sous Windows&lt;/h3&gt;
+&lt;p&gt;Il suffit d’installer le certificat via l’installateur, disponible &lt;a class="reference external" href="https://www.cacert.org/certs/CAcert_Root_Certificates.msi"&gt;là&lt;/a&gt;. Cliquez dessus et
+ça installe tout ce dont vous avez besoin. Et c’est tout.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="navigateurs-web"&gt;
+&lt;h3&gt;Navigateurs web&lt;/h3&gt;
+&lt;p&gt;Si vous ne trouvez pas comment installer le certificat pour tout votre système
+d’exploitation, il est toujours possible de l’installer juste pour votre
+navigateur web.&lt;/p&gt;
+&lt;p&gt;Globalement, pour tous ça fonctionne à peu près de la même manière d’après ce
+que j’ai vu. Il suffit de cliquer sur le certificat racine (format PEM) pour que
+le navigateur l’installe.&lt;/p&gt;
+&lt;p&gt;Donc ça se passe ici&amp;nbsp;:&amp;nbsp;&lt;a class="reference external" href="https://www.cacert.org/certs/root.crt"&gt;https://www.cacert.org/certs/root.crt&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Soit votre navigateur vous dit que c’est déjà installé, et donc ça devrait être
+bon. Soit il l’installe comme un grand et c’est bon. Soit il le télécharge et
+vous devez alors l’ouvrir vous même avec votre navigateur (Fichier → Ouvrir → le
+fichier root.crt) qui devrait ensuite l’installer.&lt;/p&gt;
+&lt;p&gt;J’ai essayé de faire simple. Je rappelle que toutes les
+informations dont vous pourriez avoir besoin sont là&amp;nbsp;:
+&lt;a class="reference external" href="http://wiki.cacert.org/FAQ/BrowserClients"&gt;http://wiki.cacert.org/FAQ/BrowserClients&lt;/a&gt;. (Notamment pour tout ce qui est liste
+de révocation, vérification des SHASUM, etc…)&lt;/p&gt;
+&lt;p&gt;Bye&amp;nbsp;!&lt;/p&gt;
+&lt;table class="docutils footnote" frame="void" id="id2" rules="none"&gt;
+&lt;colgroup&gt;&lt;col class="label" /&gt;&lt;col /&gt;&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td class="label"&gt;&lt;a class="fn-backref" href="#id1"&gt;[0]&lt;/a&gt;&lt;/td&gt;&lt;td&gt;&lt;a class="reference external" href="https://linuxfr.org"&gt;https://linuxfr.org&lt;/a&gt; par exemple ;) (mais aussi le mien !)&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">chabotsi</dc:creator><pubDate>Fri, 13 Dec 2013 11:00:00 +0100</pubDate><guid>tag:https://chabotsi.fr/blog,2013-12-13:cacert-comment-on-sen-sert.html</guid><category>internet</category><category>hébergement</category></item><item><title>Le vote électronique n’est PAS démocratique</title><link>https://chabotsi.fr/blog/le-vote-electronique-nest-pas-democratique.html</link><description>&lt;p&gt;Il y a quelques jours, je parcourais &lt;a class="reference external" href="http://www.democratiereelle.eu/"&gt;ce site&lt;/a&gt;, j’ai ensuite rédigé un &lt;a class="reference external" href="https://chabotsi.fr/links/?wQ0fsA"&gt;shaare&lt;/a&gt; un peu à chaud expliquant pourquoi je
+pensais que le vote électronique n’est pas adapté. Aujourd’hui, je tombe
+sur &lt;a class="reference external" href="http://www.pcinpact.com/news/84877-le-gouvernement-promet-ameliorations-au-vote-electronique-d-ici-2017.htm"&gt;cet article&lt;/a&gt;
+de PCInpact qui indique que le &lt;em&gt;«&amp;nbsp;Quai d’Orsay veut renforcer la sincérité
+et l’intégrité du vote par Internet&amp;nbsp;»&lt;/em&gt;. Je vais reprendre et compléter un
+peu ce que j’avais écrit.&lt;/p&gt;
+&lt;div class="section" id="cest-pratique"&gt;
+&lt;h2&gt;C’est pratique&amp;nbsp;?&lt;/h2&gt;
+&lt;p&gt;L’argument principal en faveur du vote électronique est simple. Le vote
+électronique, c’est pratique. Il faut bien l’avouer, plus besoin d’aller
+marcher le dimanche jusqu’au bureau de vote, on peut voter entre deux &lt;em&gt;likes&lt;/em&gt;
+sur Facebook et trois vidéos de chats sur Youtube, bref le pied. C’est
+simple.&lt;/p&gt;
+&lt;p&gt;Autre point favorable, il n’y a plus besoin de compter les votes. Après tout,
+un ordinateur c’est fait pour compter, il le fait bien. Alors laissons le
+faire.&lt;/p&gt;
+&lt;p&gt;Je ne sais pas si c’est vrai, mais on pourrait penser que le vote
+électronique est aussi plus “écologique”. Vu qu’il n’y a plus de
+bulletins, y’a plus de papier. Mais bon, faut faire tourner les serveurs
+alors…&lt;/p&gt;
+&lt;p&gt;Vous voyez d’autres arguments&amp;nbsp;?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="pourquoi-cest-pas-bien"&gt;
+&lt;h2&gt;Pourquoi c’est PAS bien.&lt;/h2&gt;
+&lt;div class="section" id="confiance"&gt;
+&lt;h3&gt;Confiance&lt;/h3&gt;
+&lt;p&gt;Le résultat d’un vote ne peut pas satisfaire tout le monde, par définition.
+(Sinon, on ne voterait pas…)
+Chacun vote pour la personne de son choix et celle qui a le plus de voix est
+élue. Les personnes qui n’ont pas voté pour elle doivent admettre le
+résultat. C’est comme ça, ton candidat n’a pas été élu, la majorité
+veut celui là. Point.&lt;/p&gt;
+&lt;p&gt;Mais il faut quand même que cette personne élue soit &lt;em&gt;légitime&lt;/em&gt; aux yeux de
+tous. Il faut que chaque citoyen soit convaincu que la personne élue a été
+élue par la majorité. Pas par une supercherie&amp;nbsp;!&lt;/p&gt;
+&lt;p&gt;Tout le monde croit au vote papier, car il est facilement vérifiable. Je mets
+mon bulletin dans l’enveloppe. Je mets l’enveloppe dans l’urne. Puis, mon
+enveloppe n’y bouge plus avant le dépouillement. S’il me chante de rester
+devant l’urne pour surveiller que personne ne retire mon enveloppe je peux. Je
+peux surveiller &lt;em&gt;mon&lt;/em&gt; enveloppe et en même temps celle des autres.&lt;/p&gt;
+&lt;p&gt;Ensuite, vient le dépouillement. Là pareil, je peux regarder (et même
+faire&amp;nbsp;!) le dépouillement. Avec mes petits yeux, je peux vérifier que les
+comptages sont bien faits. Que personne ne triche. Une fois que tout est fini,
+je rentre chez moi et je peux vérifier que les résultats que j’ai vus au
+bureau de vote sont &lt;em&gt;exactement&lt;/em&gt; les mêmes que ceux annoncés sur Internet. Je
+peux ensuite calculer les résultats finaux et donc me convaincre.&lt;/p&gt;
+&lt;p&gt;Si je peux vérifier &lt;em&gt;mon&lt;/em&gt; bureau de vote, chaque citoyen peut vérifier &lt;em&gt;son&lt;/em&gt;
+bureau de vote. On fait ainsi une vérification collective. Et c’est cette
+vérification collective qui fait que nous avons confiance dans le résultat
+final. Pour fausser les résultats de manière significative il faudrait
+corrompre de nombreux bureaux de votes et de nombreux citoyens, ce qui en
+pratique n’est pas réalisable.&lt;/p&gt;
+&lt;p&gt;Quand est-il du côté du vote électronique&amp;nbsp;? Comment est-ce que je fais pour
+être sûr que personne n’a corrompu LA personne qui gère la machine&amp;nbsp;?
+Comment est-ce que je fais pour être sûr que mon vote sera bien enregistré
+et pas changé&amp;nbsp;? C’est simplement impossible&amp;nbsp;! Après avoir cliqué sur le
+bouton, je ne peux pas savoir ce qui se passe. Je ne sais pas si mon vote est
+pris en compte, je ne sais pas si le vote enregistré correspond bien à celui
+que j’ai fait. Je ne sais pas ce qui se passe. Comment alors avoir confiance
+dans le résultat&amp;nbsp;?&lt;/p&gt;
+&lt;p&gt;Un autre point important est celui de la &lt;em&gt;compréhension&lt;/em&gt;. De mon point de
+vue, on peut avoir confiance dans un système quand on le comprend. J’ai
+confiance dans les freins de mon vélo, parce que je sais que si j’appuie
+sur la manette, alors le câble est tiré, alors les pinces se frottent contre
+la roue et que donc ça freine. Un simple cours d’éducation civique de
+collège permet de faire comprendre à un enfant comment fonctionne le vote, le
+dépouillage, le comptage etc. Combien de cours faut-il pour comprendre&amp;nbsp;:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;le code source du logiciel utilisé&lt;/li&gt;
+&lt;li&gt;le fonctionnement du hardware utilisé&lt;/li&gt;
+&lt;li&gt;le fonctionnement des protocoles internet utilisés&lt;/li&gt;
+&lt;li&gt;les méthodes de chiffrement utilisés pour sécuriser le vote&lt;/li&gt;
+&lt;li&gt;…&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;je mets “…” car il y a encore sans aucun doute des centaines de choses à
+comprendre pour avoir 100% confiance en ce système. Et autant vous dire que les
+personnes capables de comprendre tout ça, ça doit pas courir les rues…
+(Dé-mo…cratique vous dîtes&amp;nbsp;?)&lt;/p&gt;
+&lt;p&gt;En utilisant le vote électronique, vous perdez nécessairement confiance dans le
+résultat. &lt;em&gt;Bienvenue dans le monde du vote électronique.&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="intimite"&gt;
+&lt;h3&gt;Intimité&lt;/h3&gt;
+&lt;p&gt;Une autre question importante est celle de l’&lt;em&gt;intimité&lt;/em&gt;. Lorsque vous êtes
+dans l’isoloir pour voter, vous êtes libres. Libres de tout regard, libres de
+toute pression, libres de vos amis, libres de votre conjoint-e, libres de votre
+famille, libres de vos collègues. Vous êtes seuls. Vous mettez le nom que
+vous voulez dans l’enveloppe. Aucun compte à rendre. Le jour où vous devrez
+voter par Internet, comment ça se passera&amp;nbsp;? Vous voterez après mangé en
+famille&amp;nbsp;? Vous voterez avec vos amis après une partie de tennis&amp;nbsp;? Il se passe
+quoi si vous ne voulez pas voter comme eux&amp;nbsp;? Vous allez oser&amp;nbsp;? Vous allez oser
+sachant que le candidat que vous préférez est celui que le reste de la famille
+déteste&amp;nbsp;? Vous voterez avec un pistolet virtuel sur la tempe. &lt;em&gt;Bienvenue dans
+le monde du vote électronique.&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="profils-delecteurs"&gt;
+&lt;h3&gt;Profils d’électeurs&lt;/h3&gt;
+&lt;p&gt;Plus que jamais est d’actualité l’espionnage sur Internet. Plus que jamais
+sont d’actualité les écoutes massives de la population. Vous croyez qu’il
+sera difficile de savoir pour les services secrets qui à voter quoi à quelle
+élection&amp;nbsp;? qui change d’avis d’une élection à l’autre&amp;nbsp;? qui à voter
+pour l’opposition&amp;nbsp;? &lt;em&gt;Bienvenue dans le monde du vote électronique.&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="mise-en-pratique"&gt;
+&lt;h2&gt;Mise en pratique&lt;/h2&gt;
+&lt;p&gt;Encore une chose, à &lt;em&gt;chaque&lt;/em&gt; fois que j’ai vu qu’un vote électronique
+était mis en place, j’ai toujours lu qu’il y avait eu des problèmes.
+L’exemple le plus récent que j’ai est celui de mon université. Alors,
+ils ont décidé (non-démocratiquement…) de passer au vote électronique.
+Il y a eu des problèmes et des votes étaient “vides”, ou “sans clé de
+vérification”. Bah… du coup on dit que ce sont des votes nuls. Mais, nous
+avons été rassurés car « ce n’est significatif », étant donné que
+seulement un petit nombre de bulletin n’a pas été compté. Juste pour
+information, ça devient significatif à partir de quand&amp;nbsp;? 3%&amp;nbsp;? 5%&amp;nbsp;?
+20%&amp;nbsp;? 50&amp;nbsp;? J’aimerais qu’on m’explique comment on peut dire que c’est
+“démocratique” alors que justement toutes les voix n’ont pas été
+comptées… Donc, sur 3781 bulletins, 117 posaient problème&amp;nbsp;:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;86 ne pouvaient pas être vérifiés.&lt;/li&gt;
+&lt;li&gt;4 n’avaient pas de clé de chiffrement.&lt;/li&gt;
+&lt;li&gt;27 ne pouvaient pas être déchiffrer.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Ce sont au total 31 votes qui ont été déclarés nuls et 86 déclarés
+valides, mais sans vérifications possible.&lt;/p&gt;
+&lt;p&gt;À une autre échelle, dans le cas des dernières de 2012 et 2013, 5% des
+électeurs à l’étranger ayant voulu utiliser le vote par Internet n’ont
+pas pu voter. Soit 12&amp;nbsp;000 personnes.&lt;/p&gt;
+&lt;p&gt;C’est ça, la démocratie&amp;nbsp;? On vote sans la possibilité d’avoir
+confiance dans le résultat&amp;nbsp;? On vote sans la possibilité d’être libre dans
+l’isoloir&amp;nbsp;? On vote en pouvant être écouté par les services secrets&amp;nbsp;?&lt;/p&gt;
+&lt;p&gt;Non merci.&lt;/p&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">chabotsi</dc:creator><pubDate>Thu, 12 Dec 2013 16:00:00 +0100</pubDate><guid>tag:https://chabotsi.fr/blog,2013-12-12:le-vote-electronique-nest-pas-democratique.html</guid><category>démocratie</category><category>politique</category></item><item><title>Et si les armes étaient de sortie ?</title><link>https://chabotsi.fr/blog/et-si-les-armes-etaient-de-sortie.html</link><description>&lt;p&gt;Je n’avais pas écouté les questions/réponses de la dernière &lt;a class="reference external" href="https://chabotsi.fr/links/?3eqryA"&gt;conf&lt;/a&gt; de Benjamin Bayart. Je les ai regardées
+hier après midi. Et en voyant cet &lt;a class="reference external" href="http://linuxfr.org/users/keyes/journaux/12-12-a-lille-nsa-dcri-police-comment-les-etats-nous-surveillent-et-comment-s-en-premunir"&gt;article&lt;/a&gt; de LinuxFR intitulé&amp;nbsp;:&lt;/p&gt;
+&lt;blockquote&gt;
+«&amp;nbsp;&amp;nbsp;NSA, DCRI, police… comment les États nous surveillent et comment
+s’en prémunir&amp;nbsp;»&lt;/blockquote&gt;
+&lt;p&gt;je me dis qu’il avait raison… nous sommes entrain d’entrer en guerre
+numérique.&lt;/p&gt;
+&lt;p&gt;Si les lois étaient respectées par les puissants, ils ne feraient pas de
+surveillance de masse des citoyens (presemption d’innoncence vs presemption
+de culpabilité). Chaque mise en écoute serait suivie et autorisée par un
+juge. Or, aujourd’hui les États ont abusé de la facilité à surveiller
+l’ensemble de la population. Il faut bien avouer que c’est assez simple de
+surveiller la majeure partie de la population quand elle est concentrée à
+quelques endroits précis (Facebook, Gmail, Outlook, …), mais quand même&amp;nbsp;!&lt;/p&gt;
+&lt;p&gt;Il y a aussi l’abus de censure. Ceux qui abusent de la censure pour protéger
+leurs «&amp;nbsp;droits&amp;nbsp;». Ceux qui abusent de la censure car une photo laisse
+entrevoir une &lt;a class="reference external" href="http://www.numerama.com/magazine/25304-censure-par-facebook-le-musee-du-jeu-de-paume-prefere-s-auto-censurer.html"&gt;poitrine&lt;/a&gt;. Ceux qui abusent de la censure pour une petite image
+qui se &lt;a class="reference external" href="http://www.robdenbleyker.com/post/65577654826/my-facebook-lockout"&gt;moque&lt;/a&gt; (très gentiment&amp;nbsp;!) de la religion. Ceux qui abusent de la
+censure car il ne supportent pas la critique &lt;a class="reference external" href="http://www.numerama.com/magazine/26120-linkeo-s-en-prend-a-linuxfr-et-recolte-un-effet-streisand.html"&gt;ici&lt;/a&gt; ou &lt;a class="reference external" href="http://www.pcinpact.com/breve/64648-cgu-sebsauvage-tuto4pc-eorezo-adware.htm"&gt;là&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Petit à petit, les citoyens s’arment contre tout cela. Jugeant injustes ces
+censures, jugeant injustes ces méthodes de surveillance. Les armes employées
+sont d’une efficacité redoutable. Je pense par exemple à &lt;a class="reference external" href="https://fr.wikipedia.org/wiki/GNU_Privacy_Guard"&gt;GPG&lt;/a&gt; pour chiffrer les
+emails (enfin… n’importe quel document), aux &lt;a class="reference external" href="https://github.com/mitsukarenai/Projet-Autoblog"&gt;autoblogs&lt;/a&gt; pour mettre fin à
+la censure (ou dans une tout autre mesure à &lt;a class="reference external" href="https://fr.wikipedia.org/wiki/Freenet"&gt;Freenet&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;Ces outils sont binaires. Soit ils sont efficaces. C’est à dire qu'&lt;strong&gt;aucun&lt;/strong&gt;
+ne message peut être déchiffré par personne d’autre que le destinataire
+et qu'&lt;strong&gt;aucun&lt;/strong&gt; article peut être censuré. Soit ils ne le sont pas, et ne
+remplissent alors par leur mission. Or ils se trouvent que ça fonctionne.&lt;/p&gt;
+&lt;blockquote&gt;
+«&amp;nbsp;Encryption works. Properly implemented strong crypto systems are one of the few
+things that you can rely on.&amp;nbsp;»&amp;nbsp;−&amp;nbsp;Edward Snowden&lt;/blockquote&gt;
+&lt;p&gt;Je reste dubitatif face à la position a prendre. Choisir une généralisation
+de ces outils pour permettre à chacun de se défendre revient à empêcher la
+police d’opérer, même dans le cadre le plus légal qu’il soit. C’est à
+dire que l’État n’aura plus les moyens d’assurer l’ordre. Et d’un
+autre côté… il faut bien dire qu’ils le cherchent. À surveiller tout le
+monde en supposant que tout le monde est suspect, ils le cherchent. Sauf qu’il
+va venir un moment où ils ne pourront plus car le peuple en sera venu aux armes
+numériques…&lt;/p&gt;
+&lt;p&gt;Il est temps que nos élus se rendent compte des enjeux qui sont derrière tout
+cela et que les lois suivent. Ces lois doivent punir les abus. Les abus de
+censure, les abus de surveillance. Car si le peuple prendre les armes contre son
+État, il leur en cuira…&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">chabotsi</dc:creator><pubDate>Sun, 24 Nov 2013 16:00:00 +0100</pubDate><guid>tag:https://chabotsi.fr/blog,2013-11-24:et-si-les-armes-etaient-de-sortie.html</guid><category>internet</category><category>anonymat</category><category>gpg</category><category>tor</category><category>politique</category></item><item><title>Bon alors, je propose qu’on utilise dropbox pour notre projet…</title><link>https://chabotsi.fr/blog/bon-alors-je-propose-quon-utilise-dropbox-pour-notre-projet.html</link><description>&lt;p&gt;Nooooooon !
+Non, c’est mort d’avance. Jamais, never, ei koskaan ! On ne développera
+&lt;strong&gt;pas&lt;/strong&gt; notre projet universitaire avec Dropbox&amp;nbsp;:&amp;nbsp;&lt;em&gt;jamais&lt;/em&gt;, &lt;em&gt;jamais&lt;/em&gt; tu
+entends&amp;nbsp;?&lt;/p&gt;
+&lt;p&gt;Il y a quelques mois, avant de commencer un projet à l’université, il a
+fallu se mettre d’accord sur la façon de travailler. Comment on partage
+le travail, comment on met en commun etc. La solution qui semblait évidente
+pour tous était&amp;nbsp;:&amp;nbsp;&lt;em&gt;Google docs pour les rapports &amp;amp; Dropbox pour le code&lt;/em&gt;.
+Sauf que… bah j’étais pas vraiment d’accord avec cette solution. Pas
+du tout même. D’une part, j’ai pas de compte Google, donc pour éditer
+les documents, c’est moins facile… &lt;a class="footnote-reference" href="#id4" id="id1"&gt;[0]&lt;/a&gt; mais j’admets que ça puisse
+être pratique pour éditer un petit document à plusieurs, soit, admettons.
+Mais alors… Dropbox pour partager du code. Là, quand j’entends ça, ça me
+fait saigner les tympans. Quand je vois quelqu’un faire ça, ça me donne la
+conjonctivite. Quand quelqu’un pense à soumettre l’idée de faire ça, ça
+me donne la migraine. &lt;a class="footnote-reference" href="#id5" id="id2"&gt;[1]&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;J’aimerai donc dire, ici, à tous les étudiants qui utilisent Dropbox pour gérer
+leurs projets qu’il faut arrêter. Tout de suite ! Je vais essayer de vous montrer
+pourquoi. Dans un prochain article, je vous présenterai &lt;a class="reference external" href="https://fr.wikipedia.org/wiki/Mercurial"&gt;Mercurial&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="section" id="pourquoi-dropbox-cest-pas-pour-le-dev"&gt;
+&lt;h2&gt;Pourquoi Dropbox c’est pas pour le dev.&lt;/h2&gt;
+&lt;p&gt;Donc, je concède que Dropbox puisse être pratique pour partager des photos,
+des pdf, des vidéos. Ces documents n’ont pas besoin d’être modifiés. Une
+personne met ses photos dans un dossier Dropbox, une autre en ajoute etc. Et à
+la fin, tout le monde à les photos de tout le monde. Donc, là, ça peut être
+pratique. Je suppose que les personnes utilisant Dropbox pour développer se
+sont dit exactement la même chose&amp;nbsp;:&lt;/p&gt;
+&lt;blockquote&gt;
+On fait un dossier partagé, on mettra le code dedans. Quand on veut faire
+une modification sur un fichier, on la fait, ça met tout à jour chez tout
+le monde et c’est trop cool.&lt;/blockquote&gt;
+&lt;p&gt;Oui, mais non. C’est pas cool. Ce qui n’est pas cool, c’est justement la
+fonction de synchronisation. Imaginons un projet à deux développeurs utilisant
+Dropbox. Vous faîtes des modifications dans un fichier et à chaque
+enregistrement, ça synchronise avec votre binôme. Ça veut dire que le binôme
+qui faisait ses modif’ dans son coin sur son fichier à lui, se retrouve avec vos
+modif’ à vous aussi et vice-versa. Et là, bonjour le debuggage. C’est juste
+impossible à suivre.&lt;/p&gt;
+&lt;p&gt;Pour palier ce problème, plusieurs astuces ont vu le jour. La première est
+de couper la synchronisation. Comme ça, vous faîtes vos modifications dans
+votre coin. Et quand ça fonctionne enfin du tonnerre, vous voulez partager ça.
+Vous croisez alors les doigts pour que le binôme n’ait pas modifié le code
+entre temps et paaaaf vous synchronisez tout. Le problème, c’est quand le
+binôme a synchronisé ses modifications avant vous. Vous vous retrouvez comme
+un jambon a devoir aller chercher les modifications qu’il a faîtes, les
+intégrer à votre code, vérifier que tout fonctionne &lt;a class="footnote-reference" href="#id6" id="id3"&gt;[2]&lt;/a&gt; et resynchroniser
+(en espérant que le binôme n’ait pas fait de nouvelles modifications entre
+temps, sinon vous êtes bon pour un autre tour ^^). Et d’après ce que
+j’ai entendu, Dropbox fait un beau mélange des fichiers et c’est juste
+indécrottable… Très vite, on se rend compte que c’est vraiment casse-pied.
+Et c’est là que nait la seconde astuce.&lt;/p&gt;
+&lt;p&gt;Vu que c’est vraiment pénible de devoir chercher dans le code les modifications
+du binôme pour se les copier/coller à la main puis de resynchroniser tout, on
+cherche une autre solution. L’autre solution que j’ai eu le bonheur entre voir
+est de définir un planning. Le planning disant qui peut coder et quand. Dans le
+cas de deux personnes, on peut imaginer que les jours pairs c’est l’un qui s’y
+colle et les jours impairs c’est l’autre. Dans le cas de trois polynômes, chacun
+peut coder un jour tous les trois jours. Etc. Et comme ça, plus de problème.
+Bon… faudrait pas être cinquante parce que sinon on ne ferait pas grand chose,
+mais ça fonctionne ^^.&lt;/p&gt;
+&lt;p&gt;Il faut bien avouer que, ça élimine tous les problèmes, mais c’est quand même
+supeeeeeer contraignant. Ça veut dire que si j’ai une super idée un jour où
+c’est pas à moi de coder, j’ai plus qu’à la noter sur un post-it pour y repenser
+le lendemain&amp;nbsp;? J’espère qu’à ce stade déjà, les utilisateurs Dropbox me lisant
+auront vu que c’était pas acceptable de travailler comme ça. Mais, je vais
+enfoncer encore un peu plus le clou pour être sûr que le message passe.&lt;/p&gt;
+&lt;p&gt;On est dimanche 17 novembre, c’est un jour impair c’est donc à moi de coder.
+Je me lance. Deux heures plus tard, coup de téléphone, on me propose d’aller
+manger une crêpe en ville et comme j’adore les crêpes, je ne sais refuser et
+pars laissant mon travaille en plan. La crêpe est suivie d’une bière ou deux
+et j’en oublie complètement mon code qui m’attend patiemment. Je rentre,
+je décide de couper mon cerveau en allumant la télévision. Deux heures
+plus tard, je retourne à mon ordinateur et vois mon code, qui m’attend.
+C’est pas fini, mais tant pis, mon binôme finira demain, allez je synchronise
+tout ça. La question que j’aimerai maintenant poser est simple&amp;nbsp;:&amp;nbsp;comment
+votre binôme peut-il voir ce que vous avez modifié par rapport à la version
+précédente&amp;nbsp;? Comment votre binôme peut savoir ce que vous avez commencé&amp;nbsp;?
+Alors oui, Dropbox fait des &lt;em&gt;snapshots&lt;/em&gt; à chaque synchronisation et permet de
+revenir en arrière, mais comment vous faîtes pour voir la différence entre
+deux fichiers&amp;nbsp;? C’est à dire, ce qui en sort et ce qui en entre&amp;nbsp;? Bah…
+il sait pas faire (à ma connaissance). Votre binôme est bon pour chercher les
+différences entre le code d’avant et vos modifications. Avouez qu’il y a
+plus intéressant comme jeu pour un lundi matin. Votre binôme pourrait se dire
+que vous avez juste écrit n’importe quoi et choisir de restaurer la version
+précédente. Au quel cas, votre travail est simplement parti à la poubelle. Mais
+heureusement, vous pourrez recommencer… le lendemain.&lt;/p&gt;
+&lt;p&gt;Autre cas de figure. J’ai une idée top cool. Avant d’en parler à mes
+binômes, j’aimerai faire des petits tests voir si ce que je pense tiens la
+route. Je coupe la synchronisation&amp;nbsp;−&amp;nbsp;pour ne pas les embêter (en plus,
+c’est pas à moi de coder ce jour là…). Je code ma super feature, c’est
+un peu bancale, mais ça devrait suffire pour leur montrer à quel point c’est
+peut être cool. Maintenant, question. Comment je fais pour leur montrer ma
+super feature&amp;nbsp;? Je synchronise tout avec le code principal, alors que ça bug
+un peu&amp;nbsp;? Je fais un nouveau dossier partagé Dropbox&amp;nbsp;? Je les fais venir chez
+moi pour leur montrer (mais du coup, ils n’auront pas accès au code pour
+tester…)&amp;nbsp;? Je continue tout seul à développer ça et quand ça fonctionnera
+bien, je synchroniserai tout avec le code principal, en espérant très fort que
+le code n’est pas trop trop changé…&amp;nbsp;? Non, sérieusement… vous voyez
+qu’aucune solution proposée ici n’est valable…&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="la-solution"&gt;
+&lt;h2&gt;La solution&lt;/h2&gt;
+&lt;p&gt;Tous les problèmes que je viens de vous montrer là se résolvent avec ce qu’on
+appelle un &lt;em&gt;gestionnaire de versions&lt;/em&gt;. Il en existe plein ! Les plus connus sont
+sans doute &lt;a class="reference external" href="https://fr.wikipedia.org/wiki/Mercurial"&gt;Mercurial&lt;/a&gt;, &lt;a class="reference external" href="https://fr.wikipedia.org/wiki/Git"&gt;Git&lt;/a&gt; et &lt;a class="reference external" href="https://fr.wikipedia.org/wiki/Bazaar_(software)"&gt;Bazaar&lt;/a&gt;. Ces outils sont faits &lt;em&gt;exprès&lt;/em&gt; pour
+gérer du code, sont faits &lt;em&gt;exprès&lt;/em&gt; pour travailler à plusieurs, sont faits
+&lt;em&gt;exprès&lt;/em&gt; pour gérer des différentes versions d’un projet. Bref, c’est ça qu’il
+faut utiliser et pas Dropbox ou n’importe quel autre disque dur dans le cloud,
+c’est juste pas fait pour !&lt;/p&gt;
+&lt;p&gt;Dans un prochain article, je vous montrerai comment se servir de Mercurial (vu
+que c’est le gestionnaire de versions que je connais le mieux).&lt;/p&gt;
+&lt;p&gt;Allez, ciao ;)&lt;/p&gt;
+&lt;table class="docutils footnote" frame="void" id="id4" rules="none"&gt;
+&lt;colgroup&gt;&lt;col class="label" /&gt;&lt;col /&gt;&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td class="label"&gt;&lt;a class="fn-backref" href="#id1"&gt;[0]&lt;/a&gt;&lt;/td&gt;&lt;td&gt;je crois savoir qu’il est possible de permettre la lecture/écriture à
+quelqu’un en lui donnant un lien, sans pour autant que cette personne
+ait un compte. Si vous en savez plus, je suis preneur car on m’a dit
+que&amp;nbsp;«&amp;nbsp;non, c’est pas possible&amp;nbsp;»…&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;table class="docutils footnote" frame="void" id="id5" rules="none"&gt;
+&lt;colgroup&gt;&lt;col class="label" /&gt;&lt;col /&gt;&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td class="label"&gt;&lt;a class="fn-backref" href="#id2"&gt;[1]&lt;/a&gt;&lt;/td&gt;&lt;td&gt;pour la petite histoire, j’ai proposé d’utiliser Mercurial. Ils m’ont
+regardé avec des yeux de merlan frit. Je leur ai vite fait montrer.
+C’était dans un terminal. Et une des filles m’a dit &lt;em&gt;«&amp;nbsp;ah, mais c’est
+super vieux les terminaux, il faut songer à évoluer maintenant&amp;nbsp;»&lt;/em&gt;. Bon…
+ok ^^&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;table class="docutils footnote" frame="void" id="id6" rules="none"&gt;
+&lt;colgroup&gt;&lt;col class="label" /&gt;&lt;col /&gt;&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td class="label"&gt;&lt;a class="fn-backref" href="#id3"&gt;[2]&lt;/a&gt;&lt;/td&gt;&lt;td&gt;parce que vous faîtes des &lt;a class="reference external" href="https://fr.wikipedia.org/wiki/Test_unitaire"&gt;tests unitaires&lt;/a&gt;, évidement ;)&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">chabotsi</dc:creator><pubDate>Sun, 17 Nov 2013 15:20:00 +0100</pubDate><guid>tag:https://chabotsi.fr/blog,2013-11-17:bon-alors-je-propose-quon-utilise-dropbox-pour-notre-projet.html</guid><category>projet</category><category>dcvs</category><category>mercurial</category></item><item><title>cacert, à quoi ça sert ?</title><link>https://chabotsi.fr/blog/cacert-a-quoi-ca-sert.html</link><description>&lt;p&gt;J’aime bien que les services web que j’utilise soient en HTTPS. Je n’aime
+pas savoir que quand je me connecte à un site quelqu’un a la possibilité
+technique de connaître mes identifiants. Je n’aime pas non plus que le
+contenu qui se promène entre le serveur et mon PC soit en clair (aussi peu
+intéressant que soit ce contenu). C’est pourquoi je tiens à ce que 100% de
+mon site soit en HTTPS &lt;a class="footnote-reference" href="#id3" id="id1"&gt;[0]&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Donc, pour faire du HTTPS, il faut un certificat ssl. Et il faut que ce
+certificat soit signé. Alors, si vous ne voulez pas vous emmerdez, vous signez
+le certificat vous même. Le problème, ce que dès qu’un nouveau visiteur
+viendra sur votre site pour la première fois, il aura un beau message qui fait
+peur lui disant que “c’est pas sécurisé”. Il faudra qu’il accepte
+le certificat, &lt;em&gt;la première fois&lt;/em&gt;. Si le certificat change, pour une raison ou
+une autre, il faudra qu’il l'accepte de nouveau. Donc, l’auto-signature,
+c’est pour si vous ne voulez pas trop vous faire chier… Mais bon, c’est
+pas très agréable pour vos nouveaux visiteurs… (et ça dépend aussi de
+leurs connaissances… certains auront peur, d’autres verrons que c’est
+auto-signé et comprendrons. bref, ça dépend…)&lt;/p&gt;
+&lt;p&gt;Une autre solution est assez simple, vous mettez la main au porte-feuille en
+demandant gentiment à une autorité si elle veut bien signer votre certificat (si vous
+payez, je suis sûr qu’elle sera d’accord !)&lt;/p&gt;
+&lt;p&gt;Mais, si on ne veut pas un certificat auto-signé&amp;nbsp;−&amp;nbsp;qui encourage les gens
+à accepter tous les certificats qui arrivent&amp;nbsp;−&amp;nbsp;et si vous ne voulez pas
+participer à la &lt;em&gt;mafia&lt;/em&gt; des certificats payants, comment faire&amp;nbsp;? Et bien,
+c’est là qu’intervient &lt;a class="reference external" href="http://cacert.org"&gt;cacert&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Cacert est une autorité de certification gérée par une communauté
+d’utilisateurs. Cette autorité vous permet de créer des certificats signés et
+reconnus. Le certificat racine de cacert.org est inclus dans la plupart des
+distributions GNU/Linux. Il n’est malheureusement pas&amp;nbsp;−&amp;nbsp;encore&amp;nbsp;?&amp;nbsp;−&amp;nbsp;inclus dans
+les navigateurs web classiques &lt;a class="footnote-reference" href="#id4" id="id2"&gt;[1]&lt;/a&gt;. Du coup, c’est à vous de juger si la
+solution cacert est acceptable en fonction de votre public.&lt;/p&gt;
+&lt;div class="section" id="generer-son-certificat"&gt;
+&lt;h2&gt;Générer son certificat&lt;/h2&gt;
+&lt;p&gt;Supposant que vous êtes partant pour utiliser cacert, voici la procédure pour
+faire un certificat signé. Première chose, aller sur leur site et se faire un
+compte. Il faut ensuite ajouter votre domaine. Vous devez être le propriétaire
+du domaine. Pour vérifier cela, cacert va envoyer un mail à une des adresse mail
+qu’il va trouver dans le &lt;cite&gt;whois&lt;/cite&gt;, ou bien par défaut à &lt;a class="reference external" href="mailto:root&amp;#64;votredomaine.tld"&gt;root&amp;#64;votredomaine.tld&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Une fois votre domaine ajouté, vous pouvez créer vos certificats&amp;nbsp;:&lt;/p&gt;
+&lt;pre class="code sh literal-block"&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;openssl req -new -nodes -keyout server.key -out server.csr
+&lt;/pre&gt;
+&lt;p&gt;Openssl va alors vous demander des informations à mettre dans votre certificat.
+Vous pouvez laisser les propositions par défaut car à final, seule l’adresse du
+site sera présente dans le certificat (cacert ne pouvant vérifier les autres).
+L’adresse de votre site est à mettre dans le champ suivant&amp;nbsp;:&lt;/p&gt;
+&lt;pre class="code sh literal-block"&gt;
+Common Name &lt;span class="o"&gt;(&lt;/span&gt;e.g., YOUR name&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;[]&lt;/span&gt;: votredomaine.tld
+&lt;/pre&gt;
+&lt;p&gt;Une fois cela fait, vous avez deux fichiers. Un &lt;cite&gt;server.key&lt;/cite&gt; (la partie privée)
+et un &lt;cite&gt;server.csr&lt;/cite&gt; (la demande de certificat). Sur le site de cacert, dans le
+menu “Certificats de serveur”, cliquez sur nouveau et copier dans le formulaire
+le contenu de &lt;cite&gt;serveur.csr&lt;/cite&gt;.&lt;/p&gt;
+&lt;p&gt;Cacert mouline un peu et vous sort alors votre certificat public. Copier coller
+le certificat qui s’affiche dans &lt;cite&gt;server.crt&lt;/cite&gt;. Et voilà. Vous avez donc trois
+fichiers&amp;nbsp;:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Le &lt;cite&gt;server.key&lt;/cite&gt; qui est la clé privée ;&lt;/li&gt;
+&lt;li&gt;Le &lt;cite&gt;server.csr&lt;/cite&gt; qui est le certificat de demande de signature ;&lt;/li&gt;
+&lt;li&gt;Le &lt;cite&gt;server.crt&lt;/cite&gt; qui est le certificat public, signé par cacert.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div class="section" id="integration-dans-apache"&gt;
+&lt;h2&gt;Intégration dans Apache&lt;/h2&gt;
+&lt;p&gt;La config est assez simple, il suffit de dire à Apache où sont vos fichiers de
+certificats et d’activer SSL. Par exemple&amp;nbsp;:&lt;/p&gt;
+&lt;pre class="code apache literal-block"&gt;
+&lt;span class="nt"&gt;&amp;lt;VirtualHost&lt;/span&gt; &lt;span class="s"&gt;*:443&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="nb"&gt;DocumentRoot&lt;/span&gt; &lt;span class="sx"&gt;/var/www/votredomain.tld&lt;/span&gt;
+    &lt;span class="nb"&gt;ServerName&lt;/span&gt; votredomaine.tld
+
+    &lt;span class="nb"&gt;SSLEngine&lt;/span&gt; &lt;span class="k"&gt;On&lt;/span&gt;
+    &lt;span class="nb"&gt;SSLCertificateFile&lt;/span&gt; &lt;span class="sx"&gt;/etc/apache2/ssl/server.crt&lt;/span&gt;
+    &lt;span class="nb"&gt;SSLCertificateKeyFile&lt;/span&gt; &lt;span class="sx"&gt;/etc/apache2/ssl/server.key&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/VirtualHost&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Redémarrez le serveur Apache et le tour est joué.&lt;/p&gt;
+&lt;p&gt;Maintenant que vous savez à quoi ça sert, je vous souhaite de bonnes
+signatures.&lt;/p&gt;
+&lt;table class="docutils footnote" frame="void" id="id3" rules="none"&gt;
+&lt;colgroup&gt;&lt;col class="label" /&gt;&lt;col /&gt;&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td class="label"&gt;&lt;a class="fn-backref" href="#id1"&gt;[0]&lt;/a&gt;&lt;/td&gt;&lt;td&gt;je ne permets &lt;em&gt;PAS&lt;/em&gt; la navigation en clair sur l’ensemble de mon site.&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;table class="docutils footnote" frame="void" id="id4" rules="none"&gt;
+&lt;colgroup&gt;&lt;col class="label" /&gt;&lt;col /&gt;&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td class="label"&gt;&lt;a class="fn-backref" href="#id2"&gt;[1]&lt;/a&gt;&lt;/td&gt;&lt;td&gt;du coup, les utilisateurs de Windows/MacOS ne verront pas la différence
+entre un certificat signé par cacert et un auto-signé. Plus d’info &lt;a class="reference external" href="http://wiki.cacert.org/InclusionStatus"&gt;ici&lt;/a&gt;. Ubuntu ne reconnait pas
+cacert par défaut. Il faut simplement installer le paquet
+&lt;cite&gt;ca-certificats&lt;/cite&gt; et tout devrait fonctionner ensuite ;)&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">chabotsi</dc:creator><pubDate>Mon, 11 Nov 2013 21:10:00 +0100</pubDate><guid>tag:https://chabotsi.fr/blog,2013-11-11:cacert-a-quoi-ca-sert.html</guid><category>internet</category><category>hébergement</category></item><item><title>non, je n’aurai pas de compte sur ce site</title><link>https://chabotsi.fr/blog/non-je-naurai-pas-de-compte-sur-ce-site.html</link><description>&lt;p&gt;Je lisais cet &lt;a class="reference external" href="http://www.dadall.info/blog/index.php?post/2013/10/27/Utilisez-vos-mails,-pas-Facebook"&gt;article&lt;/a&gt; et je me suis dit «&amp;nbsp;mais putain, qu’est-ce que je
+suis d’accord&amp;nbsp;!&amp;nbsp;»&lt;/p&gt;
+&lt;p&gt;Je suis étudiant à l’&lt;a class="reference external" href="http://utc.fr"&gt;UTC&lt;/a&gt; depuis 2009 et &lt;strong&gt;jamais&lt;/strong&gt;, &lt;strong&gt;jamais&lt;/strong&gt; je n’ai
+manqué d’informations. Tout est en place et fonctionne parfaitement.
+L’administration a des mailing-list pour écrire aux étudiants d’un cours
+particulier, aux étudiants à l’étranger, aux étudiants en 1ère année,
+2nd année, ceux qui sont en stage, etc. Bref, ils peuvent filtrer comme ils
+veulent.&lt;/p&gt;
+&lt;p&gt;Les associations de l’UTC aussi fonctionnent pas mal sur le mail. On reçoit
+chaque semaine un mail (le &lt;em&gt;weekmail&lt;/em&gt;) écrit pas une personne secrète (le
+&lt;em&gt;weekman&lt;/em&gt;), dans lequel il y a des blagounettes, le planning de la semaine
+des associations, etc, etc. Bref, c’est très bien fait ! Et cerise sur le
+gâteau, chaque association peut gérer ses propres mailing-list ! (merci le
+&lt;a class="reference external" href="http://assos.utc.fr/simde/wiki/"&gt;simde&lt;/a&gt; !) Donc là où je suis très content, c’est qu’on est vraiment
+autonome&amp;nbsp;:&amp;nbsp;&lt;em&gt;nos&lt;/em&gt; mailing-list, &lt;em&gt;nos&lt;/em&gt; mails, &lt;em&gt;nos&lt;/em&gt; échanges. On demande rien
+à personne. Et pour couronner le tout&amp;nbsp;:&amp;nbsp;tout est hébergé à l’UTC.&lt;/p&gt;
+&lt;p&gt;Donc, ça pour moi&amp;nbsp;−&amp;nbsp;naïf que je suis&amp;nbsp;−, c’était le mode de fonctionnement
+&lt;em&gt;normal&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Depuis le mois de septembre, je suis à l’étranger à Oulu (en Finlande).
+J’étudie pour un semestre à l’université de sciences appliquée (&lt;a class="reference external" href="http://www.oamk.fi/english/"&gt;OUAS&lt;/a&gt;).
+Déjà avant même d’arriver, ils nous a été demandé de rejoindre
+les groupes facebook de l’université. &lt;em&gt;«&amp;nbsp;WTF ? j’ai même pas de
+compte…&amp;nbsp;»&lt;/em&gt; me dis-je. Je laisse passer. Arrivé à l’université,
+quelques assos étudiantes passent se présenter. Et toutes&amp;nbsp;−&amp;nbsp;je dis bien
+toutes&amp;nbsp;−&amp;nbsp;ne purent s’empêcher de ponctuer chaque phrase par un &lt;em&gt;«&amp;nbsp;mais,
+vous inquiétez pas, vous retrouverez toutes les infos sur facebook&amp;nbsp;»&lt;/em&gt;.
+Bah si&amp;nbsp;! Un peu que je m’inquiète&amp;nbsp;! Je fais comment moi sans mon compte
+facebook pour savoir comment m’inscrire&amp;nbsp;? Je fais comment moi sans
+mon compte facebook pour savoir à qui écrire&amp;nbsp;? Vous pouvez pas choper des
+personnes de la filière “informatique” pour vous faire vos sites web, &lt;em&gt;à
+vous&lt;/em&gt;&amp;nbsp;?! Avec le design que &lt;em&gt;vous&lt;/em&gt; aurez choisi&amp;nbsp;? Avec les options que &lt;em&gt;vous&lt;/em&gt;
+aurez choisies ? Faîtes un truc qui &lt;em&gt;vous&lt;/em&gt; ressemble&amp;nbsp;!&lt;/p&gt;
+&lt;p&gt;Dans la résidence étudiante où je suis, tout passe également par facebook&amp;nbsp;:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;−&amp;nbsp;Des nouvelles TV sont arrivées. Il faut aller les chercher à 20h,
+t’as vu ?&lt;/p&gt;
+&lt;p&gt;−&amp;nbsp;Ah non, j’savais pas. T’as vu ça où&amp;nbsp;?&lt;/p&gt;
+&lt;p&gt;−&amp;nbsp;Bah le dormitory manager a dit ça
+sur facebook !&lt;/p&gt;
+&lt;p&gt;−&amp;nbsp;Ah ok. D’façons, j’veux pas de TV :D&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Mais, c’est aussi l’administration de l’école qui ne communique quasiment
+que sur facebook. Un jour, je vois dans ma boite aux lettres le mail suivant&amp;nbsp;:&lt;/p&gt;
+&lt;blockquote&gt;
+«&amp;nbsp;Bonjour à tous, comme il a été dit sur facebook il y a quelques
+semaines, merci de mettre à jour votre adresse postale sur l’ENT. C’est
+important de le faire, merci.&amp;nbsp;»&lt;/blockquote&gt;
+&lt;p&gt;WTF&amp;nbsp;? Tu pouvais pas envoyer ce mail &lt;em&gt;en même temps&lt;/em&gt; que sur facebook si
+c’est important&amp;nbsp;? C’est normal que ceux qui ne sont pas sur facebook
+reçoivent l’info en décallé par rapport aux autres&amp;nbsp;? S’ils veulent
+publier sur facebook ou twitter, ou whatever, je m’en fiche. Ça serait juste
+plus cool et plus correct d’envoyer l’info &lt;em&gt;en même temps&lt;/em&gt; par email.&lt;/p&gt;
+&lt;p&gt;Jusqu’à maintenant, ça ne les a pas déranger que 100% des étudiants
+n’aient pas 100% des informations. Alors moi non plus, ça ne me dérange
+pas de ne pas avoir 100% des informations. J’estime que si elles ne nous
+sont pas envoyée pas email ou affichée publiquement alors elles ne sont pas
+intéressantes ou importantes. Donc &lt;em&gt;non, je n’aurai pas de compte sur ce
+site&amp;nbsp;!&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Un autre truc qui me dépasse, c’est que les emails de l’&lt;a class="reference external" href="http://www.oamk.fi/english/"&gt;OUAS&lt;/a&gt; soient
+chez Outlook. On a une belle adresse est &lt;cite&gt;&amp;#64;student.oamk.fi&lt;/cite&gt;, mais c’est
+chez Outlook. oO ?? On va quand pas me faire croire que c’est compliqué pour
+un administrateur système d’installer un serveur mail et un serveur de
+mailing-list sur une machine. Mais bon… ça, c’est une autre histoire…&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">chabotsi</dc:creator><pubDate>Sat, 09 Nov 2013 18:00:00 +0100</pubDate><guid>tag:https://chabotsi.fr/blog,2013-11-09:non-je-naurai-pas-de-compte-sur-ce-site.html</guid><category>facebook</category><category>internet</category><category>minitel 2.0</category></item><item><title>faites des backups</title><link>https://chabotsi.fr/blog/faites-des-backups.html</link><description>&lt;p&gt;Bon, ça a été &lt;a class="reference external" href="http://www.pingoo.com/2013/11/03/sauvegardez-vos-donnees-bande-de-cons/"&gt;dit&lt;/a&gt; et
+&lt;a class="reference external" href="http://blog.rom1v.com/2013/08/duplicity-des-backups-incrementaux-chiffres/"&gt;redit&lt;/a&gt;.
+Mais faut mieux insister. Je vais donc vous présenter la méthode de backup que
+j’ai mise en place sur mon serveur.&lt;/p&gt;
+&lt;blockquote&gt;
+Note: ce n’est pas &lt;em&gt;LA&lt;/em&gt; solution, mais &lt;em&gt;UNE&lt;/em&gt; solution. Je suis preneur de
+toutes remarques.&lt;/blockquote&gt;
+&lt;p&gt;Alors, sur ma machine, je distingue deux types de backups&amp;nbsp;:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;les backups quotidiens&lt;/li&gt;
+&lt;li&gt;les backups hebdomadaires&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Dans les backups &lt;em&gt;quotidiens&lt;/em&gt;, je fais une sauvegarde incrémentale de
+différents dossiers qui me semblent importants (/etc, /home, /var/{log,www,lib},
+…). Je fais aussi un dump de toutes mes tables sql. Ces backups sont &lt;em&gt;locaux&lt;/em&gt; à
+la machine. C’est pour revenir en arrière si jamais des bêtises sont faites par
+exemple.&lt;/p&gt;
+&lt;p&gt;Concernant les backups &lt;em&gt;hebdomadaires&lt;/em&gt;, je fais une sauvegarde complète
+des backups de la semaine sur une machine &lt;em&gt;distante&lt;/em&gt;. Ces backups sont
+envoyés chiffrés sur l’autre machine. Ces backups là, c’est en
+cas de panne du disque dur, d’incendie ou raz de marée à &lt;a class="reference external" href="http://www.openstreetmap.org/?relation=139316#map=7/51.003/0.769&amp;amp;layers=Q"&gt;Gravelines&lt;/a&gt;
+(&lt;a class="footnote-reference" href="#id3" id="id1"&gt;[0]&lt;/a&gt;).&lt;/p&gt;
+&lt;div class="section" id="backups-quotidiens"&gt;
+&lt;h2&gt;backups quotidiens&lt;/h2&gt;
+&lt;div class="section" id="backup-des-fichiers"&gt;
+&lt;h3&gt;backup des fichiers&lt;/h3&gt;
+&lt;p&gt;Voici le script que j’utilise pour faire des backups quotidiens:&lt;/p&gt;
+&lt;pre class="code sh literal-block"&gt;
+&lt;span class="c"&gt;#!/bin/bash
+&lt;/span&gt;
+&lt;span class="c"&gt;# abort if any commands fail
+&lt;/span&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
+
+&lt;span class="c"&gt;# remove backup older than $MAXTIME
+&lt;/span&gt;&lt;span class="nv"&gt;MAXTIME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;1M&amp;quot;&lt;/span&gt;
+
+&lt;span class="c"&gt;# the directory where the backups are done.
+&lt;/span&gt;&lt;span class="nv"&gt;BACKUP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;/var/backups/data&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;INCLUDELIST&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;/root/includelist.txt&amp;quot;&lt;/span&gt;
+
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;`date` === starting backup ===&amp;quot;&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;the directories to backup are :&amp;quot;&lt;/span&gt;
+cat &lt;span class="nv"&gt;$INCLUDELIST&lt;/span&gt;
+nice -n 19 rdiff-backup --include-globbing-filelist &lt;span class="nv"&gt;$INCLUDELIST&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;            --exclude &lt;span class="s1"&gt;'**'&lt;/span&gt; / &lt;span class="nv"&gt;$BACKUP&lt;/span&gt;
+
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;remove old files&amp;quot;&lt;/span&gt;
+
+nice -n 19 rdiff-backup --remove-older-than &lt;span class="nv"&gt;$MAXTIME&lt;/span&gt; --force &lt;span class="nv"&gt;$BACKUP&lt;/span&gt;
+
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;`date` === backup done ===&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Voyons ça ensemble. Je pense que les premières variables (&lt;cite&gt;MAXTIME&lt;/cite&gt; et &lt;cite&gt;BACKUP&lt;/cite&gt;)
+sont assez claires. Juste au cas où, &lt;cite&gt;MAXTIME&lt;/cite&gt; correspond au temps que souhaitez
+garder vos backups (dans mon cas, je garde un mois de backup). Vous pouvez
+mettre ce que vous voulez (deux ans &lt;cite&gt;2Y&lt;/cite&gt;, trois semaines &lt;cite&gt;3W&lt;/cite&gt;, etc). Et &lt;cite&gt;BACKUP&lt;/cite&gt;
+correspond au dossier où seront sauvegarder vos backups.&lt;/p&gt;
+&lt;p&gt;Le variable &lt;cite&gt;INCLUDELIST&lt;/cite&gt; pointe sur un fichier texte. Dans ce fichier texte,
+vous listez les dossiers que vous souhaitez sauvergarder, un par ligne. Dans mon
+cas, j’ai:&lt;/p&gt;
+&lt;pre class="code text literal-block"&gt;
+/etc
+/var/log
+/var/www
+/var/lib
+/home
+/root
+&lt;/pre&gt;
+&lt;p&gt;ensuite, on dit simplement à rdiff-backup de faire le boulot&amp;nbsp;:&amp;nbsp;backuper les
+dossiers (incrémentalement) puis supprimer les fichiers trop vieux.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;C’est quoi ce &lt;cite&gt;nice -n 19&lt;/cite&gt; devant là ??&lt;/p&gt;
+&lt;p class="attribution"&gt;&amp;mdash;&amp;nbsp;un lecteur attentif&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Bonne question&amp;nbsp;! C’est tout simplement pour dire au système que ce processus
+n’est pas &lt;em&gt;du tout&lt;/em&gt; prioritaire par rapport aux autres. Comme ça, vos backups se
+font sans que des ralentissements se fassent sentir. Pratique hein ? &lt;cite&gt;;)&lt;/cite&gt; (plus
+d’info&amp;nbsp;:&amp;nbsp;&lt;a class="reference external" href="https://duckduckgo.com/?q=man+nice"&gt;man nice&lt;/a&gt;)&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="backup-sql"&gt;
+&lt;h3&gt;backup sql&lt;/h3&gt;
+&lt;p&gt;Je vous montre aussi un petit script très simple qui fait un dump de toutes les
+bases mysql du serveur. L’idée est là même, on fait le dump, puis on supprime
+ceux qui sont trop vieux…&lt;/p&gt;
+&lt;pre class="code sh literal-block"&gt;
+&lt;span class="c"&gt;#!/bin/bash
+&lt;/span&gt;&lt;span class="nv"&gt;BPATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;/var/backups/sql/&amp;quot;&lt;/span&gt;
+
+&lt;span class="nb"&gt;echo&lt;/span&gt; -n &lt;span class="s2"&gt;&amp;quot;--- backup up every databases --- &amp;quot;&lt;/span&gt;; date
+
+mysqldump -A 2&amp;gt; /var/log/backups/sql.log | gzip -c &lt;span class="se"&gt;\
+&lt;/span&gt;    | cat &amp;gt; &lt;span class="nv"&gt;$BPATH&lt;/span&gt;/backup_&lt;span class="sb"&gt;`&lt;/span&gt;date +&lt;span class="s1"&gt;'%d_%m_%Y'&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;.sql.gz
+
+&lt;span class="c"&gt;#Delete old backups
+&lt;/span&gt;find &lt;span class="nv"&gt;$BPATH&lt;/span&gt;* -mtime +30 -exec rm &lt;span class="o"&gt;{}&lt;/span&gt; &lt;span class="se"&gt;\;&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; -n &lt;span class="s2"&gt;&amp;quot;--- backup finnished --- &amp;quot;&lt;/span&gt;; date
+&lt;/pre&gt;
+&lt;p&gt;La suppression des dumps trop vieux se fait avec la commande &lt;cite&gt;find&lt;/cite&gt;. On cherche
+dans le dossier de backup sql les fichiers de plus de 30 jours et on les
+supprime.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="backups-hebdomadaires"&gt;
+&lt;h2&gt;backups hebdomadaires&lt;/h2&gt;
+&lt;p&gt;Bon, passons au plus intéressant&amp;nbsp;:&amp;nbsp;les backups hebdomadaires. Alors, je répète
+l’idée du truc&amp;nbsp;:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;on compresse l’ensemble des backups (donc du mois en cours) dans une grosse
+archive.&lt;/li&gt;
+&lt;li&gt;on chiffre cette archive avec gpg.&lt;/li&gt;
+&lt;li&gt;on envoie cette archive sur une machine distance via ssh.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Donc, ça, c’est ce qu’on veut faire. Le problème, c’est que… on peut
+pas se permettre de faire &lt;em&gt;simplement&lt;/em&gt; comme ça. Je vous explique pourquoi.
+Imaginez que vous ayez un disque de 100Go, occupé à disons 70Go (backups
+locaux compris). Si les backups locaux font, admettons 20Go. Si vous les
+compresser sur votre machine, vous allez occupés encore de la place (un peu
+moins de 20Go). Puis, pour les chiffrer, encore 20Go. Bref, il vous faudrait
+40Go d’espace libre, que vous n’avez pas, &lt;em&gt;juste&lt;/em&gt; pour faire une archive que
+vous allez envoyer puis supprimer. Du coup, si on faisait comme ça, tout le
+serveur plante au milieu de la nuit le dimanche soir et vous êtes tous comme
+des jambons. On va donc faire autrement ;).&lt;/p&gt;
+&lt;p&gt;Je propose qu’on fasse comme ça&amp;nbsp;:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;on compresse l’ensemble des backups dans une grosse archive.&lt;/li&gt;
+&lt;li&gt;on chiffre cette archive avec gpg.&lt;/li&gt;
+&lt;li&gt;on envoie cette archive sur une machine distance via ssh.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;mais, cette fois, on fait tout &lt;strong&gt;en même temps&lt;/strong&gt; ! Tout est fait à la volée,
+la compression, le chiffrement et l’envoi. Tout est fait à la volée grâce aux
+pipes.&lt;/p&gt;
+&lt;p&gt;Allez, sans plus tarder, voici le script&amp;nbsp;:&lt;/p&gt;
+&lt;pre class="code sh literal-block"&gt;
+&lt;span class="c"&gt;#!/bin/bash
+&lt;/span&gt;
+&lt;span class="c"&gt;# abort if any commands fail
+&lt;/span&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
+
+&lt;span class="nv"&gt;BACKUPDIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;/var/backups/&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;DESTHOST&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;wilson&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;DESTDIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;/home/chabotsi/backups&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;KEY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;simon.chabot&amp;#64;etu.utc.fr&amp;quot;&lt;/span&gt;
+
+&lt;span class="nv"&gt;DATE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;date +%Y-%m-%d-%H-%M&lt;span class="k"&gt;)&lt;/span&gt;
+
+&lt;span class="nv"&gt;BACKUPARCH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;backup-$DATE.tar.bz2&amp;quot;&lt;/span&gt;
+
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;=== `date +%Y-%m-%d-%H-%M` start copying backups to wilson ===&amp;quot;&lt;/span&gt;
+
+&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="nv"&gt;$BACKUPDIR&lt;/span&gt;
+
+nice -n 19 tar -jcvf - . |&lt;span class="se"&gt;\
+&lt;/span&gt;    gpg -r &lt;span class="nv"&gt;$KEY&lt;/span&gt; --trust-model always --encrypt |&lt;span class="se"&gt;\
+&lt;/span&gt;    ssh &lt;span class="nv"&gt;$DESTHOST&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;cat &amp;gt; $DESTDIR/$BACKUPARCH.gpg&amp;quot;&lt;/span&gt;
+
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;=== `date +%Y-%m-%d-%H-%M` done with wilson ===&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Donc, ici &lt;cite&gt;BACKUPDIR&lt;/cite&gt; est le dossier &lt;em&gt;local&lt;/em&gt; à backuper. &lt;cite&gt;DESTHOST&lt;/cite&gt; est la
+machine distante (&lt;a class="footnote-reference" href="#id4" id="id2"&gt;[1]&lt;/a&gt;) et &lt;cite&gt;DESTDIR&lt;/cite&gt; est le dossier de destination &lt;em&gt;sur la machine
+distante&lt;/em&gt; ! Enfin, &lt;cite&gt;KEY&lt;/cite&gt; est la clé publique avec laquelle vous souhaitez faire
+le chiffrement.&lt;/p&gt;
+&lt;p&gt;Pour faire tout ça &lt;em&gt;à la volée&lt;/em&gt;, il a fallu un peu feinter… &lt;cite&gt;tar&lt;/cite&gt; et &lt;cite&gt;gpg&lt;/cite&gt;
+permettent de créer des archives et chiffrer à la volée, donc pas trop de
+difficultés de ce côté là. En revanche, côté ssh il faut ruser. On ne peut pas
+utiliser &lt;a class="reference external" href="https://duckduckgo.com/?q=man+scp"&gt;scp&lt;/a&gt; car il ne supporte pas la
+copie depuis l’entrée standard (stdin). Du coup, on ouvre une connexion ssh
+normale, et on lance la commande &lt;cite&gt;cat&lt;/cite&gt; en disant &lt;em&gt;«&amp;nbsp;tout ce qui entre, tu le
+copies dans le fichier `$BACKUPARCH.gpg`&amp;nbsp;»&lt;/em&gt;. Et ça fonctionne exactement comme
+on voulait. Tout est fait à la volée. Aucune place n’est prise sur le disque
+local. Cool, non ?!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="cronifions-tout-ca"&gt;
+&lt;h2&gt;Cronifions tout ça&lt;/h2&gt;
+&lt;p&gt;Il faut maintenant faire en sorte que tout cela soit automatique, pour ça,
+j’utilise des tâches cron. Il faut donc que vous sauvegardiez les scripts qu’on
+vient de voir quelque part et les appeliez avec crontab. Pour modifier vos
+tâches cron, tapez &lt;cite&gt;crontab -e&lt;/cite&gt; dans un terminal (en root… vu qu’on veut
+backuper des fichiers/dossiers root…) et écrivez ceci, par exemple&amp;nbsp;:&lt;/p&gt;
+&lt;pre class="code sh literal-block"&gt;
+18 4  * * * nice -n19 /root/backups/data.sh &amp;gt;&amp;gt; /var/log/backups/data.log
+28 5  * * * nice -n19 /root/backups/sql.sh &amp;gt;&amp;gt; /var/log/backups/sql.log
+0  1  * * 1 nice -n19 /root/backups/wilson.sh &amp;gt;&amp;gt; /var/log/backups/wilson.log
+&lt;/pre&gt;
+&lt;p&gt;Comme ça,&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;chaque nuit à 4h18, sont faits les backups des données&lt;/li&gt;
+&lt;li&gt;chaque nuit à 5h28, sont faits les dumps mysql&lt;/li&gt;
+&lt;li&gt;chaque lundi à 1h00, sont copiés les backups sur la machine distante.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Tout ce qui est normalement affiché à l’écran est loggué. S’il y a une erreur,
+elle sort sur &lt;cite&gt;stderr&lt;/cite&gt; et est donc envoyé par email au propriétaire de la tâche
+(ici au root).&lt;/p&gt;
+&lt;p&gt;Il faut aussi penser à mettre une tâche cron sur la machine distante pour
+supprimer les backups trop vieux (ici toutes les sauvegardes de plus de 40
+jours… soit environ 5 semaines)&amp;nbsp;:&lt;/p&gt;
+&lt;pre class="code sh literal-block"&gt;
+&amp;#64;weekly find /home/chabotsi/backups/* -mtime +40 -exec rm &lt;span class="o"&gt;{}&lt;/span&gt; &lt;span class="se"&gt;\;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;&lt;cite&gt;&amp;#64;weekly&lt;/cite&gt; est un alias pour dire &lt;cite&gt;0 0 * * 1&lt;/cite&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="mot-de-la-fin"&gt;
+&lt;h2&gt;Mot de la fin&lt;/h2&gt;
+&lt;p&gt;Une autre chose à voir, c’est comment restaurer les backups. Faire
+des backups, c’est bien. Être capable de s’en servir, c’est
+mieux ! Mais ça, je vous laisse regarder les exemples de &lt;a class="reference external" href="http://www.nongnu.org/rdiff-backup/examples.html#restore"&gt;la doc&lt;/a&gt; ;)&lt;/p&gt;
+&lt;p&gt;Je vous ai donné ces scripts juste comme ça pour l’exemple, pour que vous
+voyez un peu comme ça fonctionne. Faîtes vos backups comme vous voulez, mais
+faîtes en. Sinon, un jour vous vous direz que &lt;em&gt;«&amp;nbsp;oups…&amp;nbsp;»&lt;/em&gt;, ce sera
+trop tard et vous vous retrouverez comme deux ronds de flan devant votre machine
+à vous morfondre, à vous maudire… (Vous aurez été prévenu ! ^^)&lt;/p&gt;
+&lt;table class="docutils footnote" frame="void" id="id3" rules="none"&gt;
+&lt;colgroup&gt;&lt;col class="label" /&gt;&lt;col /&gt;&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td class="label"&gt;&lt;a class="fn-backref" href="#id1"&gt;[0]&lt;/a&gt;&lt;/td&gt;&lt;td&gt;c’est là bas qu’est hébergé mon serveur dédié.&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;table class="docutils footnote" frame="void" id="id4" rules="none"&gt;
+&lt;colgroup&gt;&lt;col class="label" /&gt;&lt;col /&gt;&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td class="label"&gt;&lt;a class="fn-backref" href="#id2"&gt;[1]&lt;/a&gt;&lt;/td&gt;&lt;td&gt;oui, je fais les backups de &lt;em&gt;cameron&lt;/em&gt; chez &lt;em&gt;wilson&lt;/em&gt; (cf &lt;a class="reference external" href="https://en.wikipedia.org/wiki/List_of_House_characters#Senior_doctors"&gt;ici&lt;/a&gt;)&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">chabotsi</dc:creator><pubDate>Thu, 07 Nov 2013 12:00:00 +0100</pubDate><guid>tag:https://chabotsi.fr/blog,2013-11-07:faites-des-backups.html</guid><category>hébergement</category></item><item><title>classification automatique</title><link>https://chabotsi.fr/blog/classification-automatique.html</link><description>&lt;div class="section" id="cest-quoi"&gt;
+&lt;h2&gt;C’est quoi ?&lt;/h2&gt;
+&lt;p&gt;Je vous propose aujourd’hui un petit billet sur la &lt;em&gt;classification automatique&lt;/em&gt;.
+Il s’agit d’une présentation assez informelle de comment ça fonctionne. Je vais
+faire ça avec un petit exemple ;)&lt;/p&gt;
+&lt;p&gt;Déjà, à quoi ça sert&amp;nbsp;? L’idée de la classification automatique est d’entrainer
+un programme à classer des objets. Il y a plusieurs applications directes à
+cela, par exemple ça peut servir à répondre aux questions suivantes&amp;nbsp;:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;est-ce que le message que je viens de recevoir est un spam ou pas ?&lt;/li&gt;
+&lt;li&gt;est-ce que ce crabe est un mâle ou une femelle&amp;nbsp;?&lt;/li&gt;
+&lt;li&gt;est-ce que le prénom «&amp;nbsp;Jean&amp;nbsp;» est masculin ou féminin&amp;nbsp;?&lt;/li&gt;
+&lt;li&gt;est-ce que le patient a un rhume, une gastro ou un simple mal de tête ?&lt;/li&gt;
+&lt;li&gt;etc…&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div class="section" id="presentation-des-donnees"&gt;
+&lt;h2&gt;Présentation des données&lt;/h2&gt;
+&lt;p&gt;Il y a plein d’autres types questions auxquelles la classification automatique
+peut répondre. Je vous propose de regarder ensemble comment répondre à la
+question 2. (On va même aller un peu plus loin. ;)) Nous allons travailler avec les
+données &lt;a class="reference external" href="https://chabotsi.fr/blog/files/classification/crabs.csv"&gt;crabs&lt;/a&gt;. Ce tableau de données regroupe
+deux cents crabes différents. Il y a deux espèces&amp;nbsp;:&amp;nbsp;les bleus et les oranges.
+Dans chacune des deux espèces, il y a des mâles et des femelles. On a donc
+quatre classes différentes, de cinquante individus chacune&amp;nbsp;:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;bleu et mâles&lt;/li&gt;
+&lt;li&gt;bleu et femelles&lt;/li&gt;
+&lt;li&gt;orange et mâles&lt;/li&gt;
+&lt;li&gt;orange et femelles&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;On va donc faire un petit programme qui va être chargé de &lt;em&gt;classer&lt;/em&gt; un crabe
+dans la classe à laquelle il appartient.&lt;/p&gt;
+&lt;p&gt;Pour chaque crabe, nous avons $p$ variables qui permettent de le décrire. Par
+exemple&amp;nbsp;:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;la taille du lobe frontale&lt;/li&gt;
+&lt;li&gt;la largeur de la carapace&lt;/li&gt;
+&lt;li&gt;la longueur de la carapace&lt;/li&gt;
+&lt;li&gt;la profondeur du corps&lt;/li&gt;
+&lt;li&gt;etc…&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;C’est à partir de ces $p$ variables que se fera la classification.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="idee-generale"&gt;
+&lt;h2&gt;Idée générale&lt;/h2&gt;
+&lt;p&gt;Rentrons un peu dans l’aspect mathématique de la chose. L’idée est en fait
+relativement simple. On suppose que derrière chaque classe $k$ il existe
+une &lt;a class="reference external" href="https://fr.wikipedia.org/wiki/Distribution_normale"&gt;loi normale&lt;/a&gt;.
+Appelons cette loi $f_k(x)$. Grosso modo, cette loi donne la probabilité
+que $x$ appartienne à la classe $k$. Ainsi, il suffit simplement de
+passer en revue les fonctions $f_k(x)$ où $x$ est l’individu à
+classer et on dira qu’il appartient à la classe qui &lt;em&gt;maximise la probabilité
+d’appartenance&lt;/em&gt;. Mathématiquement, on a&amp;nbsp;:&lt;/p&gt;
+&lt;p&gt;$$ k^* = \arg\max_k f_k(x) $$&lt;/p&gt;
+&lt;p&gt;Le problème est donc simple une fois que l’on connait les fonctions $f_k$.
+Encore faut-il les connaître&amp;nbsp;;&amp;nbsp;c’est justement sur ça que nous allons
+travailler. On va donc devoir estimer ces fonctions à partir des données que
+nous avons.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="estimation-des-distributions"&gt;
+&lt;h2&gt;Estimation des distributions&lt;/h2&gt;
+&lt;p&gt;Nous avons fait l’hypothèse que chaque classe suit une loi normale. Or, une loi
+normale peut être définie par deux paramètres&amp;nbsp;:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;$\mu$, la valeur moyenne de la distribution&lt;/li&gt;
+&lt;li&gt;$\Sigma$, la variance de la distribution. C’est-à-dire comment “s’étalent”
+les données autour de la valeur moyenne.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Il s’agit donc pour chaque classe $k$ d’estimer le couple $(\mu_k, \Sigma_k)$.
+L’estimation se fait à partir de l’&lt;a class="reference external" href="https://fr.wikipedia.org/wiki/Maximum_de_vraisemblance"&gt;estimation du maximum de vraisemblance&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Ainsi, on a les expressions suivantes&amp;nbsp;:&lt;/p&gt;
+&lt;p&gt;\begin{equation}
+\mu_k = \frac{1}{n_k}\sum_{i = 0}^{n}t_{ik} x_i
+\end{equation}&lt;/p&gt;
+&lt;p&gt;\begin{equation}
+\Sigma_k = \frac{1}{n_k}\sum_{i = 0}^{n}t_{ik} (x_i - \mu_k)(x_i - \mu_k)^\prime
+\end{equation}&lt;/p&gt;
+&lt;p&gt;Ces formules méritent quelques explications&amp;nbsp;:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;tout d’abord, c’est quoi ce $t_{ik}$ ? C’est simplement une variable
+qui vaut 1 si l’individu $i$ appartient à la classe $k$ et 0 sinon. Cette
+variable nous permet de compter que les individus de la classe étudiée.&lt;/li&gt;
+&lt;li&gt;ensuite, $n_k$. Cette valeur correspond au nombre d’individus présents
+dans la classe $k$ (avec l’exemple des crabes, ce sera donc 25). Et $n$
+correspond au nombre &lt;em&gt;total&lt;/em&gt; d’individu (donc 200 dans notre exemple).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Connaissant ainsi les paramètres de chacune des classes, on peut construire les
+fonctions $f_k(x)$&amp;nbsp;:&lt;/p&gt;
+&lt;p&gt;\begin{equation}
+f_k(x) = \frac{1}{\sqrt{(2\pi)^k\left\vert\Sigma\right\vert}}
+\exp\left(-\frac{1}{2}\left(x - \mu_k\right)^\prime
+\Sigma_k\left(x - \mu_k\right)\right)
+\end{equation}&lt;/p&gt;
+&lt;p&gt;Voilà. Nous avons ainsi pu construire les distributions nous servant à calculer
+la probabilité pour un individu $x$ d’appartenir à la classe $k$.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="implementation"&gt;
+&lt;h2&gt;Implémentation&lt;/h2&gt;
+&lt;p&gt;Passons maintenant à la pratique. On va réaliser un programme en python
+qui va classer nos données. Pour ça, je suppose que vous connaissez un
+peu le python et que vous avez &lt;a class="reference external" href="http://numpy.org"&gt;numpy&lt;/a&gt; et &lt;a class="reference external" href="http://scikit-learn.org/"&gt;scikit-learn&lt;/a&gt; d’installé sur votre machine.
+Ces deux conditions remplies, on peut alors continuer.&lt;/p&gt;
+&lt;p&gt;Pour réaliser notre programme, nous devons faire plusieurs choses&amp;nbsp;:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;charger les données ;&lt;/li&gt;
+&lt;li&gt;estimer les paramètres des différentes classes ;&lt;/li&gt;
+&lt;li&gt;évaluer la pertinence de la classification effectuée.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Il est très important d’évaluer la pertinence de la classification, ce qui
+vous permet alors de dire «&amp;nbsp;mon programme classe les crabes correctement dans
+90% des cas&amp;nbsp;». Et donc d’avoir une idée de la proportion des individus qui
+seraient mal classés. Pour faire cette évaluation il faut prendre des
+individus que le programme &lt;strong&gt;n’a jamais vus&lt;/strong&gt; et dont vous connaissez à
+l’avance la classe. Ensuite, on demande au programme de classer ces individus
+et on compare avec les valeurs théoriques. En faisant cela sur plusieurs
+individus on peut alors estimer le nombre de fois où le classifieur a tort.&lt;/p&gt;
+&lt;p&gt;Il faut donc séparer les données en deux ensembles disjoints. Un ensemble
+d’apprentissage et un ensemble de test. Le premier sert à entrainer le
+classifieur (estimation des moyennes et variances). Le second sert à évaluer la
+pertinence du classifieur. Il est &lt;strong&gt;très&lt;/strong&gt; important que ces deux ensembles
+soient disjoints, sinon votre évaluation sera biaisée. On va donc dans un
+premier temps, réaliser une fonction qui s’occupe de charger les données et
+créer ces deux ensembles.&lt;/p&gt;
+&lt;div class="section" id="chargement-des-donnees"&gt;
+&lt;h3&gt;Chargement des données&lt;/h3&gt;
+&lt;p&gt;Commencez par télécharger le fichier &lt;a class="reference external" href="https://chabotsi.fr/blog/files/classification/crabs.csv"&gt;crabs&lt;/a&gt;. Ce fichier regroupe les données
+des deux cents crabes. Voici le début du fichier&amp;nbsp;:&lt;/p&gt;
+&lt;table border="1" class="docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="8%" /&gt;
+&lt;col width="12%" /&gt;
+&lt;col width="16%" /&gt;
+&lt;col width="16%" /&gt;
+&lt;col width="16%" /&gt;
+&lt;col width="16%" /&gt;
+&lt;col width="16%" /&gt;
+&lt;/colgroup&gt;
+&lt;thead valign="bottom"&gt;
+&lt;tr&gt;&lt;th class="head"&gt;sp&lt;/th&gt;
+&lt;th class="head"&gt;sex&lt;/th&gt;
+&lt;th class="head"&gt;FL&lt;/th&gt;
+&lt;th class="head"&gt;RW&lt;/th&gt;
+&lt;th class="head"&gt;CL&lt;/th&gt;
+&lt;th class="head"&gt;CW&lt;/th&gt;
+&lt;th class="head"&gt;BD&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;B&lt;/td&gt;
+&lt;td&gt;M&lt;/td&gt;
+&lt;td&gt;8.1&lt;/td&gt;
+&lt;td&gt;6.7&lt;/td&gt;
+&lt;td&gt;16.1&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;td&gt;7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;B&lt;/td&gt;
+&lt;td&gt;M&lt;/td&gt;
+&lt;td&gt;8.8&lt;/td&gt;
+&lt;td&gt;7.7&lt;/td&gt;
+&lt;td&gt;18.1&lt;/td&gt;
+&lt;td&gt;20.8&lt;/td&gt;
+&lt;td&gt;7.4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;B&lt;/td&gt;
+&lt;td&gt;M&lt;/td&gt;
+&lt;td&gt;9.2&lt;/td&gt;
+&lt;td&gt;7.8&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;td&gt;22.4&lt;/td&gt;
+&lt;td&gt;7.7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;…&lt;/td&gt;
+&lt;td&gt;…&lt;/td&gt;
+&lt;td&gt;…&lt;/td&gt;
+&lt;td&gt;…&lt;/td&gt;
+&lt;td&gt;…&lt;/td&gt;
+&lt;td&gt;…&lt;/td&gt;
+&lt;td&gt;…&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;O&lt;/td&gt;
+&lt;td&gt;F&lt;/td&gt;
+&lt;td&gt;23.1&lt;/td&gt;
+&lt;td&gt;20.2&lt;/td&gt;
+&lt;td&gt;46.2&lt;/td&gt;
+&lt;td&gt;52.5&lt;/td&gt;
+&lt;td&gt;21.1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Les deux premières colonnes vont nous permettre de définir la classe. Les cinq
+autres colonnes correspondent aux variables explicatives&amp;nbsp;:&lt;/p&gt;
+&lt;dl class="docutils"&gt;
+&lt;dt&gt;FL&lt;/dt&gt;
+&lt;dd&gt;la taille du lobe frontal (Frontal lobe size)&lt;/dd&gt;
+&lt;dt&gt;RW&lt;/dt&gt;
+&lt;dd&gt;la largeur de la pate (Rear Width)&lt;/dd&gt;
+&lt;dt&gt;CL&lt;/dt&gt;
+&lt;dd&gt;la longueur de la carapace (Carapace Length)&lt;/dd&gt;
+&lt;dt&gt;CW&lt;/dt&gt;
+&lt;dd&gt;la largeur de la carapace (Carapace Width)&lt;/dd&gt;
+&lt;dt&gt;BD&lt;/dt&gt;
+&lt;dd&gt;l’épaisseur du corps (Body Depth)&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;p&gt;On va donc tout d’abord charger tout ce fichier dans un tableau numpy.&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;csv&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;loadcrabs&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'crabs.csv'&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+   &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;_getclass&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;species&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;sex&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+       &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot; Return the class number of the crab
+
+                species
+               +---+---+
+               | B | O |
+            +--+---+---+
+          s |M | 3 | 1 |
+          e +--+---+---+
+          x |F | 2 | 0 |
+            +--+---+---+
+       &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+       &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;species&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;'B'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sex&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;'M'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+   &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
+   &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;filename&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;fobj&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+       &lt;span class="n"&gt;csvfile&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;csv&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DictReader&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fobj&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+       &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;crab&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;csvfile&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+           &lt;span class="n"&gt;subject&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;_getclass&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;crab&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;'sp'&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;crab&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;'sex'&lt;/span&gt;&lt;span class="p"&gt;]),&lt;/span&gt;
+                      &lt;span class="n"&gt;crab&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;'FL'&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;crab&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;'RW'&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
+                      &lt;span class="n"&gt;crab&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;'CL'&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;crab&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;'CW'&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
+                      &lt;span class="n"&gt;crab&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;'BD'&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
+           &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;float&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;subject&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+   &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Cette fonction, nous permet donc de charger le fichier de données en mémoire et
+associe à chaque classe de crabes un numéro&amp;nbsp;:&amp;nbsp;0 pour les femelles oranges, 1
+pour les mâles oranges, 2 pour les femelles bleues et 3 pour les mâles bleus.&lt;/p&gt;
+&lt;p&gt;On va maintenant mélanger les lignes de ce tableau et le couper en deux&amp;nbsp;:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;loadcrabs&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shuffle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;learn&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[:&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;test&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;:,&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class="section" id="estimation-des-parametres-des-classes"&gt;
+&lt;h3&gt;Estimation des paramètres des classes&lt;/h3&gt;
+&lt;p&gt;Passons à la partie &lt;em&gt;apprentissage&lt;/em&gt;. Pour cela, on va utiliser la classe
+&lt;cite&gt;QDA&lt;/cite&gt; de scikit-learn, qui va nous permettre de faire la classification. Cette
+classe dispose d’une méthode &lt;cite&gt;fit()&lt;/cite&gt; qui permet de faire l’apprentissage.
+Elle prend deux paramètres, une matrice &lt;cite&gt;X&lt;/cite&gt; qui correspond aux individus et un
+vecteur &lt;cite&gt;Y&lt;/cite&gt; qui correspond aux classes des individus. Dans notre cas, &lt;cite&gt;Y&lt;/cite&gt;
+est la première colonne du tableau &lt;cite&gt;learn&lt;/cite&gt; et &lt;cite&gt;X&lt;/cite&gt; est le reste. Ainsi, très
+simplement, nous faisons&amp;nbsp;:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;sklearn.qda&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;QDA&lt;/span&gt;
+&lt;span class="n"&gt;qda&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;QDA&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;qda&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="p"&gt;[:,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:],&lt;/span&gt; &lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="p"&gt;[:,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Et c’est tout. La fonction &lt;cite&gt;fit()&lt;/cite&gt; de &lt;cite&gt;QDA&lt;/cite&gt; se charge toute seule d’estimer les
+paramètres $\mu_k$ et $\Sigma_k$ pour chacune des classes. Il nous faut
+maintenant passer à la classification à proprement parler.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="evaluation-du-classifieur"&gt;
+&lt;h3&gt;Évaluation du classifieur&lt;/h3&gt;
+&lt;p&gt;Bon, avant d’évaluer notre classifieur, on va quand même essayer de classer un
+seul élémement. Prenons par exemple le premier crabe de &lt;cite&gt;test&lt;/cite&gt;. Dans mon cas,
+j’ai&amp;nbsp;:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt; &lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;13.2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;12.2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;27.9&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;32.1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;11.5&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;C’est donc un crabe de classe 2 (une femelle bleue). Voyons comment le classe
+&lt;cite&gt;qda&lt;/cite&gt;.&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;qda&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;predict&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:]])&lt;/span&gt; &lt;span class="c"&gt;#il ne faut PAS lui donner la première colonne&lt;/span&gt;
+&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt; &lt;span class="mf"&gt;2.&lt;/span&gt; &lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Tada ! On voit que le crabe a bien été classé dans le groupe 2. C’est donc un
+succès pour ce premier classement.&lt;/p&gt;
+&lt;p&gt;Bon, allez, maintenant, on classe tout d’un coup !&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;sorting&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;qda&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;predict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;[:,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:])&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;sorting&lt;/span&gt;
+&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt; &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;1.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;3.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;3.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;3.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;1.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;3.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;3.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;3.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;1.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;3.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;1.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;1.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;1.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;3.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;1.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;1.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;3.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;3.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;3.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="mf"&gt;1.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;3.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;1.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;1.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;3.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;1.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="mf"&gt;3.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;1.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;1.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="mf"&gt;3.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;1.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;3.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;3.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;3.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;1.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;1.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;3.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;1.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;3.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;3.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;1.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;1.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;3.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;3.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;1.&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;sorting&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;[:,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+       &lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;dtype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;bool&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Ainsi, dans la liste &lt;cite&gt;sorting&lt;/cite&gt;, nous avons le numéro de classe à laquelle
+chaque crabe a été affecté. On peut donc le comparé avec la classe réelle.
+Partout où il est écrit &lt;cite&gt;False&lt;/cite&gt;, le classifieur s’est trompé. On peut faire une
+estimation en pourcentage du taux d’erreur&amp;nbsp;:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;100.0&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;where&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sorting&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;[:,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;])[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]))&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="mf"&gt;11.0&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Ainsi, dans l’exemple que je viens de vous montrer, le classifieur se trompe
+dans 11% des cas.&lt;/p&gt;
+&lt;p&gt;Si vous lancez plusieurs fois le programme, vous vous apercevrez que ce taux
+d’erreur change. C’est normal, puisque les ensembles d’apprentissage et de test
+changent !&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="conclusion"&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Ainsi se termine ce billet introductif à la classification automatique. Je vous
+ai donc présenté un peu la &lt;em&gt;théorie de la classification&lt;/em&gt; (c’est un grand mot).
+Et puis comment utiliser scikit-learn pour faire la dite classification. Il est
+possible de faire de la classification sur plein de choses ! Des &lt;a class="reference external" href="http://archive.ics.uci.edu/ml/datasets/Iris"&gt;fleurs&lt;/a&gt;, du &lt;a class="reference external" href="http://archive.ics.uci.edu/ml/datasets/Wine"&gt;vin&lt;/a&gt;, de la musique, des images, des
+emails. Bref, un peu tout ce que vous voulez quoi. Il faut “juste” avoir les
+bonnes variables ;)&lt;/p&gt;
+&lt;p&gt;Si ça vous intéresse, vous pouvez télécharger le code complet &lt;a class="reference external" href="https://chabotsi.fr/blog/files/classification/code.py"&gt;ici&lt;/a&gt;. Pour toute remarque, n’hésitez pas
+à me &lt;a class="reference external" href="https://chabotsi.fr/blog/pages/a-propos.html"&gt;contacter&lt;/a&gt;.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;PS: Les explications ont volontairement été simplifiées. J’ai, par
+exemple, supposé que chaque classe avait autant d’individus. Ce qui en
+pratique n’est pas toujours vrai. Il faut aussi calculer une probabilité
+dite &lt;em&gt;a priori&lt;/em&gt; et on cherche alors à maximiser la probabilité dite &lt;em&gt;a
+posteriori&lt;/em&gt;. Le lecteur curieux trouvera plus d’informations dans &lt;a class="reference external" href="http://www4.utc.fr/~sy09/lib/exe/fetch.php?media=fr:gauss.pdf"&gt;ce
+document&lt;/a&gt;
+(document dont je me suis inspiré. Merci aux auteurs&amp;nbsp;!).&lt;/p&gt;
+&lt;p&gt;PPS: Les données &lt;a class="reference external" href="http://www.stats4stem.org/r-crabs-data.html"&gt;crabes&lt;/a&gt;
+sont issues d’une étude publiée dans &lt;em&gt;Australian Journal
+of Zoology&lt;/em&gt; et disponibles dans la bibliothèqe &lt;a class="reference external" href="http://cran.r-project.org/web/packages/MASS/index.html"&gt;MASS&lt;/a&gt; du logiciel libre
+de statistiques R.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">chabotsi</dc:creator><pubDate>Tue, 05 Nov 2013 14:00:00 +0100</pubDate><guid>tag:https://chabotsi.fr/blog,2013-11-05:classification-automatique.html</guid><category>python</category><category>apprentissage</category></item><item><title>seafile</title><link>https://chabotsi.fr/blog/seafile.html</link><description>&lt;p&gt;Vous connaissez très probablement dropbox, qui est un service de stockage de
+fichiers en ligne. Il faut avouer qu’il est assez pratique pour échanger des
+fichiers, que ce soit des photos, des documents pour le boulot où n’importe
+quoi. C’est pratique car ça se synchronise tout seul avec les dossiers locaux et
+tout le monde est content. Sauf que voilà… c’est un peu minitel 2.0 tout ça, car
+&lt;em&gt;vos&lt;/em&gt; photos de vacances, &lt;em&gt;vos&lt;/em&gt; documents de boulot se retrouve sur les serveurs
+d’une entreprise où ils n’ont absolument rien à y faire !&lt;/p&gt;
+&lt;p&gt;À la recherche d’une alternative à installer sur mon serveur dédié, je suis
+tombé sur &lt;a class="reference external" href="http://seafile.com"&gt;seafile&lt;/a&gt;. Et je dois dire que c’est
+&lt;em&gt;exactement&lt;/em&gt; ce que je cherchais !&lt;/p&gt;
+&lt;p&gt;Alors, seafile permet plusieurs choses&amp;nbsp;:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;l’upload de fichiers (la base quoi…)&lt;/li&gt;
+&lt;li&gt;le partage des fichiers (ou dossiers) en lecture et/ou écriture avec d’autres
+membres.&lt;/li&gt;
+&lt;li&gt;le partage des fichiers (ou dossiers) en lecture avec la génération d’une
+lien aléatoire (très pratique pour partager rapidement un fichier)&lt;/li&gt;
+&lt;li&gt;on peut créer des groupes de travail et partager des dossiers entre les
+membres d’un groupe.&lt;/li&gt;
+&lt;li&gt;les données peuvent être stockées chiffrées ou en clair. Il faut savoir que,
+d’après la &lt;a class="reference external" href="http://seafile.com/en/help/security/"&gt;doc&lt;/a&gt; le mot de passe
+n’est pas stocké sur le serveur. Ce qui est plutôt agréable je dois dire ;)&lt;/li&gt;
+&lt;li&gt;l’édition des fichiers textes en ligne (en markdown ou via un éditeur riche)&lt;/li&gt;
+&lt;li&gt;la création de wiki (un par bibliothèque et un wiki personnel)&lt;/li&gt;
+&lt;li&gt;la synchronisation avec des dossiers locaux via le &lt;a class="reference external" href="http://seafile.com/en/help/install_v2/"&gt;client v2&lt;/a&gt; (fonctionne à merveille…)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Le wiki est vraiment une feature agréable pour le travail à plusieurs…
+Autre chose bien sympathique, seafile gère de base plusieurs types de fichiers,
+par exemple, si vous uploadez de la musique, alors il proposera un petit lecteur
+audio, ou bien un lecteur pdf si c’est un pdf, etc etc.&lt;/p&gt;
+&lt;p&gt;L’installation n’est pas très très compliquée, la documentation est bien
+fournie ! Alors, hop hop hop, on installe et on quitte dropbox !&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">chabotsi</dc:creator><pubDate>Tue, 05 Nov 2013 01:00:00 +0100</pubDate><guid>tag:https://chabotsi.fr/blog,2013-11-05:seafile.html</guid><category>minitel 2.0</category><category>hébergement</category></item><item><title>ouverture !</title><link>https://chabotsi.fr/blog/ouverture.html</link><description>&lt;p&gt;Voilà maintenant quelques temps que je me dis que je devrais ouvrir un petit
+blog pour partager mes petites expériences, voilà qui est fait.&lt;/p&gt;
+&lt;p&gt;Je devrai traiter à travers ce blog de diverses thématiques, principalement
+l’informatique (logiciel libre, auto-hébergement, python), de mathématiques
+appliquées et des autres choses qui me passent par la tête.&lt;/p&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">chabotsi</dc:creator><pubDate>Mon, 04 Nov 2013 00:00:00 +0100</pubDate><guid>tag:https://chabotsi.fr/blog,2013-11-04:ouverture.html</guid></item></channel></rss>
