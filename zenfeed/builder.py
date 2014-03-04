@@ -6,6 +6,11 @@ from __future__ import unicode_literals, print_function
 from models import Feed, Entry
 
 def normalize_feed_dict(dico):
+    """
+        feedparser.FeedParserDict from different sites may differ
+        in their attributes : we have to normalize that.
+    """
+
     norm = {}
     assert isinstance(dico, dict)
     f = dico['feed']
@@ -31,6 +36,11 @@ def normalize_feed_dict(dico):
 
 
 def normalize_entry_dict(dico):
+    """
+        feedparser.FeedParserDict from different sites may differ
+        in their attributes : we have to normalize that.
+    """
+
     norm = {}
     assert isinstance(dico, dict)
     e_id = dico.get('id')
