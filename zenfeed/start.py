@@ -9,5 +9,13 @@ setup_tables()
 from app import app
 import views
 
-app.run(host="0.0.0.0", port=8000)
+from werkzeug.contrib.fixers import ProxyFix
+app.wsgi_app = ProxyFix(app.wsgi_app)
+
+if app.config['DEBUG']:
+    app.run(host="0.0.0.0", port=5000)
+else:
+    from gevent.wsgi import WSGIServer
+    http_server = WSGIServer(('0.0.0.0', 5000), app)
+    http_server.serve_forever()
 
