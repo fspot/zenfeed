@@ -6,7 +6,7 @@ from __future__ import unicode_literals, print_function
 import gevent
 from gevent.monkey import patch_all
 patch_all()
-from models import setup_tables
+from models import setup_tables, Feed
 setup_tables()
 from app import app
 import views
@@ -14,6 +14,8 @@ from werkzeug.contrib.fixers import ProxyFix
 app.wsgi_app = ProxyFix(app.wsgi_app)
 from deadline_manager import deadlineManager
 
+feeds = Feed.query.all()
+deadlineManager.launch_deadline_workers(feeds)
 deadlineManager.start()
 
 if app.config['DEBUG']:

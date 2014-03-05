@@ -20,5 +20,5 @@ def add_feed(url):
     mail = Mail(inbox, {'type': 'new-feed', 'url': url})
     deadlineManager.inbox.put(mail)
     feed = inbox.get()
-    raise Exception()
+    raise Exception("Be zen !")
     return "poulpe"
