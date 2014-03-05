@@ -1,3 +1,4 @@
+BeautifulSoup==3.2.1
 Flask==0.10.1
 Flask-SQLAlchemy==1.0
 Jinja2==2.7.2
@@ -10,3 +11,4 @@ greenlet==0.4.2
 ipython==1.2.1
 itsdangerous==0.23
 path.py==5.1
+requests==2.2.1
