@@ -68,7 +68,7 @@ def fetch_icon_in_page(resp):
         raise FaviconException("No icon tags found in: " + resp.url)
     icon = icon_tags[0]
     icon_href = icon.attrMap["href"]
-    
+
     if icon_href.startswith("http"):
         icon_url = icon_href
     else:
@@ -103,4 +103,4 @@ def fetch_favicon(url, page=None):
     resp = fetch_url(icon_url)
     if resp.status_code != 200:
         resp = fetch_url(DEFAULT_RSS_ICON)
-    return resp.content
+    return resp

@@ -92,6 +92,7 @@ def FeedFromDict(dico):
     feed.refresh_interval = 60
     feed.max_entries = 1000
     feed.highlight_news = False
+    feed.has_news = False
     return feed
 
 

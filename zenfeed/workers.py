@@ -28,7 +28,7 @@ def new_feed_worker(url, answer_box, manager_box):
 def deadline_worker(feed, inbox):
     while True:
         try:
-            msg = inbox.get(timeout=5)
+            msg = inbox.get(timeout=feed.refresh_interval)
         except Empty:
             msg = None # timeout -> refresh !
         if msg is not None:
@@ -49,4 +49,6 @@ def deadline_worker(feed, inbox):
         if any_entry_changed and not feed_changed:
             most_recent_entry = Entry.query.order_by(Entry.updated.desc()).first()
             feed.updated = most_recent_entry.updated
+        if any_entry_changed or feed_changed:
+            feed.has_news = True
         db.session.commit()

@@ -48,6 +48,7 @@ class Feed(db.Model):
     refresh_interval = db.Column(db.Integer)
     max_entries = db.Column(db.Integer)
     highlight_news = db.Column(db.Boolean)
+    has_news = db.Column(db.Boolean)
 
     def __init__(self, url):
         self.url = url
@@ -116,7 +117,7 @@ def update_feed(feed, new_feed):
 
 
 def create_or_update_entry(feed, new_entry):
-    """ Return True if the entry is new or updated. 
+    """ Return True if the entry is new or updated.
         When updated, I assume the 'updated' field has changed.
         (I don't force this behaviour). """
     assert isinstance(feed, Feed)

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+	<h1>Feed list</h1>
+	{% for feed in feeds %}
+		<h3><a href="/{{ feed.id }}/">{{ feed.title }}</a></h3>
+	{% endfor %}
+
+{% endblock %}
