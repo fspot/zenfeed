@@ -5,6 +5,7 @@ from __future__ import unicode_literals, print_function
 from flask.ext.sqlalchemy import SQLAlchemy
 
 from app import app
+from copy import deepcopy
 
 db = SQLAlchemy(app)
 
@@ -91,3 +92,46 @@ class Config(db.Model):
 
     def __repr__(self):
         return u'<Config of %r>' % self.login
+
+
+def _update_attr(attr_name, old_obj, new_obj):
+    """ Update an object if necessary. Return True if updated. """
+
+    old_value = getattr(old_obj, attr_name)
+    new_value = getattr(new_obj, attr_name)
+    if new_value != old_value:
+        setattr(old_obj, attr_name, new_value)
+        return True
+
+
+def update_feed(feed, new_feed):
+    """ Return True if the feed has changed. """
+    assert isinstance(feed, Feed)
+    assert isinstance(new_feed, Feed)
+    fields = ['title', 'link', 'subtitle', 'author', 'generator',
+              'encoding', 'updated', 'entries_hash']
+
+    changed = any(_update_attr(f, feed, new_feed) for f in fields)
+    return changed
+
+
+def create_or_update_entry(feed, new_entry):
+    """ Return True if the entry is new or updated. 
+        When updated, I assume the 'updated' field has changed.
+        (I don't force this behaviour). """
+    assert isinstance(feed, Feed)
+    assert isinstance(new_entry, Entry)
+    fields = ['url', 'link', 'title', 'content', 'mimetype',
+              'created', 'updated']
+
+    entry = Entry.query.filter_by(feed_id=feed.id, url=new_entry.url).first()
+    if entry is None: # create
+        new_entry.feed = feed
+        print("→→ new entry:", new_entry.title)
+        new_entry = deepcopy(new_entry) # ew.
+        db.session.add(new_entry)
+        return True
+    else: # update
+        changed = any(_update_attr(f, entry, new_entry) for f in fields)
+        if changed: print("→→ changed entry:", new_entry.title)
+        return changed
