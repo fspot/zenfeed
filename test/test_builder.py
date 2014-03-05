@@ -12,7 +12,7 @@ from zenfeed.builder import normalize_feed_dict, normalize_entry_dict
 class TestBuilding(unittest.TestCase):
 
     def setUp(self):
-        files = path("fixtures/feeds").listdir()
+        files = path("test/fixtures/feeds").listdir()
         self.feeds = [feedparser.parse(filename) for filename in files]
 
     def test_feeds_have_string_url(self):

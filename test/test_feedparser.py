@@ -10,7 +10,7 @@ from path import path
 class TestFeedParsing(unittest.TestCase):
 
     def setUp(self):
-        self.files = path("fixtures/feeds").listdir()
+        self.files = path("test/fixtures/feeds").listdir()
 
     def test_feeds_parsing_succeed(self):
         self.assertTrue(len(self.files) > 0)
@@ -22,7 +22,7 @@ class TestFeedParsing(unittest.TestCase):
 class TestFeedFields(unittest.TestCase):
 
     def setUp(self):
-        files = path("fixtures/feeds").listdir()
+        files = path("test/fixtures/feeds").listdir()
         self.feeds = [feedparser.parse(filename) for filename in files]
 
     def test_feeds_have_string_title(self):
