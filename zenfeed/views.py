@@ -16,14 +16,15 @@ def test():
 
 @app.route('/')
 def index():
-    feeds = Feed.query.all()
-    s = '<br>'.join([feed.title for feed in feeds])
+    feeds = Feed.query.order_by(Feed.updated.desc())
+    s = '<br>'.join(feed.title for feed in feeds)
     return s
 
 @app.route('/<int:feed_id>/')
 def feed_view(feed_id):
     feed = Feed.query.get(feed_id)
-    s = '<br>'.join([e.title for e in feed.entries])
+    entries = feed.entries.order_by(Entry.updated.desc())
+    s = '<br>'.join(e.title for e in entries)
     return feed.url + '<br>' + s
 
 @app.route('/<int:feed_id>/<int:entry_id>/')

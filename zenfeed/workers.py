@@ -6,7 +6,7 @@ import gevent
 from gevent.queue import Empty
 
 from builder import FeedFromDict, EntryFromDict
-from fetcher import fetch_and_parse_feed
+from fetcher import fetch_and_parse_feed, sanitize_url
 from models import db, Feed, Entry, update_feed, create_or_update_entry
 
 def new_feed_worker(url, answer_box, manager_box):
@@ -15,9 +15,9 @@ def new_feed_worker(url, answer_box, manager_box):
     except:
         return answer_box.put(Exception("Error with feed: " + url))
     feed = FeedFromDict(feed_dict)
-    feed.url = url # set the real feed url
+    feed.url = sanitize_url(url) # set the real feed url
     db.session.add(feed)
-    for e in feed_dict['entries']:
+    for e in feed_dict['entries'][::-1]:
         entry = EntryFromDict(e)
         entry.feed = feed # set the corresponding feed
         db.session.add(entry)

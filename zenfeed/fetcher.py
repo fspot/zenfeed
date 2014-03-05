@@ -20,7 +20,7 @@ class FaviconException(Exception):
 def sanitize_url(url):
     if not (url.startswith('http://') or url.startswith('https://')):
         url = 'http://%s' % url
-    return url
+    return url.lower()
 
 def parse_url(url):
     url = sanitize_url(url)
