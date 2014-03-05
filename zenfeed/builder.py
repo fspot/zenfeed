@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 
 from __future__ import unicode_literals, print_function
+import datetime
 
 from models import Feed, Entry
 
@@ -29,7 +30,7 @@ def normalize_feed_dict(dico):
     structTime = f.get('updated_parsed')
     try:
         norm['updated'] = datetime.datetime(*structTime[:6])
-    except:
+    except TypeError, ValueError:
         norm['updated'] = None
     norm['entries_hash'] = id(e) # TODO hash
     return norm
@@ -54,22 +55,26 @@ def normalize_entry_dict(dico):
     if norm['content'] is None:
         try:
             norm['content'] = dico['content'][0]['value']
-        except:
+        except KeyError, IndexError:
             norm['content'] = dico.get('summary')
     try:
         norm['mimetype'] = dico['content'][0]['type']
-    except:
+    except KeyError, IndexError:
         norm['mimetype'] = None
     structTime = dico.get('published_parsed')
     try:
         norm['created'] = datetime.datetime(*structTime[:6])
-    except:
+    except TypeError, ValueError:
         norm['created'] = None
     structTime = dico.get('updated_parsed')
     try:
         norm['updated'] = datetime.datetime(*structTime[:6])
-    except:
+    except TypeError, ValueError:
         norm['updated'] = None
+    if norm['created'] is None and norm['updated'] is not None:
+        norm['created'] = norm['updated']
+    elif norm['updated'] is None and norm['created'] is not None:
+        norm['updated'] = norm['created']
     return norm
 
 
