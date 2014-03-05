@@ -9,10 +9,27 @@ from app import app
 from models import Tag, Feed, Entry
 from deadline_manager import deadlineManager
 
-@app.route('/')
-def index():
+@app.route('/test')
+def test():
     nb = len(Tag.query.all())
     return 'Yo. Nb of tags : %d' % nb
+
+@app.route('/')
+def index():
+    feeds = Feed.query.all()
+    s = '<br>'.join([feed.title for feed in feeds])
+    return s
+
+@app.route('/<int:feed_id>/')
+def feed_view(feed_id):
+    feed = Feed.query.get(feed_id)
+    s = '<br>'.join([e.title for e in feed.entries])
+    return feed.url + '<br>' + s
+
+@app.route('/<int:feed_id>/<int:entry_id>/')
+def entry_view(feed_id, entry_id):
+    entry = Entry.query.get(entry_id)
+    return entry.url
 
 @app.route('/new-feed/<path:url>')
 def add_feed(url):
