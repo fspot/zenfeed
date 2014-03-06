@@ -2,12 +2,17 @@
 
 {% block body %}
 
-	<h1>Feed {{ feed.title }}</h1>
-	<h5><a href="/">←back to feed list</a></h5>
+	<div class="header">
+    <h1>{{ feed.title }}</h1>
+    <h5><a href="/">←back to feed list</a></h5>
+	</div>
+
+	<div class="content">
 	<ul>
 	{% for entry in entries %}
 		<li><a href="{{ entry.id }}/">{{ entry.title }}</a></li>
 	{% endfor %}
 	</ul>
+	</div>
 
 {% endblock %}

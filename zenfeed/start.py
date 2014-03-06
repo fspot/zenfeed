@@ -4,8 +4,8 @@
 from __future__ import unicode_literals, print_function
 
 import gevent
-from gevent.monkey import patch_all
-patch_all()
+from gevent.monkey import patch_socket
+patch_socket()
 from models import setup_tables, Feed
 setup_tables()
 from app import app

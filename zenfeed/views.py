@@ -10,6 +10,7 @@ from app import app
 from models import db, Tag, Feed, Entry
 from deadline_manager import deadlineManager
 
+
 @app.route('/')
 def index():
     feeds = Feed.query.order_by(Feed.updated.desc())

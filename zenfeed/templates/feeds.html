@@ -2,9 +2,15 @@
 
 {% block body %}
 
-	<h1>Feed list</h1>
+	<div class="header">
+    <h1>Feed list</h1>
+    <h2>A subtitle for your page goes here</h2>
+	</div>
+
+	<div class="content">
 	{% for feed in feeds %}
-		<h3><a href="/{{ feed.id }}/">{{ feed.title }}</a></h3>
+		<h2><a href="/{{ feed.id }}/">{{ feed.title }}</a></h2>
 	{% endfor %}
+	</div>
 
 {% endblock %}

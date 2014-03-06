@@ -9,6 +9,7 @@ from builder import FeedFromDict, EntryFromDict
 from fetcher import fetch_and_parse_feed, sanitize_url
 from models import db, Feed, Entry, update_feed, create_or_update_entry
 
+
 def new_feed_worker(url, answer_box, manager_box):
     try:
         feed_dict = fetch_and_parse_feed(url)
@@ -28,7 +29,7 @@ def new_feed_worker(url, answer_box, manager_box):
 def deadline_worker(feed, inbox):
     while True:
         try:
-            msg = inbox.get(timeout=feed.refresh_interval)
+            msg = inbox.get(timeout=10)
         except Empty:
             msg = None # timeout -> refresh !
         if msg is not None:
@@ -41,14 +42,14 @@ def deadline_worker(feed, inbox):
             raise Exception("Error re-fetching: " + feed.url)
         print("©©© Updated feed:", feed.url)
         feed_changed = update_feed(feed, FeedFromDict(feed_dict))
-        any_entry_changed = any(
+        any_entry_changed = any([
             create_or_update_entry(feed, EntryFromDict(e))
             for e in feed_dict['entries']
-        )
+        ])
         db.session.commit()
         if any_entry_changed and not feed_changed:
             most_recent_entry = Entry.query.order_by(Entry.updated.desc()).first()
             feed.updated = most_recent_entry.updated
-        if any_entry_changed or feed_changed:
+        if any_entry_changed:
             feed.has_news = True
         db.session.commit()

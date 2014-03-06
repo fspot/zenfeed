@@ -5,12 +5,13 @@ from __future__ import unicode_literals, print_function
 from flask.ext.sqlalchemy import SQLAlchemy
 
 from app import app
-from copy import deepcopy
+from settings import SQL_DEBUG
 
 db = SQLAlchemy(app)
 
 def setup_tables():
     db.create_all()
+    db.engine.echo = SQL_DEBUG
 
 
 tags = db.Table('tags',
@@ -112,7 +113,7 @@ def update_feed(feed, new_feed):
     fields = ['title', 'link', 'subtitle', 'author', 'generator',
               'encoding', 'updated', 'entries_hash']
 
-    changed = any(_update_attr(f, feed, new_feed) for f in fields)
+    changed = any([_update_attr(f, feed, new_feed) for f in fields])
     return changed
 
 
@@ -129,10 +130,9 @@ def create_or_update_entry(feed, new_entry):
     if entry is None: # create
         new_entry.feed = feed
         print("→→ new entry:", new_entry.title)
-        new_entry = deepcopy(new_entry) # ew.
-        db.session.add(new_entry)
+        db.session.merge(new_entry)
         return True
     else: # update
-        changed = any(_update_attr(f, entry, new_entry) for f in fields)
-        if changed: print("→→ changed entry:", new_entry.title)
+        changed = any([_update_attr(f, entry, new_entry) for f in fields])
+        if changed: print("→→ changed entry:", entry.title)
         return changed

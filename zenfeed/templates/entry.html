@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 
 {% block body %}
-	<h1>Entry {{ entry.title }}</h1>
-	<h5><a href="/{{ entry.feed_id }}/">←back to feed</a></h5>
-	<p>{{ entry.content|safe }}</p>
+
+	<div class="header">
+    <h1>{{ entry.title }}</h1>
+    <h5><a href="/{{ entry.feed_id }}/">←back to feed</a></h5>
+	</div>
+
+	<div class="content">
+	{{ entry.content|safe }}
+	</div>
 {% endblock %}
