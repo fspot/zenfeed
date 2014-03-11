@@ -8,6 +8,7 @@ from gevent.queue import Empty
 from builder import FeedFromDict, EntryFromDict
 from fetcher import fetch_and_parse_feed, sanitize_url
 from models import db, Feed, Entry, update_feed, create_or_update_entry
+from fetcher import save_favicon, fetch_favicon
 
 
 def new_feed_worker(url, answer_box, manager_box):
@@ -17,6 +18,7 @@ def new_feed_worker(url, answer_box, manager_box):
         return answer_box.put(Exception("Error with feed: " + url))
     feed = FeedFromDict(feed_dict)
     feed.url = sanitize_url(url) # set the real feed url
+    feed.favicon_path = save_favicon(fetch_favicon(feed.url))
     db.session.add(feed)
     for e in feed_dict['entries'][::-1]:
         entry = EntryFromDict(e)

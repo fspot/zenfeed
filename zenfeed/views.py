@@ -14,7 +14,9 @@ from deadline_manager import deadlineManager
 @app.route('/')
 def index():
     feeds = Feed.query.order_by(Feed.updated.desc())
-    return render_template('feeds.html', feeds=feeds)
+    favicon_path_begin = '/static/img/'
+    return render_template('feeds.html',
+        feeds=feeds, favicon_path_begin=favicon_path_begin)
 
 @app.route('/<int:feed_id>/')
 def feed_view(feed_id):

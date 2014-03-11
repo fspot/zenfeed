@@ -50,6 +50,7 @@ class Feed(db.Model):
     max_entries = db.Column(db.Integer)
     highlight_news = db.Column(db.Boolean)
     has_news = db.Column(db.Boolean)
+    favicon_path = db.Column(db.String)
 
     def __init__(self, url):
         self.url = url

@@ -10,7 +10,7 @@
 	<div class="content">
 	<ul>
 	{% for entry in entries %}
-		<li><a href="{{ entry.id }}/">{{ entry.title }}</a></li>
+		<li><a href="{{ entry.id }}/">{{ entry.title | safe }}</a></li>
 	{% endfor %}
 	</ul>
 	</div>

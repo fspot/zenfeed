@@ -6,7 +6,7 @@ from path import path
 
 sqlite_database = path('zenfeed.db')
 SQLALCHEMY_DATABASE_URI = 'sqlite:///%s' % sqlite_database.abspath()
-DEBUG = True
+DEBUG = False
 SQL_DEBUG = False
 SECRET_KEY = 'ssshhhh'
 

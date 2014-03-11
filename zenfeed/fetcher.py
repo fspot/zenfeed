@@ -2,6 +2,8 @@
 # -*- coding:utf-8 -*-
 
 from __future__ import unicode_literals, print_function
+from hashlib import sha256
+from path import path
 from BeautifulSoup import BeautifulSoup
 import requests
 import feedparser
@@ -104,3 +106,14 @@ def fetch_favicon(url, page=None):
     if resp.status_code != 200:
         resp = fetch_url(DEFAULT_RSS_ICON)
     return resp
+
+def save_favicon(resp):
+    if resp.status_code != 200:
+        raise FaviconException("Trying to save a 404 img")
+    name = sha256(resp.url).hexdigest()
+    save_image(resp.content, path(__file__).dirname().relpath() / 'static' / 'img' / name)
+    return name
+
+def save_image(content, name):
+    with open(name, 'wb') as f:
+        f.write(content)

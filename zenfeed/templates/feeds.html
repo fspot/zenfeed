@@ -9,7 +9,11 @@
 
 	<div class="content">
 	{% for feed in feeds %}
-		<h2><a href="/{{ feed.id }}/">{{ feed.title }}</a></h2>
+		<h2>
+			<img height="24px" width="24px"
+				src="{{ favicon_path_begin + feed.favicon_path }}" alt="[favicon]" />
+			<a href="/{{ feed.id }}/">{{ feed.title }}</a>
+		</h2>
 	{% endfor %}
 	</div>
 
