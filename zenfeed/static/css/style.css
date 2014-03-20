@@ -85,9 +85,13 @@ a {
     color: #B58900;
 }
 
+a:focus {
+    text-decoration: underline !important;
+    color: #B56000 !important;
+}
+
 #feeds a, #entries a {
     text-decoration: none;
-
 }
 
 #entries a:visited {
