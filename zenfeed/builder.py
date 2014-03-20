@@ -21,7 +21,7 @@ def normalize_feed_dict(dico):
         norm['url'] = f_id
     else:
         norm['url'] = f.get('link')
-    norm['title'] = f.get('title')
+    norm['title'] = f.get('title') or f.get('id')
     norm['link'] = f.get('link')
     norm['subtitle'] = f.get('subtitle')
     norm['author'] = f.get('author')

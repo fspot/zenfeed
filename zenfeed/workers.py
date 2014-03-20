@@ -31,7 +31,7 @@ def new_feed_worker(url, answer_box, manager_box):
 def deadline_worker(feed, inbox):
     while True:
         try:
-            msg = inbox.get(timeout=10)
+            msg = inbox.get(timeout=feed.refresh_interval)
         except Empty:
             msg = None # timeout -> refresh !
         if msg is not None:

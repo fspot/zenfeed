@@ -3,18 +3,19 @@
 {% block body %}
 
 	<div class="header">
-    <h1>Feed list</h1>
-    <h2>A subtitle for your page goes here</h2>
+    <h1>Zenfeed.</h1>
 	</div>
 
 	<div class="content">
+	<ul id="feeds">
 	{% for feed in feeds %}
-		<h2>
+		<li>
 			<img height="24px" width="24px"
 				src="{{ favicon_path_begin + feed.favicon_path }}" alt="[favicon]" />
 			<a href="/{{ feed.id }}/">{{ feed.title }}</a>
-		</h2>
+		</li>
 	{% endfor %}
+	</ul>
 	</div>
 
 {% endblock %}
