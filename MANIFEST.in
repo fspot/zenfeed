@@ -1,0 +1,14 @@
+include *.md
+
+recursive-include zenfeed *.otf
+recursive-include zenfeed *.woff
+recursive-include zenfeed *.eot
+recursive-include zenfeed *.ttf
+recursive-include zenfeed *.svg
+recursive-include zenfeed *.jpg
+recursive-include zenfeed *.png
+
+recursive-include zenfeed *.html
+recursive-include zenfeed *.css
+recursive-include zenfeed *.js
+
