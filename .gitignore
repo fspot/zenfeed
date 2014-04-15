@@ -1,3 +1,7 @@
 *.pyc
 *.db
 
+build/
+dist/
+zenfeed.egg-info/
+
