@@ -103,13 +103,18 @@ def fetch_favicon(url, page=None):
             # fallback to /favicon.ico:
             icon_url = default_favicon_url(url)
     resp = fetch_url(icon_url)
-    if resp.status_code != 200:
-        resp = fetch_url(DEFAULT_RSS_ICON)
     return resp
+
+def mocked_default_favicon():
+    class Obj: pass
+    obj = Obj()
+    obj.url = 'default'
+    obj.content = (path(__file__).dirname().relpath() / 'static' / 'img' / 'feedicon.png').bytes()
+    return obj
 
 def save_favicon(resp):
     if resp.status_code != 200:
-        raise FaviconException("Trying to save a 404 img")
+        resp = mocked_default_favicon()
     name = sha256(resp.url).hexdigest()
     save_image(resp.content, path(__file__).dirname().relpath() / 'static' / 'img' / name)
     return name
