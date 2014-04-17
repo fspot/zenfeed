@@ -4,7 +4,7 @@
 from __future__ import unicode_literals, print_function
 from hashlib import sha256
 from path import path
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 import requests
 import feedparser
 
@@ -48,12 +48,21 @@ def fetch_url(url):
 
 # Feed stuff :
 
-def fetch_and_parse_feed(url, etag=None, last_modified=None):
+def _fetch_and_parse_feed(url, etag=None, last_modified=None):
     # TODO implement etag & last_modified header
     resp = fetch_url(url)
     if resp.status_code != 200:
         return None
     return feedparser.parse(resp.content)
+
+def fetch_and_parse_feed(url, etag=None, last_modified=None):
+    resp = _fetch_and_parse_feed(url, etag, last_modified)
+    if resp.version == '':
+        resp = fetch_url(url)
+        soup = BeautifulSoup(resp.content)
+        first_candidate = soup.find_all("link", rel="alternate")[0]['href']
+        resp = _fetch_and_parse_feed(first_candidate, etag, last_modified)
+    return resp
 
 
 # Favicon stuff :
@@ -62,14 +71,14 @@ def fetch_icon_in_page(resp):
     if resp.status_code != 200:
         raise FaviconException("Http code != 200 for url: " + resp.url)
     soup = BeautifulSoup(resp.content)
-    icon_tags = [tag for tag in soup.findAll("link")
-                 if tag.has_key("rel")
-                 and "icon" in tag.attrMap["rel"]
-                 and tag.has_key("href")]
+    icon_tags = [tag for tag in soup.find_all("link")
+                 if tag.has_attr("rel")
+                 and "icon" in tag.attrs["rel"]
+                 and tag.has_attr("href")]
     if not icon_tags:
         raise FaviconException("No icon tags found in: " + resp.url)
     icon = icon_tags[0]
-    icon_href = icon.attrMap["href"]
+    icon_href = icon.attrs["href"]
 
     if icon_href.startswith("http"):
         icon_url = icon_href
