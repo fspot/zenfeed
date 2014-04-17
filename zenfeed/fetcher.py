@@ -8,14 +8,17 @@ from bs4 import BeautifulSoup
 import requests
 import feedparser
 
-DEFAULT_RSS_ICON = "http://www.php-geek.fr/wp-content/themes/www.php-geek.fr/images/rss_icon.png"
-
 class FaviconException(Exception):
     def __init__(self, value):
         self.value = value
     def __str__(self):
         return repr(self.value)
 
+class FetchingException(Exception):
+    def __init__(self, value):
+        self.value = value
+    def __str__(self):
+        return repr(self.value)
 
 # Utils :
 
@@ -48,21 +51,21 @@ def fetch_url(url):
 
 # Feed stuff :
 
-def _fetch_and_parse_feed(url, etag=None, last_modified=None):
+def fetch_and_parse_feed(url, etag=None, last_modified=None):
     # TODO implement etag & last_modified header
     resp = fetch_url(url)
     if resp.status_code != 200:
-        return None
-    return feedparser.parse(resp.content)
-
-def fetch_and_parse_feed(url, etag=None, last_modified=None):
-    resp = _fetch_and_parse_feed(url, etag, last_modified)
-    if resp.version == '':
-        resp = fetch_url(url)
+        raise FetchingException("status_code != 200")
+    feed_parsed = feedparser.parse(resp.content)
+    if feed_parsed.version == '':
+        # it's probably html instead of rss/atom
         soup = BeautifulSoup(resp.content)
         first_candidate = soup.find_all("link", rel="alternate")[0]['href']
-        resp = _fetch_and_parse_feed(first_candidate, etag, last_modified)
-    return resp
+        resp = fetch_url(first_candidate)
+        if resp.status_code != 200:
+            raise FetchingException("status_code != 200")
+        feed_parsed = feedparser.parse(resp.content)
+    return feed_parsed
 
 
 # Favicon stuff :

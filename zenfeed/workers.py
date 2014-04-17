@@ -8,13 +8,13 @@ from gevent.queue import Empty
 from builder import FeedFromDict, EntryFromDict
 from fetcher import fetch_and_parse_feed, sanitize_url
 from models import db, Feed, Entry, update_feed, create_or_update_entry
-from fetcher import save_favicon, fetch_favicon
+from fetcher import save_favicon, fetch_favicon, FetchingException
 
 
 def new_feed_worker(url, answer_box, manager_box):
     try:
         feed_dict = fetch_and_parse_feed(url)
-    except:
+    except FetchingException:
         return answer_box.put(Exception("Error with feed: " + url))
     feed = FeedFromDict(feed_dict)
     feed.url = sanitize_url(url) # set the real feed url
@@ -40,8 +40,8 @@ def deadline_worker(feed, inbox):
             print("©©© Refresh forced.")
         try:
             feed_dict = fetch_and_parse_feed(feed.url)
-        except:
-            raise Exception("Error re-fetching: " + feed.url)
+        except FetchingException as e:
+            print("Error re-fetching feed", feed.url, e.value)
         print("©©© Updated feed:", feed.url)
         feed_changed = update_feed(feed, FeedFromDict(feed_dict))
         any_entry_changed = any([
