@@ -16,6 +16,7 @@ def new_feed_worker(url, answer_box, manager_box):
         feed_dict = fetch_and_parse_feed(url)
     except FetchingException:
         return answer_box.put(Exception("Error with feed: " + url))
+
     feed = FeedFromDict(feed_dict)
     feed.url = sanitize_url(url) # set the real feed url
     feed.favicon_path = save_favicon(fetch_favicon(feed.url))
@@ -25,6 +26,11 @@ def new_feed_worker(url, answer_box, manager_box):
         entry.feed = feed # set the corresponding feed
         db.session.add(entry)
     db.session.commit()
+
+    most_recent_entry = feed.entries.order_by(Entry.updated.desc()).first()
+    feed.updated = most_recent_entry.updated
+    db.session.commit()
+
     answer_box.put(feed)
     manager_box.put({'type': 'new-deadline-worker', 'feed_id': feed.id})
 
@@ -49,8 +55,9 @@ def deadline_worker(feed, inbox):
             for e in feed_dict['entries']
         ])
         db.session.commit()
+        
         if any_entry_changed and not feed_changed:
-            most_recent_entry = Entry.query.order_by(Entry.updated.desc()).first()
+            most_recent_entry = feed.entries.order_by(Entry.updated.desc()).first()
             feed.updated = most_recent_entry.updated
         if any_entry_changed:
             feed.has_news = True
