@@ -61,6 +61,8 @@ def fetch_and_parse_feed(url, etag=None, last_modified=None):
         # it's probably html instead of rss/atom
         soup = BeautifulSoup(resp.content)
         first_candidate = soup.find_all("link", rel="alternate")[0]['href']
+        if not first_candidate.startswith("http"):
+            first_candidate = concat_urls(resp.url, first_candidate)
         resp = fetch_url(first_candidate)
         if resp.status_code != 200:
             raise FetchingException("status_code != 200")

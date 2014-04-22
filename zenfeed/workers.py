@@ -23,7 +23,7 @@ def new_feed_worker(url, answer_box, manager_box):
     feed.favicon_path = save_favicon(fetch_favicon(feed.url))
     db.session.add(feed)
     for e in feed_dict['entries'][::-1]:
-        entry = EntryFromDict(e)
+        entry = EntryFromDict(e, feed.url)
         entry.feed = feed # set the corresponding feed
         db.session.add(entry)
     db.session.commit()
@@ -52,7 +52,7 @@ def deadline_worker(feed, inbox):
         print("©©© Updated feed:", feed.url)
         feed_changed = update_feed(feed, FeedFromDict(feed_dict))
         any_entry_changed = any([
-            create_or_update_entry(feed, EntryFromDict(e))
+            create_or_update_entry(feed, EntryFromDict(e, feed.url))
             for e in feed_dict['entries']
         ])
         db.session.commit()

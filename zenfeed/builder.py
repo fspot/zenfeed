@@ -5,6 +5,7 @@ from __future__ import unicode_literals, print_function
 import datetime
 
 from models import Feed, Entry
+from fetcher import concat_urls
 
 def normalize_feed_dict(dico):
     """
@@ -36,7 +37,7 @@ def normalize_feed_dict(dico):
     return norm
 
 
-def normalize_entry_dict(dico):
+def normalize_entry_dict(dico, feed_url):
     """
         feedparser.FeedParserDict from different sites may differ
         in their attributes : we have to normalize that.
@@ -49,7 +50,11 @@ def normalize_entry_dict(dico):
         norm['url'] = e_id
     else:
         norm['url'] = dico.get('link')
+    if not norm['url'].startswith('http'):
+        norm['url'] = concat_urls(feed_url, norm['url'])
     norm['link'] = dico.get('link')
+    if not norm['link'].startswith('http'):
+        norm['link'] = concat_urls(feed_url, norm['link'])
     norm['title'] = dico.get('title')
     norm['content'] = dico.get('value')
     if norm['content'] is None:
@@ -96,8 +101,8 @@ def FeedFromDict(dico):
     return feed
 
 
-def EntryFromDict(dico):
-    dico = normalize_entry_dict(dico)
+def EntryFromDict(dico, feed_url):
+    dico = normalize_entry_dict(dico, feed_url)
     entry = Entry(dico['title'], dico['content'])
     entry.url = dico['url']
     entry.link = dico['link']
