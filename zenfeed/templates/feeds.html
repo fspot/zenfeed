@@ -6,16 +6,28 @@
     <h1>Zenfeed.</h1>
 	</div>
 
-	<div class="content">
-	<ul id="feeds">
+	<div id="feeds" class="content">
+	<!-- <ul id="feeds"> -->
 	{% for feed in feeds %}
-		<li>
-			<img height="24px" width="24px"
-				src="{{ favicon_path_begin + feed.favicon_path }}" alt="[favicon]" />
-			<a href="/{{ feed.id }}/">{{ feed.title }}</a>
-		</li>
+		<!-- <li> -->
+		<div class="grid-row pure-g-r">
+			<div class="pure-u-1-24">
+				<img height="24px" width="24px"
+					src="{{ favicon_path_begin + feed.favicon_path }}" alt="[favicon]" />
+			</div>
+			<div class="pure-u-5-24 feed-title">
+				<a href="/{{ feed.id }}/">{{ feed.title }}</a>
+			</div>
+			<div class="pure-u-15-24 entry-title">
+				{{ feed.last_entry().title }}
+			</div>
+			<div class="pure-u-3-24 time-ago">
+				{{ feed.date().to('local').humanize(locale='fr') }}
+			</div>
+		</div>
+		<!-- </li> -->
 	{% endfor %}
-	</ul>
+	<!-- </ul> -->
 	</div>
 
 {% endblock %}

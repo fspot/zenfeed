@@ -4,8 +4,11 @@
 from __future__ import unicode_literals, print_function
 from flask.ext.sqlalchemy import SQLAlchemy
 
+import arrow
+
 from app import app
 from settings import SQL_DEBUG
+
 
 db = SQLAlchemy(app)
 
@@ -57,6 +60,12 @@ class Feed(db.Model):
 
     def __repr__(self):
         return u'<Feed %r>' % self.url
+
+    def date(self):
+        return arrow.Arrow.fromdatetime(self.updated)
+
+    def last_entry(self):
+        return self.entries.order_by(Entry.updated.desc()).first()
 
 
 class Entry(db.Model):

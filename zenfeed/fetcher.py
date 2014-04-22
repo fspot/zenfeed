@@ -45,7 +45,7 @@ def concat_urls(url, path):
 
 def fetch_url(url):
     url = sanitize_url(url)
-    resp = requests.get(url)
+    resp = requests.get(url, verify=False)
     return resp
 
 

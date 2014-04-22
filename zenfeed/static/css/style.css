@@ -36,9 +36,9 @@ The content `<div>` is where all your content goes.
 .content {
     margin: 0 auto;
     /*padding: 0 2em;*/
-    max-width: 800px;
+    max-width: 1050px;
     margin-bottom: 50px;
-    line-height: 1.6em;
+    /*line-height: 1.6em;*/
     font-size: 1.5em;
 }
 
@@ -81,6 +81,10 @@ Hides the menu at `48em`, but modify this based on your app's needs.
 
 /* ############ my work ############# */
 
+.grid-row {
+    padding-top: 8px;
+}
+
 a {
     color: #B58900;
 }
@@ -101,6 +105,10 @@ a:focus {
 #feeds {
     list-style: none;
 }
+
+#feeds .feed-title { font-size: 80%; line-height: 85%; font-style: italic; word-wrap: break-word; }
+#feeds .entry-title { font-size: 80%; line-height: 90%; }
+#feeds .time-ago { font-size: 65%; text-align: right; }
 
 #entries {
     list-style-type: square;

@@ -5,11 +5,12 @@ from __future__ import unicode_literals, print_function
 
 # avoid side effects with imports…
 import gevent
-from gevent.monkey import patch_socket
+from gevent.monkey import patch_socket, patch_ssl
 from models import setup_tables, Feed
 
 def main():
     patch_socket()
+    patch_ssl()
     setup_tables()
     from app import app
     import views
