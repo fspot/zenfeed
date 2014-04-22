@@ -57,9 +57,9 @@ def deadline_worker(feed, inbox):
         ])
         db.session.commit()
 
-        if any_entry_changed and not feed_changed:
+        if any_entry_changed:
             most_recent_entry = feed.entries.order_by(Entry.updated.desc()).first()
             feed.updated = most_recent_entry.updated
-        if any_entry_changed:
             feed.has_news = True
-        db.session.commit()
+            db.session.merge(feed)
+            db.session.commit()

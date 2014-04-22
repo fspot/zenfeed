@@ -115,7 +115,7 @@ def _update_attr(attr_name, old_obj, new_obj):
 
     old_value = getattr(old_obj, attr_name)
     new_value = getattr(new_obj, attr_name)
-    if new_value != old_value:
+    if new_value != old_value and new_value is not None:
         setattr(old_obj, attr_name, new_value)
         return True
 
@@ -125,9 +125,11 @@ def update_feed(feed, new_feed):
     assert isinstance(feed, Feed)
     assert isinstance(new_feed, Feed)
     fields = ['title', 'link', 'subtitle', 'author', 'generator',
-              'encoding', 'updated', 'entries_hash']
+              'encoding', 'entries_hash'] # no 'updated' field any more
 
     changed = any([_update_attr(f, feed, new_feed) for f in fields])
+    if changed:
+        db.session.merge(feed)
     return changed
 
 
@@ -148,5 +150,7 @@ def create_or_update_entry(feed, new_entry):
         return True
     else: # update
         changed = any([_update_attr(f, entry, new_entry) for f in fields])
-        if changed: print("→→ changed entry:", entry.title)
+        if changed:
+            print("→→ changed entry:", entry.title)
+            db.session.merge(entry)
         return changed

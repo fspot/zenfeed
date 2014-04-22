@@ -24,6 +24,8 @@ def normalize_feed_dict(dico):
         norm['url'] = f.get('link')
     norm['title'] = f.get('title') or f.get('id')
     norm['link'] = f.get('link')
+    if not norm['link'].startswith('http'):
+        norm['link'] = 'http://' + norm['link']
     norm['subtitle'] = f.get('subtitle')
     norm['author'] = f.get('author')
     norm['generator'] = f.get('generator')

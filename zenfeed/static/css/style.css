@@ -123,7 +123,7 @@ a:hover {
 }
 
 #feeds a, #entries a, .bandeau a { text-decoration: none; }
-#entries a:visited { color: #A38B58; }
+#entries .grid-row a:visited { color: #A38B58; }
 
 /* ###### code stuff ###### */
 
