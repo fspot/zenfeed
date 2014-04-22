@@ -13,12 +13,13 @@ from fetcher import save_favicon, fetch_favicon, FetchingException
 
 def new_feed_worker(url, answer_box, manager_box):
     try:
-        feed_dict = fetch_and_parse_feed(url)
+        fetched = fetch_and_parse_feed(url)
+        feed_dict, real_url = fetched['feed'], fetched['real_url']
     except FetchingException:
         return answer_box.put(Exception("Error with feed: " + url))
 
     feed = FeedFromDict(feed_dict)
-    feed.url = sanitize_url(url) # set the real feed url
+    feed.url = sanitize_url(real_url) # set the real feed url
     feed.favicon_path = save_favicon(fetch_favicon(feed.url))
     db.session.add(feed)
     for e in feed_dict['entries'][::-1]:
@@ -45,7 +46,7 @@ def deadline_worker(feed, inbox):
             #db.session.refresh(obj1) ?
             print("©©© Refresh forced.")
         try:
-            feed_dict = fetch_and_parse_feed(feed.url)
+            feed_dict = fetch_and_parse_feed(feed.url)['feed']
         except FetchingException as e:
             print("Error re-fetching feed", feed.url, e.value)
         print("©©© Updated feed:", feed.url)
@@ -55,7 +56,7 @@ def deadline_worker(feed, inbox):
             for e in feed_dict['entries']
         ])
         db.session.commit()
-        
+
         if any_entry_changed and not feed_changed:
             most_recent_entry = feed.entries.order_by(Entry.updated.desc()).first()
             feed.updated = most_recent_entry.updated

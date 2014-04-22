@@ -65,7 +65,7 @@ def fetch_and_parse_feed(url, etag=None, last_modified=None):
         if resp.status_code != 200:
             raise FetchingException("status_code != 200")
         feed_parsed = feedparser.parse(resp.content)
-    return feed_parsed
+    return {"feed": feed_parsed, "real_url": resp.url}
 
 
 # Favicon stuff :
