@@ -6,6 +6,7 @@ body {
     color: #586E75;
     background-color: #FDF6E3;
     font-family: sans-serif;
+    text-shadow: 1px 1px 5px white;
 }
 
 .pure-img-responsive, img {
@@ -83,44 +84,48 @@ Hides the menu at `48em`, but modify this based on your app's needs.
 
 .grid-row {
     padding-top: 8px;
+    padding-right: 4px;
 }
 
-a {
-    color: #B58900;
+.bandeau, .grid-row:nth-child(2n+1) {
+    background-color: #EFE6CC;
 }
+
+.bandeau {
+    padding: 8px;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 80%;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+#feeds .feed-title { font-size: 80%; line-height: 85%; word-wrap: break-word; }
+#feeds .entry-title { font-size: 80%; line-height: 90%; }
+#feeds .time-ago { font-size: 65%; text-align: right; }
+
+#entries .entry-title { font-size: 80%; line-height: 85%; word-wrap: break-word; }
+#entries .entry-content { font-size: 80%; line-height: 90%; }
+#entries .time-ago { font-size: 65%; text-align: right; }
+
+/* ###### links stuff ###### */
+
+a { color: #B58900; }
 
 a:focus {
     text-decoration: underline !important;
     color: #B56000 !important;
+    outline: none;
 }
 
-#feeds a, #entries a {
-    text-decoration: none;
+a:hover {
+    color: #B56000;
 }
 
-#entries a:visited {
-    color: #A38B58;
-}
+#feeds a, #entries a, .bandeau a { text-decoration: none; }
+#entries a:visited { color: #A38B58; }
 
-#feeds {
-    list-style: none;
-}
-
-#feeds .feed-title { font-size: 80%; line-height: 85%; font-style: italic; word-wrap: break-word; }
-#feeds .entry-title { font-size: 80%; line-height: 90%; }
-#feeds .time-ago { font-size: 65%; text-align: right; }
-
-#entries {
-    list-style-type: square;
-}
-
-#feeds li img {
-    float: left;
-}
-
-#feeds li a {
-    padding-left: 10px;
-}
+/* ###### code stuff ###### */
 
 pre {
     background-color: #EEE8D5;

@@ -62,7 +62,8 @@ class Feed(db.Model):
         return u'<Feed %r>' % self.url
 
     def date(self):
-        return arrow.Arrow.fromdatetime(self.updated)
+        if self.updated is not None:
+            return arrow.Arrow.fromdatetime(self.updated)
 
     def last_entry(self):
         return self.entries.order_by(Entry.updated.desc()).first()
@@ -87,6 +88,9 @@ class Entry(db.Model):
 
     def __repr__(self):
         return u'<Entry %r>' % self.title
+
+    def date(self):
+        return arrow.Arrow.fromdatetime(self.updated)
 
 
 class Config(db.Model):

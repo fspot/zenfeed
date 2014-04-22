@@ -3,16 +3,26 @@
 {% block body %}
 
 	<div class="header">
-    <h1>{{ feed.title }}</h1>
+    <h1>{{ feed.title }}.</h1>
     <h5><a href="/">←back to feed list</a></h5>
 	</div>
 
-	<div class="content">
-	<ul id="entries">
+	<div id="entries" class="content">
 	{% for entry in entries %}
-		<li><a href="{{ entry.id }}/">{{ entry.title | safe }}</a></li>
+		<div class="grid-row pure-g-r">
+			<div class="pure-u-6-24 entry-title">
+				<a href="{{ entry.id }}/">{{ entry.title | safe }}</a>
+			</div>
+
+			<div class="pure-u-15-24 entry-content">
+				{{ entry.content | striptags | truncate(200) }}
+			</div>
+
+			<div class="pure-u-3-24 time-ago">
+				{{ entry.date().to('local').humanize(locale='fr') }}
+			</div>
+		</div>
 	{% endfor %}
-	</ul>
 	</div>
 
 {% endblock %}

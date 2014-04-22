@@ -7,9 +7,7 @@
 	</div>
 
 	<div id="feeds" class="content">
-	<!-- <ul id="feeds"> -->
 	{% for feed in feeds %}
-		<!-- <li> -->
 		<div class="grid-row pure-g-r">
 			<div class="pure-u-1-24">
 				<img height="24px" width="24px"
@@ -25,9 +23,7 @@
 				{{ feed.date().to('local').humanize(locale='fr') }}
 			</div>
 		</div>
-		<!-- </li> -->
 	{% endfor %}
-	<!-- </ul> -->
 	</div>
 
 {% endblock %}
