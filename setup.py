@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 setup(
     name="zenfeed",
     version="0.0.1", # update it in __init__.py also. Now!
-    install_requires=["beautifulsoup4", "Flask", "Flask-SQLAlchemy", "feedparser", "gevent", "path.py", "requests"],
+    install_requires=["beautifulsoup4", "Flask", "Flask-SQLAlchemy", "feedparser", "gevent", "path.py", "requests", "arrow"],
     packages=find_packages(),
     author="fspot",
     author_email="fred@fspot.org",
