@@ -8,7 +8,7 @@
 
 	<div id="feeds" class="content">
 	{% for feed in feeds %}
-		<div class="grid-row pure-g-r">
+		<div class="grid-row pure-g-r" data-url="/{{ feed.id }}/">
 			<div class="pure-u-1-24">
 				<img height="24px" width="24px"
 					src="{{ favicon_path_begin + feed.favicon_path }}" alt="[favicon]" />

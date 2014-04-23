@@ -9,7 +9,7 @@
 	<div id="entries" class="content">
 		<div class="pure-g bandeau">
 			<div class="pure-u-1-2">
-				<a href="/">← back to feeds</a>
+				<a href="/">&#9775; Liste des flux</a>
 			</div>
 			<div class="pure-u-1-2">
 				<a href="{{ feed.link }}">Site</a>
@@ -17,7 +17,7 @@
 		</div>
 
 	{% for entry in entries %}
-		<div class="grid-row pure-g-r">
+		<div class="grid-row pure-g-r" data-url="{{ entry.id }}/">
 			<div class="pure-u-6-24 entry-title">
 				<a href="{{ entry.id }}/">{{ entry.title | safe }}</a>
 			</div>

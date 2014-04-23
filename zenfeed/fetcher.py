@@ -127,7 +127,7 @@ def mocked_default_favicon():
     return obj
 
 def save_favicon(resp):
-    if resp.status_code != 200:
+    if resp.status_code != 200 or len(resp.content) < 10:
         resp = mocked_default_favicon()
     name = sha256(resp.url).hexdigest()
     save_image(resp.content, path(__file__).dirname().relpath() / 'static' / 'img' / name)
