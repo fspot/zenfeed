@@ -2,11 +2,13 @@
 # -*- coding:utf-8 -*-
 
 from setuptools import setup, find_packages
+import zenfeed
 
 setup(
     name="zenfeed",
-    version="0.0.1", # update it in __init__.py also. Now!
-    install_requires=["beautifulsoup4", "Flask", "Flask-SQLAlchemy", "feedparser", "gevent", "path.py", "requests", "arrow"],
+    version=zenfeed.__version__,
+    install_requires=["beautifulsoup4", "Flask", "Flask-SQLAlchemy", "docopt",
+                      "feedparser", "gevent", "path.py", "requests", "arrow"],
     packages=find_packages(),
     author="fspot",
     author_email="fred@fspot.org",
