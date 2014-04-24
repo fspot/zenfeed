@@ -10,5 +10,5 @@ test-parsing:
 	python -m unittest test.test_feedparser.TestFeedParsing
 
 clean:
-	rm *.pyc zenfeed/*.pyc test/*.pyc
+	rm -rf *.pyc zenfeed/*.pyc test/*.pyc build/ dist/ zenfeed.egg-info/
 
