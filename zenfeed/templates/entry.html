@@ -9,10 +9,12 @@
 	<div class="content">
 		<div class="pure-g bandeau">
 			<div class="pure-u-1-24">
-				<a href="/">&#9775;</a>
+				<a href="{{ url_for('index') }}">&#9775;</a>
 			</div>
 			<div class="pure-u-8-24">
-				<a href="/{{ entry.feed_id }}/">← Retour au flux</a>
+				<a href="{{ url_for('feed_view', feed_id=entry.feed_id) }}">
+					← Retour au flux
+				</a>
 			</div>
 			<div class="pure-u-8-24">
 				<a href="{{ entry.link }}" id="article-link">Article</a>

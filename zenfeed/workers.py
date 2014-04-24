@@ -4,6 +4,7 @@
 from __future__ import unicode_literals, print_function
 import gevent
 from gevent.queue import Empty
+from requests.exceptions import ConnectionError
 
 from builder import FeedFromDict, EntryFromDict
 from fetcher import fetch_and_parse_feed, sanitize_url
@@ -11,7 +12,7 @@ from models import db, Feed, Entry, update_feed, create_or_update_entry
 from fetcher import save_favicon, fetch_favicon, FetchingException
 
 
-def new_feed_worker(url, answer_box, manager_box):
+def new_feed_worker(url, favicon_dir, answer_box, manager_box):
     try:
         fetched = fetch_and_parse_feed(url)
         feed_dict, real_url = fetched['feed'], fetched['real_url']
@@ -20,7 +21,7 @@ def new_feed_worker(url, answer_box, manager_box):
 
     feed = FeedFromDict(feed_dict)
     feed.url = sanitize_url(real_url) # set the real feed url
-    feed.favicon_path = save_favicon(fetch_favicon(feed.url))
+    feed.favicon_path = save_favicon(fetch_favicon(feed.url), favicon_dir)
     db.session.add(feed)
     for e in feed_dict['entries'][::-1]:
         entry = EntryFromDict(e, feed.url)
@@ -49,6 +50,10 @@ def deadline_worker(feed, inbox):
             feed_dict = fetch_and_parse_feed(feed.url)['feed']
         except FetchingException as e:
             print("Error re-fetching feed", feed.url, e.value)
+            continue
+        except ConnectionError:
+            print("Connection error re-fetching feed", feed.url)
+            continue
         print("©©© Updated feed:", feed.url)
         feed_changed = update_feed(feed, FeedFromDict(feed_dict))
         any_entry_changed = any([

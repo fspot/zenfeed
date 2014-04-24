@@ -41,8 +41,8 @@ class DeadlineManager(Actor):
         msg_type = message.get('type')
         if msg_type == 'new-feed':
             print("++> new-feed request:", message['url'])
-            gevent.spawn(new_feed_worker,
-                         message['url'], answer_box, self.inbox)
+            gevent.spawn(new_feed_worker, message['url'],
+                         self.favicon_dir, answer_box, self.inbox)
         elif msg_type == "new-deadline-worker":
             feed = Feed.query.get(message['feed_id'])
             self.launch_deadline_worker(feed)

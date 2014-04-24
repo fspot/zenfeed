@@ -8,13 +8,14 @@
 
 	<div id="feeds" class="content">
 	{% for feed in feeds %}
-		<div class="grid-row pure-g-r" data-url="/{{ feed.id }}/">
+		<div class="grid-row pure-g-r"
+			 data-url="{{ url_for('feed_view', feed_id=feed.id) }}">
 			<div class="pure-u-1-24">
 				<img height="24px" width="24px"
-					src="{{ favicon_path_begin + feed.favicon_path }}" alt="[favicon]" />
+				 src="{{ url_for('get_favicon', favicon=feed.favicon_path) }}" alt="[icon]" />
 			</div>
 			<div class="pure-u-5-24 feed-title navlink">
-				<a href="/{{ feed.id }}/">{{ feed.title }}</a>
+				<a href="{{ url_for('feed_view', feed_id=feed.id) }}">{{ feed.title }}</a>
 			</div>
 			<div class="pure-u-15-24 entry-title">
 				{{ feed.last_entry().title }}
