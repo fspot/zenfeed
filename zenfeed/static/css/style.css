@@ -69,7 +69,8 @@ a:hover { color: #B56000; }
 
 a:focus {
     text-decoration: underline !important;
-    color: #B56000 !important;
+    text-shadow: 1px 1px 5px #B58900;
+    color: #B52900 !important;
     outline: none;
 }
 
