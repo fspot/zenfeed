@@ -9,7 +9,7 @@
 	<div id="entries" class="content">
 		<div class="pure-g bandeau">
 			<div class="pure-u-1-2">
-				<a href="/">&#9775; Liste des flux</a>
+				<a href="{{ url_for('index') }}">&#9775; Liste des flux</a>
 			</div>
 			<div class="pure-u-1-2">
 				<a href="{{ feed.link }}">Site</a>
@@ -17,9 +17,12 @@
 		</div>
 
 	{% for entry in entries %}
-		<div class="grid-row pure-g-r" data-url="{{ entry.id }}/">
+		<div class="grid-row pure-g-r"
+			 data-url="{{ url_for('entry_view', feed_id=feed.id, entry_id=entry.id) }}">
 			<div class="pure-u-6-24 entry-title navlink">
-				<a href="{{ entry.id }}/">{{ entry.title | safe }}</a>
+				<a href="{{ url_for('entry_view', feed_id=feed.id, entry_id=entry.id) }}">
+					{{ entry.title }}
+				</a>
 			</div>
 
 			<div class="pure-u-15-24 entry-content">

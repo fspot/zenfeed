@@ -4,17 +4,14 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Zenfeed.</title>
-	<link rel="icon" type="image/png" href="/static/img/zenicon.png" />
-	<link rel="stylesheet" href="/static/css/grid.css">
-	<link rel="stylesheet" href="/static/css/style.css">
+	<link rel="icon" type="image/png" href="{{ url_for('static', filename='img/zenicon.png') }}" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/grid.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
-<div id="layout">
-<div id="main">
 {% block body %}{% endblock %}
-</div>
-</div>
-<script type="text/javascript" src="/static/js/zenfeed.js" async></script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/zenfeed.js') }}" async></script>
 </body>
 </html>
