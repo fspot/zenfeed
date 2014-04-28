@@ -7,14 +7,13 @@ from flask.ext.sqlalchemy import SQLAlchemy
 import arrow
 
 from app import app
-from settings import SQL_DEBUG
 
 
 db = SQLAlchemy(app)
 
 def setup_tables():
     db.create_all()
-    db.engine.echo = SQL_DEBUG
+    db.engine.echo = app.config['SQL_DEBUG']
 
 
 tags = db.Table('tags',

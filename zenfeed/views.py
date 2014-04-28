@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 from __future__ import unicode_literals, print_function
-from flask import render_template
+from flask import render_template, send_from_directory
 from gevent.queue import Queue
 
 from actor import Mail
@@ -10,13 +10,14 @@ from app import app
 from models import db, Tag, Feed, Entry
 from deadline_manager import deadlineManager
 
-
 @app.route('/')
 def index():
     feeds = Feed.query.order_by(Feed.updated.desc())
-    favicon_path_begin = '/static/img/'
-    return render_template('feeds.html',
-        feeds=feeds, favicon_path_begin=favicon_path_begin)
+    return render_template('feeds.html', feeds=feeds)
+
+@app.route(app.static_url_path + '/favicon/<favicon>')
+def get_favicon(favicon):
+    return send_from_directory(app.config['FAVICON_DIR'], favicon)
 
 @app.route('/<int:feed_id>/')
 def feed_view(feed_id):
