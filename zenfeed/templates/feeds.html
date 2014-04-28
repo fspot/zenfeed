@@ -8,7 +8,7 @@
 
 	<div id="feeds" class="content">
 	{% for feed in feeds %}
-		<div class="grid-row pure-g-r"
+		<div class="grid-row pure-g-r{{ ' has-news' if feed.has_news }}"
 			 data-url="{{ url_for('feed_view', feed_id=feed.id) }}">
 			<div class="pure-u-1-24">
 				<img height="24px" width="24px"

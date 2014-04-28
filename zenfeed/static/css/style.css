@@ -57,6 +57,7 @@ img {
 #feeds .feed-title { font-size: 80%; line-height: 85%; word-wrap: break-word; }
 #feeds .entry-title { font-size: 80%; line-height: 90%; }
 #feeds .time-ago { font-size: 65%; text-align: right; }
+#feeds .has-news { text-shadow: 0px 0px 4px #EDC02D; }
 
 #entries .entry-title { font-size: 80%; line-height: 85%; word-wrap: break-word; }
 #entries .entry-content { font-size: 80%; line-height: 90%; }
@@ -69,7 +70,7 @@ a:hover { color: #B56000; }
 
 a:focus {
     text-decoration: underline !important;
-    text-shadow: 1px 1px 5px #B58900;
+    text-shadow: 0px 0px 5px #B58900;
     color: #B52900 !important;
     outline: none;
 }
