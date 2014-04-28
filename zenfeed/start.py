@@ -42,8 +42,10 @@ def main():
 
     port = int(args['--port'])
     db_uri = args['--database']
-    if not "://" in db_uri:
-         db_uri = 'sqlite:///%s' % path(db_uri).abspath()
+    if db_uri == ':memory:':
+        db_uri = 'sqlite://'
+    elif not "://" in db_uri:
+        db_uri = 'sqlite:///%s' % path(db_uri).abspath()
 
     from app import app
     app.config.update(
