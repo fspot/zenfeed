@@ -53,21 +53,23 @@ def fetch_url(url):
 
 def fetch_and_parse_feed(url, etag=None, last_modified=None):
     # TODO implement etag & last_modified header
-    resp = fetch_url(url)
-    if resp.status_code != 200:
-        raise FetchingException("status_code != 200")
-    feed_parsed = feedparser.parse(resp.content)
+    url = sanitize_url(url)
+    feed_parsed = feedparser.parse(url)
+    if feed_parsed.bozo:
+        raise FetchingException(repr(feed_parsed.bozo_exception))
     if feed_parsed.version == '':
         # it's probably html instead of rss/atom
-        soup = BeautifulSoup(resp.content)
-        first_candidate = soup.find_all("link", rel="alternate")[0]['href']
-        if not first_candidate.startswith("http"):
-            first_candidate = concat_urls(resp.url, first_candidate)
-        resp = fetch_url(first_candidate)
+        resp = fetch_url(url)
         if resp.status_code != 200:
             raise FetchingException("status_code != 200")
-        feed_parsed = feedparser.parse(resp.content)
-    return {"feed": feed_parsed, "real_url": resp.url}
+        soup = BeautifulSoup(resp.content)
+        url = soup.find_all("link", rel="alternate")[0]['href']
+        if not url.startswith("http"):
+            url = concat_urls(resp.url, url)
+        feed_parsed = feedparser.parse(url)
+        if feed_parsed.bozo:
+            raise FetchingException(repr(feed_parsed.bozo_exception))
+    return {"feed": feed_parsed, "real_url": url}
 
 
 # Favicon stuff :
