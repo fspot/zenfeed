@@ -55,8 +55,8 @@ def fetch_and_parse_feed(url, etag=None, last_modified=None):
     # TODO implement etag & last_modified header
     url = sanitize_url(url)
     feed_parsed = feedparser.parse(url)
-    if feed_parsed.bozo:
-        raise FetchingException(repr(feed_parsed.bozo_exception))
+    if feed_parsed.status != 200:
+        raise FetchingException("status_code != 200")
     if feed_parsed.version == '':
         # it's probably html instead of rss/atom
         resp = fetch_url(url)
@@ -67,8 +67,8 @@ def fetch_and_parse_feed(url, etag=None, last_modified=None):
         if not url.startswith("http"):
             url = concat_urls(resp.url, url)
         feed_parsed = feedparser.parse(url)
-        if feed_parsed.bozo:
-            raise FetchingException(repr(feed_parsed.bozo_exception))
+        if feed_parsed.status != 200:
+            raise FetchingException("status_code != 200")
     return {"feed": feed_parsed, "real_url": url}
 
 
