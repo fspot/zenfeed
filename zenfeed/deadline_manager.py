@@ -6,6 +6,7 @@ import gevent
 from gevent.queue import Queue
 
 from actor import Actor
+from log import logger
 from models import Feed
 from workers import new_feed_worker, deadline_worker
 
@@ -40,14 +41,14 @@ class DeadlineManager(Actor):
         assert isinstance(message, dict)
         msg_type = message.get('type')
         if msg_type == 'new-feed':
-            print("++> new-feed request:", message['url'])
+            logger.warning('>>> new-feed request : %s', message['url'])
             gevent.spawn(new_feed_worker, message['url'],
                          self.favicon_dir, answer_box, self.inbox)
         elif msg_type == "new-deadline-worker":
             feed = Feed.query.get(message['feed_id'])
             self.launch_deadline_worker(feed)
         elif msg_type == "force-refresh-feed":
-            print("++> force-refresh-feed request:", message['id'])
+            logger.warning('>>> force-refresh-feed request : %d', message['id'])
             self.workers[message['id']]['queue'].put({
                 'type': 'force-refresh',
                 'answer_box': answer_box,

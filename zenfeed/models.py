@@ -5,6 +5,7 @@ from __future__ import unicode_literals, print_function
 from flask.ext.sqlalchemy import SQLAlchemy
 
 from app import app
+from log import logger
 
 
 db = SQLAlchemy(app)
@@ -135,7 +136,7 @@ def create_or_update_entry(feed_id, new_entry):
     entry = Entry.query.filter_by(feed_id=feed_id, url=new_entry.url).first()
     if entry is None: # create
         new_entry.feed_id = feed_id
-        print("→→ new entry:", new_entry.title)
+        logger.info("→→ new entry: %s", new_entry.title)
         db.session.merge(new_entry)
         return True
     else: # update
@@ -143,6 +144,6 @@ def create_or_update_entry(feed_id, new_entry):
         changed_fields_strings = [s for s,b in zip(fields, changed_fields) if b]
         changed = any(changed_fields)
         if changed:
-            print("→→ changed entry:", entry.title, repr(changed_fields_strings))
+            logger.info("→→ changed entry: %s | %s", entry.title, repr(changed_fields_strings))
             db.session.merge(entry)
         return False

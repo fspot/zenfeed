@@ -4,7 +4,7 @@
 """Zen RSS feed reader.
 
 Usage:
-  zenfeed [-d URI -f PATH -p PORT --debug]
+  zenfeed [-d URI -f PATH -p PORT -l LOG --debug]
   zenfeed genstatic PATH
   zenfeed -h | --help
   zenfeed -v | --version
@@ -19,6 +19,9 @@ Options:
                       [default: ./]
   -p --port PORT      Specify on which port to listen.
                       [default: 5000]
+  -l --log LOG        Specify where to log messages, and which level to set.
+                      Can be "stderr", "syslog", or a filename, followed by the level.
+                      [default: stderr:INFO]
   --debug             Use werkzeug debug WSGI server.
 
 """
@@ -26,11 +29,13 @@ Options:
 from __future__ import unicode_literals, print_function
 from docopt import docopt
 from path import path
+import logging
 
 # avoid side effects with imports…
 import gevent
 from gevent.monkey import patch_socket, patch_ssl
 import zenfeed
+from log import setup_logger, logger
 
 def genstatic(dst):
     path.copytree(path(zenfeed.__path__[0]) / 'static', dst)
@@ -41,6 +46,12 @@ def main():
         return genstatic(args['PATH'])
 
     port = int(args['--port'])
+    log_arg, log_level = args['--log'].rsplit(':', 1)
+    if log_arg not in ('stderr', 'syslog'):
+        setup_logger(type='file', filename=path(log_arg).abspath(),
+                     level=log_level)
+    else:
+        setup_logger(type=log_arg, level=log_level)
     db_uri = args['--database']
     if db_uri == ':memory:':
         db_uri = 'sqlite://'
@@ -72,8 +83,10 @@ def main():
     deadlineManager.start()
 
     if args['--debug']:
+        logger.info("Server started in DEBUG mode at port %d", (port,))
         app.run(host='0.0.0.0', port=port, debug=True)
     else:
+        logger.info("Server started in PRODUCTION mode at port %d", port)
         from gevent.wsgi import WSGIServer
         http_server = WSGIServer(('0.0.0.0', port), app)
         try:

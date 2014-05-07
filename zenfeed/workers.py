@@ -8,6 +8,7 @@ from requests.exceptions import ConnectionError
 
 from builder import FeedFromDict, EntryFromDict
 from fetcher import fetch_and_parse_feed, sanitize_url
+from log import logger
 from models import db, Feed, Entry, update_feed, create_or_update_entry
 from fetcher import save_favicon, fetch_favicon, FetchingException
 
@@ -44,21 +45,21 @@ def deadline_worker(feed, inbox):
             msg = None # timeout -> refresh !
         if msg is not None:
             # TODO check msg type (Mail?) et tout
-            print("©©© Refresh forced.")
+            logger.warning("©©© Refresh forced.")
         try:
             fetched = fetch_and_parse_feed(feed.url)
         except FetchingException as e:
-            print("Error re-fetching feed", feed.url, e.value)
+            logger.error("Error re-fetching feed %s : %s", feed.url, e.value)
             continue
         except ConnectionError:
-            print("Connection error re-fetching feed", feed.url)
+            logger.error("Connection error re-fetching feed %s", feed.url)
             continue
         feed_dict, real_url = fetched['feed'], fetched['real_url']
         feed = Feed.query.get(feed.id)  # refresh
         if feed.url != real_url:
-            print("©©© Feed url changed from ", feed.url, "to", real_url)
+            logger.warning("©©© Feed url changed from %s to %s", feed.url, real_url)
             feed.url = sanitize_url(real_url)
-        print("©©© Updated feed:", feed.url)
+        logger.info("©©© Updated feed: %s", feed.url)
         feed_changed = update_feed(feed, FeedFromDict(feed_dict))
         any_entry_created = any([
             create_or_update_entry(feed.id, EntryFromDict(e, feed.url))

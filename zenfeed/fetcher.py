@@ -8,6 +8,8 @@ from bs4 import BeautifulSoup
 import requests
 import feedparser
 
+from log import logger
+
 class FaviconException(Exception):
     def __init__(self, value):
         self.value = value
@@ -70,9 +72,10 @@ def fetch_and_parse_feed(url, etag=None, last_modified=None):
         if feed_parsed.status not in (200, 301, 302):
             raise FetchingException("status_code is %d" % feed_parsed.status)
     if feed_parsed.status == 302:  # moved permanently
+        logger.warning("/!\\ permanent redirect (302) for %s", url)
         url = feed_parsed.href
     elif feed_parsed.status == 301:
-        print("/!\\ temporary redirect (301) for ", url)
+        logger.warning("/!\\ temporary redirect (301) for %s", url)
     return {"feed": feed_parsed, "real_url": url}
 
 
