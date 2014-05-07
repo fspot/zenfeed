@@ -44,25 +44,29 @@ def deadline_worker(feed, inbox):
             msg = None # timeout -> refresh !
         if msg is not None:
             # TODO check msg type (Mail?) et tout
-            #db.session.refresh(obj1) ?
             print("©©© Refresh forced.")
         try:
-            feed_dict = fetch_and_parse_feed(feed.url)['feed']
+            fetched = fetch_and_parse_feed(feed.url)
         except FetchingException as e:
             print("Error re-fetching feed", feed.url, e.value)
             continue
         except ConnectionError:
             print("Connection error re-fetching feed", feed.url)
             continue
+        feed_dict, real_url = fetched['feed'], fetched['real_url']
+        feed = Feed.query.get(feed.id)  # refresh
+        if feed.url != real_url:
+            print("©©© Feed url changed from ", feed.url, "to", real_url)
+            feed.url = sanitize_url(real_url)
         print("©©© Updated feed:", feed.url)
         feed_changed = update_feed(feed, FeedFromDict(feed_dict))
-        any_entry_changed = any([
-            create_or_update_entry(feed, EntryFromDict(e, feed.url))
+        any_entry_created = any([
+            create_or_update_entry(feed.id, EntryFromDict(e, feed.url))
             for e in feed_dict['entries']
         ])
         db.session.commit()
 
-        if any_entry_changed:
+        if any_entry_created:
             most_recent_entry = feed.entries.order_by(Entry.updated.desc()).first()
             feed.updated = most_recent_entry.updated
             feed.has_news = True

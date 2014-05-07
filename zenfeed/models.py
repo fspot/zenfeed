@@ -124,7 +124,7 @@ def update_feed(feed, new_feed):
     assert isinstance(feed, Feed)
     assert isinstance(new_feed, Feed)
     fields = ['title', 'link', 'subtitle', 'author', 'generator',
-              'encoding', 'entries_hash'] # no 'updated' field any more
+              'encoding',] # no more ['updated', 'entries_hash'] fields
 
     changed = any([_update_attr(f, feed, new_feed) for f in fields])
     if changed:
@@ -132,24 +132,26 @@ def update_feed(feed, new_feed):
     return changed
 
 
-def create_or_update_entry(feed, new_entry):
-    """ Return True if the entry is new or updated.
+def create_or_update_entry(feed_id, new_entry):
+    """ Return True if the entry is new.
         When updated, I assume the 'updated' field has changed.
         (I don't force this behaviour). """
-    assert isinstance(feed, Feed)
+    # assert isinstance(feed, Feed)
     assert isinstance(new_entry, Entry)
     fields = ['url', 'link', 'title', 'content', 'mimetype',
               'created', 'updated']
 
-    entry = Entry.query.filter_by(feed_id=feed.id, url=new_entry.url).first()
+    entry = Entry.query.filter_by(feed_id=feed_id, url=new_entry.url).first()
     if entry is None: # create
-        new_entry.feed = feed
+        new_entry.feed_id = feed_id
         print("→→ new entry:", new_entry.title)
         db.session.merge(new_entry)
         return True
     else: # update
-        changed = any([_update_attr(f, entry, new_entry) for f in fields])
+        changed_fields = [_update_attr(f, entry, new_entry) for f in fields]
+        changed_fields_strings = [s for s,b in zip(fields, changed_fields) if b]
+        changed = any(changed_fields)
         if changed:
-            print("→→ changed entry:", entry.title)
+            print("→→ changed entry:", entry.title, repr(changed_fields_strings))
             db.session.merge(entry)
-        return changed
+        return False

@@ -55,20 +55,24 @@ def fetch_and_parse_feed(url, etag=None, last_modified=None):
     # TODO implement etag & last_modified header
     url = sanitize_url(url)
     feed_parsed = feedparser.parse(url)
-    if feed_parsed.status != 200:
+    if feed_parsed.status not in (200, 301, 302):
         raise FetchingException("status_code is %d" % feed_parsed.status)
     if feed_parsed.version == '':
         # it's probably html instead of rss/atom
         resp = fetch_url(url)
-        if resp.status_code != 200:
+        if resp.status_code not in (200, 301, 302):
             raise FetchingException("status_code is %d" % resp.status_code)
         soup = BeautifulSoup(resp.content)
         url = soup.find_all("link", rel="alternate")[0]['href']
         if not url.startswith("http"):
             url = concat_urls(resp.url, url)
         feed_parsed = feedparser.parse(url)
-        if feed_parsed.status != 200:
+        if feed_parsed.status not in (200, 301, 302):
             raise FetchingException("status_code is %d" % feed_parsed.status)
+    if feed_parsed.status == 302:  # moved permanently
+        url = feed_parsed.href
+    elif feed_parsed.status == 301:
+        print("/!\\ temporary redirect (301) for ", url)
     return {"feed": feed_parsed, "real_url": url}
 
 
