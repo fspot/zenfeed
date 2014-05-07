@@ -4,6 +4,7 @@
 from __future__ import unicode_literals, print_function
 from flask import render_template, send_from_directory
 from gevent.queue import Queue
+import arrow
 
 from actor import Mail
 from app import app
@@ -41,3 +42,9 @@ def add_feed(url):
     feed = inbox.get()
     raise Exception("Be zen !")
     return "poulpe"
+
+# Jinja :
+@app.template_filter('humanize_date')
+def _jinja2_humanize_datetime(date, locale):
+    if date is not None:
+        return arrow.Arrow.fromdatetime(date).humanize(locale=locale)

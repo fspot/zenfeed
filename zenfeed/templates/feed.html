@@ -30,7 +30,7 @@
 			</div>
 
 			<div class="pure-u-3-24 time-ago">
-				{{ entry.date().to('local').humanize(locale='fr') }}
+				{{ entry.updated | humanize_date('fr') }}
 			</div>
 		</div>
 	{% endfor %}
