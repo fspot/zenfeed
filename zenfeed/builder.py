@@ -85,7 +85,7 @@ def normalize_entry_dict(dico, feed_url):
     return norm
 
 
-def FeedFromDict(dico):
+def FeedFromDict(dico, config):
     dico = normalize_feed_dict(dico)
     feed = Feed(dico['url'])
     feed.title = dico['title']
@@ -96,9 +96,9 @@ def FeedFromDict(dico):
     feed.encoding = dico['encoding']
     feed.updated = dico['updated']
     feed.entries_hash = dico['entries_hash']
-    feed.refresh_interval = 60
-    feed.max_entries = 1000
-    feed.highlight_news = False
+    feed.refresh_interval = config.default_refresh_interval
+    feed.max_entries = config.default_max_entries
+    feed.highlight_news = config.default_highlight_news
     feed.has_news = False
     return feed
 

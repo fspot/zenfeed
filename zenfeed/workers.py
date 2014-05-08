@@ -9,7 +9,7 @@ from requests.exceptions import ConnectionError
 from builder import FeedFromDict, EntryFromDict
 from fetcher import fetch_and_parse_feed, sanitize_url
 from log import logger
-from models import db, Feed, Entry, update_feed, create_or_update_entry
+from models import db, Feed, Entry, Config, update_feed, create_or_update_entry
 from fetcher import save_favicon, fetch_favicon, FetchingException
 
 
@@ -20,7 +20,7 @@ def new_feed_worker(url, favicon_dir, answer_box, manager_box):
     except FetchingException:
         return answer_box.put(Exception("Error with feed: " + url))
 
-    feed = FeedFromDict(feed_dict)
+    feed = FeedFromDict(feed_dict, Config.get())
     feed.url = sanitize_url(real_url) # set the real feed url
     feed.favicon_path = save_favicon(fetch_favicon(feed.url), favicon_dir)
     db.session.add(feed)
@@ -60,7 +60,7 @@ def deadline_worker(feed, inbox):
             logger.warning("©©© Feed url changed from %s to %s", feed.url, real_url)
             feed.url = sanitize_url(real_url)
         logger.info("©©© Updated feed: %s", feed.url)
-        feed_changed = update_feed(feed, FeedFromDict(feed_dict))
+        feed_changed = update_feed(feed, FeedFromDict(feed_dict, Config.get()))
         any_entry_created = any([
             create_or_update_entry(feed.id, EntryFromDict(e, feed.url))
             for e in feed_dict['entries']
@@ -70,6 +70,6 @@ def deadline_worker(feed, inbox):
         if any_entry_created:
             most_recent_entry = feed.entries.order_by(Entry.updated.desc()).first()
             feed.updated = most_recent_entry.updated
-            feed.has_news = True
+            feed.has_news = feed.has_news or feed.highlight_news
             db.session.merge(feed)
             db.session.commit()
