@@ -2,14 +2,27 @@
 # -*- coding:utf-8 -*-
 
 from __future__ import unicode_literals, print_function
-from flask import render_template, send_from_directory
+from functools import wraps
+from hashlib import sha256
+from flask import (render_template, send_from_directory, request,
+                   redirect, url_for, session)
 from gevent.queue import Queue
 import arrow
 
 from actor import Mail
 from app import app
-from models import db, Tag, Feed, Entry
+from models import db, Tag, Feed, Entry, Config
 from deadline_manager import deadlineManager
+
+
+def need_root(vue):
+    @wraps(vue)
+    def decorated(*args, **kwargs):
+        if not Config.validate_password(session.get('pw')):
+            return redirect(url_for('login', next=request.path))
+        return vue(*args, **kwargs)
+    return decorated
+
 
 @app.route('/')
 def index():
@@ -42,6 +55,25 @@ def add_feed(url):
     feed = inbox.get()
     raise Exception("Be zen !")
     return "poulpe"
+
+@app.route('/login/', methods=['GET', 'POST'])
+def login():
+    next_page = request.args.get('next') or url_for('index')
+    if request.method == 'POST':
+        session['pw'] = Config.hash(request.form['pw'])
+        return redirect(next_page)
+    return render_template('login.html', next_page=next_page)
+
+@app.route('/logout/')
+def logout():
+    next_page = request.args.get('next') or url_for('index')
+    session.pop('pw', None)
+    return redirect(next_page)
+
+@app.route('/admin/')
+@need_root
+def admin_index():
+    return render_template('admin.html')
 
 # Jinja :
 @app.template_filter('humanize_date')

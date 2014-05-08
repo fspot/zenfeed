@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+	<div class="header">
+    <h1>Zenfeed.</h1>
+	</div>
+
+	<div class="content">
+		<form id="login-form" method="post" action="{{ url_for('login', next=next_page) }}">
+			<input type="password" name="pw" autofocus />
+			<input type="submit" value="Log in" />
+		</form>
+	</div>
+
+{% endblock %}
+{% block js %}{% endblock %}

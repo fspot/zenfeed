@@ -78,6 +78,34 @@ a:focus {
 #feeds a, #entries a, .bandeau a { text-decoration: none; }
 #entries .grid-row a:visited { color: #A38B58; }
 
+/* login form */
+
+#login-form {
+    margin-top: 50px;
+    text-align: center;
+}
+
+#login-form input[type="submit"],
+#login-form input[type="password"] {
+    height: 50px;
+    font-size: 1em;
+}
+
+#login-form input[type="submit"] {
+    background-color: #EAC643;
+    border: 1px solid #EFD05F;
+    border-bottom: 3px solid #C8A529;
+    border-radius: 7px;
+    padding: 0px 20px;
+    cursor: pointer;
+}
+
+#login-form input[type="password"] {
+    border: 1px solid #E6C247;
+    padding-left: 10px;
+    border-radius: 4px;
+}
+
 /* code stuff */
 
 pre {

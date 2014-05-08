@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 
 from __future__ import unicode_literals, print_function
+from hashlib import sha256
 from flask.ext.sqlalchemy import SQLAlchemy
 
 from app import app
@@ -12,6 +13,19 @@ db = SQLAlchemy(app)
 
 def setup_tables():
     db.create_all()
+    if Config.get() is None:
+        print("Creating instance...")
+        Config.query.delete()
+        c = Config(
+            login="zenfeed",
+            password=Config.hash("zenfeed"),
+            default_refresh_interval=3600,
+            default_max_entries=1000,
+            default_highlight_news=True,
+        )
+        db.session.add(c)
+        db.session.commit()
+        Config.refresh_instance()
     db.engine.echo = app.config['SQL_DEBUG']
 
 
@@ -93,9 +107,26 @@ class Config(db.Model):
     default_max_entries = db.Column(db.Integer)
     default_highlight_news = db.Column(db.Boolean)
 
-    def __init__(self, login, password):
-        self.login = login
-        self.password = password
+    instance = None
+    salt = "saltpepperandcurry"
+
+    @staticmethod
+    def get():
+        if Config.instance is None:
+            Config.refresh_instance()
+        return Config.instance
+
+    @staticmethod
+    def refresh_instance():
+        Config.instance = Config.query.get(1)
+
+    @staticmethod
+    def validate_password(pw):
+        return Config.get().password == pw
+
+    @staticmethod
+    def hash(pw):
+        return sha256(pw + Config.salt).hexdigest()
 
     def __repr__(self):
         return u'<Config of %r>' % self.login
