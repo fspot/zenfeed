@@ -14,7 +14,7 @@ db = SQLAlchemy(app)
 def setup_tables():
     db.create_all()
     if Config.get() is None:
-        print("Creating instance...")
+        logger.info("Creating Config single instance")
         Config.query.delete()
         c = Config(
             login="zenfeed",
