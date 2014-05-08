@@ -83,7 +83,7 @@ def main():
     deadlineManager.start()
 
     if args['--debug']:
-        logger.info("Server started in DEBUG mode at port %d", (port,))
+        logger.info("Server started in DEBUG mode at port %d", port)
         app.run(host='0.0.0.0', port=port, debug=True)
     else:
         logger.info("Server started in PRODUCTION mode at port %d", port)
