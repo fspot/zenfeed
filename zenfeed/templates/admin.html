@@ -1,1 +1,15 @@
-<h1>Angular here ! (soon)</h1>
+{% extends "base.html" %}
+
+{% block title %}Zenfeed − Administration.{% endblock %}
+
+{% block body %}
+<div ng-app="zenfeed">
+	<div ng-view></div>
+</div>
+{% endblock %}
+
+{% block js %}
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/angular.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/angular-route.min.js"></script>
+	<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}

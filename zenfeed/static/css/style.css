@@ -78,20 +78,28 @@ a:focus {
 #feeds a, #entries a, .bandeau a { text-decoration: none; }
 #entries .grid-row a:visited { color: #A38B58; }
 
-/* login form */
+a.menu-selected { color: #586E75; text-decoration: underline; }
+
+/* forms */
 
 #login-form {
     margin-top: 50px;
     text-align: center;
 }
 
-#login-form input[type="submit"],
-#login-form input[type="password"] {
-    height: 50px;
+.zenform input[type="submit"],
+.zenform input[type="button"],
+.zenform input[type="text"],
+.zenform input[type="number"],
+.zenform input[type="password"] {
+    box-sizing: border-box;
+    color: #516065;
+    height: 40px;
     font-size: 1em;
 }
 
-#login-form input[type="submit"] {
+.zenform input[type="button"],
+.zenform input[type="submit"] {
     background-color: #EAC643;
     border: 1px solid #EFD05F;
     border-bottom: 3px solid #C8A529;
@@ -100,10 +108,47 @@ a:focus {
     cursor: pointer;
 }
 
-#login-form input[type="password"] {
+.zenform input[type="button"]:hover,
+.zenform input[type="submit"]:hover {
+    opacity: 0.8;
+}
+
+.zenform input[type="button"].button-grey {
+    background-color: #D9D3C0;
+    border-color: #E9E4D3;
+    border-bottom-color: #B5AD96;
+}
+
+.zenform input[type="number"],
+.zenform input[type="text"],
+.zenform input[type="password"] {
     border: 1px solid #E6C247;
     padding-left: 10px;
     border-radius: 4px;
+}
+
+.zenform-spaced label {
+    display: inline-block;
+    cursor: pointer;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+.zenform-spaced input[type="number"],
+.zenform-spaced input[type="text"],
+.zenform-spaced input[type="checkbox"],
+.zenform-spaced input[type="password"] {
+    display: block;
+    margin-left: 20px;
+}
+
+.input-details { color: #E55838; }
+@media (min-width:768px) {
+    .input-details {
+        float: right;
+        position: relative;
+        top: -40px; /* height of an input field */
+    }
 }
 
 /* code stuff */

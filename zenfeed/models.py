@@ -4,6 +4,7 @@
 from __future__ import unicode_literals, print_function
 from hashlib import sha256
 from flask.ext.sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import class_mapper, ColumnProperty
 
 from app import app
 from log import logger
@@ -35,7 +36,21 @@ tags = db.Table('tags',
 )
 
 
-class Tag(db.Model):
+class Base(object):
+    @classmethod
+    def fields_set(cls, exclude_fields=None):
+        exclude_fields = exclude_fields or []
+        my_fields = [prop.key for prop in class_mapper(cls).iterate_properties
+                     if isinstance(prop, ColumnProperty)]
+        return set(my_fields) - set(exclude_fields)
+
+    def to_dict(self, exclude_fields=None):
+        fields = self.fields_set(exclude_fields)
+        return dict((field, getattr(self, field)) for field in fields)
+
+
+
+class Tag(db.Model, Base):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
 
@@ -46,7 +61,7 @@ class Tag(db.Model):
         return u'<Tag %r>' % self.name
 
 
-class Feed(db.Model):
+class Feed(db.Model, Base):
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String, nullable=False, unique=True)
     entries = db.relationship('Entry', backref='feed', lazy='dynamic')
@@ -77,7 +92,7 @@ class Feed(db.Model):
         return self.entries.order_by(Entry.updated.desc()).first()
 
 
-class Entry(db.Model):
+class Entry(db.Model, Base):
     id = db.Column(db.Integer, primary_key=True)
     feed_id = db.Column(db.Integer, db.ForeignKey('feed.id'))
 
@@ -98,7 +113,7 @@ class Entry(db.Model):
         return u'<Entry %r>' % self.title
 
 
-class Config(db.Model):
+class Config(db.Model, Base):
     id = db.Column(db.Integer, primary_key=True)
     login = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String, nullable=False, unique=True)
@@ -123,6 +138,11 @@ class Config(db.Model):
     @staticmethod
     def validate_password(pw):
         return Config.get().password == pw
+
+    @staticmethod
+    def change_password(pw):
+        logger.warning("Password changed !")
+        Config.get().password = Config.hash(pw)
 
     @staticmethod
     def hash(pw):

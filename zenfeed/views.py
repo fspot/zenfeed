@@ -5,7 +5,7 @@ from __future__ import unicode_literals, print_function
 from functools import wraps
 from hashlib import sha256
 from flask import (render_template, send_from_directory, request,
-                   redirect, url_for, session)
+                   redirect, url_for, session, jsonify)
 from gevent.queue import Queue
 import arrow
 
@@ -23,6 +23,7 @@ def need_root(vue):
         return vue(*args, **kwargs)
     return decorated
 
+# main site routes :
 
 @app.route('/')
 def index():
@@ -56,6 +57,8 @@ def add_feed(url):
     raise Exception("Be zen !")
     return "poulpe"
 
+# login / logout :
+
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
     next_page = request.args.get('next') or url_for('index')
@@ -70,12 +73,40 @@ def logout():
     session.pop('pw', None)
     return redirect(next_page)
 
+# admin and api :
+
 @app.route('/admin/')
 @need_root
 def admin_index():
     return render_template('admin.html')
 
-# Jinja :
+@app.route('/admin/<filename>.html')
+@need_root
+def admin_view(filename):
+    return redirect(app.static_url_path + '/html/' + filename + '.html')
+
+@app.route('/api/config/', methods=['GET', 'POST'])
+@need_root
+def api_config():
+    config = Config.get()
+    if request.method == 'POST':
+        # update all fields, no checks (TODO)
+        config_fields = config.fields_set(exclude_fields=['id', 'password'])
+        fields = config_fields & set(request.json.keys())
+        for field in fields:
+            setattr(config, field, request.json[field])
+        # change password if the field isnt empty
+        pw = request.json.get('pw')
+        if pw:
+            Config.change_password(pw)
+        db.session.merge(config)
+        db.session.commit()
+        Config.refresh_instance()  # unnecessary ?
+        return jsonify({'msg': 'Success !'})
+    return jsonify(config.to_dict(exclude_fields=['password', 'id']))
+
+# Jinja
+
 @app.template_filter('humanize_date')
 def _jinja2_humanize_datetime(date, locale):
     if date is not None:

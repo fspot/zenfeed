@@ -1,0 +1,23 @@
+<div class="header">
+	<h1>Feed</h1>
+</div>
+
+<div class="content">
+	<div class="pure-g bandeau">
+		<div class="pure-u-8-24"><a href="#/config">Settings</a></div>
+		<div class="pure-u-8-24"><a href="#/feed" class="menu-selected">Feeds</a></div>
+		<div class="pure-u-8-24"><a href="/logout/">Log out</a></div>
+	</div>
+
+	<div ng-controller="FeedCtrl">
+		<ul>
+			<li ng-repeat="feed in feeds">
+				<p>{{feed.text}}</p>
+			</li>
+		</ul>
+		<form ng-submit="addFeed()">
+			<input type="text" ng-model="feedText" size="30" />
+			<input type="submit" value="add" />
+		</form>
+	</div>
+</div>

@@ -7,8 +7,8 @@
 	</div>
 
 	<div class="content">
-		<form id="login-form" method="post" action="{{ url_for('login', next=next_page) }}">
-			<input type="password" name="pw" autofocus />
+		<form id="login-form" class="zenform" method="post" action="{{ url_for('login', next=next_page) }}">
+			<input type="password" name="pw" size="30" placeholder="Your password" autofocus />
 			<input type="submit" value="Log in" />
 		</form>
 	</div>
