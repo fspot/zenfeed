@@ -2,7 +2,7 @@
 
 all:
 	mkdir -p favicons
-	python zenfeed/start.py -d zenfeed.db -f favicons/
+	python zenfeed/start.py -d zenfeed.db -f favicons/ --lang fr
 
 babel-extract:
 	pybabel extract -F babel.cfg -o babel.pot zenfeed
