@@ -21,6 +21,10 @@ test-all:
 test-parsing:
 	python -m unittest test.test_feedparser.TestFeedParsing
 
+python3setup:
+	pip install Cython==0.20.1
+	pip install -r requirements_py3.txt
+
 clean:
 	rm -rf *.pyc zenfeed/*.pyc test/*.pyc build/ dist/ zenfeed.egg-info/
 
