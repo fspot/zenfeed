@@ -33,7 +33,7 @@ def normalize_feed_dict(dico):
     structTime = f.get('updated_parsed')
     try:
         norm['updated'] = datetime.datetime(*structTime[:6])
-    except TypeError, ValueError:
+    except (TypeError, ValueError) as err:
         norm['updated'] = None
     norm['entries_hash'] = id(e) # TODO hash
     return norm
@@ -62,21 +62,21 @@ def normalize_entry_dict(dico, feed_url):
     if norm['content'] is None:
         try:
             norm['content'] = dico['content'][0]['value']
-        except KeyError, IndexError:
+        except (KeyError, IndexError) as err:
             norm['content'] = dico.get('summary')
     try:
         norm['mimetype'] = dico['content'][0]['type']
-    except KeyError, IndexError:
+    except (KeyError, IndexError) as err:
         norm['mimetype'] = None
     structTime = dico.get('published_parsed')
     try:
         norm['created'] = datetime.datetime(*structTime[:6])
-    except TypeError, ValueError:
+    except (TypeError, ValueError) as err:
         norm['created'] = None
     structTime = dico.get('updated_parsed')
     try:
         norm['updated'] = datetime.datetime(*structTime[:6])
-    except TypeError, ValueError:
+    except (TypeError, ValueError) as err:
         norm['updated'] = None
     if norm['created'] is None and norm['updated'] is not None:
         norm['created'] = norm['updated']

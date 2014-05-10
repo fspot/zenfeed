@@ -29,7 +29,7 @@ Options:
 
 """
 
-from __future__ import unicode_literals, print_function
+from __future__ import unicode_literals, print_function#, absolute_import
 from docopt import docopt
 from path import path
 import logging
@@ -37,15 +37,21 @@ import logging
 # avoid side effects with imports…
 import gevent
 from gevent.monkey import patch_socket, patch_ssl
-import zenfeed
+
 from log import setup_logger, logger
-from settings import LANGUAGES
+from settings import LANGUAGES, VERSION
+try:
+    import zenfeed
+except ImportError:
+    class Obj: pass
+    zenfeed = Obj()
+    zenfeed.__path__ = ['./']
 
 def genstatic(dst):
     path.copytree(path(zenfeed.__path__[0]) / 'static', dst)
 
 def main():
-    args = docopt(__doc__, version='zenfeed ' + zenfeed.__version__)
+    args = docopt(__doc__, version='zenfeed ' + VERSION)
 
     log_arg, log_level = args['--log'].rsplit(':', 1)
     if log_arg not in ('stderr', 'syslog'):
@@ -54,7 +60,7 @@ def main():
     else:
         setup_logger(type=log_arg, level=log_level)
 
-    logger.info('Zenfeed %s booting...', zenfeed.__version__)
+    logger.info('Zenfeed %s booting...', VERSION)
 
     if args['genstatic']:
         return genstatic(args['PATH'])
