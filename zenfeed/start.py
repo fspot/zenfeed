@@ -54,6 +54,8 @@ def main():
     else:
         setup_logger(type=log_arg, level=log_level)
 
+    logger.info('Zenfeed %s booting...', zenfeed.__version__)
+
     if args['genstatic']:
         return genstatic(args['PATH'])
 
