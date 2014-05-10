@@ -14,6 +14,7 @@ from fetcher import save_favicon, fetch_favicon, FetchingException
 
 
 def new_feed_worker(url, favicon_dir, answer_box, manager_box):
+    logger.info("Fetching feed... [%s]", url)
     try:
         fetched = fetch_and_parse_feed(url)
         feed_dict, real_url = fetched['feed'], fetched['real_url']
@@ -22,6 +23,7 @@ def new_feed_worker(url, favicon_dir, answer_box, manager_box):
 
     feed = FeedFromDict(feed_dict, Config.get())
     feed.url = sanitize_url(real_url) # set the real feed url
+    logger.info("Fetching favicon... [%s]", feed.url)
     feed.favicon_path = save_favicon(fetch_favicon(feed.url), favicon_dir)
     db.session.add(feed)
     for e in feed_dict['entries'][::-1]:

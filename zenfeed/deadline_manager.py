@@ -45,6 +45,7 @@ class DeadlineManager(Actor):
             gevent.spawn(new_feed_worker, message['url'],
                          self.favicon_dir, answer_box, self.inbox)
         elif msg_type == "new-deadline-worker":
+            logger.warning('>>> new-deadline-worker request : %d', message['feed_id'])
             feed = Feed.query.get(message['feed_id'])
             self.launch_deadline_worker(feed)
         elif msg_type == "force-refresh-feed":
