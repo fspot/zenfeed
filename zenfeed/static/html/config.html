@@ -1,35 +1,35 @@
 <div class="header">
-	<h1>General and default settings</h1>
+	<h1>{{ 'CONFIG.TITLE' | translate }}</h1>
 </div>
 
 <div class="content">
 	<div class="pure-g bandeau">
-		<div class="pure-u-8-24"><a href="#/config" class="menu-selected">Settings</a></div>
-		<div class="pure-u-8-24"><a href="#/feed">Feeds</a></div>
-		<div class="pure-u-8-24"><a href="/logout/">Log out</a></div>
+		<div class="pure-u-8-24"><a href="#/config" class="menu-selected">{{ 'MENU.SETTINGS' | translate }}</a></div>
+		<div class="pure-u-8-24"><a href="#/feed">{{ 'MENU.FEEDS' | translate }}</a></div>
+		<div class="pure-u-8-24"><a href="/logout/">{{ 'MENU.LOG_OUT' | translate }}</a></div>
 	</div>
 
 	<div ng-controller="ConfigCtrl">
 		<form class="zenform zenform-spaced" ng-submit="saveConfig()">
-			<label for="config-login">Login</label>
+			<label for="config-login">{{ 'CONFIG.LOGIN' | translate }}</label>
 			<input id="config-login" type="text" ng-model="config.login" />
 
-			<label for="config-password">Password</label>
-			<input id="config-password" type="password" ng-model="config.pw" placeholder="Leave blank for no change." />
-			<div ng-show="config.pw" class="input-details"><i>You will need to log in again after this operation.</i></div>
+			<label for="config-password">{{ 'CONFIG.PASSWORD' | translate }}</label>
+			<input id="config-password" type="password" ng-model="config.pw" placeholder="{{ 'CONFIG.PASSWORD.PLACEHOLDER' | translate }}" />
+			<div ng-show="config.pw" class="input-details"><i>{{ 'CONFIG.PASSWORD.DETAILS' | translate }}</i></div>
 
-			<label for="config-time-interval">Default refresh time interval</label>
+			<label for="config-time-interval">{{ 'CONFIG.TIME_INTERVAL' | translate }}</label>
 			<input id="config-time-interval" type="number" ng-model="config.default_refresh_interval" />
 
-			<label for="config-max-entries">Default maximum entries number</label>
+			<label for="config-max-entries">{{ 'CONFIG.MAXENTRIES' | translate }}</label>
 			<input id="config-max-entries" type="number" ng-model="config.default_max_entries" />
 
-			<label for="config-highlight-news">Highlight updated feeds by default</label>
+			<label for="config-highlight-news">{{ 'CONFIG.HIGHLIGHT' | translate }}</label>
 			<input id="config-highlight-news" type="checkbox" ng-model="config.default_highlight_news" />
 
 			<br />
-			<input type="submit" value="save" />
-			<input type="button" class="button-grey" ng-click="refetch()" value="refetch" />
+			<input type="submit" value="{{ 'CONFIG.SAVE' | translate }}" />
+			<input type="button" class="button-grey" ng-click="refetch()" value="{{ 'CONFIG.REFETCH' | translate }}" />
 		</form>
 	</div>
 </div>

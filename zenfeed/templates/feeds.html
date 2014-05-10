@@ -21,7 +21,7 @@
 				{{ feed.last_entry().title }}
 			</div>
 			<div class="pure-u-3-24 time-ago">
-				{{ feed.updated | humanize_date('fr') }}
+				{{ feed.updated | humanize_date }}
 			</div>
 		</div>
 	{% endfor %}

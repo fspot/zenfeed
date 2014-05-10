@@ -8,8 +8,8 @@
 
 	<div class="content">
 		<form id="login-form" class="zenform" method="post" action="{{ url_for('login', next=next_page) }}">
-			<input type="password" name="pw" size="30" placeholder="Your password" autofocus />
-			<input type="submit" value="Log in" />
+			<input type="password" name="pw" size="25" placeholder="{{ _('Mot de passe') }}" autofocus />
+			<input type="submit" value="{{ _('Se connecter') }}" />
 		</form>
 	</div>
 

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Zenfeed − Administration.{% endblock %}
+{% block title %}Zenfeed − {{ _('Administration') }}.{% endblock %}
 
 {% block body %}
 <div ng-app="zenfeed">
@@ -9,7 +9,8 @@
 {% endblock %}
 
 {% block js %}
-	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/angular.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/angular-route.min.js"></script>
-	<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/angular.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/angular-route.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/bower-angular-translate/2.0.1/angular-translate.min.js"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/admin.js') }}"></script>
 {% endblock %}

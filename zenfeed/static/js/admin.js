@@ -1,4 +1,46 @@
-var app = angular.module('zenfeed', ['ngRoute']);
+var app = angular.module('zenfeed', ['ngRoute', 'pascalprecht.translate']);
+
+app.config(['$translateProvider', function ($translateProvider) {
+    $translateProvider.translations('en', {
+        'MENU.SETTINGS': 'Settings',
+        'MENU.FEEDS': 'Feeds',
+        'MENU.LOG_OUT': 'Log out',
+        'CONFIG.TITLE': 'General and default settings',
+        'CONFIG.LOGIN': 'Login',
+        'CONFIG.PASSWORD': 'Password',
+        'CONFIG.PASSWORD.PLACEHOLDER': 'Leave blank for no change',
+        'CONFIG.PASSWORD.DETAILS': 'You will need to log in again after this operation.',
+        'CONFIG.TIME_INTERVAL': 'Default refresh time interval',
+        'CONFIG.MAXENTRIES': 'Default maximum entries number',
+        'CONFIG.HIGHLIGHT': 'Highlight updated feeds by default',
+        'CONFIG.SAVE': 'Save',
+        'CONFIG.REFETCH': 'Refetch',
+        'FEED.TITLE': 'Feeds'
+    });
+
+    $translateProvider.translations('fr', {
+        'MENU.SETTINGS': 'Paramètres',
+        'MENU.FEEDS': 'Flux',
+        'MENU.LOG_OUT': 'Se déconnecter',
+        'CONFIG.TITLE': 'Paramètres généraux et par défaut',
+        'CONFIG.LOGIN': 'Identifiant',
+        'CONFIG.PASSWORD': 'Mot de passe',
+        'CONFIG.PASSWORD.PLACEHOLDER': "Laisser vide pour conserver l'ancien",
+        'CONFIG.PASSWORD.DETAILS': 'Une reconnexion sera nécessaire suite à cette opération.',
+        'CONFIG.TIME_INTERVAL': 'Intervalle de rafraîchissement des flux',
+        'CONFIG.MAXENTRIES': "Nombre maximal d'entrées par flux",
+        'CONFIG.HIGHLIGHT': 'Surligner les flux mis à jour',
+        'CONFIG.SAVE': 'Enregistrer',
+        'CONFIG.REFETCH': 'Rafraîchir',
+        'FEED.TITLE': 'Flux'
+    });
+
+
+    var browserLanguage = window.navigator.userLanguage || window.navigator.language || 'en';
+    browserLanguage = browserLanguage.split('-')[0]; // ignore variations like fr-FR, fr-CA..
+    $translateProvider.preferredLanguage(browserLanguage);
+    $translateProvider.fallbackLanguage('en');
+}]);
 
 app.service('Feed', function() {
     this.name = "Anonymous";

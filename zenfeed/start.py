@@ -4,7 +4,7 @@
 """Zen RSS feed reader.
 
 Usage:
-  zenfeed [-d URI -f PATH -p PORT -l LOG --debug]
+  zenfeed [-d URI -f PATH -p PORT --log LOG --lang LANG --debug]
   zenfeed genstatic PATH
   zenfeed -h | --help
   zenfeed -v | --version
@@ -19,10 +19,13 @@ Options:
                       [default: ./]
   -p --port PORT      Specify on which port to listen.
                       [default: 5000]
-  -l --log LOG        Specify where to log messages, and which level to set.
+  --log LOG           Specify where to log messages, and which level to set.
                       Can be "stderr", "syslog", or a filename, followed by the level.
                       [default: stderr:INFO]
-  --debug             Use werkzeug debug WSGI server.
+  --lang LANG         Fix the language instead of let it depend on the browser's value.
+                      The language needs to be supported. E.g: en
+                      [default: browser]
+  --debug             Use werkzeug debug WSGI server. Do not use in production.
 
 """
 
@@ -36,22 +39,35 @@ import gevent
 from gevent.monkey import patch_socket, patch_ssl
 import zenfeed
 from log import setup_logger, logger
+from settings import LANGUAGES
 
 def genstatic(dst):
     path.copytree(path(zenfeed.__path__[0]) / 'static', dst)
 
 def main():
     args = docopt(__doc__, version='zenfeed ' + zenfeed.__version__)
-    if args['genstatic']:
-        return genstatic(args['PATH'])
 
-    port = int(args['--port'])
     log_arg, log_level = args['--log'].rsplit(':', 1)
     if log_arg not in ('stderr', 'syslog'):
         setup_logger(type='file', filename=path(log_arg).abspath(),
                      level=log_level)
     else:
         setup_logger(type=log_arg, level=log_level)
+
+    if args['genstatic']:
+        return genstatic(args['PATH'])
+
+    port = int(args['--port'])
+
+    fixed_language = args['--lang']
+    if fixed_language == 'browser':
+        fixed_language = None
+    else:
+        logger.info('Language fixed to "%s"', fixed_language)
+        if (fixed_language not in LANGUAGES
+            and fixed_language.split('_', 1)[0] not in LANGUAGES):
+            return logger.critical('Fixed language not supported !')
+
     db_uri = args['--database']
     if db_uri == ':memory:':
         db_uri = 'sqlite://'
@@ -65,6 +81,7 @@ def main():
         SECRET_KEY = 'ssshhhh',
         SQLALCHEMY_DATABASE_URI = db_uri,
         FAVICON_DIR = path(args['--favicons']).abspath(),
+        FIXED_LANGUAGE = fixed_language,
     )
 
     from models import setup_tables, Feed

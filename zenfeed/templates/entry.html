@@ -13,14 +13,14 @@
 			</div>
 			<div class="pure-u-8-24">
 				<a href="{{ url_for('feed_view', feed_id=entry.feed_id) }}">
-					← Retour au flux
+					← {{ _('Retour au flux') }}
 				</a>
 			</div>
 			<div class="pure-u-8-24">
-				<a href="{{ entry.link }}" id="article-link">Article</a>
+				<a href="{{ entry.link }}" id="article-link">{{ _('Article') }}</a>
 			</div>
 			<div class="pure-u-7-24">
-				<a href="{{ entry.url }}">(Permalink)</a>
+				<a href="{{ entry.url }}">({{ _('Permalien') }})</a>
 			</div>
 		</div>
 

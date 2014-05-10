@@ -10,9 +10,10 @@ from gevent.queue import Queue
 import arrow
 
 from actor import Mail
-from app import app
+from app import app, babel
 from models import db, Tag, Feed, Entry, Config
 from deadline_manager import deadlineManager
+from settings import LANGUAGES
 
 
 def need_root(vue):
@@ -105,9 +106,17 @@ def api_config():
         return jsonify({'msg': 'Success !'})
     return jsonify(config.to_dict(exclude_fields=['password', 'id']))
 
+# Babel
+
+@babel.localeselector
+def get_locale():
+    return (app.config['FIXED_LANGUAGE'] or
+            request.accept_languages.best_match(LANGUAGES.keys()))
+
 # Jinja
 
 @app.template_filter('humanize_date')
-def _jinja2_humanize_datetime(date, locale):
+def _jinja2_humanize_datetime(date, locale=None):
     if date is not None:
+        locale = locale or get_locale()
         return arrow.Arrow.fromdatetime(date).humanize(locale=locale)
