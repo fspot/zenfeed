@@ -8,6 +8,10 @@ import feedparser
 from path import path
 from zenfeed.builder import normalize_feed_dict, normalize_entry_dict
 
+from sys import version_info as python_version
+if python_version[0] == 3:
+    basestring = (bytes, str)
+
 
 class TestBuilding(unittest.TestCase):
 

@@ -7,7 +7,7 @@ all:
 babel-extract:
 	pybabel extract -F babel.cfg -o babel.pot zenfeed
 
-#babel-init: pybabel init -i messages.pot -d zenfeed/translations -l en
+#babel-init: pybabel init -i babel.pot -d zenfeed/translations -l en
 
 babel-update:
 	pybabel update -i babel.pot -d zenfeed/translations

@@ -7,6 +7,10 @@ import unittest
 import feedparser
 from path import path
 
+from sys import version_info as python_version
+if python_version[0] == 3:
+    basestring = (bytes, str)
+
 class TestFeedParsing(unittest.TestCase):
 
     def setUp(self):
