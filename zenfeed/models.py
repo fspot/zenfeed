@@ -146,7 +146,8 @@ class Config(db.Model, Base):
 
     @staticmethod
     def hash(pw):
-        return sha256(pw + Config.salt).hexdigest()
+        string = (pw + Config.salt).encode('utf-8')
+        return sha256(string).hexdigest()
 
     def __repr__(self):
         return u'<Config of %r>' % self.login

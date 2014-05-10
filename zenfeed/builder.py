@@ -2,10 +2,14 @@
 # -*- coding:utf-8 -*-
 
 from __future__ import unicode_literals, print_function
+
 import datetime
 
 from models import Feed, Entry
 from fetcher import concat_urls
+from sys import version_info as python_version
+if python_version[0] == 3:
+    basestring = (bytes, str)
 
 def normalize_feed_dict(dico):
     """
