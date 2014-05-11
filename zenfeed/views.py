@@ -25,6 +25,21 @@ def need_root(vue):
         return vue(*args, **kwargs)
     return decorated
 
+def refresh_highlighted_feeds(vue):
+    @wraps(vue)
+    def decorated(*args, **kwargs):
+        feed_id = kwargs['feed_id']
+        if not kwargs.get('bot_flag'):
+            feed = Feed.query.get(feed_id)
+            if feed.has_news:
+                feed.has_news = False
+                db.session.commit()
+                deadlineManager.inbox.put(
+                    {'type': 'refresh-cache', 'feed_id': None}
+                )
+        return vue(*args, **kwargs)
+    return decorated
+
 # main site routes :
 
 @app.route('/')
@@ -38,14 +53,19 @@ def get_favicon(favicon):
     return send_from_directory(app.config['FAVICON_DIR'], favicon)
 
 @app.route('/<int:feed_id>/')
+@refresh_highlighted_feeds
 @cache.cached(timeout=86400*365, key_prefix='%s')
-def feed_view(feed_id):
+def feed_view(feed_id, bot_flag=False):
     feed = Feed.query.get(feed_id)
-    if feed.has_news:
-        feed.has_news = False
-        db.session.commit()
     entries = feed.entries.order_by(Entry.updated.desc())
     return render_template('feed.html', feed=feed, entries=entries)
+
+@app.route('/high/')
+def gethigh():
+    feed = Feed.query.get(7) # ploum.net
+    feed.has_news = True
+    db.session.commit()
+    return 'such wow'
 
 @app.route('/<int:feed_id>/<int:entry_id>/')
 def entry_view(feed_id, entry_id):

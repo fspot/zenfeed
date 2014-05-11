@@ -86,4 +86,4 @@ def cache_worker(feed_id):
         app.view_functions['index']()
         if feed_id is not None:
             cache.delete(url_for('feed_view', feed_id=feed_id))
-            app.view_functions['feed_view'](feed_id)
+            app.view_functions['feed_view'](feed_id, bot_flag=True)

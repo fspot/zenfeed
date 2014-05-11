@@ -28,7 +28,7 @@ Options:
   --cache CACHE       Set up cache on index and feed pages. To stop: "--cache null"
                       Cache is refreshed when the corresponding feed changes.
                       [default: simple]
-  --debug             Use werkzeug debug WSGI server. Do not use in production.
+  --debug             Debug mode, do not use.
 
 """
 

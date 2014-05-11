@@ -36,6 +36,7 @@ class DeadlineManager(Actor):
             - force-refresh-feed
             - remove-feed
             - edit-refresh-interval-feed
+            - refresh-cache
         """
 
         assert isinstance(message, dict)
@@ -56,6 +57,8 @@ class DeadlineManager(Actor):
             }) # TODO put Mail instead ?
         elif msg_type == "refresh-cache":
             gevent.spawn(cache_worker, message.get('feed_id'))
+        else:
+            logger.error("Unknown message type : %s", msg_type)
 
 
 deadlineManager = DeadlineManager()
