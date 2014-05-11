@@ -40,6 +40,7 @@ def new_feed_worker(url, favicon_dir, answer_box, manager_box):
 
     answer_box.put(feed)
     manager_box.put({'type': 'new-deadline-worker', 'feed_id': feed.id})
+    manager_box.put({'type': 'refresh-cache', 'feed_id': feed.id})
 
 def deadline_worker(feed, inbox, manager_box):
     while True:
