@@ -8,7 +8,7 @@ from gevent.queue import Queue
 from actor import Actor
 from log import logger
 from models import Feed
-from workers import new_feed_worker, deadline_worker
+from workers import new_feed_worker, deadline_worker, cache_worker
 
 class DeadlineManager(Actor):
     def __init__(self):
@@ -18,7 +18,7 @@ class DeadlineManager(Actor):
     def launch_deadline_worker(self, feed):
         assert self.workers.get(feed.id) is None
         inbox = Queue()
-        w = gevent.spawn(deadline_worker, feed, inbox)
+        w = gevent.spawn(deadline_worker, feed, inbox, self.inbox)
         self.workers[feed.id] = {
             'feed': feed,
             'worker': w,
@@ -54,6 +54,8 @@ class DeadlineManager(Actor):
                 'type': 'force-refresh',
                 'answer_box': answer_box,
             }) # TODO put Mail instead ?
+        elif msg_type == "refresh-cache":
+            gevent.spawn(cache_worker, message.get('feed_id'))
 
 
 deadlineManager = DeadlineManager()

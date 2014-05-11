@@ -9,3 +9,7 @@ LANGUAGES = {
     'es': 'Español',
     'fr': 'Français',
 }
+
+CACHE_CONFIG = {
+	'CACHE_TYPE': 'simple',
+}

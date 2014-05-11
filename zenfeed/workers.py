@@ -7,10 +7,12 @@ from gevent.queue import Empty
 from requests.exceptions import ConnectionError
 
 from builder import FeedFromDict, EntryFromDict
-from fetcher import fetch_and_parse_feed, sanitize_url
+from fetcher import (fetch_and_parse_feed, sanitize_url,
+                     save_favicon, fetch_favicon, FetchingException)
 from log import logger
+from app import app, cache
+from flask import url_for
 from models import db, Feed, Entry, Config, update_feed, create_or_update_entry
-from fetcher import save_favicon, fetch_favicon, FetchingException
 
 
 def new_feed_worker(url, favicon_dir, answer_box, manager_box):
@@ -39,7 +41,7 @@ def new_feed_worker(url, favicon_dir, answer_box, manager_box):
     answer_box.put(feed)
     manager_box.put({'type': 'new-deadline-worker', 'feed_id': feed.id})
 
-def deadline_worker(feed, inbox):
+def deadline_worker(feed, inbox, manager_box):
     while True:
         try:
             msg = inbox.get(timeout=feed.refresh_interval)
@@ -75,3 +77,12 @@ def deadline_worker(feed, inbox):
             feed.has_news = feed.has_news or feed.highlight_news
             db.session.merge(feed)
             db.session.commit()
+            manager_box.put({'type': 'refresh-cache', 'feed_id': feed.id})
+
+def cache_worker(feed_id):
+    with app.test_request_context('/'):
+        cache.delete(url_for('index'))
+        app.view_functions['index']()
+        if feed_id is not None:
+            cache.delete(url_for('feed_view', feed_id=feed_id))
+            app.view_functions['feed_view'](feed_id)

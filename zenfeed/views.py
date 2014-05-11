@@ -2,15 +2,16 @@
 # -*- coding:utf-8 -*-
 
 from __future__ import unicode_literals, print_function
+from datetime import datetime
 from functools import wraps
 from hashlib import sha256
 from flask import (render_template, send_from_directory, request,
                    redirect, url_for, session, jsonify)
 from gevent.queue import Queue
-import arrow
+from flask.ext.babel import format_datetime
 
 from actor import Mail
-from app import app, babel
+from app import app, babel, cache
 from models import db, Tag, Feed, Entry, Config
 from deadline_manager import deadlineManager
 from settings import LANGUAGES
@@ -27,6 +28,7 @@ def need_root(vue):
 # main site routes :
 
 @app.route('/')
+@cache.cached(timeout=86400*365, key_prefix='%s')
 def index():
     feeds = Feed.query.order_by(Feed.updated.desc())
     return render_template('feeds.html', feeds=feeds)
@@ -36,6 +38,7 @@ def get_favicon(favicon):
     return send_from_directory(app.config['FAVICON_DIR'], favicon)
 
 @app.route('/<int:feed_id>/')
+@cache.cached(timeout=86400*365, key_prefix='%s')
 def feed_view(feed_id):
     feed = Feed.query.get(feed_id)
     if feed.has_news:
@@ -118,5 +121,7 @@ def get_locale():
 @app.template_filter('humanize_date')
 def _jinja2_humanize_datetime(date, locale=None):
     if date is not None:
-        locale = locale or get_locale()
-        return arrow.Arrow.fromdatetime(date).humanize(locale=locale)
+        fmt = "d/MM, H':'mm"
+        if datetime.now().year != date.year:
+            fmt = "d/MM/yyyy"
+        return format_datetime(date, fmt)

@@ -4,7 +4,7 @@
 """Zen RSS feed reader.
 
 Usage:
-  zenfeed [-d URI -f PATH -p PORT --log LOG --lang LANG --debug]
+  zenfeed [-d URI -f PATH -p PORT --log LOG --lang LANG --cache CACHE --debug]
   zenfeed genstatic PATH
   zenfeed -h | --help
   zenfeed -v | --version
@@ -25,6 +25,9 @@ Options:
   --lang LANG         Fix the language instead of let it depend on the browser's value.
                       The language needs to be supported. E.g: en
                       [default: browser]
+  --cache CACHE       Set up cache on index and feed pages. To stop: "--cache null"
+                      Cache is refreshed when the corresponding feed changes.
+                      [default: simple]
   --debug             Use werkzeug debug WSGI server. Do not use in production.
 
 """
@@ -67,6 +70,10 @@ def main():
 
     port = int(args['--port'])
 
+    cache_type = args['--cache']
+    if cache_type not in ('simple', 'null'):
+        return logger.critical('Cache must be "simple" or "null".')
+
     fixed_language = args['--lang']
     if fixed_language == 'browser':
         fixed_language = None
@@ -82,7 +89,7 @@ def main():
     elif not "://" in db_uri:
         db_uri = 'sqlite:///%s' % path(db_uri).abspath()
 
-    from app import app
+    from app import app, cache
     app.config.update(
         DEBUG = args['--debug'],
         SQL_DEBUG = False,
@@ -91,6 +98,7 @@ def main():
         FAVICON_DIR = path(args['--favicons']).abspath(),
         FIXED_LANGUAGE = fixed_language,
     )
+    cache.init_app(app, config={'CACHE_TYPE': cache_type})
 
     from models import setup_tables, Feed
     patch_socket()
