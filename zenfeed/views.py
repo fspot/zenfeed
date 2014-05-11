@@ -60,13 +60,6 @@ def feed_view(feed_id, bot_flag=False):
     entries = feed.entries.order_by(Entry.updated.desc())
     return render_template('feed.html', feed=feed, entries=entries)
 
-@app.route('/high/')
-def gethigh():
-    feed = Feed.query.get(7) # ploum.net
-    feed.has_news = True
-    db.session.commit()
-    return 'such wow'
-
 @app.route('/<int:feed_id>/<int:entry_id>/')
 def entry_view(feed_id, entry_id):
     entry = Entry.query.get(entry_id)
