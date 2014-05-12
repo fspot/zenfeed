@@ -1,8 +1,8 @@
 <div class="header">
-	<h1>{{ 'FEED.TITLE' | translate }}</h1>
+	<h1>{{ 'FEEDS.TITLE' | translate }}</h1>
 </div>
 
-<div class="content">
+<div id="feeds" class="content">
 	<div class="pure-g bandeau">
 		<div class="pure-u-8-24"><a href="#/config">{{ 'MENU.SETTINGS' | translate }}</a></div>
 		<div class="pure-u-8-24"><a href="#/feed" class="menu-selected">{{ 'MENU.FEEDS' | translate }}</a></div>
@@ -10,14 +10,30 @@
 	</div>
 
 	<div ng-controller="FeedCtrl">
-		<ul>
-			<li ng-repeat="feed in feeds">
-				<p>{{feed.text}}</p>
-			</li>
-		</ul>
-		<form ng-submit="addFeed()">
-			<input type="text" ng-model="feedText" size="30" />
-			<input type="submit" value="add" />
+		<form class="zenform centered">
+			<input type="button" value="{{ 'FEEDS.NEW' | translate }}" />
+			<input type="button" class="button-grey" value="{{ 'FEEDS.IMPORT' | translate }}" />
+			<input type="button" class="button-grey" value="{{ 'FEEDS.EXPORT' | translate }}" />
 		</form>
+
+		<div ng-repeat="feed in feeds" class="grid-row pure-g-r">
+			<div class="pure-u-1-24">
+				<img height="24px" width="24px" src="{{ feed.favicon_url }}" alt="[icon]" />
+			</div>
+			<div class="pure-u-2-24 entry-title">
+				<div class="tag">{{ feed.nb_of_entries }}</div>
+			</div>
+			<div class="pure-u-18-24">
+				{{ feed.title }}
+			</div>
+			<div class="pure-u-1-24 entry-title"><a href="#/feed/edit/{{ feed.id }}">⚙</a></div>
+			<div class="pure-u-1-24 entry-title"><a href="">×</a></div>
+			<div class="pure-u-1-24 entry-title"><a href="">+</a></div>
+		</div>
 	</div>
+
+	<form class="zenform centered">
+		<br />
+		<input type="button" class="button-grey" ng-click="refetch()" value="{{ 'CONFIG.REFETCH' | translate }}" />
+	</form>
 </div>

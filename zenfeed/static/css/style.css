@@ -1,4 +1,5 @@
 * { box-sizing: border-box; }
+.centered { text-align: center; }
 
 body {
     color: #586E75;
@@ -58,6 +59,13 @@ img {
 #feeds .entry-title { font-size: 80%; line-height: 90%; }
 #feeds .time-ago { font-size: 65%; text-align: right; }
 #feeds .has-news { text-shadow: 0px 0px 4px #EDC02D; }
+#feeds .tag {
+    background-color: #D5C7A7;
+    border-radius: 7px;
+    display: inline-block;
+    padding: 2px;
+    box-shadow: 1px 1px 2px #6F5E41;
+}
 
 #entries .entry-title { font-size: 80%; line-height: 85%; word-wrap: break-word; }
 #entries .entry-content { font-size: 80%; line-height: 90%; }

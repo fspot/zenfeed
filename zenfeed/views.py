@@ -122,6 +122,18 @@ def api_config():
         return jsonify({'msg': 'Success !'})
     return jsonify(config.to_dict(exclude_fields=['password', 'id']))
 
+@app.route('/api/feed/')
+@need_root
+def api_feed():
+    feeds = Feed.query.order_by(Feed.updated.desc())
+    ret = {'feeds': []}
+    for feed in feeds:
+        f = feed.to_dict(exclude_fields=['entries', 'tags', 'entries_hash'])
+        f['favicon_url'] = url_for('get_favicon', favicon=feed.favicon_path)
+        f['nb_of_entries'] = feed.entries.count()
+        ret['feeds'].append(f)
+    return jsonify(ret)
+
 # Babel
 
 @babel.localeselector

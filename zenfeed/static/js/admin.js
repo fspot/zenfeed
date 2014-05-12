@@ -15,7 +15,10 @@ app.config(['$translateProvider', function ($translateProvider) {
         'CONFIG.HIGHLIGHT': 'Highlight updated feeds by default',
         'CONFIG.SAVE': 'Save',
         'CONFIG.REFETCH': 'Refetch',
-        'FEED.TITLE': 'Feeds'
+        'FEEDS.TITLE': 'Feed list',
+        'FEEDS.NEW': '+ New',
+        'FEEDS.IMPORT': 'Import',
+        'FEEDS.EXPORT': 'Export'
     });
 
     $translateProvider.translations('fr', {
@@ -32,7 +35,10 @@ app.config(['$translateProvider', function ($translateProvider) {
         'CONFIG.HIGHLIGHT': 'Surligner les flux mis à jour',
         'CONFIG.SAVE': 'Enregistrer',
         'CONFIG.REFETCH': 'Rafraîchir',
-        'FEED.TITLE': 'Flux'
+        'FEEDS.TITLE': 'Liste des flux',
+        'FEEDS.NEW': '+ Ajouter',
+        'FEEDS.IMPORT': 'Importer',
+        'FEEDS.EXPORT': 'Exporter'
     });
 
 
@@ -42,12 +48,23 @@ app.config(['$translateProvider', function ($translateProvider) {
     $translateProvider.fallbackLanguage('en');
 }]);
 
-app.service('Feed', function() {
-    this.name = "Anonymous";
-    this.id = null;
-    this.all = function() {
-    	return ["1", "2", "3", "4"];
+app.service('Feed', function($http) {
+    var feedApiUrl = "/api/feed/";
+
+    this.refetch = function() {
+        return $http.get(feedApiUrl);
     };
+
+    this.findFeed = function(feedId) {
+        for (var i = 0; i < this._cached.length; i++) {
+            if (this._cached[i].id === +feedId) return this._cached[i];
+        }
+        return null;
+    };
+
+    this._cached = null;
+    this.cache = function(obj) { this._cached = obj; };
+    this.cached = function() { return this._cached; };
 });
 
 app.service('Config', function($http) {
@@ -64,32 +81,60 @@ app.service('Config', function($http) {
 
 app.config(function($routeProvider) {
 	$routeProvider
-	.when('/', {
+	.when('/config', {
 		controller:'ConfigCtrl',
 		templateUrl:'config.html'
 	})
-	// .when('/edit/:projectId', {
-	// 	controller:'EditCtrl',
-	// 	templateUrl:'detail.html'
-	// })
+	.when('/feed/edit/:feedId', {
+		controller:'EditFeedCtrl',
+		templateUrl:'edit_feed.html'
+	})
 	.when('/feed', {
 		controller:'FeedCtrl',
 		templateUrl:'feed.html'
 	})
 	.otherwise({
-		redirectTo:'/'
+		redirectTo:'/config'
 	});
 });
 
 app.controller('FeedCtrl', function($scope, Feed) {
-    $scope.feeds = [
-    	{text: "1"}, {text: "2"}, {text: "3"}
-    ];
-
-    $scope.addFeed = function() {
-        $scope.feeds.push({text: $scope.feedText});
-        $scope.feedText = '';
+    $scope.refetch = function() {
+        console.log("refreshing");
+        Feed.refetch()
+        .success(function(data, status, headers, cfg) {
+            $scope.feeds = data.feeds;
+            Feed.cache(data.feeds);
+        }).error(function(data, status, headers, cfg) {
+            alert('error during refetch() : ' + status);
+        });
     };
+
+    if (Feed.cached() === null)
+        $scope.refetch();
+    else
+        $scope.feeds = Feed.cached();
+});
+
+app.controller('EditFeedCtrl', function($scope, $routeParams, Feed) {
+    $scope.feedId = $routeParams.feedId;
+    $scope.pop = "Pop !";
+
+    $scope.refetch = function() {
+        console.log("refreshing");
+        Feed.refetch()
+        .success(function(data, status, headers, cfg) {
+            Feed.cache(data.feeds);
+            $scope.feed = Feed.findFeed($scope.feedId);
+        }).error(function(data, status, headers, cfg) {
+            alert('error during refetch() : ' + status);
+        });
+    };
+
+    if (Feed.cached() === null)
+        $scope.refetch();
+    else
+        $scope.feed = Feed.findFeed($scope.feedId);
 });
 
 app.controller('ConfigCtrl', function($scope, Config) {
