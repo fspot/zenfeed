@@ -18,7 +18,10 @@ app.config(['$translateProvider', function ($translateProvider) {
         'FEEDS.TITLE': 'Feed list',
         'FEEDS.NEW': '+ New',
         'FEEDS.IMPORT': 'Import',
-        'FEEDS.EXPORT': 'Export'
+        'FEEDS.EXPORT': 'Export',
+        'ADDFEED.ADD': 'Add',
+        'ADDFEED.NOTE': 'For some heavy feeds, downloading and processing may need several minutes !',
+        'ADDFEED.TITLE': 'Add a feed'
     });
 
     $translateProvider.translations('fr', {
@@ -38,7 +41,10 @@ app.config(['$translateProvider', function ($translateProvider) {
         'FEEDS.TITLE': 'Liste des flux',
         'FEEDS.NEW': '+ Ajouter',
         'FEEDS.IMPORT': 'Importer',
-        'FEEDS.EXPORT': 'Exporter'
+        'FEEDS.EXPORT': 'Exporter',
+        'ADDFEED.ADD': 'Ajouter',
+        'ADDFEED.NOTE': 'Certains flux très lourds peuvent mettre plusieurs minutes à être récupérés !',
+        'ADDFEED.TITLE': 'Ajouter un flux'
     });
 
 
@@ -60,6 +66,26 @@ app.service('Feed', function($http) {
             if (this._cached[i].id === +feedId) return this._cached[i];
         }
         return null;
+    };
+
+    this.postFeed = function(url) {
+        var urlObj = {"url": url};
+        return $http.post(feedApiUrl + 'add/', urlObj);
+    };
+
+    this.deleteFeed = function(feedId) {
+        var idObj = {"id": +feedId};
+        return $http.post(feedApiUrl + 'delete/', idObj);
+    };
+
+    this.addFeed = function(feed) {
+        this._cached.push(feed);
+    };
+
+    this.removeFeed = function(feedId) {
+        this._cached = this._cached.filter(function(feed) {
+            return (+feed.id !== +feedId);
+        });
     };
 
     this._cached = null;
@@ -89,6 +115,10 @@ app.config(function($routeProvider) {
 		controller:'EditFeedCtrl',
 		templateUrl:'edit_feed.html'
 	})
+    .when('/feed/add', {
+        controller:'AddFeedCtrl',
+        templateUrl:'add_feed.html'
+    })
 	.when('/feed', {
 		controller:'FeedCtrl',
 		templateUrl:'feed.html'
@@ -107,6 +137,17 @@ app.controller('FeedCtrl', function($scope, Feed) {
             Feed.cache(data.feeds);
         }).error(function(data, status, headers, cfg) {
             alert('error during refetch() : ' + status);
+        });
+    };
+
+    $scope.deleteFeed = function(feedId) {
+        Feed.deleteFeed(feedId)
+        .success(function(data, status, headers, cfg) {
+            alert('Success : ' + data.msg);
+            Feed.removeFeed(feedId);
+            $scope.feeds = Feed.cached();
+        }).error(function(data, status, headers, cfg) {
+            alert('error during deleteFeed() : ' + status);
         });
     };
 
@@ -137,6 +178,25 @@ app.controller('EditFeedCtrl', function($scope, $routeParams, Feed) {
         $scope.feed = Feed.findFeed($scope.feedId);
 });
 
+app.controller('AddFeedCtrl', function($scope, $location, Feed) {
+    $scope.isFetching = false;
+
+    $scope.addFeed = function() {
+        $scope.isFetching = true;
+
+        Feed.postFeed($scope.url)
+        .success(function(data, status, headers, cfg) {
+            alert('Fetched : ' + data.msg);
+            Feed.addFeed(data.feed);
+            $location.path('/feed');
+        }).error(function(data, status, headers, cfg) {
+            alert('error during addFeed() : ' + status);
+        })['finally'](function() {
+            $scope.isFetching = false;
+        });
+    };
+});
+
 app.controller('ConfigCtrl', function($scope, Config) {
     $scope.refetch = function() {
     	console.log("refreshing");
@@ -152,7 +212,6 @@ app.controller('ConfigCtrl', function($scope, Config) {
     	Config.save($scope.config)
     	.success(function(data, status, headers, cfg) {
     	    alert('Status : ' + data.msg);
-    	    console.log($scope.config);
     	    if ($scope.config.pw) window.location.reload();
     	}).error(function(data, status, headers, cfg) {
     	    alert('error during saveConfig() : ' + status);

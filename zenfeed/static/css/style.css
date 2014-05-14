@@ -98,6 +98,7 @@ a.menu-selected { color: #586E75; text-decoration: underline; }
 .zenform input[type="submit"],
 .zenform input[type="button"],
 .zenform input[type="text"],
+.zenform input[type="url"],
 .zenform input[type="number"],
 .zenform input[type="password"] {
     box-sizing: border-box;
@@ -121,6 +122,11 @@ a.menu-selected { color: #586E75; text-decoration: underline; }
     opacity: 0.8;
 }
 
+.zenform input[type="submit"]:disabled {
+    opacity: 0.4;
+    cursor: progress;
+}
+
 .zenform input[type="button"].button-grey {
     background-color: #D9D3C0;
     border-color: #E9E4D3;
@@ -129,6 +135,7 @@ a.menu-selected { color: #586E75; text-decoration: underline; }
 
 .zenform input[type="number"],
 .zenform input[type="text"],
+.zenform input[type="url"],
 .zenform input[type="password"] {
     border: 1px solid #E6C247;
     padding-left: 10px;
@@ -144,6 +151,7 @@ a.menu-selected { color: #586E75; text-decoration: underline; }
 
 .zenform-spaced input[type="number"],
 .zenform-spaced input[type="text"],
+.zenform-spaced input[type="url"],
 .zenform-spaced input[type="checkbox"],
 .zenform-spaced input[type="password"] {
     display: block;

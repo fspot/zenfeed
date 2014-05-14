@@ -1,5 +1,5 @@
 <div class="header">
-	<h1>{{ feed.title }}</h1>
+	<h1>{{ 'ADDFEED.TITLE' | translate }}</h1>
 </div>
 
 <div id="feeds" class="content">
@@ -9,6 +9,9 @@
 		<div class="pure-u-8-24"><a href="/logout/">{{ 'MENU.LOG_OUT' | translate }}</a></div>
 	</div>
 
-
-	<div>{{ pop }}</div>
+	<form class="zenform centered" ng-submit="addFeed()">
+		<input type="url" ng-model="url" size="40" placeholder="http://example.com/feed.xml" autofocus />
+		<input type="submit" ng-disabled="isFetching" value="{{ 'ADDFEED.ADD' | translate }}" />
+		<p ng-show="url">{{ 'ADDFEED.NOTE' | translate }}</p>
+	</form>
 </div>

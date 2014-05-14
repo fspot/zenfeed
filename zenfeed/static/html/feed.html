@@ -11,7 +11,7 @@
 
 	<div ng-controller="FeedCtrl">
 		<form class="zenform centered">
-			<input type="button" value="{{ 'FEEDS.NEW' | translate }}" />
+			<a href="#/feed/add"><input type="button" value="{{ 'FEEDS.NEW' | translate }}" /></a>
 			<input type="button" class="button-grey" value="{{ 'FEEDS.IMPORT' | translate }}" />
 			<input type="button" class="button-grey" value="{{ 'FEEDS.EXPORT' | translate }}" />
 		</form>
@@ -27,7 +27,7 @@
 				{{ feed.title }}
 			</div>
 			<div class="pure-u-1-24 entry-title"><a href="#/feed/edit/{{ feed.id }}">⚙</a></div>
-			<div class="pure-u-1-24 entry-title"><a href="">×</a></div>
+			<div class="pure-u-1-24 entry-title"><a href="" ng-click="deleteFeed(feed.id)">×</a></div>
 			<div class="pure-u-1-24 entry-title"><a href="">+</a></div>
 		</div>
 	</div>

@@ -122,6 +122,12 @@ def api_config():
         return jsonify({'msg': 'Success !'})
     return jsonify(config.to_dict(exclude_fields=['password', 'id']))
 
+def clean_feed_to_dict(feed):
+    f = feed.to_dict(exclude_fields=['entries', 'tags', 'entries_hash'])
+    f['favicon_url'] = url_for('get_favicon', favicon=feed.favicon_path)
+    f['nb_of_entries'] = feed.entries.count()
+    return f
+
 @app.route('/api/feed/')
 @need_root
 def api_feed():
@@ -133,6 +139,28 @@ def api_feed():
         f['nb_of_entries'] = feed.entries.count()
         ret['feeds'].append(f)
     return jsonify(ret)
+
+@app.route('/api/feed/add/', methods=['POST'])
+@need_root
+def api_add_feed():
+    url = request.json['url']
+    inbox = Queue()
+    mail = Mail(inbox, {'type': 'new-feed', 'url': url})
+    deadlineManager.inbox.put(mail)
+    feed = inbox.get()
+    dictfeed = clean_feed_to_dict(feed)
+    return jsonify({"msg": feed.title, 'feed': dictfeed})
+
+@app.route('/api/feed/delete/', methods=['POST'])
+@need_root
+def api_delete_feed():
+    #TODO : stop useless worker !
+    feed_id = request.json['id']
+    feed = Feed.query.get(feed_id)
+    if feed:
+        db.session.delete(feed)
+        db.session.commit()
+    return jsonify({"msg": "pop"})
 
 # Babel
 
