@@ -3,9 +3,10 @@
 
 from __future__ import unicode_literals, print_function
 import gevent
-from gevent.queue import Empty
+from gevent.queue import Queue, Empty
 from requests.exceptions import ConnectionError
 
+from actor import Mail
 from builder import FeedFromDict, EntryFromDict
 from fetcher import (fetch_and_parse_feed, sanitize_url,
                      save_favicon, fetch_favicon, FetchingException)
@@ -49,7 +50,12 @@ def deadline_worker(feed, inbox, manager_box):
         except Empty:
             msg = None # timeout -> refresh !
         if msg is not None:
-            # TODO check msg type (Mail?) et tout
+            # msg types :
+            # - stop
+            # - refresh
+            if isinstance(msg, Mail):
+                if msg.body['type'] == 'stop':
+                    return msg.answer_box.put('okay')
             logger.warning("©©© Refresh forced.")
         try:
             fetched = fetch_and_parse_feed(feed.url)
@@ -87,3 +93,21 @@ def cache_worker(feed_id):
         if feed_id is not None:
             cache.delete(url_for('feed_view', feed_id=feed_id))
             app.view_functions['feed_view'](feed_id=feed_id, bot_flag=True)
+
+def delete_worker(worker, feed_id, answer_box, kill_timeout=30):
+    if worker is not None:
+        logger.warning("Going to stop gracefully feed %d", feed_id)
+        inbox = Queue()
+        mail = Mail(inbox, {'type': 'stop'})
+        worker['queue'].put(mail)
+        resp = inbox.get(timeout=kill_timeout)
+        if resp is None:
+            logger.warning("Going to KILL feed %d !", feed_id)
+            worker['worker'].kill()
+    feed = Feed.query.get(feed_id)
+    if feed is None:
+        logger.error("Why doesn't feed [%d] exist ?!", feed_id)
+        return answer_box.put({'success': False})
+    db.session.delete(feed)
+    db.session.commit()
+    answer_box.put({'success': True})

@@ -2,21 +2,21 @@
 	<h1>{{ 'FEEDS.TITLE' | translate }}</h1>
 </div>
 
-<div id="feeds" class="content">
+<div id="feeds" class="content" ng-controller="FeedCtrl" ng-init="init()">
 	<div class="pure-g bandeau">
 		<div class="pure-u-8-24"><a href="#/config">{{ 'MENU.SETTINGS' | translate }}</a></div>
 		<div class="pure-u-8-24"><a href="#/feed" class="menu-selected">{{ 'MENU.FEEDS' | translate }}</a></div>
 		<div class="pure-u-8-24"><a href="/logout/">{{ 'MENU.LOG_OUT' | translate }}</a></div>
 	</div>
 
-	<div ng-controller="FeedCtrl">
+	<div>
 		<form class="zenform centered">
 			<a href="#/feed/add"><input type="button" value="{{ 'FEEDS.NEW' | translate }}" /></a>
 			<input type="button" class="button-grey" value="{{ 'FEEDS.IMPORT' | translate }}" />
 			<input type="button" class="button-grey" value="{{ 'FEEDS.EXPORT' | translate }}" />
 		</form>
 
-		<div ng-repeat="feed in feeds" class="grid-row pure-g-r">
+		<div ng-repeat="feed in feeds | orderBy:sortOrder" class="grid-row pure-g-r">
 			<div class="pure-u-1-24">
 				<img height="24px" width="24px" src="{{ feed.favicon_url }}" alt="[icon]" />
 			</div>

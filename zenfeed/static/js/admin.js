@@ -19,6 +19,7 @@ app.config(['$translateProvider', function ($translateProvider) {
         'FEEDS.NEW': '+ New',
         'FEEDS.IMPORT': 'Import',
         'FEEDS.EXPORT': 'Export',
+        'FEEDS.CONFIRMDELETE': 'All data associated with this feed will be deleted. Continue ?',
         'ADDFEED.ADD': 'Add',
         'ADDFEED.NOTE': 'For some heavy feeds, downloading and processing may need several minutes !',
         'ADDFEED.TITLE': 'Add a feed'
@@ -42,6 +43,7 @@ app.config(['$translateProvider', function ($translateProvider) {
         'FEEDS.NEW': '+ Ajouter',
         'FEEDS.IMPORT': 'Importer',
         'FEEDS.EXPORT': 'Exporter',
+        'FEEDS.CONFIRMDELETE': 'Toutes les données de ce flux seront supprimées. Continuer ?',
         'ADDFEED.ADD': 'Ajouter',
         'ADDFEED.NOTE': 'Certains flux très lourds peuvent mettre plusieurs minutes à être récupérés !',
         'ADDFEED.TITLE': 'Ajouter un flux'
@@ -128,9 +130,8 @@ app.config(function($routeProvider) {
 	});
 });
 
-app.controller('FeedCtrl', function($scope, Feed) {
+app.controller('FeedCtrl', function($scope, $translate, Feed) {
     $scope.refetch = function() {
-        console.log("refreshing");
         Feed.refetch()
         .success(function(data, status, headers, cfg) {
             $scope.feeds = data.feeds;
@@ -141,28 +142,28 @@ app.controller('FeedCtrl', function($scope, Feed) {
     };
 
     $scope.deleteFeed = function(feedId) {
-        Feed.deleteFeed(feedId)
-        .success(function(data, status, headers, cfg) {
-            alert('Success : ' + data.msg);
-            Feed.removeFeed(feedId);
-            $scope.feeds = Feed.cached();
-        }).error(function(data, status, headers, cfg) {
-            alert('error during deleteFeed() : ' + status);
+        $translate('FEEDS.CONFIRMDELETE').then(function (confirmMsg) {
+            if (confirm(confirmMsg)) {
+                Feed.deleteFeed(feedId)
+                .success(function(data, status, headers, cfg) {
+                    Feed.removeFeed(feedId);
+                    $scope.feeds = Feed.cached();
+                }).error(function(data, status, headers, cfg) {
+                    alert('error during deleteFeed() : ' + status);
+                });
+            }
         });
     };
 
-    if (Feed.cached() === null)
-        $scope.refetch();
-    else
-        $scope.feeds = Feed.cached();
+    $scope.init = function() {
+        $scope.sortOrder = '-updated';
+        if (Feed.cached() === null) $scope.refetch();
+        else $scope.feeds = Feed.cached();
+    };
 });
 
 app.controller('EditFeedCtrl', function($scope, $routeParams, Feed) {
-    $scope.feedId = $routeParams.feedId;
-    $scope.pop = "Pop !";
-
     $scope.refetch = function() {
-        console.log("refreshing");
         Feed.refetch()
         .success(function(data, status, headers, cfg) {
             Feed.cache(data.feeds);
@@ -172,34 +173,37 @@ app.controller('EditFeedCtrl', function($scope, $routeParams, Feed) {
         });
     };
 
-    if (Feed.cached() === null)
-        $scope.refetch();
-    else
-        $scope.feed = Feed.findFeed($scope.feedId);
+    $scope.init = function() {
+        $scope.feedId = $routeParams.feedId;
+        $scope.pop = "Pop !";
+        if (Feed.cached() === null) $scope.refetch();
+        else $scope.feed = Feed.findFeed($scope.feedId);
+    };
 });
 
 app.controller('AddFeedCtrl', function($scope, $location, Feed) {
-    $scope.isFetching = false;
 
     $scope.addFeed = function() {
         $scope.isFetching = true;
 
         Feed.postFeed($scope.url)
         .success(function(data, status, headers, cfg) {
-            alert('Fetched : ' + data.msg);
             Feed.addFeed(data.feed);
-            $location.path('/feed');
+            $location.path('/feed/edit/' + data.feed.id);
         }).error(function(data, status, headers, cfg) {
             alert('error during addFeed() : ' + status);
         })['finally'](function() {
             $scope.isFetching = false;
         });
     };
+
+    $scope.init = function() {
+        $scope.isFetching = Feed.cached() === null;
+    };
 });
 
 app.controller('ConfigCtrl', function($scope, Config) {
     $scope.refetch = function() {
-    	console.log("refreshing");
     	Config.refetch()
     	.success(function(data, status, headers, cfg) {
     	    $scope.config = data;

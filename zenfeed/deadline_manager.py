@@ -8,7 +8,8 @@ from gevent.queue import Queue
 from actor import Actor
 from log import logger
 from models import Feed
-from workers import new_feed_worker, deadline_worker, cache_worker
+from workers import (new_feed_worker, deadline_worker,
+    cache_worker, delete_worker)
 
 class DeadlineManager(Actor):
     def __init__(self):
@@ -34,7 +35,7 @@ class DeadlineManager(Actor):
             Message type can be :
             - new-feed
             - force-refresh-feed
-            - remove-feed
+            - delete-feed
             - edit-refresh-interval-feed
             - refresh-cache
         """
@@ -57,6 +58,11 @@ class DeadlineManager(Actor):
             }) # TODO put Mail instead ?
         elif msg_type == "refresh-cache":
             gevent.spawn(cache_worker, message.get('feed_id'))
+        elif msg_type == "delete-feed":
+            worker = self.workers.get(message['feed_id'])
+            if worker:
+                del self.workers[message['feed_id']]
+            gevent.spawn(delete_worker, worker, message['feed_id'], answer_box)
         else:
             logger.error("Unknown message type : %s", msg_type)
 
