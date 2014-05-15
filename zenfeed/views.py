@@ -124,7 +124,7 @@ def api_config():
 
 def clean_feed_to_dict(feed):
     f = feed.to_dict(exclude_fields=['entries', 'tags', 'entries_hash'])
-    f['updated'] = int(feed.updated.strftime("%s"))
+    f['updated'] = int(feed.updated.strftime("%s")) if feed.updated else None
     f['favicon_url'] = url_for('get_favicon', favicon=feed.favicon_path)
     f['nb_of_entries'] = feed.entries.count()
     return f
