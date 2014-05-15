@@ -57,7 +57,9 @@ def fetch_and_parse_feed(url, etag=None, last_modified=None):
     # TODO implement etag & last_modified header
     url = sanitize_url(url)
     feed_parsed = feedparser.parse(url)
-    if feed_parsed.status not in (200, 301, 302):
+    if not hasattr(feed_parsed, 'status'):
+        raise FetchingException("Connection error")
+    elif feed_parsed.status not in (200, 301, 302):
         raise FetchingException("status_code is %d" % feed_parsed.status)
     if feed_parsed.version == '':
         # it's probably html instead of rss/atom
