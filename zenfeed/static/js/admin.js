@@ -22,7 +22,13 @@ app.config(['$translateProvider', function ($translateProvider) {
         'FEEDS.CONFIRMDELETE': 'All data associated with this feed will be deleted. Continue ?',
         'ADDFEED.ADD': 'Add',
         'ADDFEED.NOTE': 'For some heavy feeds, downloading and processing may need several minutes !',
-        'ADDFEED.TITLE': 'Add a feed'
+        'ADDFEED.TITLE': 'Add a feed',
+        'EDITFEED.URL': 'Feed URL',
+        'EDITFEED.TITLE': 'Title',
+        'EDITFEED.LINK': 'Link',
+        'EDITFEED.REFRESHINTERVAL': 'Refresh time interval',
+        'EDITFEED.MAXENTRIES': 'Max entries number',
+        'EDITFEED.HIGHLIGHT': 'Highlight news'
     });
 
     $translateProvider.translations('fr', {
@@ -46,7 +52,13 @@ app.config(['$translateProvider', function ($translateProvider) {
         'FEEDS.CONFIRMDELETE': 'Toutes les données de ce flux seront supprimées. Continuer ?',
         'ADDFEED.ADD': 'Ajouter',
         'ADDFEED.NOTE': 'Certains flux très lourds peuvent mettre plusieurs minutes à être récupérés !',
-        'ADDFEED.TITLE': 'Ajouter un flux'
+        'ADDFEED.TITLE': 'Ajouter un flux',
+        'EDITFEED.URL': 'URL du flux',
+        'EDITFEED.TITLE': 'Titre',
+        'EDITFEED.LINK': 'Lien',
+        'EDITFEED.REFRESHINTERVAL': 'Intervalle de mise à jour',
+        'EDITFEED.MAXENTRIES': "Nombre maximal d'entrées",
+        'EDITFEED.HIGHLIGHT': 'Surligner quand mis à jour'
     });
 
 
@@ -175,7 +187,6 @@ app.controller('EditFeedCtrl', function($scope, $routeParams, Feed) {
 
     $scope.init = function() {
         $scope.feedId = $routeParams.feedId;
-        $scope.pop = "Pop !";
         if (Feed.cached() === null) $scope.refetch();
         else $scope.feed = Feed.findFeed($scope.feedId);
     };

@@ -10,7 +10,28 @@
 		<div class="pure-u-8-24"><a href="/logout/">{{ 'MENU.LOG_OUT' | translate }}</a></div>
 	</div>
 
+	<form class="zenform zenform-spaced" ng-submit="saveFeed()">
+		<label for="feed-url">{{ 'EDITFEED.URL' | translate }}</label>
+		<input id="feed-url" type="url" size="40" ng-model="feed.url" />
 
-	<div>{{ pop }}</div>
+		<label for="feed-title">{{ 'EDITFEED.TITLE' | translate }}</label>
+		<input id="feed-title" type="text" size="40" ng-model="feed.title" />
+
+		<label for="feed-link">{{ 'EDITFEED.LINK' | translate }}</label>
+		<input id="feed-link" type="text" size="40" ng-model="feed.link" />
+
+		<label for="feed-time-interval">{{ 'EDITFEED.REFRESHINTERVAL' | translate }}</label>
+		<input id="feed-time-interval" type="number" ng-model="feed.refresh_interval" />
+
+		<label for="feed-max-entries">{{ 'EDITFEED.MAXENTRIES' | translate }}</label>
+		<input id="feed-max-entries" type="number" ng-model="feed.max_entries" />
+
+		<label for="feed-highlight-news">{{ 'EDITFEED.HIGHLIGHT' | translate }}</label>
+		<input id="feed-highlight-news" type="checkbox" ng-model="feed.highlight_news" />
+
+		<br />
+		<input type="submit" value="{{ 'CONFIG.SAVE' | translate }}" />
+		<input type="button" class="button-grey" ng-click="refetch()" value="{{ 'CONFIG.REFETCH' | translate }}" />
+	</form>
 </div>
 </div>
