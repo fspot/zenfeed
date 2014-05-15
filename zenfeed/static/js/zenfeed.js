@@ -5,12 +5,17 @@
 		var gridRow = e.target;
 		if (gridRow.nodeName === "A") return;
 		if (! gridRow.classList.contains("grid-row")) gridRow = gridRow.parentNode;
-		document.location.href = gridRow.dataset.url;
+		if (gridRow.dataset.url) document.location.href = gridRow.dataset.url;
 	}, false);
 
 	// keyboard navigation
+	var onEntryPage = null !== document.getElementById('entry');
+	var scrollElem = (function () {
+		if (document.body.scrollTopMax === 0) return document.documentElement;
+		else return document.body;
+	})();
 	function focusFirst() { document.querySelector('.navlink a').focus(); }
-	function getLinks() { 
+	function getLinks() {
 		if (! window.navLinks) window.navLinks = [].slice.call(document.querySelectorAll('.navlink a'));
 		return window.navLinks;
 	}
@@ -18,11 +23,13 @@
 		switch (String.fromCharCode(e.charCode)) {
 			case "z":
 			case "w":
+				if (onEntryPage) { scrollElem.scrollTop -= 50; break; }
 				if (document.activeElement.nodeName !== "A") { focusFirst(); break; }
 				var actualIndex = getLinks().indexOf(document.activeElement);
 				if (actualIndex > 0) getLinks()[actualIndex-1].focus();
 				break;
 			case "s":
+				if (onEntryPage) { scrollElem.scrollTop += 50; break; }
 				if (document.activeElement.nodeName !== "A") { focusFirst(); break; }
 				var actualIndex = getLinks().indexOf(document.activeElement);
 				if (actualIndex < getLinks().length-1) getLinks()[actualIndex+1].focus();
