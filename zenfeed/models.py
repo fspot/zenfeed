@@ -8,6 +8,8 @@ from sqlalchemy.orm import class_mapper, ColumnProperty
 
 from app import app
 from log import logger
+from settings import (DEFAULT_LOGIN, DEFAULT_PASSWORD,
+    DEFAULT_REFRESH_INTERVAL, DEFAULT_MAX_ENTRIES, DEFAULT_HIGHLIGHT_NEWS)
 
 
 db = SQLAlchemy(app)
@@ -18,11 +20,11 @@ def setup_tables():
         logger.info("Creating Config single instance")
         Config.query.delete()
         c = Config(
-            login="zenfeed",
-            password=Config.hash("zenfeed"),
-            default_refresh_interval=3600,
-            default_max_entries=1000,
-            default_highlight_news=True,
+            login=DEFAULT_LOGIN,
+            password=Config.hash(DEFAULT_PASSWORD),
+            default_refresh_interval=DEFAULT_REFRESH_INTERVAL,
+            default_max_entries=DEFAULT_MAX_ENTRIES,
+            default_highlight_news=DEFAULT_HIGHLIGHT_NEWS,
         )
         db.session.add(c)
         db.session.commit()

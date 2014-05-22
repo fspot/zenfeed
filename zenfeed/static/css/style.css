@@ -4,9 +4,10 @@
 body {
     color: #586E75;
     background-color: #FDF6E3;
-    font-family: sans-serif;
+    font-family: FreeSans, Arimo, "Droid Sans", Helvetica, Arial, sans-serif;
     text-shadow: 1px 1px 5px white;
 }
+#entry p { font-family: "Droid Serif", serif; }
 
 img {
     max-width: 100%;

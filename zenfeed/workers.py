@@ -43,6 +43,31 @@ def new_feed_worker(url, favicon_dir, answer_box, manager_box):
     manager_box.put({'type': 'new-deadline-worker', 'feed_id': feed.id})
     manager_box.put({'type': 'refresh-cache', 'feed_id': feed.id})
 
+
+def fetching_work(feed, manager_box):
+    fetched = fetch_and_parse_feed(feed.url)
+    feed_dict, real_url = fetched['feed'], fetched['real_url']
+    feed = Feed.query.get(feed.id)  # refresh
+    if feed.url != real_url:
+        logger.warning("©©© Feed url changed from %s to %s", feed.url, real_url)
+        feed.url = sanitize_url(real_url)
+    logger.info("©©© Updated feed: %s", feed.url)
+    feed_changed = update_feed(feed, FeedFromDict(feed_dict, Config.get()))
+    any_entry_created = any([
+        create_or_update_entry(feed.id, EntryFromDict(e, feed.url))
+        for e in feed_dict['entries']
+    ])
+    db.session.commit()
+
+    if any_entry_created:
+        most_recent_entry = feed.entries.order_by(Entry.updated.desc()).first()
+        feed.updated = most_recent_entry.updated
+        feed.has_news = feed.has_news or feed.highlight_news
+        db.session.merge(feed)
+        db.session.commit()
+        manager_box.put({'type': 'refresh-cache', 'feed_id': feed.id})
+
+
 def deadline_worker(feed, inbox, manager_box):
     while True:
         try:
@@ -58,33 +83,14 @@ def deadline_worker(feed, inbox, manager_box):
                     return msg.answer_box.put('okay')
             logger.warning("©©© Refresh forced.")
         try:
-            fetched = fetch_and_parse_feed(feed.url)
+            fetching_work(feed, manager_box)
         except FetchingException as e:
             logger.error("Error re-fetching feed %s : %s", feed.url, e.value)
             continue
         except ConnectionError:
             logger.error("Connection error re-fetching feed %s", feed.url)
             continue
-        feed_dict, real_url = fetched['feed'], fetched['real_url']
-        feed = Feed.query.get(feed.id)  # refresh
-        if feed.url != real_url:
-            logger.warning("©©© Feed url changed from %s to %s", feed.url, real_url)
-            feed.url = sanitize_url(real_url)
-        logger.info("©©© Updated feed: %s", feed.url)
-        feed_changed = update_feed(feed, FeedFromDict(feed_dict, Config.get()))
-        any_entry_created = any([
-            create_or_update_entry(feed.id, EntryFromDict(e, feed.url))
-            for e in feed_dict['entries']
-        ])
-        db.session.commit()
 
-        if any_entry_created:
-            most_recent_entry = feed.entries.order_by(Entry.updated.desc()).first()
-            feed.updated = most_recent_entry.updated
-            feed.has_news = feed.has_news or feed.highlight_news
-            db.session.merge(feed)
-            db.session.commit()
-            manager_box.put({'type': 'refresh-cache', 'feed_id': feed.id})
 
 def cache_worker(feed_id):
     with app.test_request_context('/'):
@@ -93,6 +99,7 @@ def cache_worker(feed_id):
         if feed_id is not None:
             cache.delete(url_for('feed_view', feed_id=feed_id))
             app.view_functions['feed_view'](feed_id=feed_id, bot_flag=True)
+
 
 def delete_worker(worker, feed_id, answer_box, kill_timeout=30):
     if worker is not None:
@@ -110,4 +117,5 @@ def delete_worker(worker, feed_id, answer_box, kill_timeout=30):
         return answer_box.put({'success': False})
     db.session.delete(feed)
     db.session.commit()
+    logger.warning("Okay, feed %d has been deleted !", feed_id)
     answer_box.put({'success': True})
