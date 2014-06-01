@@ -4,7 +4,7 @@
 """Zen RSS feed reader.
 
 Usage:
-  zenfeed [-d URI -f PATH -p PORT --log LOG --lang LANG --cache CACHE --debug]
+  zenfeed [-d URI -f PATH -p PORT --log LOG --lang LANG --tz TIMEZONE --no-cache --debug]
   zenfeed genstatic PATH
   zenfeed -h | --help
   zenfeed -v | --version
@@ -25,9 +25,10 @@ Options:
   --lang LANG         Fix the language instead of let it depend on the browser's value.
                       The language needs to be supported. E.g: en
                       [default: browser]
-  --cache CACHE       Set up cache on index and feed pages. To stop: "--cache null"
-                      Cache is refreshed when the corresponding feed changes.
-                      [default: simple]
+  --tz TIMEZONE       Specify which timezone to use, to adjust date and time display.
+                      For french timezone : "--tz Europe/Paris"
+                      [default: GMT]
+  --no-cache          Disable cache on index and feed pages.
   --debug             Debug mode, do not use.
 
 """
@@ -35,12 +36,14 @@ Options:
 from __future__ import unicode_literals, print_function#, absolute_import
 from docopt import docopt
 from path import path
+from pytz import all_timezones
 import logging
 
 # avoid side effects with imports…
 import gevent
 from gevent.monkey import patch_socket, patch_ssl
 
+from caching import Cache
 from log import setup_logger, logger
 from settings import LANGUAGES, VERSION
 try:
@@ -70,9 +73,7 @@ def main():
 
     port = int(args['--port'])
 
-    cache_type = args['--cache']
-    if cache_type not in ('simple', 'null'):
-        return logger.critical('Cache must be "simple" or "null".')
+    cache_disabled = args['--no-cache']
 
     fixed_language = args['--lang']
     if fixed_language == 'browser':
@@ -83,13 +84,18 @@ def main():
             and fixed_language.split('_', 1)[0] not in LANGUAGES):
             return logger.critical('Fixed language not supported !')
 
+    fixed_timezone = args['--tz']
+    logger.info('Timezone fixed to "%s"', fixed_timezone)
+    if fixed_timezone not in all_timezones:
+        return logger.critical('Fixed timezone not supported !')
+
     db_uri = args['--database']
     if db_uri == ':memory:':
         db_uri = 'sqlite://'
     elif not "://" in db_uri:
         db_uri = 'sqlite:///%s' % path(db_uri).abspath()
 
-    from app import app, cache
+    from app import app
     app.config.update(
         DEBUG = args['--debug'],
         SQL_DEBUG = False,
@@ -97,8 +103,10 @@ def main():
         SQLALCHEMY_DATABASE_URI = db_uri,
         FAVICON_DIR = path(args['--favicons']).abspath(),
         FIXED_LANGUAGE = fixed_language,
+        FIXED_TIMEZONE = fixed_timezone,
+        CACHE_ENABLED = not cache_disabled,
     )
-    cache.init_app(app, config={'CACHE_TYPE': cache_type})
+    Cache(app)
 
     from models import setup_tables, Feed
     patch_socket()

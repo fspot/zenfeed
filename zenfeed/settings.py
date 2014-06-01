@@ -10,10 +10,6 @@ LANGUAGES = {
     'fr': 'Français',
 }
 
-CACHE_CONFIG = {
-	'CACHE_TYPE': 'simple',
-}
-
 DEFAULT_LOGIN = "zenfeed"
 DEFAULT_PASSWORD = "zenfeed"
 DEFAULT_REFRESH_INTERVAL = 3600

@@ -11,7 +11,7 @@ from gevent.queue import Queue
 from flask.ext.babel import format_datetime
 
 from actor import Mail
-from app import app, babel, cache
+from app import app, babel
 from log import logger
 from models import db, Tag, Feed, Entry, Config
 from deadline_manager import deadlineManager
@@ -44,11 +44,12 @@ def refresh_highlighted_feeds(vue):
 # main site routes :
 
 @app.route('/')
-@cache.cached(timeout=86400*365, key_prefix='%s')
 def index():
-    logger.info("index view is processing : will be cached")
+    if app.cache.has('/'): return app.cache.get('/')
+    logger.info("Index view is processing : will be cached")
     feeds = Feed.query.order_by(Feed.updated.desc())
-    return render_template('feeds.html', feeds=feeds)
+    resp = render_template('feeds.html', feeds=feeds)
+    return app.cache.put(resp, '/')
 
 @app.route(app.static_url_path + '/favicon/<favicon>')
 def get_favicon(favicon):
@@ -56,12 +57,13 @@ def get_favicon(favicon):
 
 @app.route('/<int:feed_id>/')
 @refresh_highlighted_feeds
-@cache.cached(timeout=86400*365, key_prefix='%s')
 def feed_view(feed_id, bot_flag=False):
-    logger.info("feed [%d] view is processing : will be cached", feed_id)
+    if app.cache.has(feed_id=feed_id): return app.cache.get(feed_id=feed_id)
+    logger.info("Feed [%d] view is processing : will be cached", feed_id)
     feed = Feed.query.get(feed_id)
     entries = feed.entries.order_by(Entry.updated.desc()).limit(feed.max_entries)
-    return render_template('feed.html', feed=feed, entries=entries)
+    resp = render_template('feed.html', feed=feed, entries=entries)
+    return app.cache.put(resp, feed_id=feed_id)
 
 @app.route('/<int:feed_id>/<int:entry_id>/')
 def entry_view(feed_id, entry_id):
@@ -160,6 +162,10 @@ def api_delete_feed():
 def get_locale():
     return (app.config['FIXED_LANGUAGE'] or
             request.accept_languages.best_match(LANGUAGES.keys()))
+
+@babel.timezoneselector
+def get_timezone():
+    return app.config['FIXED_TIMEZONE']
 
 # Jinja
 

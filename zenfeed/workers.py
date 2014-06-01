@@ -11,7 +11,7 @@ from builder import FeedFromDict, EntryFromDict
 from fetcher import (fetch_and_parse_feed, sanitize_url,
                      save_favicon, fetch_favicon, FetchingException)
 from log import logger
-from app import app, cache
+from app import app
 from flask import url_for
 from models import db, Feed, Entry, Config, update_feed, create_or_update_entry
 
@@ -94,11 +94,11 @@ def deadline_worker(feed, inbox, manager_box):
 
 def cache_worker(feed_id):
     with app.test_request_context('/'):
-        cache.delete(url_for('index'))
-        app.view_functions['index']()
         if feed_id is not None:
-            cache.delete(url_for('feed_view', feed_id=feed_id))
+            app.cache.delete(feed_id=feed_id)
             app.view_functions['feed_view'](feed_id=feed_id, bot_flag=True)
+        app.cache.delete('/')
+        app.view_functions['index']()
 
 
 def delete_worker(worker, feed_id, answer_box, kill_timeout=30):

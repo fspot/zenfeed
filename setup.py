@@ -9,7 +9,7 @@ setup(
     version=zenfeed.__version__,
     install_requires=["beautifulsoup4", "Flask", "Flask-SQLAlchemy", "docopt",
                       "feedparser", "gevent", "path.py", "requests",
-                      "flask-babel", "flask-cache"],
+                      "flask-babel", "pytz"],
     packages=find_packages(),
     author="fspot",
     author_email="fred@fspot.org",
