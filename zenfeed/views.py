@@ -5,6 +5,7 @@ from __future__ import unicode_literals, print_function
 from datetime import datetime
 from functools import wraps
 from hashlib import sha256
+from math import ceil
 from flask import (render_template, send_from_directory, request,
                    redirect, url_for, session, jsonify)
 from gevent.queue import Queue
@@ -56,14 +57,23 @@ def get_favicon(favicon):
     return send_from_directory(app.config['FAVICON_DIR'], favicon)
 
 @app.route('/<int:feed_id>/')
+@app.route('/<int:feed_id>/page-<int:page>')
 @refresh_highlighted_feeds
-def feed_view(feed_id, bot_flag=False):
-    if app.cache.has(feed_id=feed_id): return app.cache.get(feed_id=feed_id)
+def feed_view(feed_id, page=1, bot_flag=False):
+    if page == 1 and app.cache.has(feed_id=feed_id):
+        return app.cache.get(feed_id=feed_id)
     logger.info("Feed [%d] view is processing : will be cached", feed_id)
     feed = Feed.query.get(feed_id)
-    entries = feed.entries.order_by(Entry.updated.desc()).limit(feed.max_entries)
-    resp = render_template('feed.html', feed=feed, entries=entries)
-    return app.cache.put(resp, feed_id=feed_id)
+    entries = feed.entries.order_by(
+        Entry.updated.desc()
+    ).offset(feed.entries_per_page * (page - 1)).limit(feed.entries_per_page)
+    nb_pages = int(ceil(feed.entries.count() / float(feed.entries_per_page)))
+    resp = render_template(
+        'feed.html', feed=feed, entries=entries, page=page, nb_pages=nb_pages
+    )
+    if page == 1:
+        app.cache.put(resp, feed_id=feed_id)
+    return resp
 
 @app.route('/<int:feed_id>/<int:entry_id>/')
 def entry_view(feed_id, entry_id):

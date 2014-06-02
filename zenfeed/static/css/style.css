@@ -186,3 +186,23 @@ code {
 }
 
 pre code { box-shadow: none; }
+
+/* pagination */
+
+#pagination {
+    text-align: center;
+}
+
+#pagination a {
+    display: inline-block;
+    background-color: #EFE6CC;
+    margin: 3px;
+    padding: 2px;
+    width: 30px;
+    text-decoration: none;
+}
+
+#pagination a.current-page {
+    background-color: #586E75;
+    color: white;
+}

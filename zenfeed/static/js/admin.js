@@ -12,6 +12,7 @@ app.config(['$translateProvider', function ($translateProvider) {
         'CONFIG.PASSWORD.DETAILS': 'You will need to log in again after this operation.',
         'CONFIG.TIME_INTERVAL': 'Default refresh time interval',
         'CONFIG.MAXENTRIES': 'Default maximum entries number',
+        'CONFIG.ENTRIES_PER_PAGE': 'Default entries number per page',
         'CONFIG.HIGHLIGHT': 'Highlight updated feeds by default',
         'CONFIG.SAVE': 'Save',
         'CONFIG.REFETCH': 'Refetch',
@@ -28,6 +29,7 @@ app.config(['$translateProvider', function ($translateProvider) {
         'EDITFEED.LINK': 'Link',
         'EDITFEED.REFRESHINTERVAL': 'Refresh time interval',
         'EDITFEED.MAXENTRIES': 'Max entries number',
+        'EDITFEED.ENTRIES_PER_PAGE' : 'Entries per page',
         'EDITFEED.HIGHLIGHT': 'Highlight news'
     });
 
@@ -42,6 +44,7 @@ app.config(['$translateProvider', function ($translateProvider) {
         'CONFIG.PASSWORD.DETAILS': 'Une reconnexion sera nécessaire suite à cette opération.',
         'CONFIG.TIME_INTERVAL': 'Intervalle de rafraîchissement des flux',
         'CONFIG.MAXENTRIES': "Nombre maximal d'entrées par flux",
+        'CONFIG.ENTRIES_PER_PAGE': "Nombre d'entrées par page",
         'CONFIG.HIGHLIGHT': 'Surligner les flux mis à jour',
         'CONFIG.SAVE': 'Enregistrer',
         'CONFIG.REFETCH': 'Rafraîchir',
@@ -58,6 +61,7 @@ app.config(['$translateProvider', function ($translateProvider) {
         'EDITFEED.LINK': 'Lien',
         'EDITFEED.REFRESHINTERVAL': 'Intervalle de mise à jour',
         'EDITFEED.MAXENTRIES': "Nombre maximal d'entrées",
+        'EDITFEED.ENTRIES_PER_PAGE' : "Nombre d'entrées par page",
         'EDITFEED.HIGHLIGHT': 'Surligner quand mis à jour'
     });
 

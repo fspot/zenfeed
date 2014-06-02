@@ -36,4 +36,12 @@
 	{% endfor %}
 	</div>
 
+	<div id="pagination">
+	{% for num in range(nb_pages) %}
+		<a href="{{ url_for('feed_view', feed_id=feed.id, page=num+1) }}"{% if num+1 == page %} class="current-page"{% endif %}>
+			{{ num+1 }}
+		</a>
+	{% endfor %}
+	</div>
+
 {% endblock %}

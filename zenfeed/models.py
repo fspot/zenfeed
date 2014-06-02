@@ -9,7 +9,8 @@ from sqlalchemy.orm import class_mapper, ColumnProperty
 from app import app
 from log import logger
 from settings import (DEFAULT_LOGIN, DEFAULT_PASSWORD,
-    DEFAULT_REFRESH_INTERVAL, DEFAULT_MAX_ENTRIES, DEFAULT_HIGHLIGHT_NEWS)
+    DEFAULT_REFRESH_INTERVAL, DEFAULT_MAX_ENTRIES, DEFAULT_HIGHLIGHT_NEWS,
+    DEFAULT_ENTRIES_PER_PAGE)
 
 
 db = SQLAlchemy(app)
@@ -25,6 +26,7 @@ def setup_tables():
             default_refresh_interval=DEFAULT_REFRESH_INTERVAL,
             default_max_entries=DEFAULT_MAX_ENTRIES,
             default_highlight_news=DEFAULT_HIGHLIGHT_NEWS,
+            default_entries_per_page=DEFAULT_ENTRIES_PER_PAGE,
         )
         db.session.add(c)
         db.session.commit()
@@ -80,6 +82,7 @@ class Feed(db.Model, Base):
     entries_hash = db.Column(db.String) # last updated entries hash
     refresh_interval = db.Column(db.Integer)
     max_entries = db.Column(db.Integer)
+    entries_per_page = db.Column(db.Integer)
     highlight_news = db.Column(db.Boolean)
     has_news = db.Column(db.Boolean)
     favicon_path = db.Column(db.String)
@@ -122,6 +125,7 @@ class Config(db.Model, Base):
 
     default_refresh_interval = db.Column(db.Integer)
     default_max_entries = db.Column(db.Integer)
+    default_entries_per_page = db.Column(db.Integer)
     default_highlight_news = db.Column(db.Boolean)
 
     instance = None
