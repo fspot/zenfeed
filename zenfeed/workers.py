@@ -47,7 +47,6 @@ def new_feed_worker(url, favicon_dir, answer_box, manager_box):
 def fetching_work(feed, manager_box):
     fetched = fetch_and_parse_feed(feed.url)
     feed_dict, real_url = fetched['feed'], fetched['real_url']
-    feed = Feed.query.get(feed.id)  # refresh
     if feed.url != real_url:
         logger.warning("©©© Feed url changed from %s to %s", feed.url, real_url)
         feed.url = sanitize_url(real_url)
@@ -74,6 +73,7 @@ def deadline_worker(feed, inbox, manager_box):
             msg = inbox.get(timeout=feed.refresh_interval)
         except Empty:
             msg = None # timeout -> refresh !
+        feed = Feed.query.get(feed.id)  # refresh
         if msg is not None:
             # msg types :
             # - stop

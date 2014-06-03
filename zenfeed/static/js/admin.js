@@ -106,6 +106,10 @@ app.service('Feed', function($http) {
         });
     };
 
+    this.save = function(feed) {
+        return $http.post(feedApiUrl, feed);
+    };
+
     this._cached = null;
     this.cache = function(obj) { this._cached = obj; };
     this.cached = function() { return this._cached; };
@@ -142,7 +146,7 @@ app.config(function($routeProvider) {
 		templateUrl:'feed.html'
 	})
 	.otherwise({
-		redirectTo:'/config'
+		redirectTo:'/feed'
 	});
 });
 
@@ -193,6 +197,15 @@ app.controller('EditFeedCtrl', function($scope, $routeParams, Feed) {
         $scope.feedId = $routeParams.feedId;
         if (Feed.cached() === null) $scope.refetch();
         else $scope.feed = Feed.findFeed($scope.feedId);
+    };
+
+    $scope.saveFeed = function() {
+        Feed.save($scope.feed)
+        .success(function(data, status, headers, cfg) {
+            alert('Status : ' + data.msg);
+        }).error(function(data, status, headers, cfg) {
+            alert('error during saveFeed() : ' + status);
+        });
     };
 });
 

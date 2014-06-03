@@ -108,25 +108,29 @@ def admin_index():
 def admin_view(filename):
     return redirect(app.static_url_path + '/html/' + filename + '.html')
 
-@app.route('/api/config/', methods=['GET', 'POST'])
+@app.route('/api/config/')
 @need_root
-def api_config():
+def api_get_config():
     config = Config.get()
-    if request.method == 'POST':
-        # update all fields, no checks (TODO)
-        config_fields = config.fields_set(exclude_fields=['id', 'password'])
-        fields = config_fields & set(request.json.keys())
-        for field in fields:
-            setattr(config, field, request.json[field])
-        # change password if the field isnt empty
-        pw = request.json.get('pw')
-        if pw:
-            Config.change_password(pw)
-        db.session.merge(config)
-        db.session.commit()
-        Config.refresh_instance()  # unnecessary ?
-        return jsonify({'msg': 'Success !'})
     return jsonify(config.to_dict(exclude_fields=['password', 'id']))
+
+@app.route('/api/config/', methods=['POST'])
+@need_root
+def api_edit_config():
+    config = Config.get()
+    # update all fields, no checks (TODO)
+    config_fields = config.fields_set(exclude_fields=['id', 'password'])
+    fields = config_fields & set(request.json.keys())
+    for field in fields:
+        setattr(config, field, request.json[field])
+    # change password if the "pw" field isnt empty
+    pw = request.json.get('pw')
+    if pw:
+        Config.change_password(pw)
+    db.session.merge(config)
+    db.session.commit()
+    Config.refresh_instance()  # not necessary ?
+    return jsonify({'msg': 'Success !'})
 
 def clean_feed_to_dict(feed):
     f = feed.to_dict(exclude_fields=['entries', 'tags', 'entries_hash'])
@@ -137,13 +141,30 @@ def clean_feed_to_dict(feed):
 
 @app.route('/api/feed/')
 @need_root
-def api_feed():
+def api_get_feed():
     feeds = Feed.query.order_by(Feed.updated.desc())
     ret = {'feeds': []}
     for feed in feeds:
         f = clean_feed_to_dict(feed)
         ret['feeds'].append(f)
     return jsonify(ret)
+
+@app.route('/api/feed/', methods=['POST'])
+@need_root
+def api_edit_feed():
+    feed_id = request.json['id']
+    feed = Feed.query.get(feed_id)
+    # update some fields, no checks (TODO)
+    feed_fields = {
+        'url', 'title', 'link', 'refresh_interval',
+        'max_entries', 'entries_per_page', 'highlight_news',
+    }
+    fields = feed_fields & set(request.json.keys())
+    for field in fields:
+        setattr(feed, field, request.json[field])
+    db.session.merge(feed)
+    db.session.commit()
+    return jsonify({'msg': 'Success !'})
 
 @app.route('/api/feed/add/', methods=['POST'])
 @need_root
