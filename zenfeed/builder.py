@@ -103,6 +103,7 @@ def FeedFromDict(dico, config):
     feed.refresh_interval = config.default_refresh_interval
     feed.max_entries = config.default_max_entries
     feed.highlight_news = config.default_highlight_news
+    feed.entries_per_page = config.default_entries_per_page
     feed.has_news = False
     return feed
 
