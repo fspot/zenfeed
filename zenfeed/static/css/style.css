@@ -74,7 +74,9 @@ img {
 }
 
 #feeds .feed-title { line-height: 85%; word-wrap: break-word; }
+#feeds .feed-title:first-letter { text-transform: capitalize; }
 #feeds .entry-title { font-size: 80%; line-height: 90%; }
+#feeds .entry-title:first-letter { text-transform: capitalize; }
 #feeds .time-ago { text-align: right; }
 #feeds .has-news { text-shadow: 0px 0px 4px #EDC02D; }
 #feeds .tag {
@@ -86,7 +88,9 @@ img {
 }
 
 #entries .entry-title { font-size: 80%; line-height: 85%; word-wrap: break-word; }
+#entries .entry-title:first-letter { text-transform: capitalize; }
 #entries .entry-content { font-size: 80%; line-height: 90%; }
+#entries .entry-content:first-letter { text-transform: capitalize; }
 #entries .time-ago { text-align: right; }
 
 /* links stuff */
