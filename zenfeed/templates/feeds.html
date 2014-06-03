@@ -12,7 +12,7 @@
 			 data-url="{{ url_for('feed_view', feed_id=feed.id) }}">
 			<div class="pure-u-1-24">
 				<img height="24px" width="24px"
-				 src="{{ url_for('get_favicon', favicon=feed.favicon_path) }}" alt="[icon]" />
+				 src="{{ url_for('get_favicon', favicon=feed.favicon_path) }}" alt="[i]" />
 			</div>
 			<div class="pure-u-5-24 feed-title navlink">
 				<a href="{{ url_for('feed_view', feed_id=feed.id) }}">{{ feed.title }}</a>

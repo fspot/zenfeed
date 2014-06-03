@@ -8,3 +8,4 @@ recursive-include zenfeed *.html
 recursive-include zenfeed *.css
 recursive-include zenfeed *.js
 
+recursive-include zenfeed *.woff
