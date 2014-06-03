@@ -164,6 +164,9 @@ def api_edit_feed():
         setattr(feed, field, request.json[field])
     db.session.merge(feed)
     db.session.commit()
+    deadlineManager.inbox.put(
+        {'type': 'refresh-cache', 'feed_id': feed_id}
+    )
     return jsonify({'msg': 'Success !'})
 
 @app.route('/api/feed/add/', methods=['POST'])
