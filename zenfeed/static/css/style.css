@@ -20,7 +20,7 @@ body {
     margin: 0 auto;
     max-width: 1100px;
     margin-bottom: 50px;
-    font-size: 1.5em;
+    font-size: 1.5rem;
 }
 
 img {
@@ -43,7 +43,7 @@ img {
 
 .header h1 {
     margin: 0px;
-    font-size: 3em;
+    font-size: 3rem;
     font-weight: 300;
 }
 
@@ -127,7 +127,7 @@ a.menu-selected { color: #586E75; text-decoration: underline; }
     box-sizing: border-box;
     color: #516065;
     height: 40px;
-    font-size: 1em;
+    font-size: 1rem;
 }
 
 .zenform input[type="button"],
@@ -216,7 +216,7 @@ pre code { box-shadow: none; }
 }
 
 #pagination a {
-    font-size: 1.7em;
+    font-size: 1.7rem;
     display: inline-block;
     background-color: #EFE6CC;
     margin: 3px;
