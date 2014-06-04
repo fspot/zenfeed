@@ -9,8 +9,15 @@
 {% endblock %}
 
 {% block js %}
-	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/angular.min.js"></script>
-	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/angular-route.min.js"></script>
-	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/bower-angular-translate/2.0.1/angular-translate.min.js"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='js/admin.js') }}"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/angular.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.16/angular-route.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/bower-angular-translate/2.0.1/angular-translate.min.js"></script>
+	<script>
+		var app = angular.module('zenfeed', ['ngRoute', 'pascalprecht.translate']);
+		app.constant('pathPrefix', '{{ path_prefix }}');
+	</script>
+	<script src="{{ url_for('static', filename='js/admin/translations.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/admin/routes.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/admin/services.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/admin/controllers.js') }}"></script>
 {% endblock %}

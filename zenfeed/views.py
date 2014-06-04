@@ -18,6 +18,7 @@ from models import db, Tag, Feed, Entry, Config
 from deadline_manager import deadlineManager
 from settings import LANGUAGES
 
+PRE = app.config['PATH_PREFIX']
 
 def need_root(vue):
     @wraps(vue)
@@ -44,7 +45,7 @@ def refresh_highlighted_feeds(vue):
 
 # main site routes :
 
-@app.route('/')
+@app.route(PRE + '/')
 def index():
     if app.cache.has('/'): return app.cache.get('/')
     logger.info("Index view is processing : will be cached")
@@ -56,8 +57,8 @@ def index():
 def get_favicon(favicon):
     return send_from_directory(app.config['FAVICON_DIR'], favicon)
 
-@app.route('/<int:feed_id>/')
-@app.route('/<int:feed_id>/page-<int:page>')
+@app.route(PRE + '/<int:feed_id>/')
+@app.route(PRE + '/<int:feed_id>/page-<int:page>')
 @refresh_highlighted_feeds
 def feed_view(feed_id, page=1, bot_flag=False):
     if page == 1 and app.cache.has(feed_id=feed_id):
@@ -75,14 +76,14 @@ def feed_view(feed_id, page=1, bot_flag=False):
         app.cache.put(resp, feed_id=feed_id)
     return resp
 
-@app.route('/<int:feed_id>/<int:entry_id>/')
+@app.route(PRE + '/<int:feed_id>/<int:entry_id>/')
 def entry_view(feed_id, entry_id):
     entry = Entry.query.get(entry_id)
     return render_template('entry.html', entry=entry)
 
 # login / logout :
 
-@app.route('/login/', methods=['GET', 'POST'])
+@app.route(PRE + '/login/', methods=['GET', 'POST'])
 def login():
     next_page = request.args.get('next') or url_for('index')
     if request.method == 'POST':
@@ -90,7 +91,7 @@ def login():
         return redirect(next_page)
     return render_template('login.html', next_page=next_page)
 
-@app.route('/logout/')
+@app.route(PRE + '/logout/')
 def logout():
     next_page = request.args.get('next') or url_for('index')
     session.pop('pw', None)
@@ -98,23 +99,23 @@ def logout():
 
 # admin and api :
 
-@app.route('/admin/')
+@app.route(PRE + '/admin/')
 @need_root
 def admin_index():
-    return render_template('admin.html')
+    return render_template('admin.html', path_prefix=PRE)
 
-@app.route('/admin/<filename>.html')
+@app.route(PRE + '/admin/<filename>.html')
 @need_root
 def admin_view(filename):
     return redirect(app.static_url_path + '/html/' + filename + '.html')
 
-@app.route('/api/config/')
+@app.route(PRE + '/api/config/')
 @need_root
 def api_get_config():
     config = Config.get()
     return jsonify(config.to_dict(exclude_fields=['password', 'id']))
 
-@app.route('/api/config/', methods=['POST'])
+@app.route(PRE + '/api/config/', methods=['POST'])
 @need_root
 def api_edit_config():
     config = Config.get()
@@ -139,7 +140,7 @@ def clean_feed_to_dict(feed):
     f['nb_of_entries'] = feed.entries.count()
     return f
 
-@app.route('/api/feed/')
+@app.route(PRE + '/api/feed/')
 @need_root
 def api_get_feed():
     feeds = Feed.query.order_by(Feed.updated.desc())
@@ -149,7 +150,7 @@ def api_get_feed():
         ret['feeds'].append(f)
     return jsonify(ret)
 
-@app.route('/api/feed/', methods=['POST'])
+@app.route(PRE + '/api/feed/', methods=['POST'])
 @need_root
 def api_edit_feed():
     feed_id = request.json['id']
@@ -169,7 +170,7 @@ def api_edit_feed():
     )
     return jsonify({'msg': 'Success !'})
 
-@app.route('/api/feed/add/', methods=['POST'])
+@app.route(PRE + '/api/feed/add/', methods=['POST'])
 @need_root
 def api_add_feed():
     url = request.json['url']
@@ -180,7 +181,7 @@ def api_add_feed():
     dictfeed = clean_feed_to_dict(feed)
     return jsonify({"msg": feed.title, 'feed': dictfeed})
 
-@app.route('/api/feed/delete/', methods=['POST'])
+@app.route(PRE + '/api/feed/delete/', methods=['POST'])
 @need_root
 def api_delete_feed():
     feed_id = request.json['id']

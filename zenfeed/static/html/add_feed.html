@@ -7,7 +7,7 @@
 	<div class="pure-g bandeau">
 		<div class="pure-u-8-24"><a href="#/config">{{ 'MENU.SETTINGS' | translate }}</a></div>
 		<div class="pure-u-8-24"><a href="#/feed">{{ 'MENU.FEEDS' | translate }}</a></div>
-		<div class="pure-u-8-24"><a href="/logout/">{{ 'MENU.LOG_OUT' | translate }}</a></div>
+		<div class="pure-u-8-24"><a ng-href="{{ pathPrefix }}/logout/">{{ 'MENU.LOG_OUT' | translate }}</a></div>
 	</div>
 
 	<form class="zenform centered" ng-submit="addFeed()">

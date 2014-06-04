@@ -4,7 +4,8 @@
 """Zen RSS feed reader.
 
 Usage:
-  zenfeed [-d URI -f PATH -p PORT --log LOG --lang LANG --tz TIMEZONE --no-cache --debug]
+  zenfeed [--database URI --favicons PATH -p PORT --log LOG --lang LANG
+           --tz TIMEZONE --prefix PREFIX --no-cache --debug]
   zenfeed genstatic PATH
   zenfeed -h | --help
   zenfeed -v | --version
@@ -19,6 +20,9 @@ Options:
                       [default: ./]
   -p --port PORT      Specify on which port to listen.
                       [default: 5000]
+  --prefix PREFIX     If zenfeed is not alone in its domain/subdomain,
+                      specify its path prefix. E.g: /zenfeed/
+                      [default: /]
   --log LOG           Specify where to log messages, and which level to set.
                       Can be "stderr", "syslog", or a filename, followed by the level.
                       [default: stderr:INFO]
@@ -76,6 +80,12 @@ def main():
 
     cache_disabled = args['--no-cache']
 
+    path_prefix = args['--prefix']
+    if path_prefix.endswith('/'):
+        path_prefix = path_prefix[:-1]
+    if path_prefix and not path_prefix.startswith('/'):
+        path_prefix = '/' + path_prefix
+
     fixed_language = args['--lang']
     if fixed_language == 'browser':
         fixed_language = None
@@ -106,6 +116,7 @@ def main():
         FIXED_LANGUAGE = fixed_language,
         FIXED_TIMEZONE = fixed_timezone,
         CACHE_ENABLED = not cache_disabled,
+        PATH_PREFIX = path_prefix,
     )
     Cache(app)
 
@@ -124,11 +135,11 @@ def main():
     deadlineManager.launch_deadline_workers(feeds)
     deadlineManager.start()
 
+    logger.info("Server started at port %d (prefix: %s/)", port, path_prefix)
     if args['--debug']:
-        logger.info("Server started in DEBUG mode at port %d", port)
+        logger.warning("DEBUG mode activated")
         app.run(host='0.0.0.0', port=port, debug=True)
     else:
-        logger.info("Server started in PRODUCTION mode at port %d", port)
         from gevent.wsgi import WSGIServer
         http_server = WSGIServer(('0.0.0.0', port), app)
         try:
@@ -139,4 +150,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

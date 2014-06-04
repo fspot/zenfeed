@@ -6,7 +6,7 @@
 	<div class="pure-g bandeau">
 		<div class="pure-u-8-24"><a href="#/config" class="menu-selected">{{ 'MENU.SETTINGS' | translate }}</a></div>
 		<div class="pure-u-8-24"><a href="#/feed">{{ 'MENU.FEEDS' | translate }}</a></div>
-		<div class="pure-u-8-24"><a href="/logout/">{{ 'MENU.LOG_OUT' | translate }}</a></div>
+		<div class="pure-u-8-24"><a ng-href="{{ pathPrefix }}/logout/">{{ 'MENU.LOG_OUT' | translate }}</a></div>
 	</div>
 
 	<div ng-controller="ConfigCtrl">
