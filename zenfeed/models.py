@@ -8,7 +8,8 @@ from sqlalchemy.orm import class_mapper, ColumnProperty
 
 from app import app
 from log import logger
-from settings import (DEFAULT_LOGIN, DEFAULT_PASSWORD,
+from migrations import run_migrations
+from settings import (VERSION, DEFAULT_LOGIN, DEFAULT_PASSWORD,
     DEFAULT_REFRESH_INTERVAL, DEFAULT_MAX_ENTRIES, DEFAULT_HIGHLIGHT_NEWS,
     DEFAULT_ENTRIES_PER_PAGE)
 
@@ -21,6 +22,7 @@ def setup_tables():
         logger.info("Creating Config single instance")
         Config.query.delete()
         c = Config(
+            version=VERSION,
             login=DEFAULT_LOGIN,
             password=Config.hash(DEFAULT_PASSWORD),
             default_refresh_interval=DEFAULT_REFRESH_INTERVAL,
@@ -31,6 +33,8 @@ def setup_tables():
         db.session.add(c)
         db.session.commit()
         Config.refresh_instance()
+    elif Config.get().version != VERSION:
+        run_migrations(from_version=Config.get().version)
     db.engine.echo = app.config['SQL_DEBUG']
 
 
@@ -120,6 +124,7 @@ class Entry(db.Model, Base):
 
 class Config(db.Model, Base):
     id = db.Column(db.Integer, primary_key=True)
+    version = db.Column(db.String)
     login = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String, nullable=False, unique=True)
 
