@@ -106,7 +106,8 @@ def main():
     elif not "://" in db_uri:
         db_uri = 'sqlite:///%s' % path(db_uri).abspath()
 
-    from app import app
+    import app as app_module
+    app = app_module.create_flask_app(prefix=path_prefix)
     app.config.update(
         DEBUG = args['--debug'],
         SQL_DEBUG = False,
