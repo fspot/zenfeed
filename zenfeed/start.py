@@ -35,6 +35,7 @@ Options:
 
 from __future__ import unicode_literals, print_function#, absolute_import
 from docopt import docopt
+from os import urandom
 from path import path
 from pytz import all_timezones
 import logging
@@ -99,7 +100,7 @@ def main():
     app.config.update(
         DEBUG = args['--debug'],
         SQL_DEBUG = False,
-        SECRET_KEY = 'ssshhhh',
+        SECRET_KEY = urandom(32),
         SQLALCHEMY_DATABASE_URI = db_uri,
         FAVICON_DIR = path(args['--favicons']).abspath(),
         FIXED_LANGUAGE = fixed_language,
