@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-VERSION = "0.0.3"
+VERSION = "0.0.4"
 
 # available languages :
 LANGUAGES = {
