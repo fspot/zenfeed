@@ -67,7 +67,11 @@ def fetch_and_parse_feed(url, etag=None, last_modified=None):
         if resp.status_code not in (200, 301, 302):
             raise FetchingException("status_code is %d" % resp.status_code)
         soup = BeautifulSoup(resp.content)
-        url = soup.find_all("link", rel="alternate")[0]['href']
+        try:
+            url = soup.find_all("link", rel="alternate")[0]['href']
+        except (IndexError, KeyError):
+            # alternate-link is missing
+            raise FetchingException("Neither RSS nor good HTML...")
         if not url.startswith("http"):
             url = concat_urls(resp.url, url)
         feed_parsed = feedparser.parse(url)
