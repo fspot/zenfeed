@@ -1,0 +1,3 @@
+#!/bin/bash
+cd /usr/bin
+ln -s /usr/share/python/zenfeed/bin/zenfeed ./
