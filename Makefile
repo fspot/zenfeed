@@ -25,6 +25,8 @@ python3setup:
 	pip install Cython==0.20.1
 	pip install -r requirements_py3.txt
 
+#build-deb: dpkg-buildpackage -us -uc
+
 clean:
 	rm -rf *.pyc zenfeed/*.pyc test/*.pyc build/ dist/ zenfeed.egg-info/
 
