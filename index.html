@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenfeed - Documentation.</title>
+    <link rel="icon" type="image/png" href="static/img/zenicon.png" />
+    <link rel="stylesheet" href="static/css/grid.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <style>
+        p.jus {padding-right: 25px; text-align: justify;}
+        img.shadowed {box-shadow: 0px 5px 25px black;}
+        p.centered {margin-top: 5px; opacity: 0.8;}
+        vid {border: 5px solid black;}
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>Zenfeed - Documentation.</h1>
+        <h1>~</h1>
+    </div>
+
+    <div class="content">
+        <div class="pure-g-r">
+            <p class="jus pure-u-1-2">
+                <b>Zenfeed is a web-based RSS reader and aggregator</b>. Its main "feature" is not to indicate the number of unread items : that's why it's <em>zen</em>.<br><br>
+                On the right, you can see the main view : a clean list of feeds, indicating the title of the last entry for each of them.<br>
+                If one feed is very prolific, it will not pollute this view with all his items.
+            </p>
+            <div class="pure-u-1-2">
+                <img class="shadowed" src="https://cdn.mediacru.sh/85fg1zEf8fQR.png" alt="[zenfeed screenshot]" />
+                <p class="centered">List of feeds, index view.</p>
+            </div>
+        </div>
+
+
+        <div class="pure-g-r">
+            <div class="pure-u-1-2">
+                <h2>Features</h2>
+                <ul>
+                    <li><b>Simple</b>, <b>tiny</b> (~1K SLOC), and <b>fast</b> (cache)</li>
+                    <li>No Javascript required (except for admin zone)</li>
+                    <li>Clean and light UI</li>
+                    <li>Easy installation : <code>pip install zenfeed</code></li>
+                    <li>Easy launch : <code>zenfeed</code></li>
+                    <li>Administration zone is accessible at the <code>/admin/</code> relative URL.</li>
+                </ul>
+            </div>
+            <div class="pure-u-1-2">
+                <img class="shadowed" src="https://cdn.mediacru.sh/pX8d2iWXpHI6.png" alt="[zenfeed screenshot]" />
+                <p class="centered">Single feed view.</p>
+            </div>
+        </div>
+
+        <div class="pure-g-r">
+            <div class="pure-u-1-2">
+                <ul>
+                    <li>Entry view is adapted for <strong>reading</strong>.</li>
+                    <li>w,a,s,d keys for navigation (JS needed)</li>
+                    <li>Each feed is separately configurable (fetching interval, pagination…)</li>
+                    <li>Responsive design</li>
+                    <li>Available in english, french, spanish.</li>
+                </ul>
+            </div>
+            <div class="pure-u-1-2">
+                <img class="shadowed" src="https://cdn.mediacru.sh/3iiUrJfCRFql.png" alt="[zenfeed screenshot]" />
+                <p class="centered">Entry view.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="header"><h1>Installation</h1></div>
+
+    <div class="content">
+        <div class="pure-g-r">
+            <div class="pure-u-14-24">
+            <h3>Quick install for Debian/Ubuntu</h3>
+                <p class="jus">
+                Download the <a href="http://fspot.org/pkg/zenfeed.deb">zenfeed.deb</a> package.<br>
+                Install it. Well done!
+                </p>
+            </div>
+            <div class="pure-u-10-24">
+                <code><br><br>
+<pre>$ wget <a href="http://fspot.org/pkg/zenfeed.deb">http://fspot.org/pkg/zenfeed.deb</a>
+$ sudo dpkg -i zenfeed.deb
+</pre>
+                </code>
+            </div>
+        </div>
+
+        <div class="pure-g-r">
+            <div class="pure-u-14-24">
+            <h3>With pip</h3>
+                <p class="jus">
+                You will need some system packages :
+                <ul>
+                    <li><code>python-dev</code></li>
+                    <li><code>python-pip</code></li>
+                </ul>
+                </p>
+            </div>
+            <div class="pure-u-10-24">
+                <code><br><br><br>
+<pre>$ pip install zenfeed
+</pre>
+                </code>
+            </div>
+        </div>
+    </div>
+
+    <div class="header"><h1>Launch</h1></div>
+
+    <div class="content">
+        <div class="pure-g-r">
+            <div class="centered vid pure-u-1-1">
+                <script type="text/javascript" src="https://asciinema.org/a/11334.js" id="asciicast-11334" async></script>
+            </div>
+        </div>
+    </div>
+
+    <div class="header"><h1>Settings</h1></div>
+
+    <div class="content">
+        <div class="pure-g-r">
+            <div class="pure-u-3-24"></div>
+            <div class="pure-u-18-24">
+                <code>
+<pre>$ zenfeed -h
+Zen RSS feed reader.
+
+Usage:
+  zenfeed [--database URI --favicons PATH -p PORT --log LOG --lang LANG
+           --tz TIMEZONE --prefix PREFIX --no-cache --debug]
+  zenfeed genstatic PATH
+  zenfeed -h | --help
+  zenfeed -v | --version
+
+Options:
+  -h --help           Show this screen.
+  -v --version        Show version.
+  -d --database URI   Specify database URI (SQLAlchemy format).
+                      For SQLite, this is just a file name.
+                      [default: ./zenfeed.db]
+  -f --favicons PATH  Specify where favicons will be put.
+                      [default: ./]
+  -p --port PORT      Specify on which port to listen.
+                      [default: 5000]
+  --prefix PREFIX     If zenfeed is not alone in its domain/subdomain,
+                      specify its path prefix. E.g: /zenfeed/
+                      [default: /]
+  --log LOG           Specify where to log messages, and which level to set.
+                      Can be "stderr", "syslog", or a filename, followed by the level.
+                      [default: stderr:INFO]
+  --lang LANG         Fix the language instead of let it depend on the browser's value.
+                      The language needs to be supported. E.g: en
+                      [default: browser]
+  --tz TIMEZONE       Specify which timezone to use, to adjust date and time display.
+                      For french timezone : "--tz Europe/Paris"
+                      [default: GMT]
+  --no-cache          Disable cache on index and feed pages.
+  --debug             Debug mode, do not use.
+</pre>
+                </code>
+            </div>
+            <div class="pure-u-3-24"></div>
+        </div>
+    </div>
+
+
+    <div class="header"><h1>Example</h1></div>
+
+    <div class="content">
+        <div class="pure-g-r">
+            <div class="pure-u-3-24"></div>
+            <div class="pure-u-18-24">
+            <p>This command :</p>
+                <code>
+<pre>$ zenfeed -f favs/ -p 8080 --lang fr --log zf.log:INFO --tz Europe/Paris
+</pre>
+                </code>
+                <p>starts zenfeed, and :
+                <ul>
+                    <li>favicons (downloaded for each feed) will be stored in the <code>favs/</code> directory</li>
+                    <li>zenfeed will listen on port 8080</li>
+                    <li>french lang will be used</li>
+                    <li>logs will be append to <code>zf.log</code> file, if the level is greater or equal to <code>INFO</code></li>
+                    <li>Paris timezone (GMT+1) is selected</li>
+                </ul>
+                Because the <code>--database</code> parameter is not supplied, default settings will apply : database will be the <code>zenfeed.db</code> sqlite file in current directory.
+                </p>
+            </div>
+            <div class="pure-u-3-24"></div>
+        </div>
+    </div>
+
+    <div class="header"><h1>Production</h1></div>
+
+    <div class="content">
+        <div class="pure-g-r">
+            <div class="pure-u-3-24"></div>
+            <div class="pure-u-18-24">
+            <p>If you want your web server to serve zenfeed's static files (served at the <code>/static/</code> relative URL), you can collect these files into a directory with this command :</p>
+            <code>
+<pre>$ zenfeed genstatic path/to/static/dir/</pre>
+            </code>
+            </div>
+            <div class="pure-u-3-24"></div>
+        </div>
+    </div>
+
+    <div class="header"><h1>~</h1></div>
+
+    <div class="content">
+        <div class="pure-g-r">
+            <div class="pure-u-3-24"></div>
+            <div class="pure-u-18-24">
+            <p class="centered">Inspired by <a href="http://zencancan.com">zencancan</a>.</p>
+            </div>
+            <div class="pure-u-3-24"></div>
+        </div>
+    </div>
+
+</body>
+</html>

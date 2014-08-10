@@ -1,0 +1,231 @@
+@font-face {
+  font-family: 'Indie Flower';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Indie Flower'), local('IndieFlower'), url(indieflower.woff) format('woff');
+}
+
+* { box-sizing: border-box; }
+.centered { text-align: center; }
+
+body {
+    color: #586E75;
+    background-color: #FDF6E3;
+    font-family: "Droid Sans", FreeSans, Arimo, Helvetica, Arial, sans-serif;
+    text-shadow: 1px 1px 5px white;
+}
+#entry p { font-family: "Droid Serif", serif; }
+
+.content {
+    margin: 0 auto;
+    max-width: 1100px;
+    margin-bottom: 50px;
+    font-size: 1.5rem;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.indieflower,
+.header h1,
+.bandeau a, #pagination a,
+#feeds .feed-title,
+#feeds .time-ago, #entries .time-ago
+{ font-family: "Indie Flower"; }
+
+.header {
+     margin: 0;
+     color: #586E75;
+     text-align: center;
+ }
+
+.header h1 {
+    margin: 0px;
+    font-size: 3rem;
+    font-weight: 300;
+}
+
+.grid-row {
+    padding: 3px 10px;
+}
+
+@media (min-width:768px) {
+    .grid-row {display: table; height: 100%; width: 100%;}
+    .grid-row div {display: table-cell; vertical-align: middle;}
+}
+
+.grid-row:hover {
+    background-color: #E3CF93 !important;
+    cursor: pointer;
+}
+
+.bandeau, .grid-row:nth-child(2n+1) {
+    background-color: #EFE6CC;
+}
+
+.bandeau {
+    padding: 8px;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 80%;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+#feeds .feed-title { line-height: 85%; word-wrap: break-word; }
+#feeds .feed-title:first-letter { text-transform: capitalize; }
+#feeds .entry-title { font-size: 80%; line-height: 90%; }
+#feeds .entry-title:first-letter { text-transform: capitalize; }
+#feeds .time-ago { text-align: right; }
+#feeds .has-news { text-shadow: 0px 0px 4px #EDC02D; }
+#feeds .tag {
+    background-color: #D5C7A7;
+    border-radius: 7px;
+    display: inline-block;
+    padding: 2px;
+    box-shadow: 1px 1px 2px #6F5E41;
+}
+
+#entries .entry-title { font-size: 80%; line-height: 85%; word-wrap: break-word; }
+#entries .entry-title:first-letter { text-transform: capitalize; }
+#entries .entry-content { font-size: 80%; line-height: 90%; }
+#entries .entry-content:first-letter { text-transform: capitalize; }
+#entries .time-ago { text-align: right; }
+
+/* links stuff */
+
+a { color: #B58900; }
+a:hover { color: #B56000; }
+
+a:focus {
+    text-decoration: underline !important;
+    text-shadow: 0px 0px 5px #B58900;
+    color: #B52900 !important;
+    outline: none;
+}
+
+#feeds a, #entries a, .bandeau a { text-decoration: none; }
+#entries .grid-row a:visited { color: #A38B58; }
+
+a.menu-selected { color: #586E75; text-decoration: underline; }
+
+/* forms */
+
+#login-form {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.zenform input[type="submit"],
+.zenform input[type="button"],
+.zenform input[type="text"],
+.zenform input[type="url"],
+.zenform input[type="number"],
+.zenform input[type="password"] {
+    box-sizing: border-box;
+    color: #516065;
+    height: 40px;
+    font-size: 1rem;
+}
+
+.zenform input[type="button"],
+.zenform input[type="submit"] {
+    background-color: #EAC643;
+    border: 1px solid #EFD05F;
+    border-bottom: 3px solid #C8A529;
+    border-radius: 7px;
+    padding: 0px 20px;
+    cursor: pointer;
+}
+
+.zenform input[type="button"]:hover,
+.zenform input[type="submit"]:hover {
+    opacity: 0.8;
+}
+
+.zenform input[type="submit"]:disabled {
+    opacity: 0.4;
+    cursor: progress;
+}
+
+.zenform input[type="button"].button-grey {
+    background-color: #D9D3C0;
+    border-color: #E9E4D3;
+    border-bottom-color: #B5AD96;
+}
+
+.zenform input[type="number"],
+.zenform input[type="text"],
+.zenform input[type="url"],
+.zenform input[type="password"] {
+    border: 1px solid #E6C247;
+    padding-left: 10px;
+    border-radius: 4px;
+}
+
+.zenform-spaced label {
+    display: inline-block;
+    cursor: pointer;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+.zenform-spaced input[type="number"],
+.zenform-spaced input[type="text"],
+.zenform-spaced input[type="url"],
+.zenform-spaced input[type="checkbox"],
+.zenform-spaced input[type="password"] {
+    display: block;
+    margin-left: 20px;
+}
+
+.input-details { color: #E55838; }
+@media (min-width:768px) {
+    .input-details {
+        float: right;
+        position: relative;
+        top: -40px; /* height of an input field */
+    }
+}
+
+/* code stuff */
+
+pre {
+    background-color: #EEE8D5;
+    padding: 6px 4px;
+    border-left: 10px solid #D5CCAF;
+    border-radius: 4px;
+    font-size: 15px !important;
+    box-shadow: 0px 2px 5px #6D6859;
+    overflow: auto;
+}
+
+code {
+    background-color: #EEE8D5;
+    box-shadow: 0px 1px 3px #6D6859;
+}
+
+pre code { box-shadow: none; }
+
+/* pagination */
+
+#pagination {
+    text-align: center;
+}
+
+#pagination a {
+    font-size: 1.7rem;
+    display: inline-block;
+    background-color: #EFE6CC;
+    margin: 3px;
+    padding: 2px;
+    width: 30px;
+    text-decoration: none;
+}
+
+#pagination a.current-page {
+    background-color: #586E75;
+    color: white;
+}
