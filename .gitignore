@@ -6,3 +6,7 @@ dist/
 zenfeed.egg-info/
 
 favicons/
+
+debian/zenfeed/
+debian/zenfeed.*
+debian/files
